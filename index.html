@@ -62,6 +62,12 @@ header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:fle
 .msg{font-size:14px;color:var(--muted)}
 .msg.ok{color:var(--bio)}
 .msg.err{color:var(--ges)}
+[hidden]{display:none!important}
+.hbtns{display:flex;flex-wrap:wrap;gap:8px}
+.kofi{background:#ff5e5b;border-color:#ff5e5b;color:#fff}
+#support{margin-top:16px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:16px}
+#support p{margin:0;color:var(--muted);max-width:52ch}
+#support b{color:var(--fg)}
 .empty,.state{color:var(--muted);margin:0}
 .state{padding-top:30px}
 @media (prefers-reduced-motion:no-preference){a.mod:hover{transform:translateY(-2px)}}
@@ -74,7 +80,10 @@ header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:fle
     <h1>Lernregal</h1>
     <p class="sub">Alle Lernmodule an einem Ort, nach Fach sortiert. Antippen öffnet das Modul.</p>
   </div>
-  <a class="btn ghost" href="#anfrage" id="anfrageLink" hidden>Modul anfragen</a>
+  <div class="hbtns">
+    <a class="btn ghost" href="#anfrage" id="anfrageLink" hidden>Modul anfragen</a>
+    <a class="btn kofi" id="kofiTop" target="_blank" rel="noopener" hidden>☕ Unterstützen</a>
+  </div>
 </header>
 
 <div class="bar">
@@ -95,6 +104,11 @@ header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:fle
     <label class="hp" aria-hidden="true">Nicht ausfüllen<input type="checkbox" name="botcheck" tabindex="-1"></label>
     <div class="formrow"><button class="btn" type="submit" id="aSend">Anfrage senden</button><span class="msg" id="aMsg" role="status"></span></div>
   </form>
+</section>
+
+<section id="support" hidden>
+  <p><b>Hat dir das Lernregal geholfen?</b> Alle Module sind gratis. Wenn du magst, kannst du mit einem Kaffee etwas zurückgeben.</p>
+  <a class="btn kofi" id="kofiBottom" target="_blank" rel="noopener">☕ Auf Ko-fi unterstützen</a>
 </section>
 </div>
 
@@ -147,6 +161,14 @@ function render(){
 }
 $("q").oninput=render;
 chips();render();
+
+/* ===== Unterstützen: Ko-fi-Benutzername (aus ko-fi.com/NAME). Leer = Buttons ausgeblendet. ===== */
+const KOFI_NAME="";
+if(/^[A-Za-z0-9_]+$/.test(KOFI_NAME)){
+  const url="https://ko-fi.com/"+KOFI_NAME;
+  ["kofiTop","kofiBottom"].forEach(id=>{$(id).href=url;});
+  $("kofiTop").hidden=false;$("support").hidden=false;
+}
 
 /* ===== Modul-Anfragen: werden per Web3Forms als E-Mail verschickt.
    Der Access Key ist kein Geheimnis (steht für eine E-Mail-Adresse). Leer = Anfrage-Bereich ausgeblendet. ===== */
