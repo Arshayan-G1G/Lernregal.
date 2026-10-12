@@ -810,6 +810,7 @@ document.getElementById("grade").onclick=()=>{
     }
   });
   const note=Math.round((5*got/max+1)*4)/4;
+  if(window.Lernregal){const pct=Math.round(got/max*100);let alt=null;try{alt=JSON.parse(localStorage.getItem("lernregal:module/bio-einleitung.html")||"null")}catch(e){}if(!alt||alt.pct==null||pct>alt.pct)Lernregal.fortschritt(pct,"Übungsprüfung "+pct+" % (Note "+note.toFixed(2)+")");}
   const r=document.getElementById("result"); r.hidden=false;
   r.innerHTML=`<div class="big">${got.toFixed(2).replace(/\.?0+$/,"")} / ${max} P.</div>
   <p style="margin-top:8px">Note ungefähr: <b>${note.toFixed(2)}</b> (Schweizer Skala, 6 = beste)</p>
@@ -820,4 +821,5 @@ document.getElementById("grade").onclick=()=>{
 document.getElementById("reset").onclick=buildExam;
 </script>
 
+<script src="../regal.js" defer></script>
 </body></html>

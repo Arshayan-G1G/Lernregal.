@@ -38,12 +38,21 @@ section{padding-top:30px}
 section h2{font:800 clamp(24px,5vw,34px)/1 var(--f-display);font-stretch:112%;margin:0 0 14px;display:flex;align-items:baseline;gap:10px;color:var(--c)}
 section h2 small{font:500 13px var(--f-mono);color:var(--muted)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
-a.mod{display:flex;flex-direction:column;gap:8px;text-decoration:none;color:var(--fg);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:16px;min-width:0;transition:border-color .15s,transform .15s}
-a.mod:hover{border-color:var(--c)}
-a.mod h3{font:800 19px/1.2 var(--f-display);margin:0}
-a.mod p{margin:0;color:var(--muted);font-size:14.5px}
+.mod{position:relative;display:flex;flex-direction:column;gap:8px;color:var(--fg);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:16px;min-width:0;transition:border-color .15s,transform .15s}
+.mod:hover{border-color:var(--c)}
+.mod h3{font:800 19px/1.2 var(--f-display);margin:0}
+.mod h3 a{color:var(--fg);text-decoration:none}
+.mod h3 a::after{content:"";position:absolute;inset:0;border-radius:8px}
+.mod p{margin:0;color:var(--muted);font-size:14.5px}
 .tags{display:flex;flex-wrap:wrap;gap:5px}
 .tag{font:700 11px/1 var(--f-display);letter-spacing:.06em;text-transform:uppercase;color:var(--c);border:1px solid currentColor;border-radius:99px;padding:4px 8px}
+.tag.neu{background:var(--c);border-color:var(--c);color:var(--card)}
+.stand{display:flex;flex-direction:column;gap:5px;font:500 12.5px var(--f-mono);color:var(--fg)}
+.stand .pb{height:5px;border-radius:99px;background:var(--line);overflow:hidden}
+.stand .pb i{display:block;height:100%;background:var(--c);border-radius:99px}
+.acts{display:flex;align-items:center;gap:12px}
+.share{position:relative;z-index:1;font:700 13px/1 var(--f-display);color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:99px;padding:7px 11px;cursor:pointer}
+.share:hover{border-color:var(--c)}
 .foot{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:6px;font:500 12px var(--f-mono);color:var(--muted)}
 .foot b{font:700 14px var(--f-display);color:var(--c)}
 header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:14px}
@@ -64,7 +73,7 @@ header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:fle
 .msg.err{color:var(--ges)}
 .empty,.state{color:var(--muted);margin:0}
 .state{padding-top:30px}
-@media (prefers-reduced-motion:no-preference){a.mod:hover{transform:translateY(-2px)}}
+@media (prefers-reduced-motion:no-preference){.mod:hover{transform:translateY(-2px)}}
 </style>
 </head>
 <body>
@@ -141,10 +150,48 @@ function render(){
     if(!mods.length&&(q||all.length))return;
     shown++;
     html+=`<section style="--c:${s.c}"><h2>${esc(s.name)}<small>${mods.length} ${mods.length===1?"Modul":"Module"}</small></h2>`+
-      (mods.length?`<div class="grid">`+mods.map(m=>`<a class="mod" href="${esc(m.datei)}"><h3>${esc(m.titel)}</h3><p>${esc(m.text)}</p><div class="tags">${m.tags.map(t=>`<span class="tag">${esc(t)}</span>`).join("")}</div><div class="foot"><span>${fmt(m.datum)}</span><b>Öffnen →</b></div></a>`).join("")+`</div>`:`<p class="empty">Noch keine Module.</p>`)+`</section>`;
+      (mods.length?`<div class="grid">`+mods.map(karte).join("")+`</div>`:`<p class="empty">Noch keine Module.</p>`)+`</section>`;
   });
   $("shelves").innerHTML=shown?html:'<p class="state">Nichts gefunden. Probier ein anderes Wort.</p>';
 }
+function karte(m){
+  const st=stand(m.datei);
+  return `<article class="mod"><h3><a href="${esc(m.datei)}">${esc(m.titel)}</a></h3><p>${esc(m.text)}</p>`+
+    `<div class="tags">${istNeu(m.datum)?'<span class="tag neu">Neu</span>':""}${m.tags.map(t=>`<span class="tag">${esc(t)}</span>`).join("")}</div>`+
+    (st?`<div class="stand"><span>Dein Stand: ${esc(st.text)}</span>${typeof st.pct==="number"?`<div class="pb"><i style="width:${Math.max(0,Math.min(100,st.pct))}%"></i></div>`:""}</div>`:"")+
+    `<div class="foot"><span>${fmt(m.datum)}</span><span class="acts"><button class="share" type="button" data-datei="${esc(m.datei)}" aria-label="${esc(m.titel)} teilen">Teilen</button><b>Öffnen →</b></span></div></article>`;
+}
+
+/* ===== «Neu» = in den letzten 7 Tagen hinzugefügt oder aktualisiert ===== */
+function istNeu(d){const t=new Date(d+"T00:00:00").getTime();return !isNaN(t)&&(Date.now()-t)<7*864e5;}
+
+/* ===== Dein Stand: liest, was die Module im Browser gespeichert haben ===== */
+const ls=k=>{try{return localStorage.getItem(k)}catch(e){return null}};
+const json=(k,d)=>{try{const v=ls(k);return v?JSON.parse(v):d}catch(e){return d}};
+const STAND={
+  "module/bio-uebungen.html":()=>{const b=json("bio-best",{});const n=Object.keys(b).filter(k=>k!=="exam").length;
+    if(!n&&b.exam==null)return null;
+    return {text:[b.exam!=null?"Prüfung "+b.exam+" %":"",n?n+"/10 Kapitel geübt":""].filter(Boolean).join(" · "),pct:b.exam!=null?b.exam:n*10};},
+  "module/mittelmeer.html":()=>{const g=json("mm26.goals",[]);return g.length?{text:g.length+"/10 Lernziele abgehakt",pct:Math.round(g.length/10*100)}:null;},
+  "module/vocabulaire-1.html":()=>{const s=json("kswo-voc-1",null);const b=s&&s.best||{};const n=Object.keys(b).length;
+    if(!n)return null;return b.exam!=null?{text:"Prüfung "+b.exam+" %",pct:b.exam}:{text:n+"/12 Etappen geübt",pct:Math.round(n/12*100)};}
+};
+function stand(datei){
+  if(STAND[datei]){try{const r=STAND[datei]();if(r)return r;}catch(e){}}
+  const g=json("lernregal:"+datei,null);
+  return g&&g.text?g:null;
+}
+
+/* ===== Teilen: Handy = Teilen-Menü (WhatsApp usw.), Computer = Link kopieren ===== */
+$("shelves").addEventListener("click",async e=>{
+  const b=e.target.closest(".share");if(!b)return;
+  const m=MODULE.find(x=>x.datei===b.dataset.datei);if(!m)return;
+  const url=new URL(m.datei,location.href).href;
+  if(navigator.share){try{await navigator.share({title:m.titel,text:m.titel+" – Lernregal",url});}catch(err){}return;}
+  try{await navigator.clipboard.writeText(url);b.textContent="Link kopiert ✓";}
+  catch(err){window.open("https://wa.me/?text="+encodeURIComponent(m.titel+" – Lernregal "+url),"_blank","noopener");}
+  setTimeout(()=>{b.textContent="Teilen";},2000);
+});
 $("q").oninput=render;
 chips();render();
 
@@ -172,5 +219,6 @@ if(ANFRAGE_KEY){
   });
 }
 </script>
+<script src="regal.js" defer></script>
 </body>
 </html>
