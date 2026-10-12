@@ -4,7 +4,7 @@
    - Lernregal.fortschritt(pct, text) speichert den Stand, den das Regal auf der Karte anzeigt
    - zählt Besuche mit GoatCounter, sobald GOATCOUNTER gesetzt ist */
 (function () {
-  var GOATCOUNTER = ""; // Code von goatcounter.com (z.B. "lernregal-g1g"); leer = kein Zähler
+  var GOATCOUNTER = "arshayang1g"; // Code von goatcounter.com (z.B. "lernregal-g1g"); leer = kein Zähler
 
   var inModule = /\/module\/[^/]+$/.test(location.pathname);
   var key = "lernregal:" + location.pathname.split("/").slice(-2).join("/");
