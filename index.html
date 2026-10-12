@@ -46,6 +46,22 @@ a.mod p{margin:0;color:var(--muted);font-size:14.5px}
 .tag{font:700 11px/1 var(--f-display);letter-spacing:.06em;text-transform:uppercase;color:var(--c);border:1px solid currentColor;border-radius:99px;padding:4px 8px}
 .foot{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:6px;font:500 12px var(--f-mono);color:var(--muted)}
 .foot b{font:700 14px var(--f-display);color:var(--c)}
+header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:14px}
+.btn{font:700 15px/1 var(--f-display);color:var(--bg);background:var(--fg);border:1px solid var(--fg);border-radius:99px;padding:12px 18px;cursor:pointer;text-decoration:none}
+.btn.ghost{color:var(--fg);background:var(--card);border-color:var(--line)}
+#anfrage{margin-top:44px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:20px 16px}
+#anfrage h2{color:var(--fg);margin-bottom:6px}
+#anfrage .sub{margin:0 0 16px}
+#anfrageForm{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+#anfrageForm label{display:flex;flex-direction:column;gap:5px;font:700 12px/1.2 var(--f-display);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);min-width:0}
+#anfrageForm .full{grid-column:1/-1}
+#anfrageForm input,#anfrageForm select,#anfrageForm textarea{font:400 15px/1.4 var(--f-display);letter-spacing:0;text-transform:none;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px;width:100%}
+#anfrageForm textarea{min-height:96px;resize:vertical}
+#anfrageForm .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.formrow{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.msg{font-size:14px;color:var(--muted)}
+.msg.ok{color:var(--bio)}
+.msg.err{color:var(--ges)}
 .empty,.state{color:var(--muted);margin:0}
 .state{padding-top:30px}
 @media (prefers-reduced-motion:no-preference){a.mod:hover{transform:translateY(-2px)}}
@@ -54,8 +70,11 @@ a.mod p{margin:0;color:var(--muted);font-size:14.5px}
 <body>
 <div class="wrap">
 <header>
-  <h1>Lernregal</h1>
-  <p class="sub">Alle Lernmodule an einem Ort, nach Fach sortiert. Antippen öffnet das Modul.</p>
+  <div>
+    <h1>Lernregal</h1>
+    <p class="sub">Alle Lernmodule an einem Ort, nach Fach sortiert. Antippen öffnet das Modul.</p>
+  </div>
+  <a class="btn ghost" href="#anfrage" id="anfrageLink" hidden>Modul anfragen</a>
 </header>
 
 <div class="bar">
@@ -64,6 +83,19 @@ a.mod p{margin:0;color:var(--muted);font-size:14.5px}
 </div>
 
 <div id="shelves"></div>
+
+<section id="anfrage" hidden>
+  <h2>Modul anfragen</h2>
+  <p class="sub">Dir fehlt ein Thema? Schreib, was du brauchst. Die Anfrage kommt direkt beim Betreiber des Regals an.</p>
+  <form id="anfrageForm">
+    <label for="aFach">Fach<select id="aFach" name="Fach" required></select></label>
+    <label for="aDatum">Prüfung am (optional)<input id="aDatum" name="Prüfungsdatum" type="date"></label>
+    <label class="full" for="aThema">Was soll ins Modul?<textarea id="aThema" name="Thema" required maxlength="1500" placeholder="z.B. Chemie Kapitel 2: Atombau und Periodensystem, mit Übungsprüfung"></textarea></label>
+    <label for="aName">Dein Name (optional)<input id="aName" name="Name" maxlength="80" autocomplete="name"></label>
+    <label class="hp" aria-hidden="true">Nicht ausfüllen<input type="checkbox" name="botcheck" tabindex="-1"></label>
+    <div class="formrow"><button class="btn" type="submit" id="aSend">Anfrage senden</button><span class="msg" id="aMsg" role="status"></span></div>
+  </form>
+</section>
 </div>
 
 <script>
@@ -115,6 +147,30 @@ function render(){
 }
 $("q").oninput=render;
 chips();render();
+
+/* ===== Modul-Anfragen: werden per Web3Forms als E-Mail verschickt.
+   Der Access Key ist kein Geheimnis (steht für eine E-Mail-Adresse). Leer = Anfrage-Bereich ausgeblendet. ===== */
+const ANFRAGE_KEY="";
+if(ANFRAGE_KEY){
+  $("anfrage").hidden=false;$("anfrageLink").hidden=false;
+  $("aFach").innerHTML=FAECHER.map(f=>`<option>${esc(f.name)}</option>`).join("")+"<option>Anderes</option>";
+  $("anfrageForm").addEventListener("submit",async e=>{
+    e.preventDefault();
+    const f=e.target,msg=$("aMsg"),btn=$("aSend");
+    const data=new FormData(f);
+    data.append("access_key",ANFRAGE_KEY);
+    data.append("subject","Lernregal: Modul-Anfrage ("+$("aFach").value+")");
+    data.append("from_name","Lernregal");
+    btn.disabled=true;msg.className="msg";msg.textContent="Wird gesendet…";
+    try{
+      const r=await fetch("https://api.web3forms.com/submit",{method:"POST",headers:{Accept:"application/json"},body:data});
+      const j=await r.json().catch(()=>({}));
+      if(r.ok&&j.success){msg.className="msg ok";msg.textContent="Danke! Deine Anfrage ist angekommen.";f.reset();}
+      else throw new Error(j.message||r.status);
+    }catch(err){msg.className="msg err";msg.textContent="Senden hat nicht geklappt. Versuch es später nochmal.";}
+    btn.disabled=false;
+  });
+}
 </script>
 </body>
 </html>

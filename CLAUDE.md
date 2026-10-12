@@ -24,3 +24,8 @@ Datei in `module/` ersetzen und `datum` in `index.html` auf heute setzen.
 ## Modul entfernen
 
 Zeile aus `MODULE` löschen und die Datei aus `module/` entfernen. Nur wenn der User das ausdrücklich will.
+
+## Modul-Anfragen
+
+Besucher können über das Formular «Modul anfragen» in `index.html` Themen wünschen. Die Anfragen gehen per Web3Forms als E-Mail an den Betreiber.
+Der Schlüssel steht in `const ANFRAGE_KEY` (kein Geheimnis, darf öffentlich sein). Ist er leer, ist das Formular ausgeblendet.
