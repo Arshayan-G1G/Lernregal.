@@ -150,7 +150,7 @@ chips();render();
 
 /* ===== Modul-Anfragen: werden per Web3Forms als E-Mail verschickt.
    Der Access Key ist kein Geheimnis (steht für eine E-Mail-Adresse). Leer = Anfrage-Bereich ausgeblendet. ===== */
-const ANFRAGE_KEY="";
+const ANFRAGE_KEY="dc1ab860-89ff-4fe3-b6a0-460f6c936a56";
 if(ANFRAGE_KEY){
   $("anfrage").hidden=false;$("anfrageLink").hidden=false;
   $("aFach").innerHTML=FAECHER.map(f=>`<option>${esc(f.name)}</option>`).join("")+"<option>Anderes</option>";
