@@ -1,0 +1,1592 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Python & Turtle-Grafik</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: Lernheft mit Kapitelspalte (Theorie) und einem breiten Labor (Editor | Zeichenfläche), Raster-Papier als Motiv */
+:root{
+  --bg:#F2F5F3; --surface:#FFFFFF; --ink:#16201C; --muted:#56645E; --line:#D5DDD9;
+  --accent:#11765A; --accent-ink:#FFFFFF; --soft:#E3EFEA; --mark:#F3BC3A; --mark-soft:#FFF3D3;
+  --err:#B8352A; --err-soft:#FBE8E5; --ok:#1E7A3C; --ok-soft:#E3F3E7;
+  --ed-bg:#FBFCFB; --ed-gutter:#EEF2F0; --kw:#8A3FB8; --str:#B5541B; --num:#1D62B0; --com:#7C8A84;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F1513; --surface:#17201D; --ink:#E4ECE8; --muted:#98A7A0; --line:#2A3833;
+  --accent:#58C3A3; --accent-ink:#06261C; --soft:#1C2E28; --mark:#E8B444; --mark-soft:#3A2F14;
+  --err:#F08172; --err-soft:#3A1E1B; --ok:#6CCB86; --ok-soft:#18301F;
+  --ed-bg:#121A17; --ed-gutter:#18231F; --kw:#C99BEA; --str:#F0A06A; --num:#7DB4F2; --com:#7E8F88;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F1513; --surface:#17201D; --ink:#E4ECE8; --muted:#98A7A0; --line:#2A3833;
+  --accent:#58C3A3; --accent-ink:#06261C; --soft:#1C2E28; --mark:#E8B444; --mark-soft:#3A2F14;
+  --err:#F08172; --err-soft:#3A1E1B; --ok:#6CCB86; --ok-soft:#18301F;
+  --ed-bg:#121A17; --ed-gutter:#18231F; --kw:#C99BEA; --str:#F0A06A; --num:#7DB4F2; --com:#7E8F88;
+  color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:17px/1.6 var(--f-body);margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:20px}
+h1,h2,h3{font-family:var(--f-display);line-height:1.15;text-wrap:balance;margin:0}
+h2{font-size:clamp(1.7rem,3.4vw,2.4rem);font-weight:800;letter-spacing:-.01em}
+h3{font-size:1.25rem;font-weight:700;margin-top:6px}
+p{margin:0}
+code,.mono{font-family:var(--f-mono);font-size:.88em}
+:not(pre)>code{background:var(--soft);padding:.08em .35em;border-radius:5px;white-space:nowrap}
+a{color:var(--accent)}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--mark);outline-offset:2px}
+.eyebrow{font:600 .78rem/1.2 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+
+/* Kopf */
+.top{padding-block:40px 28px;border-bottom:1px solid var(--line);
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:28px 28px;background-position:-1px -1px}
+.top .grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:32px;align-items:center}
+.top h1{font-size:clamp(2.4rem,6vw,4.2rem);font-weight:800;letter-spacing:-.02em;margin-top:10px}
+.top h1 em{font-style:normal;color:var(--accent)}
+.lead{font-size:1.12rem;max-width:34em;margin-top:14px;background:var(--bg);padding:4px 0}
+.toc{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.toc a{display:inline-flex;gap:8px;align-items:center;text-decoration:none;color:var(--ink);background:var(--surface);
+  border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-weight:700;font-size:.95rem}
+.toc a span{font:600 .75rem var(--f-mono);color:var(--muted)}
+.toc a:hover{border-color:var(--accent)}
+.hero-fig{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px}
+.hero-fig canvas{width:100%;aspect-ratio:4/3;display:block;border-radius:8px;background:#fff}
+.hero-fig figcaption{font-size:.85rem;color:var(--muted);margin-top:8px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.linkbtn{background:none;border:0;padding:0;color:var(--accent);font-weight:700;text-decoration:underline;text-underline-offset:3px}
+
+/* Kapitel */
+section.chapter{padding-block:56px 20px}
+.chap-head{display:flex;gap:18px;align-items:baseline;flex-wrap:wrap;margin-bottom:26px}
+.chap-num{font:800 3.4rem/1 var(--f-display);color:var(--accent)}
+.blocks{display:grid;gap:22px}
+.block{display:grid;grid-template-columns:150px minmax(0,1fr);gap:24px;padding-top:22px;border-top:1px solid var(--line)}
+.block .sec{font:600 .82rem/1.4 var(--f-mono);color:var(--muted);padding-top:4px}
+.block .sec b{display:block;color:var(--ink);font-size:1rem}
+.body{display:grid;gap:14px;max-width:46rem;min-width:0}
+.body ul{margin:0;padding-left:1.2em;display:grid;gap:4px}
+.key{background:var(--mark-soft);border-left:4px solid var(--mark);padding:12px 16px;border-radius:0 var(--r) var(--r) 0}
+.key b:first-child{display:block;font-family:var(--f-display);margin-bottom:2px}
+.warn{background:var(--err-soft);border-left:4px solid var(--err);padding:12px 16px;border-radius:0 var(--r) var(--r) 0}
+pre.code{margin:0;background:var(--ed-bg);border:1px solid var(--line);border-radius:var(--r);padding:12px 16px;overflow-x:auto;font:400 .9rem/1.55 var(--f-mono)}
+.try{justify-self:start;display:inline-flex;align-items:center;gap:8px;background:var(--soft);color:var(--ink);border:1px solid var(--line);
+  border-radius:8px;padding:6px 12px;font-weight:700;font-size:.92rem}
+.try::before{content:"";width:0;height:0;border-left:8px solid var(--accent);border-top:5px solid transparent;border-bottom:5px solid transparent}
+.try:hover{border-color:var(--accent)}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;display:grid;gap:6px;align-content:start;min-width:0}
+.panel h4{margin:0;font:700 1.02rem var(--f-display)}
+.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:.85rem}
+.flow span{background:var(--soft);border-radius:6px;padding:3px 8px;font-family:var(--f-mono);font-size:.8rem}
+.flow i{font-style:normal;color:var(--muted)}
+.bits{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px}
+.bits .b{font:600 1.4rem var(--f-mono);letter-spacing:.06em}
+.bits ul{list-style:none;padding:0;margin:0;display:grid;gap:3px;font-size:.92rem}
+.mem{display:flex;gap:0;overflow-x:auto;padding-bottom:4px}
+.cell{min-width:78px;text-align:center;font-family:var(--f-mono)}
+.cell .v{border:2px solid var(--line);border-left-width:1px;border-right-width:1px;height:52px;display:grid;place-items:center;background:var(--surface);font-size:1.05rem}
+.cell.on .v{background:var(--mark-soft);border-color:var(--mark);font-weight:600}
+.cell .a{font-size:.72rem;color:var(--muted);margin-top:4px}
+.cell .n{font-size:.78rem;height:20px;color:var(--accent);font-weight:600}
+.assign{display:flex;flex-wrap:wrap;gap:10px;align-items:stretch}
+.assign .st{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:10px 14px;min-width:0}
+.assign .st small{display:block;color:var(--muted);font-size:.78rem}
+.assign .ar{align-self:center;color:var(--muted);font-family:var(--f-mono)}
+svg.angle text{font-family:var(--f-mono);font-size:12px;fill:var(--ink)}
+.figure{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px;max-width:440px}
+
+/* Spickzettel */
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:620px;font-size:.95rem}
+th,td{text-align:left;padding:9px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:600 .75rem var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:var(--ed-gutter)}
+tr:last-child td{border-bottom:0}
+td:first-child{font-family:var(--f-mono);font-size:.88rem;white-space:nowrap;color:var(--accent);font-weight:600}
+td.grp{font:700 .8rem var(--f-mono);color:var(--muted);background:var(--bg);text-transform:uppercase;letter-spacing:.06em}
+
+/* Labor */
+#labor{background:var(--surface);border-block:1px solid var(--line);margin-top:40px}
+.tasks{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:16px}
+.tasks button{flex:0 0 auto;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:6px 13px;font-size:.9rem;font-weight:700}
+.tasks button small{font:600 .72rem var(--f-mono);color:var(--muted);margin-right:6px}
+.tasks button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.tasks button[aria-pressed="true"] small{color:inherit;opacity:.8}
+.taskcard{display:grid;grid-template-columns:minmax(0,1fr) 210px;gap:18px;background:var(--bg);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;margin-bottom:18px}
+.taskcard .t{display:grid;gap:8px;align-content:start;min-width:0}
+.taskcard .goal{display:grid;gap:4px}
+.taskcard .goal canvas{width:100%;aspect-ratio:4/3;background:#fff;border:1px solid var(--line);border-radius:8px}
+.taskcard .goal small{color:var(--muted);font-size:.78rem}
+.taskcard .btns{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;padding:7px 14px;font-weight:700;font-size:.92rem}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.lab{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:18px;align-items:start}
+.edbox{border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--ed-bg);display:grid;grid-template-rows:auto 1fr}
+.edbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:8px 10px;border-bottom:1px solid var(--line);background:var(--ed-gutter)}
+.edbar .file{font:600 .8rem var(--f-mono);color:var(--muted);margin-right:auto}
+.edbar label{font-size:.85rem;display:inline-flex;gap:6px;align-items:center;color:var(--muted)}
+.ed{display:grid;grid-template-columns:auto minmax(0,1fr);height:430px;position:relative}
+.gutter{font:400 .9rem/1.6 var(--f-mono);color:var(--com);text-align:right;padding:10px 8px 10px 12px;background:var(--ed-gutter);overflow:hidden;user-select:none;white-space:pre}
+.gutter .bad{color:#fff;background:var(--err);border-radius:3px;padding:0 3px}
+.edlayer{position:relative;min-width:0;overflow:hidden}
+.edlayer pre,.edlayer textarea{position:absolute;inset:0;margin:0;padding:10px 12px;font:400 .9rem/1.6 var(--f-mono);white-space:pre;tab-size:4;border:0;overflow:auto}
+.edlayer pre{pointer-events:none;color:var(--ink);overflow:hidden}
+.edlayer textarea{background:transparent;color:transparent;caret-color:var(--ink);resize:none;outline:none}
+.edlayer textarea::selection{background:color-mix(in srgb,var(--accent) 30%,transparent)}
+.tk-kw{color:var(--kw);font-weight:600}.tk-str{color:var(--str)}.tk-num{color:var(--num)}.tk-com{color:var(--com);font-style:italic}.tk-fn{color:var(--accent);font-weight:600}
+.stage{display:grid;gap:10px;min-width:0}
+.canvasbox{position:relative;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:#fff}
+.canvasbox canvas{display:block;width:100%;aspect-ratio:4/3;cursor:crosshair}
+.coords{position:absolute;right:8px;bottom:8px;font:600 .75rem var(--f-mono);color:#56645E;background:rgba(255,255,255,.85);padding:2px 7px;border-radius:5px}
+.console{border:1px solid var(--line);border-radius:var(--r);background:var(--ed-bg);font:400 .85rem/1.55 var(--f-mono);min-height:92px;max-height:220px;overflow:auto}
+.console .h{display:flex;justify-content:space-between;padding:5px 10px;border-bottom:1px solid var(--line);font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;background:var(--ed-gutter)}
+.console .o{padding:8px 12px;white-space:pre-wrap;word-break:break-word}
+.console .err{color:var(--err)}
+.console .hint{margin:8px 12px;font-family:var(--f-body);font-size:.92rem;background:var(--mark-soft);border-left:3px solid var(--mark);padding:8px 12px;border-radius:0 6px 6px 0;white-space:normal}
+.console .note{color:var(--muted)}
+.console .done{color:var(--ok)}
+
+/* Quiz */
+.quiz{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;display:grid;gap:10px;align-content:start;min-width:0}
+.q .qn{font:600 .75rem var(--f-mono);color:var(--muted)}
+.q p.qq{font-weight:700}
+.q pre.code{font-size:.82rem;padding:8px 12px}
+.opts{display:grid;gap:6px}
+.opts button{text-align:left;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:8px;padding:8px 12px;font-size:.95rem;line-height:1.4}
+.opts button:hover:not(:disabled){border-color:var(--accent)}
+.opts button:disabled{cursor:default}
+.opts button.right{background:var(--ok-soft);border-color:var(--ok)}
+.opts button.wrong{background:var(--err-soft);border-color:var(--err)}
+.q .ex{font-size:.92rem;color:var(--muted)}
+.score{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:18px}
+.score b{font:800 1.6rem var(--f-display);color:var(--accent);font-variant-numeric:tabular-nums}
+footer{padding-block:40px;color:var(--muted);font-size:.85rem}
+
+@media (max-width:900px){
+  .top .grid,.lab,.taskcard{grid-template-columns:minmax(0,1fr)}
+  .taskcard .goal{max-width:260px}
+  .quiz,.two{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:640px){
+  .block{grid-template-columns:minmax(0,1fr);gap:8px}
+  .ed{height:340px}
+  body{font-size:16px}
+}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap grid">
+    <div>
+      <p class="eyebrow">Informatik G1G · Skript Kapitel 1 + 2</p>
+      <h1>Python &amp; <em>Turtle</em>-Grafik</h1>
+      <p class="lead">Zuerst die Theorie aus beiden Kapiteln, dann selber programmieren. Das Turtle-Labor versteht die Befehle aus dem Skript und zeichnet direkt hier im Browser, ganz ohne Thonny.</p>
+      <nav class="toc" aria-label="Inhalt">
+        <a href="#python"><span>01</span>Python</a>
+        <a href="#turtle"><span>02</span>Turtle</a>
+        <a href="#spick"><span>Spick</span>Befehle</a>
+        <a href="#labor"><span>Lab</span>Selber zeichnen</a>
+        <a href="#quiz"><span>Test</span>Quiz</a>
+      </nav>
+    </div>
+    <figure class="hero-fig" style="margin:0">
+      <canvas id="heroCanvas" aria-label="Animierte Turtle zeichnet ein vierblättriges Kleeblatt"></canvas>
+      <figcaption><span>Kleeblatt aus Kapitel 2.4, live gezeichnet</span><button class="linkbtn" id="heroAgain" type="button">Nochmals</button></figcaption>
+    </figure>
+  </div>
+</header>
+
+<main>
+<!-- ================= KAPITEL 1 ================= -->
+<section class="chapter wrap" id="python">
+  <div class="chap-head"><span class="chap-num">1</span><h2>Python</h2></div>
+  <div class="blocks">
+
+    <div class="block">
+      <div class="sec">1.1<b>Der Computer ist dumm</b></div>
+      <div class="body">
+        <p>Ein Computer macht nur, was man ihm sagt. Der <b>Prozessor</b> braucht Befehle. Eine Folge von Befehlen, die der Computer der Reihe nach ausführt, heisst <b>Programm</b>. Die Zahlen, mit denen gearbeitet wird, sind die <b>Daten</b>.</p>
+        <p>Frühe Rechenmaschinen hatten ein fest eingebautes Programm. Nur die Daten konnte man ändern, das war sehr unflexibel.</p>
+        <div class="key"><b>Von-Neumann-Architektur (1945)</b>John von Neumann schlug vor, das Programm genau wie die Daten im <b>Speicher</b> abzulegen. Darum kann man heute beliebige Programme laden. Fast alle Computer sind bis heute so aufgebaut.</div>
+        <p>Alles im Speicher, also Programme und Daten, ist als Zahl gespeichert, und zwar im <b>Binärsystem</b> mit nur zwei Symbolen: 0 und 1. Zwei Zustände lassen sich technisch viel einfacher unterscheiden als zehn.</p>
+        <div class="bits">
+          <span class="b">0100 0110</span>
+          <ul>
+            <li>als ganze Zahl gelesen: <b>70</b></li>
+            <li>als Buchstabe gelesen: <b>'F'</b></li>
+            <li>oder ein Befehl an den Prozessor</li>
+          </ul>
+        </div>
+        <p>Dieselbe Bitfolge kann also ganz verschiedene Bedeutungen haben. Es kommt darauf an, wie man sie interpretiert.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="sec">1.1<b>Maschinencode und Programmier&shy;sprachen</b></div>
+      <div class="body">
+        <p>Der Prozessor versteht direkt nur <b>Maschinencode</b> (auch Binärcode oder Maschinensprache). Für Menschen ist das viel zu unpraktisch. Darum gibt es <b>Programmiersprachen</b> wie Python, Java, C oder C++. Sie benutzen meist englische Wörter.</p>
+        <div class="two">
+          <div class="panel"><h4>Python</h4><pre class="code">print("Hallo Welt")</pre></div>
+          <div class="panel"><h4>Java</h4><pre class="code">System.out.println("Hallo Welt");</pre></div>
+        </div>
+        <p>Das für uns lesbare Programm heisst <b>Quellcode</b>. Ein Übersetzungsprogramm macht daraus Maschinencode. Eine einzige falsche 0 oder 1 könnte das Programm kaputt machen, darum erledigt das ein Computer und nicht ein Mensch.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="sec">Exkurs 1.1.1<b>Compiler vs. Interpreter</b></div>
+      <div class="body">
+        <div class="two">
+          <div class="panel">
+            <h4>Compiler</h4>
+            <div class="flow"><span>Quellcode</span><i>→ ganz übersetzen →</i><span>prog.exe</span><i>→</i><span>Prozessor</span></div>
+            <p>Übersetzt den <b>ganzen</b> Quellcode auf einmal und speichert den Maschinencode in einer <b>ausführbaren Datei</b> (Windows: Endung <code>.exe</code> = executable). Zum Ausführen braucht man den Compiler danach nicht mehr.</p>
+          </div>
+          <div class="panel">
+            <h4>Interpreter</h4>
+            <div class="flow"><span>Anweisung 1</span><i>→ übersetzen + ausführen</i><span>Anweisung 2</span><i>→ …</i></div>
+            <p>Liest den Quellcode <b>Anweisung für Anweisung</b>, übersetzt jede und lässt sie sofort ausführen (on-the-fly). Es entsteht <b>keine</b> zusätzliche Datei. Der Interpreter wird bei jedem Ausführen gebraucht.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="sec">1.2<b>Programmier&shy;sprache Python</b></div>
+      <div class="body">
+        <ul>
+          <li>Der Name kommt von der Comedy-Gruppe <b>Monty Python</b>, nicht von der Schlange.</li>
+          <li>Python 1.0 erschien <b>1994</b>, Version 3 gibt es seit <b>2008</b>. Wir arbeiten mit Python 3.</li>
+          <li>Python ist eine <b>interpretierte</b> Sprache. Wir brauchen also einen Interpreter.</li>
+          <li>Dazu kommen eine <b>Shell</b> (Befehle einzeln eingeben und sofort ausführen) und ein <b>Editor</b> (mehrere Anweisungen in einer Datei speichern).</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="sec">1.3<b>Thonny</b></div>
+      <div class="body">
+        <p>Editor und Interpreter in einem Paket nennt man <b>Entwicklungsumgebung</b> oder <b>IDE</b> (Integrated Development Environment). Wir benutzen <b>Thonny</b>. Thonny ist gratis und wird an der Universität Tartu in Estland entwickelt.</p>
+        <div class="two">
+          <div class="panel">
+            <h4>Shell (unten)</h4>
+            <p>Der <b>Prompt</b> <code>&gt;&gt;&gt;</code> zeigt: Der Interpreter wartet auf einen Befehl. Mit <b>Pfeil hoch / runter</b> holst du frühere Befehle zurück.</p>
+            <p>Rechnen geht wie mit dem Taschenrechner: <code>+ - * /</code>, Klammern, <code>**</code> für Potenzen (<code>33**1000</code>). Es gilt <b>Punkt vor Strich</b>.</p>
+          </div>
+          <div class="panel">
+            <h4>Editor (Mitte)</h4>
+            <p>Mehrere Anweisungen schreiben, als <b>Python-Skript</b> mit Endung <code>.py</code> speichern und mit dem <b>Play-Knopf</b> (Run current script) ausführen. Die Ausgabe erscheint in der Shell.</p>
+            <p>Ein <b>*</b> neben dem Dateinamen heisst: Es gibt ungespeicherte Änderungen.</p>
+          </div>
+        </div>
+        <pre class="code" id="pre-rechnen"></pre>
+        <button class="try" data-snip="rechnen" type="button">Im Labor ausführen</button>
+        <div class="key"><b>Gute Gewohnheiten</b>
+          <ul>
+            <li>Dateinamen <b>ohne Leerzeichen, Umlaute und Sonderzeichen</b>, z.B. <code>hallo.py</code></li>
+            <li>Tastenkürzel statt Menü: <code>Ctrl+X</code>, <code>Ctrl+C</code>, <code>Ctrl+V</code></li>
+            <li>In Thonny unter <i>Tools → Options</i>: <b>Show line numbers</b> einschalten und die maximale Zeilenlänge auf <b>80</b> setzen</li>
+          </ul>
+        </div>
+        <p>Warum nicht Word? Word speichert auch Formatierungen wie Fettdruck oder Farben mit. Beim Programmieren zählt nur der reine Text. Ein Code-Editor bietet dafür Zeilennummern und färbt Texte in Anführungszeichen automatisch ein.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= KAPITEL 2 ================= -->
+<section class="chapter wrap" id="turtle">
+  <div class="chap-head"><span class="chap-num">2</span><h2>Turtle-Grafik</h2></div>
+  <div class="blocks">
+
+    <div class="block">
+      <div class="sec">2.1<b>Die Idee</b></div>
+      <div class="body">
+        <p>Eine Schildkröte (engl. <i>turtle</i>) läuft über eine weisse Zeichenfläche und zieht mit einem Stift eine Spur hinter sich her. Wir schauen von oben zu und geben ihr Befehle.</p>
+        <p>Die Idee stammt aus der Sprache <b>LOGO</b> (1967), die in den 1980er-Jahren sehr verbreitet war. Der grosse Vorteil ist die <b>Visualisierung</b>: Du siehst sofort, was dein Programm tut.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="sec">2.2<b>Ein erstes Turtle-Bild</b></div>
+      <div class="body">
+        <p>Bereits fertige Python-Programme, die man im eigenen Programm benutzen kann, heissen <b>Module</b>. Die Turtle-Befehle stecken im Modul <code>turtle</code>. Darum steht ganz oben immer:</p>
+        <pre class="code">from turtle import *</pre>
+        <p>Der Stern <code>*</code> bedeutet «alle»: Du holst alle Befehle aus dem Modul. Mit <code>shape("turtle")</code> wählst du die Form. Andere Formen: <code>arrow</code>, <code>circle</code>, <code>square</code>, <code>triangle</code>, <code>classic</code>.</p>
+        <div class="two">
+          <div class="figure">
+            <svg class="angle" viewBox="0 0 300 220" width="100%" role="img" aria-label="Startposition: Turtle in der Mitte, schaut nach rechts. left dreht gegen den Uhrzeigersinn, right im Uhrzeigersinn.">
+              <defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker>
+              <marker id="ah2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--str)"/></marker></defs>
+              <line x1="20" y1="110" x2="280" y2="110" stroke="var(--line)" stroke-width="1.5"/>
+              <line x1="150" y1="15" x2="150" y2="205" stroke="var(--line)" stroke-width="1.5"/>
+              <line x1="150" y1="110" x2="262" y2="110" stroke="var(--ink)" stroke-width="2.5" marker-end="url(#ah)"/>
+              <text x="222" y="102">0°</text>
+              <path d="M 205 100 A 58 58 0 0 0 158 54" fill="none" stroke="var(--accent)" stroke-width="2.5" marker-end="url(#ah)"/>
+              <text x="186" y="44">left(90)</text>
+              <path d="M 205 120 A 58 58 0 0 1 158 166" fill="none" stroke="var(--str)" stroke-width="2.5" marker-end="url(#ah2)"/>
+              <text x="186" y="186">right(90)</text>
+              <circle cx="150" cy="110" r="7" fill="var(--accent)"/>
+              <text x="40" y="100">home</text>
+              <text x="40" y="128" style="fill:var(--muted)">(0, 0)</text>
+            </svg>
+          </div>
+          <div class="panel">
+            <h4>Startposition: home</h4>
+            <p>Mitte des Fensters, Blick nach <b>rechts</b> (0°). <code>home()</code> holt die Turtle jederzeit dorthin zurück.</p>
+            <p><code>forward(100)</code> läuft 100 <b>Pixel</b> in Blickrichtung, <code>backward()</code> rückwärts.</p>
+            <p><code>left()</code> dreht <b>gegen</b> den Uhrzeigersinn, <code>right()</code> <b>mit</b> dem Uhrzeigersinn. Die Drehung zählt immer ab der aktuellen Blickrichtung.</p>
+          </div>
+        </div>
+        <pre class="code" id="pre-quadrat"></pre>
+        <button class="try" data-snip="quadrat" type="button">Quadrat im Labor zeichnen</button>
+        <p><code>reset()</code> löscht alle Linien und stellt die Turtle zurück an den Start. Mit <code>color("red")</code> färbst du Turtle und Spur. Farbnamen sind englisch: black, white, red, blue, green, yellow, orange, gray, brown, pink. <code>turtlesize(3)</code> vergrössert die Turtle, <code>width(10)</code> macht die Linie dicker.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="sec">2.3<b>Programm im Editor</b></div>
+      <div class="body">
+        <p>In der Shell siehst du jede Anweisung sofort. Für ganze Bilder ist der Editor besser, weil man das Programm speichern und ändern kann.</p>
+        <ul>
+          <li><b>Kommentare</b> beginnen mit <code>#</code>. Der Interpreter ignoriert sie, sie helfen nur uns Menschen.</li>
+          <li><code>exitonclick()</code> am Schluss: Das Grafikfenster schliesst sich erst bei einem Mausklick.</li>
+        </ul>
+        <div class="warn"><b>Nie <code>turtle.py</code> als Dateinamen!</b> Beim Import sucht Python zuerst im eigenen Ordner. Findet es dort deine Datei <code>turtle.py</code>, importiert es diese statt des echten Moduls, und die Befehle fehlen.</div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="sec">2.4<b>Flächen füllen</b></div>
+      <div class="body">
+        <p><code>speed(n)</code> stellt die Geschwindigkeit ein: Werte von 0 bis 10. Von <b>1 (langsam) bis 10 (schnell)</b> wird die Turtle schneller, aber <b>0 ist am schnellsten</b>. Am Anfang langsam testen, bei fehlerfreiem Programm schneller stellen.</p>
+        <p>Um eine Fläche auszumalen, setzt du <code>begin_fill()</code> vor die erste Linie und <code>end_fill()</code> nach der letzten.</p>
+        <div class="key"><b>Welche Füllfarbe?</b>Gefüllt wird mit der Farbe, die beim <code>end_fill()</code> gerade aktuell ist.</div>
+        <p>Werden zwischen den beiden Befehlen nicht alle Linien gezeichnet, verbindet Python einfach Anfang und Ende und füllt die so entstehende Fläche.</p>
+        <pre class="code" id="pre-bunt"></pre>
+        <button class="try" data-snip="bunt" type="button">Buntes Quadrat ausprobieren</button>
+        <div class="key"><b>Drehwinkel bei Vielecken</b>Auf einem Rundgang dreht sich die Turtle insgesamt genau einmal im Kreis, also <b>360°</b>. Quadrat: 4 × 90°. Gleichseitiges Dreieck: 3 × <b>120°</b> (nicht 60°, die Turtle dreht um den Aussenwinkel!).</div>
+        <p>Kopierst du die sechs Dreieck-Anweisungen dreimal und ersetzt jeweils die letzte Linksdrehung durch <code>right(120)</code>, entsteht ein dreiblättriges Kleeblatt.</p>
+        <button class="try" data-snip="klee3" type="button">Dreiblättriges Kleeblatt</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="sec">2.5<b>Variablen</b></div>
+      <div class="body">
+        <p>Willst du die Grösse ändern, musst du sonst an vielen Stellen Zahlen anpassen. Besser: eine <b>Variable</b>. Stell sie dir als <b>Behälter</b> vor. Sie hat einen <b>Namen</b> und einen <b>Wert</b>.</p>
+        <pre class="code">schritte = 100
+forward(schritte)</pre>
+        <p>Für ein kleineres Quadrat änderst du nur noch eine Zeile: <code>schritte = 50</code>.</p>
+        <button class="try" data-snip="serie" type="button">Quadrate in Serie</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="sec">Exkurs 2.5.2<b>Speicher</b></div>
+      <div class="body">
+        <p>Speicher sind Bauteile, auf denen man Informationen ablegt und später wieder abruft: optisch (CD, DVD), magnetisch (Harddisk) oder elektronisch (USB-Stick, RAM).</p>
+        <div class="two">
+          <div class="panel"><h4>flüchtig (volatil)</h4><p>Daten bleiben nur, solange Strom fliesst. Beispiel: <b>RAM</b>, der Hauptspeicher. Sehr schnell, aber teuer.</p></div>
+          <div class="panel"><h4>nicht flüchtig (permanent)</h4><p>Daten bleiben auch ohne Strom erhalten. Beispiel: <b>Harddisk</b>, USB-Stick.</p></div>
+        </div>
+        <p>Weitere Eigenschaften: Geschwindigkeit (Lesen ist meist schneller als Schreiben), Grösse, Lebensdauer, Preis. Startest du ein Programm, wird es von der Harddisk ins <b>RAM</b> geladen, denn nur dort kann der Prozessor es ausführen.</p>
+        <p>Der Hauptspeicher ist eine lange Reihe nummerierter <b>Speicherzellen</b>. Die Nummer heisst <b>Adresse</b>. Statt mit Adressen zu arbeiten, geben wir einer Zelle einen Namen:</p>
+        <div class="mem" aria-label="Speicherzellen 0001 bis 0005, Zelle 0003 heisst schritte und enthält 100">
+          <div class="cell"><div class="n"></div><div class="v"></div><div class="a">0001</div></div>
+          <div class="cell"><div class="n"></div><div class="v"></div><div class="a">0002</div></div>
+          <div class="cell on"><div class="n">schritte</div><div class="v">100</div><div class="a">0003</div></div>
+          <div class="cell"><div class="n"></div><div class="v"></div><div class="a">0004</div></div>
+          <div class="cell"><div class="n"></div><div class="v"></div><div class="a">0005</div></div>
+        </div>
+        <div class="key"><b>Merksatz</b>Eine Variable ist ein <b>benannter Speicherplatz</b> im RAM. Ihr Inhalt kann sich während des Programms ändern, daher der Name «variabel». Schaltest du den Computer aus, ist sie weg.</div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="sec">2.5<b>Namensregeln</b></div>
+      <div class="body">
+        <ul>
+          <li>Aussagekräftige Namen wählen: <code>schritte</code> ist besser als <code>s</code>.</li>
+          <li>Klein beginnen, bei zusammengesetzten Wörtern den nächsten Anfang gross: <code>startWert = 5</code></li>
+          <li><b>Gross- und Kleinschreibung zählt</b>: <code>a</code> und <code>A</code> sind zwei verschiedene Variablen.</li>
+          <li>Unterstrich <code>_</code> ist erlaubt.</li>
+          <li><b>Nicht erlaubt</b>: Rechenzeichen <code>+ - * / %</code> und Klammern.</li>
+          <li>Umlaute vermeiden: <code>ae</code> statt <code>ä</code>, <code>Ue</code> statt <code>Ü</code>.</li>
+        </ul>
+        <p>Verschreibst du dich, meldet Python einen <code>NameError</code>: Die Variable wurde nie mit einem Wert belegt.</p>
+        <pre class="code" id="pre-fehler"></pre>
+        <button class="try" data-snip="fehler" type="button">Fehler auslösen und lesen</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="sec">2.6<b>Der Zuweisungs&shy;operator</b></div>
+      <div class="body">
+        <p>Das <code>=</code> ist beim Programmieren <b>kein</b> Gleichheitszeichen wie in Mathe, sondern der <b>Zuweisungsoperator</b>. Er arbeitet in zwei Schritten:</p>
+        <div class="assign">
+          <div class="st"><small>vorher</small><code>a</code> enthält 5</div>
+          <div class="ar">→</div>
+          <div class="st"><small>Schritt 1: rechte Seite auswerten</small><code>a + 2</code> ergibt 7</div>
+          <div class="ar">→</div>
+          <div class="st"><small>Schritt 2: in die Variable links speichern</small><code>b</code> enthält jetzt 7</div>
+        </div>
+        <p>Darum ist <code>schritte = schritte + 1</code> völlig korrekt: alter Wert plus 1, dann zurück in <code>schritte</code>. Umgekehrt ist <code>b + 1 = 7</code> ein Fehler, denn links muss eine Variable stehen, in die gespeichert wird.</p>
+        <button class="try" data-snip="zuweisung" type="button">Zuweisung ausprobieren</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SPICKZETTEL ================= -->
+<section class="chapter wrap" id="spick">
+  <div class="chap-head"><span class="chap-num" style="font-size:2rem">Spick</span><h2>Alle Befehle auf einen Blick</h2></div>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Befehl</th><th>Was passiert</th><th>Beispiel</th></tr></thead>
+      <tbody>
+        <tr><td class="grp" colspan="3">Bewegen</td></tr>
+        <tr><td>forward(n)</td><td>n Pixel vorwärts in Blickrichtung</td><td><code>forward(100)</code></td></tr>
+        <tr><td>backward(n)</td><td>n Pixel rückwärts</td><td><code>backward(50)</code></td></tr>
+        <tr><td>left(w) / right(w)</td><td>um w Grad drehen, links = gegen den Uhrzeigersinn</td><td><code>left(90)</code></td></tr>
+        <tr><td>home()</td><td>zurück in die Mitte, Blick nach rechts</td><td><code>home()</code></td></tr>
+        <tr><td>reset()</td><td>alles löschen, Turtle auf Startposition</td><td><code>reset()</code></td></tr>
+        <tr><td class="grp" colspan="3">Aussehen</td></tr>
+        <tr><td>shape(form)</td><td>Form: turtle, arrow, circle, square, triangle, classic</td><td><code>shape("turtle")</code></td></tr>
+        <tr><td>color(farbe)</td><td>Farbe von Turtle, Linie und Füllung</td><td><code>color("red")</code></td></tr>
+        <tr><td>width(n)</td><td>Linienbreite</td><td><code>width(10)</code></td></tr>
+        <tr><td>turtlesize(n)</td><td>Turtle vergrössern</td><td><code>turtlesize(3)</code></td></tr>
+        <tr><td>speed(n)</td><td>1 langsam … 10 schnell, 0 = am schnellsten</td><td><code>speed(1)</code></td></tr>
+        <tr><td>hideturtle()</td><td>Turtle verstecken</td><td><code>hideturtle()</code></td></tr>
+        <tr><td>bgcolor(farbe)</td><td>Hintergrundfarbe</td><td><code>bgcolor("yellow")</code></td></tr>
+        <tr><td class="grp" colspan="3">Füllen und Punkte</td></tr>
+        <tr><td>begin_fill()</td><td>ab hier merken, welche Fläche gefüllt wird</td><td><code>begin_fill()</code></td></tr>
+        <tr><td>end_fill()</td><td>Fläche mit der aktuellen Farbe füllen</td><td><code>end_fill()</code></td></tr>
+        <tr><td>dot(d)</td><td>gefüllter Punkt mit Durchmesser d</td><td><code>dot(30)</code></td></tr>
+        <tr><td class="grp" colspan="3">Extras (nicht im Skript, aber nützlich)</td></tr>
+        <tr><td>penup() / pendown()</td><td>Stift heben / senken: bewegen ohne Spur</td><td><code>penup()</code></td></tr>
+        <tr><td>goto(x, y)</td><td>zu einem Punkt gehen (Mitte = 0, 0)</td><td><code>goto(-100, 50)</code></td></tr>
+        <tr><td>circle(r)</td><td>Kreis mit Radius r</td><td><code>circle(50)</code></td></tr>
+        <tr><td class="grp" colspan="3">Programm</td></tr>
+        <tr><td>from turtle import *</td><td>alle Turtle-Befehle laden, immer zuerst</td><td></td></tr>
+        <tr><td># Kommentar</td><td>wird ignoriert, nur für Menschen</td><td><code># Dach</code></td></tr>
+        <tr><td>name = wert</td><td>Variable anlegen oder ändern</td><td><code>seite = 100</code></td></tr>
+        <tr><td>print(x)</td><td>Text oder Wert in der Konsole ausgeben</td><td><code>print(seite)</code></td></tr>
+        <tr><td>exitonclick()</td><td>Fenster schliesst bei Klick (in Thonny)</td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ================= LABOR ================= -->
+<section class="chapter" id="labor">
+  <div class="wrap">
+    <div class="chap-head"><span class="chap-num" style="font-size:2rem">Lab</span><h2>Turtle-Labor</h2></div>
+    <p style="max-width:44em;margin:-12px 0 20px;color:var(--muted)">Wähle eine Aufgabe aus dem Skript oder zeichne frei. <b>Ctrl+Enter</b> führt aus. Dein Code wird pro Aufgabe in diesem Browser gespeichert. Fahr mit der Maus über die Zeichenfläche, um Koordinaten zu sehen.</p>
+    <div class="tasks" id="tasks" role="toolbar" aria-label="Aufgaben"></div>
+    <div class="taskcard" id="taskcard">
+      <div class="t">
+        <p class="eyebrow" id="taskEyebrow"></p>
+        <h3 id="taskTitle"></h3>
+        <p id="taskText"></p>
+        <div class="btns">
+          <button class="btn" id="btnStart" type="button">Startcode laden</button>
+          <button class="btn" id="btnSol" type="button">Lösung zeigen</button>
+        </div>
+      </div>
+      <div class="goal" id="goalBox"><small>Ziel</small><canvas id="goalCanvas" aria-label="Zielbild der Aufgabe"></canvas></div>
+    </div>
+    <div class="lab">
+      <div class="edbox">
+        <div class="edbar">
+          <span class="file" id="fileName">zeichnung.py</span>
+          <label><input type="checkbox" id="turbo"> sofort zeichnen</label>
+          <button class="btn primary" id="btnRun" type="button">Ausführen ▶</button>
+        </div>
+        <div class="ed">
+          <div class="gutter" id="gutter" aria-hidden="true">1</div>
+          <div class="edlayer">
+            <pre id="hl" aria-hidden="true"></pre>
+            <textarea id="code" spellcheck="false" autocapitalize="off" autocomplete="off" wrap="off" aria-label="Python-Code"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="stage">
+        <div class="canvasbox">
+          <canvas id="labCanvas" aria-label="Zeichenfläche der Turtle"></canvas>
+          <span class="coords" id="coords">x 0 · y 0</span>
+        </div>
+        <div class="console" aria-live="polite">
+          <div class="h"><span>Shell / Ausgabe</span><label style="text-transform:none;letter-spacing:0;display:inline-flex;gap:6px;align-items:center"><input type="checkbox" id="gridToggle" checked> Raster</label></div>
+          <div id="out"><div class="o note">Noch nichts ausgeführt.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= QUIZ ================= -->
+<section class="chapter wrap" id="quiz">
+  <div class="chap-head"><span class="chap-num" style="font-size:2rem">Test</span><h2>Quiz zu Kapitel 1 und 2</h2></div>
+  <div class="score"><span>Richtig: <b id="score">0</b> / <span id="qtotal"></span></span><span id="qprog" style="color:var(--muted)"></span><button class="btn" id="qreset" type="button">Neu starten</button></div>
+  <div class="quiz" id="quizList"></div>
+</section>
+</main>
+
+<footer class="wrap">Lernmodul zum Skript «Kapitel 1 – Python» und «Kapitel 2 – Turtle Grafik», Informatik G1G, KSWO. Das Labor ist ein vereinfachter Python-Interpreter: Er kann alle Befehle aus den zwei Kapiteln, Schleifen kommen erst im nächsten Kapitel.</footer>
+
+<script>
+(function(){
+"use strict";
+/* ============ Beispiel-Code ============ */
+const SNIP={
+rechnen:`print("Hallo Welt")
+print("Ich rechne mit Python")
+print((5+6)*3+8*3-37)
+print("Und jetzt noch einmal ohne Klammern:")
+print(5+6*3+8*3-37)
+print(33**1000)`,
+quadrat:`# Quadrat mit Seitenlaenge 100
+from turtle import *
+shape("turtle")
+
+forward(100)
+left(90)
+forward(100)
+left(90)
+forward(100)
+left(90)
+forward(100)
+
+# Zurueck zur Anfangsposition
+home()
+exitonclick()`,
+bunt:`# Quadrat mit vier bunten Seiten, gefuellt
+from turtle import *
+shape("turtle")
+speed(1)
+width(4)
+turtlesize(3)
+
+begin_fill()
+color("red")
+forward(100)
+left(90)
+color("blue")
+forward(100)
+left(90)
+color("green")
+forward(100)
+left(90)
+color("yellow")
+forward(100)
+left(90)
+end_fill()`,
+klee3:`from turtle import *
+shape("turtle")
+color("green")
+# Blatt 1
+forward(100)
+left(120)
+forward(100)
+left(120)
+forward(100)
+right(120)
+# Blatt 2
+forward(100)
+left(120)
+forward(100)
+left(120)
+forward(100)
+right(120)
+# Blatt 3
+forward(100)
+left(120)
+forward(100)
+left(120)
+forward(100)
+right(120)`,
+serie:`from turtle import *
+shape("turtle")
+seite = 100
+
+forward(seite)
+left(90)
+forward(seite)
+left(90)
+forward(seite)
+left(90)
+forward(seite)
+left(90)
+
+seite = seite - 30
+forward(seite)
+left(90)
+forward(seite)
+left(90)
+forward(seite)
+left(90)
+forward(seite)
+left(90)
+
+seite = seite - 30
+forward(seite)
+left(90)
+forward(seite)
+left(90)
+forward(seite)
+left(90)
+forward(seite)
+left(90)`,
+fehler:`from turtle import *
+schritte = 100
+forward(schritte)
+left(90)
+forward(schrite)`,
+zuweisung:`a = 5
+b = a + 2
+print(b)
+
+schritte = 100
+schritte = schritte + 1
+print(schritte)
+
+# Diese Zeile ist ein Fehler. Entferne das # und probier es aus:
+# b + 1 = 7`
+};
+
+const HEAD='from turtle import *\nshape("turtle")\n\n';
+const TASKS=[
+{id:'frei',nr:'',label:'Frei zeichnen',title:'Freies Zeichnen',
+ text:'Zeichne, was du willst. Tipp: Starte langsam mit speed(1) und erhöhe die Geschwindigkeit, wenn alles stimmt.',
+ start:HEAD+'speed(3)\n\n# Dein Code hier\nforward(100)\n',sol:null},
+{id:'nikolaus',nr:'2.1 / 2.12',label:'Haus vom Nikolaus',title:'Das Haus vom Nikolaus',
+ text:'Zeichne das Haus in einem einzigen Linienzug aus genau 8 Strecken, ohne eine Strecke doppelt zu fahren. Für 2.12: Steuere alles mit der Variablen seite. Die Diagonale ist seite * 1.414, die Dachseite seite * 0.707.',
+ start:HEAD+'seite = 100\ndiagonale = seite * 1.414\ndach = seite * 0.707\n\nforward(seite)\n',
+ sol:HEAD+`seite = 100
+diagonale = seite * 1.414
+dach = seite * 0.707
+
+forward(seite)
+left(135)
+forward(diagonale)
+right(90)
+forward(dach)
+right(90)
+forward(dach)
+right(135)
+forward(seite)
+left(90)
+forward(seite)
+left(135)
+forward(diagonale)
+right(135)
+forward(seite)
+hideturtle()`},
+{id:'quadrate',nr:'2.2',label:'Zwei Quadrate',title:'Zwei Quadrate ineinander',
+ text:'Zeichne mit der Turtle ein grosses Quadrat und darin ein kleineres. Am einfachsten teilen sich beide eine Ecke.',
+ start:HEAD+'# grosses Quadrat\n',
+ sol:HEAD+`# grosses Quadrat
+forward(200)
+left(90)
+forward(200)
+left(90)
+forward(200)
+left(90)
+forward(200)
+left(90)
+
+# kleines Quadrat
+color("blue")
+forward(100)
+left(90)
+forward(100)
+left(90)
+forward(100)
+left(90)
+forward(100)
+left(90)`},
+{id:'sechseck',nr:'2.4',label:'Buntes Sechseck',title:'Regelmässiges Sechseck',
+ text:'Zeichne ein regelmässiges Sechseck, jede Seite in einer anderen Farbe. Welchen Drehwinkel brauchst du? Denk daran: insgesamt 360°.',
+ start:HEAD+'width(5)\n\ncolor("red")\nforward(100)\n',
+ sol:HEAD+`width(5)
+
+color("red")
+forward(100)
+left(60)
+color("orange")
+forward(100)
+left(60)
+color("yellow")
+forward(100)
+left(60)
+color("green")
+forward(100)
+left(60)
+color("blue")
+forward(100)
+left(60)
+color("purple")
+forward(100)
+left(60)`},
+{id:'klee4',nr:'2.4',label:'Kleeblatt',title:'Vierblättriges Kleeblatt',
+ text:'Zeichne vier Dreiecke als Blätter und male das Kleeblatt grün aus. Die Blätter müssen enger zusammenrücken als beim dreiblättrigen. Welche Rechtsdrehung brauchst du nach jedem Dreieck?',
+ start:HEAD+'color("green")\nbegin_fill()\n\n# Blatt 1\nforward(100)\nleft(120)\nforward(100)\nleft(120)\nforward(100)\n\n',
+ sol:HEAD+`color("green")
+begin_fill()
+# Blatt 1
+forward(100)
+left(120)
+forward(100)
+left(120)
+forward(100)
+right(150)
+# Blatt 2
+forward(100)
+left(120)
+forward(100)
+left(120)
+forward(100)
+right(150)
+# Blatt 3
+forward(100)
+left(120)
+forward(100)
+left(120)
+forward(100)
+right(150)
+# Blatt 4
+forward(100)
+left(120)
+forward(100)
+left(120)
+forward(100)
+right(150)
+end_fill()`},
+{id:'flagge',nr:'2.5',label:'Flagge',title:'Eine Flagge malen',
+ text:'Male eine Flagge, hier die Schweizer Flagge: ein rotes Quadrat mit weissem Kreuz aus zwei Rechtecken. Verstecke die Turtle am Schluss mit hideturtle(). Tipp: Mit penup() und pendown() bewegst du die Turtle ohne Spur.',
+ start:HEAD+'speed(6)\ncolor("red")\nbegin_fill()\nforward(200)\n',
+ sol:HEAD+`speed(6)
+# rotes Quadrat
+color("red")
+begin_fill()
+forward(200)
+left(90)
+forward(200)
+left(90)
+forward(200)
+left(90)
+forward(200)
+left(90)
+end_fill()
+
+# waagrechter Balken
+penup()
+forward(40)
+left(90)
+forward(80)
+right(90)
+pendown()
+color("white")
+begin_fill()
+forward(120)
+left(90)
+forward(40)
+left(90)
+forward(120)
+left(90)
+forward(40)
+left(90)
+end_fill()
+
+# senkrechter Balken
+penup()
+forward(40)
+right(90)
+forward(40)
+left(90)
+pendown()
+begin_fill()
+forward(40)
+left(90)
+forward(120)
+left(90)
+forward(40)
+left(90)
+forward(120)
+left(90)
+end_fill()
+hideturtle()`},
+{id:'serie',nr:'2.7',label:'Quadrate in Serie',title:'Quadrate in Serie',
+ text:'Ersetze überall die 100 durch die Variable seite. Kopiere das Quadrat zweimal und schreibe vor jede Kopie seite = seite - 30. Wie viele Zahlen musst du ändern, damit das grösste Quadrat 150 breit wird?',
+ start:HEAD+'seite = 100\n\n',sol:SNIP.serie},
+{id:'rechteck',nr:'2.8',label:'Rechteck nach Mass',title:'Ein Rechteck nach Mass',
+ text:'Zeichne mit den Variablen breite und hoehe ein gefülltes Rechteck. Teste mit breite = 300 und hoehe = 40. Dann ein A4-Blatt: hoehe = breite * 1.414.',
+ start:HEAD+'breite = 200\nhoehe = 100\n\n',
+ sol:HEAD+`breite = 150
+hoehe = breite * 1.414
+
+color("black", "lightblue")
+begin_fill()
+forward(breite)
+left(90)
+forward(hoehe)
+left(90)
+forward(breite)
+left(90)
+forward(hoehe)
+left(90)
+end_fill()`},
+{id:'schnecke',nr:'2.9',label:'Wachsende Schnecke',title:'Die wachsende Schnecke',
+ text:'Jeder Strich wird 20 Pixel länger: seite = seite + 20. Verlängere das Programm auf zehn Striche. Probier danach andere Winkel wie left(60) oder left(121).',
+ start:HEAD+`seite = 20
+forward(seite)
+left(90)
+seite = seite + 20
+forward(seite)
+left(90)
+seite = seite + 20
+forward(seite)
+left(90)
+`,
+ sol:HEAD+'seite = 20\nforward(seite)\nleft(90)\n'+'seite = seite + 20\nforward(seite)\nleft(90)\n'.repeat(9)},
+{id:'vieleck',nr:'2.13',label:'Vielecke',title:'Vielecke ohne Nachdenken',
+ text:'Lass Python den Winkel ausrechnen: winkel = 360 / ecken. Zeichne ein Fünfeck. Was musst du zusätzlich ändern, damit ein Achteck entsteht?',
+ start:HEAD+'ecken = 5\nseite = 80\nwinkel = 360 / ecken\nprint(winkel)\n\n',
+ sol:HEAD+'ecken = 5\nseite = 80\nwinkel = 360 / ecken\nprint(winkel)\n\n'+'forward(seite)\nleft(winkel)\n'.repeat(5)},
+{id:'baum',nr:'2.14',label:'Tannenbaum',title:'Tannenbaum nach Mass (optional)',
+ text:'Ein brauner Stamm und drei grüne Dreiecke. Jedes Dreieck ist 30 schmaler: breite = breite - 30. Der Stamm ist halb so breit wie das unterste Dreieck. Mit einer einzigen Zahl soll der Baum grösser oder kleiner werden.',
+ start:HEAD+'breite = 180\nstamm = breite / 2\n\n',
+ sol:HEAD+`speed(6)
+breite = 180
+stamm = breite / 2
+y = -150
+
+# Stamm
+color("brown")
+penup()
+goto(-stamm / 2, y)
+pendown()
+begin_fill()
+forward(stamm)
+left(90)
+forward(stamm / 2)
+left(90)
+forward(stamm)
+left(90)
+forward(stamm / 2)
+left(90)
+end_fill()
+
+# Dreieck 1
+color("green")
+y = y + stamm / 2
+penup()
+goto(-breite / 2, y)
+pendown()
+begin_fill()
+forward(breite)
+left(120)
+forward(breite)
+left(120)
+forward(breite)
+left(120)
+end_fill()
+
+# Dreieck 2
+breite = breite - 30
+y = y + 60
+penup()
+goto(-breite / 2, y)
+pendown()
+begin_fill()
+forward(breite)
+left(120)
+forward(breite)
+left(120)
+forward(breite)
+left(120)
+end_fill()
+
+# Dreieck 3
+breite = breite - 30
+y = y + 60
+penup()
+goto(-breite / 2, y)
+pendown()
+begin_fill()
+forward(breite)
+left(120)
+forward(breite)
+left(120)
+forward(breite)
+left(120)
+end_fill()
+hideturtle()`}
+];
+
+/* ============ Interpreter ============ */
+class PyErr extends Error{constructor(type,msg,line,hint){super(msg);this.type=type;this.line=line;this.hint=hint||''}}
+const NONE={t:'none'};
+const I=v=>({t:'int',v:BigInt(v)}), F=v=>({t:'float',v:v}), S=v=>({t:'str',v:v});
+const tname=v=>({int:'int',float:'float',str:'str',none:'NoneType',fn:'builtin_function_or_method',mod:'module'})[v.t]||v.t;
+const isNum=v=>v.t==='int'||v.t==='float';
+const toN=v=>v.t==='int'?Number(v.v):v.v;
+function fmtFloat(x){
+  if(Number.isNaN(x))return 'nan';
+  if(!Number.isFinite(x))return x>0?'inf':'-inf';
+  if(Number.isInteger(x)&&Math.abs(x)<1e16)return x.toFixed(1);
+  return String(x);
+}
+function str(v){
+  if(v.t==='int')return v.v.toString();
+  if(v.t==='float')return fmtFloat(v.v);
+  if(v.t==='str')return v.v;
+  if(v.t==='none')return 'None';
+  if(v.t==='fn')return '<built-in function '+v.name+'>';
+  if(v.t==='mod')return "<module '"+v.name+"'>";
+  return '?';
+}
+function repr(v){return v.t==='str'?"'"+v.v.replace(/\\/g,'\\\\').replace(/'/g,"\\'")+"'":str(v)}
+function floorDivBig(a,b){let q=a/b;if((a%b!==0n)&&((a<0n)!==(b<0n)))q-=1n;return q}
+function binop(op,a,b,ln){
+  const opn=op;
+  if(op==='+'){
+    if(a.t==='str'&&b.t==='str')return S(a.v+b.v);
+    if(a.t==='str')throw new PyErr('TypeError',`can only concatenate str (not "${tname(b)}") to str`,ln,'Text und Zahl lassen sich nicht einfach zusammenhängen. Mit str(zahl) wird aus einer Zahl ein Text.');
+  }
+  if(op==='*'){
+    if(a.t==='str'&&b.t==='int')return S(a.v.repeat(Math.max(0,Number(b.v))));
+    if(a.t==='int'&&b.t==='str')return S(b.v.repeat(Math.max(0,Number(a.v))));
+  }
+  if(!isNum(a)||!isNum(b))throw new PyErr('TypeError',`unsupported operand type(s) for ${opn}: '${tname(a)}' and '${tname(b)}'`,ln,
+    (a.t==='str'||b.t==='str')?'Hier wird mit Text gerechnet. Steht vielleicht eine Zahl in Anführungszeichen, z.B. "100" statt 100?':'');
+  const bothInt=a.t==='int'&&b.t==='int';
+  switch(op){
+    case '+':return bothInt?{t:'int',v:a.v+b.v}:F(toN(a)+toN(b));
+    case '-':return bothInt?{t:'int',v:a.v-b.v}:F(toN(a)-toN(b));
+    case '*':return bothInt?{t:'int',v:a.v*b.v}:F(toN(a)*toN(b));
+    case '/':if(toN(b)===0)throw new PyErr('ZeroDivisionError','division by zero',ln,'Durch 0 kann man nicht teilen.');
+      return F(toN(a)/toN(b));
+    case '//':if(toN(b)===0)throw new PyErr('ZeroDivisionError','integer division or modulo by zero',ln,'Durch 0 kann man nicht teilen.');
+      return bothInt?{t:'int',v:floorDivBig(a.v,b.v)}:F(Math.floor(toN(a)/toN(b)));
+    case '%':if(toN(b)===0)throw new PyErr('ZeroDivisionError','integer modulo by zero',ln,'Durch 0 kann man nicht teilen.');
+      if(bothInt){let r=a.v%b.v;if(r!==0n&&((r<0n)!==(b.v<0n)))r+=b.v;return {t:'int',v:r}}
+      {const x=toN(a),y=toN(b);return F(x-y*Math.floor(x/y))}
+    case '**':
+      if(bothInt&&b.v>=0n){if(b.v>20000n)throw new PyErr('OverflowError','exponent too large for this editor',ln,'');return {t:'int',v:a.v**b.v}}
+      return F(Math.pow(toN(a),toN(b)));
+  }
+  throw new PyErr('SyntaxError','invalid syntax',ln);
+}
+function neg(a,ln){
+  if(a.t==='int')return {t:'int',v:-a.v};
+  if(a.t==='float')return F(-a.v);
+  throw new PyErr('TypeError',`bad operand type for unary -: '${tname(a)}'`,ln);
+}
+
+function tokenize(s,ln){
+  const T=[];let i=0;
+  while(i<s.length){
+    const c=s[i];
+    if(c===' '||c==='\t'){i++;continue}
+    const r=s.slice(i);let m;
+    if((m=/^(\d+\.\d*|\.\d+|\d+)([eE][+-]?\d+)?/.exec(r))){const x=m[0];T.push(/[.eE]/.test(x)?{t:'float',v:parseFloat(x)}:{t:'int',v:BigInt(x)});i+=x.length;continue}
+    if((m=/^[A-Za-z_À-ɏ][\wÀ-ɏ]*/.exec(r))){T.push({t:'name',v:m[0]});i+=m[0].length;continue}
+    if(c==='"'||c==="'"){
+      let j=i+1,out='';
+      while(j<s.length&&s[j]!==c){if(s[j]==='\\'&&j+1<s.length){const n=s[j+1];out+=n==='n'?'\n':n==='t'?'\t':n;j+=2;continue}out+=s[j];j++}
+      if(j>=s.length)throw new PyErr('SyntaxError',`unterminated string literal (detected at line ${ln})`,ln,'Ein Text braucht Anführungszeichen am Anfang und am Ende, z.B. color("red").');
+      T.push({t:'str',v:out});i=j+1;continue;
+    }
+    if((m=/^(\*\*|\/\/|==|!=|<=|>=|\+=|-=|\*=|\/=|[+\-*\/%(),=<>.:\[\]{}])/.exec(r))){T.push({t:'op',v:m[0]});i+=m[0].length;continue}
+    const code='U+'+c.codePointAt(0).toString(16).toUpperCase().padStart(4,'0');
+    throw new PyErr('SyntaxError',`invalid character '${c}' (${code})`,ln,
+      '“”„«»‘’'.includes(c)?'Das sind schräge Anführungszeichen (z.B. aus Word). Python braucht die geraden " von der Tastatur.':'Dieses Zeichen kennt Python nicht.');
+  }
+  return T;
+}
+
+function evalExpr(T,ln,ctx){
+  let p=0;
+  const isOp=v=>T[p]&&T[p].t==='op'&&T[p].v===v;
+  const syn=(hint)=>new PyErr('SyntaxError','invalid syntax',ln,hint);
+  function expr(){let a=term();while(isOp('+')||isOp('-')){const o=T[p++].v;a=binop(o,a,term(),ln)}return a}
+  function term(){let a=unary();while(isOp('*')||isOp('/')||isOp('//')||isOp('%')){const o=T[p++].v;a=binop(o,a,unary(),ln)}return a}
+  function unary(){if(isOp('-')){p++;return neg(unary(),ln)}if(isOp('+')){p++;return unary()}return power()}
+  function power(){let a=postfix();if(isOp('**')){p++;a=binop('**',a,unary(),ln)}return a}
+  function postfix(){
+    let a=atom();
+    for(;;){
+      if(isOp('(')){
+        p++;const args=[];
+        if(!isOp(')')){
+          args.push(expr());
+          while(isOp(',')){p++;if(isOp(')'))break;args.push(expr())}
+        }
+        if(!isOp(')')){
+          if(T[p]&&T[p].t==='op'&&T[p].v==='=')throw new PyErr('SyntaxError','invalid syntax',ln,'Benannte Argumente wie name=wert kann dieser Editor nicht. Gib die Werte einfach der Reihe nach an.');
+          if(!T[p])throw new PyErr('SyntaxError',"'(' was never closed",ln,'Da fehlt eine schliessende Klammer ).');
+          throw syn('Zwischen zwei Werten fehlt ein Komma, oder eine Klammer ) fehlt.');
+        }
+        p++;a=call(a,args,ln,ctx);
+      }else if(isOp('.')){
+        p++;const nm=T[p];if(!nm||nm.t!=='name')throw syn('Nach dem Punkt muss ein Name kommen.');p++;
+        a=attr(a,nm.v,ln,ctx);
+      }else break;
+    }
+    return a;
+  }
+  function atom(){
+    const t=T[p];
+    if(!t)throw syn('Die Zeile ist unvollständig. Fehlt hinten noch ein Wert?');
+    if(t.t==='int'||t.t==='float'||t.t==='str'){p++;return {t:t.t,v:t.v}}
+    if(t.t==='name'){p++;return lookup(t.v,ln,ctx)}
+    if(isOp('(')){p++;const v=expr();if(!isOp(')'))throw new PyErr('SyntaxError',"'(' was never closed",ln,'Da fehlt eine schliessende Klammer ).');p++;return v}
+    if(isOp(')'))throw new PyErr('SyntaxError',"unmatched ')'",ln,'Hier ist eine Klammer ) zu viel.');
+    throw syn('');
+  }
+  const v=expr();
+  if(p<T.length){
+    const t=T[p],prev=T[p-1];
+    if(t.t==='op'&&t.v===')')throw new PyErr('SyntaxError',"unmatched ')'",ln,'Hier ist eine Klammer ) zu viel.');
+    if(prev&&prev.t==='name'&&(t.t==='int'||t.t==='float'||t.t==='name'))throw syn(`Befehle brauchen Klammern: ${prev.v}(${t.t==='name'?t.v:str(t)}).`);
+    if(t.t==='op'&&t.v==='==')throw syn('Vergleiche mit == brauchen wir erst später.');
+    throw syn('Hier stimmt etwas mit der Schreibweise nicht. Prüfe Klammern, Kommas und Anführungszeichen.');
+  }
+  return v;
+}
+
+/* ---- Turtle-Welt ---- */
+const SHAPES={
+  classic:[[0,0],[-5,-9],[0,-7],[5,-9]],
+  arrow:[[-10,0],[10,0],[0,10]],
+  turtle:[[0,16],[-2,14],[-1,10],[-4,7],[-7,9],[-9,8],[-6,5],[-7,1],[-5,-3],[-8,-6],[-6,-8],[-4,-5],[0,-7],[4,-5],[6,-8],[8,-6],[5,-3],[7,1],[6,5],[9,8],[7,9],[4,7],[1,10],[2,14]],
+  square:[[10,-10],[10,10],[-10,10],[-10,-10]],
+  triangle:[[10,-5.77],[0,11.55],[-10,-5.77]],
+  circle:null
+};
+function defState(){return {x:0,y:0,h:0,pen:true,pc:'black',fc:'black',w:1,size:1,shape:'classic',vis:true,filling:false,fpts:null,fstart:0,speed:6}}
+function snap(st){return {x:st.x,y:st.y,h:st.h,pc:st.pc,fc:st.fc,size:st.size,shape:st.shape,vis:st.vis}}
+let colorProbe=null;
+function cssColor(s){
+  if(typeof CSS!=='undefined'&&CSS.supports)return CSS.supports('color',s)&&!/^(inherit|initial|unset|revert|currentcolor|transparent)$/i.test(s.trim());
+  return true;
+}
+const DE_COLORS={rot:'red',blau:'blue',gruen:'green','grün':'green',gelb:'yellow',schwarz:'black',weiss:'white','weiß':'white',orange:'orange',grau:'gray',braun:'brown',rosa:'pink',violett:'purple',lila:'purple'};
+
+function makeTurtleLib(){
+  const L={};
+  const W=()=>CUR.w;
+  function push(op){
+    const w=W();
+    if(w.ops.length>250000)throw new PyErr('RuntimeError','zu viele Zeichenschritte',CUR.ln,'Das Programm zeichnet extrem viel. Mach die Zahlen kleiner.');
+    op.sp=w.st.speed;op.s=snap(w.st);w.ops.push(op);
+  }
+  function needNum(v,fn){
+    if(isNum(v))return toN(v);
+    throw new PyErr('TypeError',`${fn}() argument must be a number, not '${tname(v)}'`,CUR.ln,
+      v.t==='str'?`${fn}() braucht eine Zahl. Lass die Anführungszeichen weg: ${fn}(${v.v}).`:`${fn}() braucht eine Zahl.`);
+  }
+  function needColor(v,fn){
+    if(v.t!=='str')throw new PyErr('TurtleGraphicsError',`bad color arguments: ${str(v)}`,CUR.ln,'Farben sind Text und brauchen Anführungszeichen: color("red").');
+    const s=v.v.trim();
+    if(!cssColor(s.replace(/\s+/g,''))){
+      const de=DE_COLORS[s.toLowerCase()];
+      throw new PyErr('TurtleGraphicsError',`bad color string: ${s}`,CUR.ln,de?`Farbnamen sind englisch: "${de}" statt "${s}".`:'Diese Farbe kennt Python nicht. Probier englische Namen wie "red", "blue", "green", "orange".');
+    }
+    return s.replace(/\s+/g,'');
+  }
+  function rgb(args,fn){
+    const [r,g,b]=args.map(a=>needNum(a,fn));
+    if([r,g,b].some(x=>x<0||x>1))throw new PyErr('TurtleGraphicsError',`bad color sequence: (${r}, ${g}, ${b})`,CUR.ln,'Bei drei Zahlen muss jede zwischen 0 und 1 liegen, z.B. color(1, 0.5, 0).');
+    return `rgb(${Math.round(r*255)},${Math.round(g*255)},${Math.round(b*255)})`;
+  }
+  function moveTo(nx,ny){
+    const st=W().st;
+    push({k:'move',x1:st.x,y1:st.y,x2:nx,y2:ny,pen:st.pen,c:st.pc,w:st.w,pre:true});
+    st.x=nx;st.y=ny;
+    const op=W().ops[W().ops.length-1];op.s=snap(st);
+    if(st.filling)st.fpts.push([nx,ny]);
+  }
+  function fwd(d){const st=W().st;const r=st.h*Math.PI/180;moveTo(st.x+d*Math.cos(r),st.y+d*Math.sin(r))}
+  function turn(a){const st=W().st;const h0=st.h;st.h=st.h+a;push({k:'turn',h0:h0,h1:st.h})}
+  function setH(a){const st=W().st;let d=((a-st.h)%360+540)%360-180;turn(d)}
+  function def(names,params,req,fn){for(const n of names)L[n]={name:n,params,req,f:fn}}
+  def(['forward','fd'],['distance'],1,a=>{fwd(needNum(a[0],'forward'))});
+  def(['backward','back','bk'],['distance'],1,a=>{fwd(-needNum(a[0],'backward'))});
+  def(['left','lt'],['angle'],1,a=>{turn(needNum(a[0],'left'))});
+  def(['right','rt'],['angle'],1,a=>{turn(-needNum(a[0],'right'))});
+  def(['home'],[],0,()=>{moveTo(0,0);setH(0)});
+  def(['goto','setpos','setposition'],['x','y'],2,a=>{moveTo(needNum(a[0],'goto'),needNum(a[1],'goto'))});
+  def(['setx'],['x'],1,a=>{moveTo(needNum(a[0],'setx'),W().st.y)});
+  def(['sety'],['y'],1,a=>{moveTo(W().st.x,needNum(a[0],'sety'))});
+  def(['setheading','seth'],['to_angle'],1,a=>{setH(needNum(a[0],'setheading'))});
+  def(['circle'],['radius','extent'],1,a=>{
+    const radius=needNum(a[0],'circle');const extent=a.length>1?needNum(a[1],'circle'):360;
+    const frac=Math.abs(extent)/360;const steps=1+Math.floor(Math.min(11+Math.abs(radius)/6,59)*frac);
+    let w=extent/steps,w2=w/2,l=2*radius*Math.sin(w*Math.PI/360);
+    if(radius<0){l=-l;w=-w;w2=-w2}
+    turn(w2);for(let i=0;i<steps;i++){fwd(l);turn(w)}turn(-w2);
+  });
+  def(['dot'],['size','color'],0,a=>{
+    const st=W().st;const size=a.length?needNum(a[0],'dot'):Math.max(st.w+4,st.w*2);
+    const c=a.length>1?needColor(a[1],'dot'):st.pc;
+    push({k:'dot',x:st.x,y:st.y,r:size/2,c});
+  });
+  def(['color'],['color1','color2','color3'],0,a=>{
+    const st=W().st;
+    if(a.length===0)return S(st.pc);
+    if(a.length===3&&a.every(isNum)){const c=rgb(a,'color');st.pc=st.fc=c}
+    else if(a.length===1){const c=needColor(a[0],'color');st.pc=st.fc=c}
+    else if(a.length===2){st.pc=needColor(a[0],'color');st.fc=needColor(a[1],'color')}
+    else throw new PyErr('TypeError','color() takes 1, 2 or 3 arguments',CUR.ln);
+    push({k:'state'});
+  });
+  def(['pencolor'],['color'],0,a=>{const st=W().st;if(!a.length)return S(st.pc);st.pc=a.length===3?rgb(a,'pencolor'):needColor(a[0],'pencolor');push({k:'state'})});
+  def(['fillcolor'],['color'],0,a=>{const st=W().st;if(!a.length)return S(st.fc);st.fc=a.length===3?rgb(a,'fillcolor'):needColor(a[0],'fillcolor');push({k:'state'})});
+  def(['bgcolor'],['color'],1,a=>{const c=a.length===3?rgb(a,'bgcolor'):needColor(a[0],'bgcolor');push({k:'bg',c})});
+  def(['width','pensize'],['width'],0,a=>{const st=W().st;if(!a.length)return F(st.w);const w=needNum(a[0],'width');if(w<0)throw new PyErr('ValueError','width must be positive',CUR.ln);st.w=w;push({k:'state'})});
+  def(['turtlesize','shapesize'],['stretch'],0,a=>{const st=W().st;if(!a.length)return F(st.size);st.size=Math.max(0.1,needNum(a[0],'turtlesize'));push({k:'state'})});
+  def(['shape'],['name'],0,a=>{
+    const st=W().st;if(!a.length)return S(st.shape);
+    const v=a[0];if(v.t!=='str')throw new PyErr('TypeError','shape name must be a string',CUR.ln,'Der Formname braucht Anführungszeichen: shape("turtle").');
+    if(!(v.v in SHAPES))throw new PyErr('TurtleGraphicsError',`There is no shape named ${v.v}`,CUR.ln,'Erlaubt sind: "turtle", "arrow", "circle", "square", "triangle", "classic". Eigene GIF-Formen gehen nur in Thonny.');
+    st.shape=v.v;push({k:'state'});
+  });
+  def(['speed'],['speed'],0,a=>{
+    const st=W().st;if(!a.length)return I(st.speed);
+    let s=needNum(a[0],'speed');s=Math.round(s);if(s>10||s<0.5)s=0;st.speed=s;
+  });
+  def(['begin_fill'],[],0,()=>{const st=W().st;st.filling=true;st.fpts=[[st.x,st.y]];st.fstart=W().ops.length});
+  def(['end_fill'],[],0,()=>{
+    const st=W().st;
+    if(st.filling&&st.fpts.length>2){push({k:'fill',pts:st.fpts.slice(),c:st.fc,from:st.fstart,to:W().ops.length})}
+    st.filling=false;st.fpts=null;
+  });
+  def(['penup','pu','up'],[],0,()=>{W().st.pen=false});
+  def(['pendown','pd','down'],[],0,()=>{W().st.pen=true});
+  def(['hideturtle','ht'],[],0,()=>{W().st.vis=false;push({k:'state'})});
+  def(['showturtle','st'],[],0,()=>{W().st.vis=true;push({k:'state'})});
+  def(['reset'],[],0,()=>{const w=W();const keep={shape:w.st.shape,speed:w.st.speed};w.st=defState();w.st.shape=keep.shape;w.st.speed=keep.speed;push({k:'reset'})});
+  def(['clear'],[],0,()=>{push({k:'clear'})});
+  def(['write'],['arg'],1,a=>{const st=W().st;push({k:'text',x:st.x,y:st.y,c:st.pc,txt:str(a[0])})});
+  def(['xcor'],[],0,()=>F(W().st.x));
+  def(['ycor'],[],0,()=>F(W().st.y));
+  def(['heading'],[],0,()=>F(((W().st.h%360)+360)%360));
+  def(['isdown'],[],0,()=>I(W().st.pen?1:0));
+  for(const n of ['exitonclick','done','mainloop','bye','tracer','update','title','colormode','setup','delay','listen'])def([n],['a','b','c','d'],0,()=>{});
+  def(['addshape','register_shape'],['name'],1,()=>{throw new PyErr('TurtleGraphicsError','eigene Formen gehen nur in Thonny',CUR.ln,'GIF-Bilder kann dieser Browser-Editor nicht laden. Probier es in Thonny aus.')});
+  return L;
+}
+const TURTLE=makeTurtleLib();
+const MATH={pi:F(Math.PI),e:F(Math.E)};
+const MATHF={sqrt:a=>F(Math.sqrt(toN(a[0]))),sin:a=>F(Math.sin(toN(a[0]))),cos:a=>F(Math.cos(toN(a[0]))),tan:a=>F(Math.tan(toN(a[0]))),radians:a=>F(toN(a[0])*Math.PI/180),degrees:a=>F(toN(a[0])*180/Math.PI)};
+const BUILTIN={
+  print:{name:'print',params:null,req:0,f:a=>{CUR.w.out.push(a.map(str).join(' '));return NONE}},
+  int:{name:'int',params:['x'],req:0,f:a=>{
+    if(!a.length)return I(0);const v=a[0];
+    if(v.t==='int')return v;if(v.t==='float')return I(Math.trunc(v.v));
+    if(v.t==='str'&&/^\s*[+-]?\d+\s*$/.test(v.v))return I(v.v.trim());
+    throw new PyErr('ValueError',`invalid literal for int() with base 10: ${repr(v)}`,CUR.ln);
+  }},
+  float:{name:'float',params:['x'],req:0,f:a=>{
+    if(!a.length)return F(0);const v=a[0];if(isNum(v))return F(toN(v));
+    if(v.t==='str'&&v.v.trim()!==''&&!isNaN(Number(v.v)))return F(Number(v.v));
+    throw new PyErr('ValueError',`could not convert string to float: ${repr(v)}`,CUR.ln);
+  }},
+  str:{name:'str',params:['x'],req:0,f:a=>S(a.length?str(a[0]):'')},
+  abs:{name:'abs',params:['x'],req:1,f:a=>{const v=a[0];if(v.t==='int')return {t:'int',v:v.v<0n?-v.v:v.v};if(v.t==='float')return F(Math.abs(v.v));throw new PyErr('TypeError',`bad operand type for abs(): '${tname(v)}'`,CUR.ln)}},
+  round:{name:'round',params:['number','ndigits'],req:1,f:a=>{const x=toN(a[0]);if(a.length<2){const r=Math.round(x);const half=Math.abs(x%1)===0.5;return I(half&&r%2!==0?r-1:r)}const k=Math.pow(10,toN(a[1]));return F(Math.round(x*k)/k)}},
+  min:{name:'min',params:null,req:1,f:a=>a.reduce((m,v)=>toN(v)<toN(m)?v:m)},
+  max:{name:'max',params:null,req:1,f:a=>a.reduce((m,v)=>toN(v)>toN(m)?v:m)},
+  len:{name:'len',params:['obj'],req:1,f:a=>{if(a[0].t!=='str')throw new PyErr('TypeError',`object of type '${tname(a[0])}' has no len()`,CUR.ln);return I([...a[0].v].length)}},
+  type:{name:'type',params:['obj'],req:1,f:a=>S("<class '"+tname(a[0])+"'>")}
+};
+const KEYWORDS=new Set(['for','while','if','elif','else','def','return','class','try','except','with','lambda','repeat','in','and','or','not','pass','break','continue','global','True','False','None']);
+
+let CUR=null;
+function lev(a,b){const m=a.length,n=b.length;const d=Array.from({length:m+1},(_,i)=>[i]);for(let j=1;j<=n;j++)d[0][j]=j;
+  for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));return d[m][n]}
+function nameHint(name,ctx){
+  if(TURTLE[name]&&!ctx.star&&!ctx.from.has(name))return 'Das ist ein Turtle-Befehl. Steht ganz oben <code>from turtle import *</code>?';
+  const de=DE_COLORS[name.toLowerCase()];
+  if(de)return `Farben sind Text auf Englisch und brauchen Anführungszeichen: <code>color("${de}")</code>.`;
+  if(name==='true'||name==='false')return 'In Python schreibt man True und False gross.';
+  if(cssColor(name))return `Farben sind Text und brauchen Anführungszeichen: <code>color("${name}")</code>.`;
+  const cands=[...ctx.vars.keys(),...(ctx.star?Object.keys(TURTLE):[...ctx.from]),...Object.keys(BUILTIN)];
+  const low=cands.find(c=>c.toLowerCase()===name.toLowerCase());
+  if(low)return `Python unterscheidet Gross- und Kleinschreibung. Meintest du <code>${low}</code>?`;
+  let best=null,bd=3;for(const c of cands){const d=lev(name,c);if(d<bd){bd=d;best=c}}
+  if(best&&bd<=2){const isVar=ctx.vars.has(best);return `Tippfehler? Meintest du <code>${best}</code>?`+(isVar?' Eine Variable gibt es erst, nachdem sie mit = einen Wert bekommen hat.':'')}
+  const deCmd={vorwaerts:'forward',vorwärts:'forward',rueckwaerts:'backward',links:'left',rechts:'right',farbe:'color',breite:'width',fuellen:'begin_fill'}[name.toLowerCase()];
+  if(deCmd)return `Die Befehle sind englisch: <code>${deCmd}</code>.`;
+  return 'Diese Variable oder diesen Befehl gibt es (noch) nicht. Eine Variable muss zuerst mit = einen Wert bekommen, bevor du sie benutzt.';
+}
+function lookup(name,ln,ctx){
+  if(ctx.vars.has(name))return ctx.vars.get(name);
+  if(BUILTIN[name])return {t:'fn',name,spec:BUILTIN[name]};
+  if((ctx.star||ctx.from.has(name))&&TURTLE[name])return {t:'fn',name,spec:TURTLE[name]};
+  if(ctx.mathStar&&MATH[name])return MATH[name];
+  if(ctx.mathStar&&MATHF[name])return {t:'fn',name,spec:{name,params:null,req:1,f:MATHF[name]}};
+  if(name==='turtle'&&ctx.mod)return {t:'mod',name:'turtle'};
+  if(name==='math'&&ctx.mathMod)return {t:'mod',name:'math'};
+  if(name==='True')return I(1);if(name==='False')return I(0);if(name==='None')return NONE;
+  throw new PyErr('NameError',`name '${name}' is not defined`,ln,nameHint(name,ctx));
+}
+function attr(a,name,ln){
+  if(a.t==='mod'&&a.name==='turtle'&&TURTLE[name])return {t:'fn',name,spec:TURTLE[name]};
+  if(a.t==='mod'&&a.name==='math'){if(MATH[name])return MATH[name];if(MATHF[name])return {t:'fn',name,spec:{name,params:null,req:1,f:MATHF[name]}}}
+  if(a.t==='mod')throw new PyErr('AttributeError',`module '${a.name}' has no attribute '${name}'`,ln,'Diesen Befehl gibt es im Modul nicht. Prüfe die Schreibweise.');
+  throw new PyErr('AttributeError',`'${tname(a)}' object has no attribute '${name}'`,ln);
+}
+function call(fv,args,ln){
+  if(fv.t!=='fn'){
+    throw new PyErr('TypeError',`'${tname(fv)}' object is not callable`,ln,
+      fv.t==='int'||fv.t==='float'?'Du rufst eine Zahl wie einen Befehl auf. Hast du eine Variable gleich benannt wie einen Befehl, oder fehlt ein Rechenzeichen vor der Klammer, z.B. 2*(3+4)?':'');
+  }
+  const sp=fv.spec;
+  if(sp.params){
+    if(args.length<sp.req){const miss=sp.params.slice(args.length,sp.req);
+      throw new PyErr('TypeError',`${fv.name}() missing ${miss.length} required positional argument${miss.length>1?'s':''}: ${miss.map(m=>"'"+m+"'").join(' and ')}`,ln,
+        `In die Klammer gehört noch ein Wert, z.B. ${fv.name}(${fv.name==='goto'?'100, 50':fv.name.includes('color')?'"red"':'100'}).`)}
+    if(args.length>sp.params.length)throw new PyErr('TypeError',`${fv.name}() takes ${sp.params.length===0?'no arguments':sp.params.length+' positional argument'+(sp.params.length>1?'s':'')} but ${args.length} ${args.length>1?'were':'was'} given`,ln,
+      sp.params.length===0?`${fv.name}() braucht nichts in der Klammer: ${fv.name}()`:'Da sind zu viele Werte in der Klammer.');
+  }else if(args.length<sp.req)throw new PyErr('TypeError',`${fv.name}() expected at least ${sp.req} argument`,ln);
+  const r=sp.f(args,ln);
+  return r||NONE;
+}
+function stripComment(s){
+  let q=null;for(let i=0;i<s.length;i++){const c=s[i];
+    if(q){if(c==='\\'){i++;continue}if(c===q)q=null}
+    else if(c==='"'||c==="'")q=c;
+    else if(c==='#')return s.slice(0,i);
+  }return s;
+}
+function runProgram(src){
+  const w={ops:[],st:defState(),out:[],warn:[]};
+  const ctx={vars:new Map(),star:false,mod:false,from:new Set(),mathStar:false,mathMod:false,w};
+  CUR={w,ln:0};
+  const lines=src.replace(/\r/g,'').split('\n');
+  let err=null;
+  try{
+    for(let i=0;i<lines.length;i++){
+      const ln=i+1;CUR.ln=ln;
+      const raw=stripComment(lines[i]);
+      if(!raw.trim())continue;
+      if(/^\s/.test(raw))throw new PyErr('IndentationError','unexpected indent',ln,'Diese Zeile beginnt mit Leerzeichen. Ohne Schleife oder Funktion muss jede Zeile ganz links anfangen.');
+      const line=raw.trim();
+      const first=(/^[A-Za-z_]\w*/.exec(line)||[''])[0];
+      if(first==='from'){
+        let m=/^from\s+(\w+)\s+import\s+(.+)$/.exec(line);
+        if(!m)throw new PyErr('SyntaxError','invalid syntax',ln,'So importiert man: from turtle import *');
+        const mod=m[1],what=m[2].trim();
+        if(mod==='turtle'){if(what==='*')ctx.star=true;else for(const n of what.split(',').map(x=>x.trim())){if(!TURTLE[n])throw new PyErr('ImportError',`cannot import name '${n}' from 'turtle'`,ln,'Diesen Befehl gibt es im Turtle-Modul nicht.');ctx.from.add(n)}}
+        else if(mod==='math'){ctx.mathStar=true}
+        else if(mod==='Turtle'||mod==='turtel'||mod==='Turtel')throw new PyErr('ModuleNotFoundError',`No module named '${mod}'`,ln,'Das Modul heisst <code>turtle</code>, klein geschrieben.');
+        else throw new PyErr('ModuleNotFoundError',`No module named '${mod}'`,ln,'Dieser Editor kennt nur die Module turtle und math.');
+        continue;
+      }
+      if(first==='import'){
+        const m=/^import\s+(\w+)$/.exec(line);
+        if(m&&m[1]==='turtle'){ctx.mod=true;continue}
+        if(m&&m[1]==='math'){ctx.mathMod=true;continue}
+        throw new PyErr('ModuleNotFoundError',`No module named '${m?m[1]:line.slice(7)}'`,ln,'Für die Turtle schreibst du: from turtle import *');
+      }
+      if(['for','while','def','if','elif','else','repeat'].includes(first)||line.endsWith(':')){
+        throw new PyErr('Hinweis',`«${first||line}» kann dieser Editor noch nicht`,ln,'Schleifen, Bedingungen und Funktionen kommen erst in den nächsten Kapiteln. Probier solche Programme in Thonny aus.');
+      }
+      const T=tokenize(line,ln);
+      let depth=0,ai=-1;
+      for(let k=0;k<T.length;k++){const t=T[k];if(t.t!=='op')continue;if(t.v==='(')depth++;else if(t.v===')')depth--;else if(depth===0&&['=','+=','-=','*=','/='].includes(t.v)){ai=k;break}}
+      if(ai>=0){
+        if(ai!==1||T[0].t!=='name')throw new PyErr('SyntaxError',"cannot assign to expression here. Maybe you meant '==' instead of '='?",ln,'Links vom = darf nur <b>ein Variablenname</b> stehen. Python rechnet zuerst die rechte Seite aus und speichert das Ergebnis dann in der Variablen links.');
+        const name=T[0].v;
+        if(KEYWORDS.has(name))throw new PyErr('SyntaxError','cannot assign to keyword',ln,`«${name}» ist ein reserviertes Wort und kein erlaubter Variablenname.`);
+        const rhs=T.slice(2);
+        if(!rhs.length)throw new PyErr('SyntaxError','invalid syntax',ln,'Rechts vom = fehlt der Wert.');
+        let v=evalExpr(rhs,ln,ctx);
+        const op=T[1].v;
+        if(op!=='='){const cur=lookup(name,ln,ctx);v=binop(op[0],cur,v,ln)}
+        if(v.t==='none'&&rhs.length>1&&rhs[0].t==='name'&&TURTLE[rhs[0].v])w.warn.push({ln,msg:`${rhs[0].v}() liefert keinen Wert. ${name} enthält jetzt None.`});
+        ctx.vars.set(name,v);
+      }else{
+        const v=evalExpr(T,ln,ctx);
+        if(v.t==='fn'&&T.length===1)w.warn.push({ln,msg:`«${T[0].v}» ohne Klammern macht nichts. Meintest du ${T[0].v}()?`});
+      }
+    }
+  }catch(e){
+    err=e instanceof PyErr?e:new PyErr('RuntimeError',String(e&&e.message||e),CUR.ln,'');
+  }
+  return {w,err,lines};
+}
+
+/* ============ Zeichnen ============ */
+const VIEW_W=800,VIEW_H=600;
+function setupCanvas(cv){
+  const dpr=Math.min(window.devicePixelRatio||1,2);
+  const w=Math.max(200,Math.round(cv.clientWidth*dpr));
+  const h=Math.round(w*3/4);
+  if(cv.width!==w||cv.height!==h){cv.width=w;cv.height=h}
+  return {s:w/VIEW_W,w,h};
+}
+function drawGrid(ctx,s,w,h){
+  ctx.save();ctx.setTransform(1,0,0,1,0,0);
+  ctx.lineWidth=1;
+  for(let x=-400;x<=400;x+=50){const px=Math.round(w/2+x*s)+.5;ctx.strokeStyle=x===0?'rgba(17,118,90,.35)':(x%100===0?'rgba(22,32,28,.10)':'rgba(22,32,28,.05)');ctx.beginPath();ctx.moveTo(px,0);ctx.lineTo(px,h);ctx.stroke()}
+  for(let y=-300;y<=300;y+=50){const py=Math.round(h/2-y*s)+.5;ctx.strokeStyle=y===0?'rgba(17,118,90,.35)':(y%100===0?'rgba(22,32,28,.10)':'rgba(22,32,28,.05)');ctx.beginPath();ctx.moveTo(0,py);ctx.lineTo(w,py);ctx.stroke()}
+  ctx.fillStyle='rgba(22,32,28,.38)';ctx.font=`${Math.max(9,Math.round(10*s*1.2))}px JetBrains Mono, monospace`;
+  for(let x=-300;x<=300;x+=100){if(x)ctx.fillText(String(x),w/2+x*s+3,h/2-3)}
+  for(let y=-200;y<=200;y+=100){if(y)ctx.fillText(String(y),w/2+3,h/2-y*s-3)}
+  ctx.restore();
+}
+function drawTurtle(ctx,st,s){
+  if(!st.vis)return;
+  const k=st.size*1.1;
+  ctx.save();ctx.translate(st.x,st.y);ctx.rotate((st.h-90)*Math.PI/180);ctx.scale(k,k);
+  ctx.fillStyle=st.fc;ctx.strokeStyle=st.pc;ctx.lineWidth=1/k*1.2;ctx.lineJoin='round';
+  ctx.beginPath();
+  if(st.shape==='circle')ctx.arc(0,0,10,0,Math.PI*2);
+  else{const pts=SHAPES[st.shape]||SHAPES.classic;pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.closePath()}
+  ctx.fill();ctx.stroke();ctx.restore();
+}
+function render(cv,ops,upto,frac,opts){
+  opts=opts||{};
+  const ctx=cv.getContext('2d');const {s,w,h}=setupCanvas(cv);
+  const last=Math.min(upto,ops.length-1);
+  let bg='#ffffff';let start=0;
+  for(let i=0;i<=last;i++){const o=ops[i];if(o.k==='bg')bg=o.c;if(o.k==='reset'||o.k==='clear')start=i+1}
+  ctx.setTransform(1,0,0,1,0,0);ctx.fillStyle=bg;ctx.fillRect(0,0,w,h);
+  if(opts.grid)drawGrid(ctx,s,w,h);
+  ctx.setTransform(s,0,0,-s,w/2,h/2);
+  ctx.lineCap='round';ctx.lineJoin='round';
+  const line=(o,t)=>{if(!o.pen||o.w<=0)return;ctx.strokeStyle=o.c;ctx.lineWidth=Math.max(o.w,1/s);ctx.beginPath();ctx.moveTo(o.x1,o.y1);ctx.lineTo(o.x1+(o.x2-o.x1)*t,o.y1+(o.y2-o.y1)*t);ctx.stroke()};
+  for(let i=start;i<=last;i++){
+    const o=ops[i];const t=(i===upto)?frac:1;
+    if(o.k==='move')line(o,t);
+    else if(o.k==='fill'){
+      ctx.fillStyle=o.c;ctx.beginPath();o.pts.forEach((p,j)=>j?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.closePath();ctx.fill('evenodd');
+      for(let j=Math.max(o.from,start);j<o.to;j++)if(ops[j].k==='move')line(ops[j],1);
+    }
+    else if(o.k==='dot'){ctx.fillStyle=o.c;ctx.beginPath();ctx.arc(o.x,o.y,Math.max(o.r,.5),0,Math.PI*2);ctx.fill()}
+    else if(o.k==='text'){ctx.save();ctx.setTransform(1,0,0,1,0,0);ctx.fillStyle=o.c;ctx.font=`${Math.round(14*s*1.3)}px Atkinson Hyperlegible, sans-serif`;ctx.fillText(o.txt,w/2+o.x*s,h/2-o.y*s);ctx.restore()}
+  }
+  // Turtle
+  let st=null;
+  if(upto<ops.length){
+    const o=ops[upto];
+    const prev=upto>0?ops[upto-1].s:defState();
+    if(o.k==='move'){st=Object.assign({},o.s,{x:o.x1+(o.x2-o.x1)*frac,y:o.y1+(o.y2-o.y1)*frac})}
+    else if(o.k==='turn'){st=Object.assign({},o.s,{h:o.h0+(o.h1-o.h0)*frac})}
+    else st=frac>=1?o.s:prev;
+  }else st=ops.length?ops[ops.length-1].s:defState();
+  if(!opts.noTurtle)drawTurtle(ctx,st,s);
+}
+const PXF=[Infinity,2.2,3.5,5,7,9,12,16,21,28,38];
+function cost(o){if(o.k==='move')return Math.hypot(o.x2-o.x1,o.y2-o.y1);if(o.k==='turn')return Math.abs(o.h1-o.h0)*0.5;return 0}
+function Animator(cv,opts){
+  let ops=[],i=0,f=0,raf=0,onDone=null,instant=false;
+  function frame(){
+    let time=1;
+    while(i<ops.length&&time>0){
+      const o=ops[i];const c=cost(o);const sp=instant?0:o.sp;const per=PXF[sp]??12;
+      if(c===0||per===Infinity){i++;f=0;continue}
+      const need=(c*(1-f))/per;
+      if(need<=time){time-=need;i++;f=0}else{f+=time*per/c;time=0}
+    }
+    render(cv,ops,i,f,opts());
+    if(i<ops.length)raf=requestAnimationFrame(frame);else{raf=0;onDone&&onDone()}
+  }
+  return {
+    play(o,inst,done){cancelAnimationFrame(raf);ops=o;i=0;f=0;instant=inst;onDone=done;raf=requestAnimationFrame(frame)},
+    finish(){if(raf){cancelAnimationFrame(raf);raf=0;i=ops.length;f=0;render(cv,ops,i,0,opts());onDone&&onDone()}},
+    redraw(){render(cv,ops,i,f,opts())},
+    busy:()=>!!raf
+  };
+}
+
+/* ============ Syntax-Farben im Editor ============ */
+const ALLNAMES=new Set([...Object.keys(TURTLE),...Object.keys(BUILTIN)]);
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function highlight(src){
+  return src.split('\n').map(line=>{
+    let out='',i=0;
+    while(i<line.length){
+      const r=line.slice(i);let m;
+      if(r[0]==='#'){out+=`<span class="tk-com">${esc(r)}</span>`;break}
+      if(r[0]==='"'||r[0]==="'"){const q=r[0];let j=1;while(j<r.length&&r[j]!==q){if(r[j]==='\\')j++;j++}const s=r.slice(0,j+1);out+=`<span class="tk-str">${esc(s)}</span>`;i+=s.length;continue}
+      if((m=/^\d+(\.\d*)?/.exec(r))){out+=`<span class="tk-num">${m[0]}</span>`;i+=m[0].length;continue}
+      if((m=/^[A-Za-z_]\w*/.exec(r))){const w=m[0];out+=KEYWORDS.has(w)||w==='from'||w==='import'?`<span class="tk-kw">${w}</span>`:ALLNAMES.has(w)?`<span class="tk-fn">${w}</span>`:esc(w);i+=w.length;continue}
+      out+=esc(r[0]);i++;
+    }
+    return out;
+  }).join('\n')+'\n';
+}
+
+/* ============ Labor-UI ============ */
+const $=id=>document.getElementById(id);
+const ta=$('code'),hl=$('hl'),gut=$('gutter'),outEl=$('out'),labCv=$('labCanvas');
+let gridOn=true,errLine=null;
+const labAnim=Animator(labCv,()=>({grid:gridOn}));
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+let task=TASKS[0],beforeSol=null;
+
+function syncEditor(){
+  hl.innerHTML=highlight(ta.value);
+  const n=ta.value.split('\n').length;let g='';
+  for(let i=1;i<=n;i++)g+=(i===errLine?`<span class="bad">${i}</span>`:i)+'\n';
+  gut.innerHTML=g;
+  hl.scrollTop=ta.scrollTop;hl.scrollLeft=ta.scrollLeft;gut.scrollTop=ta.scrollTop;
+}
+ta.addEventListener('input',()=>{errLine=null;syncEditor();store.set('tg1g-'+task.id,ta.value)});
+ta.addEventListener('scroll',()=>{hl.scrollTop=ta.scrollTop;hl.scrollLeft=ta.scrollLeft;gut.scrollTop=ta.scrollTop});
+ta.addEventListener('keydown',e=>{
+  if(e.key==='Tab'&&!e.shiftKey){e.preventDefault();const s=ta.selectionStart,en=ta.selectionEnd;ta.setRangeText('    ',s,en,'end');ta.dispatchEvent(new Event('input'))}
+  if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();runLab()}
+});
+function setCode(c){ta.value=c;errLine=null;ta.scrollTop=0;syncEditor()}
+
+function showOutput(res){
+  const {w,err,lines}=res;let html='';
+  if(w.out.length)html+=`<div class="o">${esc(w.out.join('\n'))}</div>`;
+  for(const x of w.warn)html+=`<div class="o note">Hinweis Zeile ${x.ln}: ${esc(x.msg)}</div>`;
+  if(err){
+    const code=err.line?lines[err.line-1].trim():'';
+    let tb;
+    if(err.type==='Hinweis')tb=`Zeile ${err.line}: ${err.message}`;
+    else if(err.type==='SyntaxError'||err.type==='IndentationError')tb=`  File "zeichnung.py", line ${err.line}\n    ${code}\n${err.type}: ${err.message}`;
+    else tb=`Traceback (most recent call last):\n  File "zeichnung.py", line ${err.line}, in &lt;module&gt;\n    ${esc(code)}\n${err.type}: ${esc(err.message)}`;
+    if(err.type==='SyntaxError'||err.type==='IndentationError'||err.type==='Hinweis')tb=esc(tb);
+    html+=`<div class="o err">${tb}</div>`;
+    if(err.hint)html+=`<div class="hint"><b>Tipp:</b> ${err.hint}</div>`;
+    errLine=err.line;
+  }else{
+    errLine=null;
+    if(!w.out.length&&!w.ops.length)html+='<div class="o note">Programm lief durch, hat aber nichts gezeichnet oder ausgegeben.</div>';
+  }
+  outEl.innerHTML=html||'';
+  syncEditor();
+  return !err;
+}
+function runLab(){
+  const res=runProgram(ta.value);
+  const ok=showOutput(res);
+  const inst=$('turbo').checked;
+  labAnim.play(res.w.ops,inst,()=>{
+    if(ok&&res.w.ops.length){const d=document.createElement('div');d.className='o done';d.textContent='✓ Fertig gezeichnet.';outEl.appendChild(d)}
+  });
+}
+$('btnRun').addEventListener('click',runLab);
+$('turbo').addEventListener('change',()=>{if($('turbo').checked)labAnim.finish()});
+$('gridToggle').addEventListener('change',e=>{gridOn=e.target.checked;labAnim.redraw()});
+labCv.addEventListener('mousemove',e=>{const r=labCv.getBoundingClientRect();const x=(e.clientX-r.left)/r.width*VIEW_W-VIEW_W/2;const y=VIEW_H/2-(e.clientY-r.top)/r.height*VIEW_H;$('coords').textContent=`x ${Math.round(x)} · y ${Math.round(y)}`});
+
+function renderTasks(){
+  const box=$('tasks');box.innerHTML='';
+  for(const t of TASKS){
+    const b=document.createElement('button');b.type='button';
+    b.innerHTML=(t.nr?`<small>${t.nr}</small>`:'')+esc(t.label);
+    b.setAttribute('aria-pressed',t===task?'true':'false');
+    b.addEventListener('click',()=>selectTask(t));
+    box.appendChild(b);
+  }
+}
+function selectTask(t,code){
+  task=t;beforeSol=null;renderTasks();
+  $('taskEyebrow').textContent=t.nr?'Aufgabe '+t.nr:'Labor';
+  $('taskTitle').textContent=t.title;$('taskText').textContent=t.text;
+  $('btnSol').hidden=!t.sol;$('btnSol').textContent='Lösung zeigen';
+  $('goalBox').hidden=!t.sol;
+  $('fileName').textContent=(t.id==='frei'?'zeichnung':t.id)+'.py';
+  if(t.sol){const r=runProgram(t.sol);requestAnimationFrame(()=>render($('goalCanvas'),r.w.ops,r.w.ops.length,0,{noTurtle:false}))}
+  setCode(code!=null?code:(store.get('tg1g-'+t.id)||t.start));
+  outEl.innerHTML='<div class="o note">Noch nichts ausgeführt. Ctrl+Enter oder «Ausführen».</div>';
+  labAnim.play([],true);
+}
+$('btnStart').addEventListener('click',()=>{setCode(task.start);store.set('tg1g-'+task.id,task.start)});
+$('btnSol').addEventListener('click',()=>{
+  if(beforeSol===null){beforeSol=ta.value;setCode(task.sol);$('btnSol').textContent='Zurück zu meinem Code';runLab()}
+  else{setCode(beforeSol);beforeSol=null;$('btnSol').textContent='Lösung zeigen'}
+});
+document.querySelectorAll('[data-snip]').forEach(b=>b.addEventListener('click',()=>{
+  selectTask(TASKS[0],SNIP[b.dataset.snip]);
+  $('labor').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+  setTimeout(runLab,350);
+}));
+for(const k of ['rechnen','quadrat','bunt','fehler']){const el=$('pre-'+k);if(el)el.innerHTML=highlight(SNIP[k]).replace(/\n$/,'')}
+
+/* Hero */
+const heroCv=$('heroCanvas');const heroAnim=Animator(heroCv,()=>({grid:true}));
+function playHero(){const r=runProgram(TASKS.find(t=>t.id==='klee4').sol.replace('shape("turtle")','shape("turtle")\nturtlesize(2)\nwidth(3)\ncolor("darkgreen", "mediumseagreen")\nspeed(7)').replace('color("green")\n',''));heroAnim.play(r.w.ops,matchMedia('(prefers-reduced-motion: reduce)').matches)}
+$('heroAgain').addEventListener('click',playHero);
+
+let rz=0;window.addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{labAnim.redraw();heroAnim.redraw();if(task.sol){const r=runProgram(task.sol);render($('goalCanvas'),r.w.ops,r.w.ops.length,0,{})}},120)});
+
+/* ============ Quiz ============ */
+const QUIZ=[
+{q:'Was ist ein Programm?',o:['Eine Folge von Befehlen, die der Computer der Reihe nach ausführt','Die Zahlen, mit denen der Computer rechnet','Ein Bauteil im Computer','Eine Datei mit Bildern'],a:0,ex:'Die Zahlen, mit denen gerechnet wird, sind die Daten. Das Programm sind die Befehle.'},
+{q:'Was war die zentrale Idee von John von Neumann (1945)?',o:['Computer sollen im Dezimalsystem rechnen','Das Programm wird wie die Daten im Speicher abgelegt','Programme werden fest verdrahtet','Jeder Computer braucht eine Maus'],a:1,ex:'Darum kann man heute ganz verschiedene Programme laden, statt eines fest eingebauten.'},
+{q:'In welcher Form speichert der Computer Programme und Daten?',o:['Als Wörter','Als Dezimalzahlen','Als Binärzahlen aus 0 und 1','Als Bilder'],a:2,ex:'Zwei Symbole lassen sich technisch viel leichter unterscheiden als zehn.'},
+{q:'Was unterscheidet einen Interpreter von einem Compiler?',o:['Der Interpreter erzeugt eine .exe-Datei','Der Interpreter übersetzt Anweisung für Anweisung und führt sie sofort aus','Der Interpreter braucht man nur einmal','Es gibt keinen Unterschied'],a:1,ex:'Der Compiler übersetzt alles auf einmal in eine ausführbare Datei. Der Interpreter wird bei jedem Ausführen gebraucht.'},
+{q:'Was ist eine IDE wie Thonny?',o:['Ein Speicherbaustein','Ein Paket aus Editor und Interpreter','Eine Programmiersprache','Ein Betriebssystem'],a:1,ex:'IDE = Integrated Development Environment, eine Entwicklungsumgebung.'},
+{q:'Was gibt dieser Code aus?',code:'print((5+6)*3+8*3-37)',o:['10','20','92','57'],a:1,ex:'11·3 = 33, plus 8·3 = 24 gibt 57, minus 37 gibt 20. Punkt vor Strich!'},
+{q:'Woher hat Python seinen Namen?',o:['Von der Schlange','Vom Erfinder Guido Python','Von der Comedy-Gruppe Monty Python','Von einem griechischen Gott'],a:2,ex:'Monty Python’s Flying Circus.'},
+{q:'Wo steht die Turtle am Anfang und wohin schaut sie?',o:['Oben links, nach unten','In der Mitte, nach rechts','In der Mitte, nach oben','Unten in der Mitte, nach oben'],a:1,ex:'Das ist die Position home: Mitte, Blickrichtung 0° nach rechts.'},
+{q:'In welche Richtung dreht left(90)?',o:['Im Uhrzeigersinn','Gegen den Uhrzeigersinn','Immer nach oben','Immer zum linken Bildschirmrand'],a:1,ex:'Die Drehung zählt ab der aktuellen Blickrichtung, nicht ab dem Bildschirm.'},
+{q:'Um wie viel Grad muss die Turtle bei einem gleichseitigen Dreieck jeweils drehen?',o:['60','90','120','180'],a:2,ex:'Insgesamt 360° auf drei Ecken verteilt: 360 / 3 = 120 (Aussenwinkel).'},
+{q:'Welcher Aufruf macht die Turtle am schnellsten?',o:['speed(10)','speed(1)','speed(0)','speed(100)'],a:2,ex:'Von 1 bis 10 wird sie schneller, 0 ist die Ausnahme und bedeutet am schnellsten.'},
+{q:'Mit welcher Farbe wird zwischen begin_fill() und end_fill() gefüllt?',o:['Mit der Farbe beim begin_fill()','Mit der Farbe beim end_fill()','Immer schwarz','Mit der Farbe der ersten Linie'],a:1,ex:'Entscheidend ist die Farbe, die beim end_fill() aktuell ist.'},
+{q:'Warum darfst du dein Programm nicht turtle.py nennen?',o:['Der Name ist zu kurz','Python importiert dann deine Datei statt des echten Turtle-Moduls','Dateien dürfen keine Tiernamen haben','Thonny verbietet es'],a:1,ex:'Python sucht beim Import zuerst im eigenen Ordner.'},
+{q:'Was ist eine Variable?',o:['Ein benannter Speicherplatz im Arbeitsspeicher','Eine Datei auf der Harddisk','Ein Befehl der Turtle','Eine feste Zahl, die sich nie ändert'],a:0,ex:'Ihr Inhalt kann sich während des Programms ändern, daher «variabel».'},
+{q:'Was trifft auf den Arbeitsspeicher (RAM) zu?',o:['Langsam und nicht flüchtig','Schnell, aber flüchtig','Langsam und billig','Bleibt auch ohne Strom erhalten'],a:1,ex:'Ohne Strom gehen die Daten im RAM verloren. Dauerhaft speichert man auf der Harddisk.'},
+{q:'Welcher Variablenname ist gut und erlaubt?',o:['start-wert','startWert','seite*2','(a)'],a:1,ex:'Rechenzeichen und Klammern sind verboten. Empfohlen: klein beginnen, Wortanfänge gross.'},
+{q:'Welchen Wert hat b am Schluss?',code:'a = 50\nb = a + 30\na = a * 2\nb = b - a',o:['80','30','-20','20'],a:2,ex:'b = 80, dann a = 100, dann b = 80 - 100 = -20 (Aufgabe 2.10).'},
+{q:'Warum gibt b + 1 = 7 einen Fehler?',o:['Weil 7 zu gross ist','Weil links vom = nur eine Variable stehen darf','Weil b nicht existiert','Weil man + nicht benutzen darf'],a:1,ex:'Das = ist der Zuweisungsoperator: rechte Seite ausrechnen, dann links speichern.'},
+{q:'Was bedeutet diese Fehlermeldung?',code:"NameError: name 'schrite' is not defined",o:['Die Turtle ist kaputt','Die Variable schrite hat nie einen Wert bekommen, meist ein Tippfehler','Die Zahl ist zu gross','Das Modul turtle fehlt im Computer'],a:1,ex:'Die Variable hiess schritte. Python erkennt schrite als neuen, unbekannten Namen.'},
+{q:'Was liefert winkel = 360 / ecken mit ecken = 5?',o:['72','72.0','75','5'],a:1,ex:'Der Operator / ergibt in Python immer eine Kommazahl, also 72.0.'}
+];
+let answered=0,right=0;
+function renderQuiz(){
+  answered=0;right=0;$('score').textContent='0';$('qtotal').textContent=QUIZ.length;$('qprog').textContent='';
+  const box=$('quizList');box.innerHTML='';
+  QUIZ.forEach((q,qi)=>{
+    const card=document.createElement('div');card.className='q';
+    card.innerHTML=`<span class="qn">Frage ${qi+1}</span><p class="qq">${esc(q.q)}</p>`+(q.code?`<pre class="code">${highlight(q.code).replace(/\n$/,'')}</pre>`:'');
+    const opts=document.createElement('div');opts.className='opts';
+    const ex=document.createElement('p');ex.className='ex';ex.hidden=true;ex.textContent=q.ex;
+    q.o.forEach((o,oi)=>{
+      const b=document.createElement('button');b.type='button';b.textContent=o;
+      b.addEventListener('click',()=>{
+        [...opts.children].forEach((c,ci)=>{c.disabled=true;if(ci===q.a)c.classList.add('right')});
+        if(oi!==q.a)b.classList.add('wrong');else right++;
+        answered++;ex.hidden=false;
+        $('score').textContent=right;
+        $('qprog').textContent=answered===QUIZ.length?(right>=QUIZ.length*0.8?'Stark, du bist bereit!':'Schau dir die falschen Fragen in der Theorie nochmals an.'):`${QUIZ.length-answered} offen`;
+      });
+      opts.appendChild(b);
+    });
+    card.appendChild(opts);card.appendChild(ex);box.appendChild(card);
+  });
+}
+$('qreset').addEventListener('click',renderQuiz);
+
+/* Start */
+renderTasks();selectTask(TASKS[0]);renderQuiz();
+requestAnimationFrame(()=>{playHero();labAnim.redraw()});
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{labAnim.redraw()});
+})();
+</script>
+</body>
+</html>
