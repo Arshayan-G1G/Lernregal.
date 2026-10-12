@@ -1,0 +1,531 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>English Grammar Workout</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: workbook — sticky topic tabs, theory block, then numbered exercise sets with check bar */
+:root{
+  --bg:#f4f6fb; --surface:#ffffff; --ink:#16203a; --muted:#5a6381; --line:#dde2ee;
+  --accent:#2a49d4; --accent-soft:#e6ebff; --hl:#ffe45c;
+  --ok:#17804a; --ok-bg:#e3f5ea; --bad:#c22f3a; --bad-bg:#fde8ea;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0e1322; --surface:#161c30; --ink:#e7eaf6; --muted:#9aa3c0; --line:#283152;
+  --accent:#8fa5ff; --accent-soft:#1f2850; --hl:#6e5d14;
+  --ok:#5fd394; --ok-bg:#12301f; --bad:#ff8088; --bad-bg:#3a161b; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e1322; --surface:#161c30; --ink:#e7eaf6; --muted:#9aa3c0; --line:#283152;
+  --accent:#8fa5ff; --accent-soft:#1f2850; --hl:#6e5d14;
+  --ok:#5fd394; --ok-bg:#12301f; --bad:#ff8088; --bad-bg:#3a161b; color-scheme:dark}
+
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55}
+.wrap{max-width:900px;margin:0 auto;padding-inline:16px;padding-block:28px 64px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;line-height:1.15;margin:0}
+h1{font-size:clamp(2rem,6vw,3.1rem);font-weight:800;letter-spacing:-.02em}
+h1 mark{background:linear-gradient(transparent 58%,var(--hl) 58%);color:inherit;padding:0 .1em}
+.lead{color:var(--muted);max-width:60ch;margin:.6rem 0 0}
+nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);display:flex;gap:6px;overflow-x:auto;padding-block:12px;margin-top:20px;border-bottom:1px solid var(--line)}
+nav.tabs button{flex:0 0 auto;font:600 .95rem var(--f-body);border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:8px 14px;border-radius:999px;cursor:pointer}
+nav.tabs button[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+section.topic{padding-top:26px}
+.topic>h2{font-size:1.9rem;font-weight:800}
+.kicker{font:700 .75rem var(--f-body);letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.theory{margin-top:18px;display:grid;gap:14px}
+.theory p,.theory li{max-width:68ch}
+.theory h3{font-size:1.2rem;margin-top:8px}
+.rule{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.rule b{color:var(--accent)}
+.rule ul{margin:.4rem 0 0;padding-left:1.2rem}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:.92rem}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:700 .72rem var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:var(--accent-soft)}
+tr:last-child td{border-bottom:0}
+td.name{font-weight:700;white-space:nowrap}
+code,.f{font-family:var(--f-mono);font-size:.88em}
+.f{color:var(--accent)}
+em.ex{font-style:italic}
+.tip{border-left:4px solid var(--hl);padding:4px 0 4px 12px}
+
+.ex-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:34px;padding-top:18px;border-top:2px solid var(--ink)}
+.ex-head h3{font-size:1.4rem}
+.set{background:var(--surface);border:1px solid var(--line);border-radius:14px;margin-top:16px;padding:16px}
+.set h4{font:800 1.08rem var(--f-display);margin:0}
+.set .intro{color:var(--muted);margin:4px 0 0;font-size:.93rem}
+ol.items{margin:14px 0 0;padding:0;list-style:none;counter-reset:n;display:grid;gap:10px}
+ol.items>li{counter-increment:n;display:grid;grid-template-columns:2.1rem 1fr;gap:4px;padding:8px 8px;border-radius:10px}
+ol.items>li::before{content:counter(n);font:600 .85rem var(--f-mono);color:var(--muted);padding-top:4px}
+li.ok{background:var(--ok-bg)} li.bad{background:var(--bad-bg)}
+.q{min-width:0}
+.q input[type=text]{font:500 .95rem var(--f-mono);color:var(--ink);background:var(--bg);border:none;border-bottom:2px solid var(--muted);padding:3px 6px;margin:2px 2px;max-width:100%;border-radius:4px 4px 0 0}
+.q input.full{display:block;width:100%;margin:8px 0 0}
+li.ok input{border-bottom-color:var(--ok)} li.bad input{border-bottom-color:var(--bad)}
+.opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.opts label{display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:8px;padding:5px 10px;cursor:pointer;background:var(--bg);font-family:var(--f-mono);font-size:.9rem}
+.opts input{accent-color:var(--accent)}
+.fb{grid-column:2;font-size:.88rem;margin-top:4px}
+.fb .sol{font-family:var(--f-mono);font-weight:500}
+li.ok .fb{color:var(--ok)} li.bad .fb{color:var(--bad)}
+.fb .why{display:block;color:var(--muted)}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:14px;padding-top:12px;border-top:1px dashed var(--line)}
+.bar button{font:700 .9rem var(--f-body);padding:8px 14px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
+.bar button.primary{background:var(--accent);color:var(--surface);border-color:var(--accent)}
+.score{margin-left:auto;font-family:var(--f-mono);font-size:.9rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.score b{color:var(--ink)}
+.tag{display:inline-block;font:700 .68rem var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-right:6px}
+@media (max-width:520px){ol.items>li{grid-template-columns:1.6rem 1fr}.score{margin-left:0;width:100%}}
+@media (prefers-reduced-motion:no-preference){li.ok,li.bad{transition:background .2s}}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="kicker">IMS · Englisch · Grammatik</div>
+    <h1>English Grammar <mark>Workout</mark></h1>
+    <p class="lead">Zeitformen, Passiv, Indirect Questions und Question Tags. Jedes Thema: kurz Theorie, dann viele Übungen mit sofortiger Korrektur. Kurzformen (<code>isn't</code>, <code>I'll</code>) und Langformen gelten beide.</p>
+  </header>
+
+  <nav class="tabs" role="tablist" id="tabs">
+    <button role="tab" data-tab="tenses" aria-selected="true">Zeitformen</button>
+    <button role="tab" data-tab="passive">Passiv / Aktiv</button>
+    <button role="tab" data-tab="indirect">Indirect Questions</button>
+    <button role="tab" data-tab="tags">Question Tags</button>
+    <button role="tab" data-tab="mix">Mix-Test</button>
+  </nav>
+
+  <!-- ============ TENSES ============ -->
+  <section class="topic" id="tenses">
+    <div class="kicker">Thema 1</div>
+    <h2>Alle Zeitformen</h2>
+    <div class="theory">
+      <p>Im Englischen hat jede Zeit eine <b>simple</b>-Form (Tatsache, abgeschlossen, regelmässig) und eine <b>continuous</b>-Form mit <span class="f">be + -ing</span> (gerade am Laufen, Dauer im Fokus). Die <b>perfect</b>-Formen mit <span class="f">have + 3. Form</span> verbinden zwei Zeitpunkte.</p>
+      <div class="tbl"><table>
+        <thead><tr><th>Zeitform</th><th>Bildung</th><th>Wann?</th><th>Beispiel</th><th>Signalwörter</th></tr></thead>
+        <tbody>
+          <tr><td class="name">Present simple</td><td class="f">V / V+s (he, she, it)<br>don't / doesn't + V</td><td>Gewohnheiten, Fakten, Fahrpläne</td><td><em class="ex">She plays football every Friday.</em></td><td>always, usually, often, never, every day</td></tr>
+          <tr><td class="name">Present continuous</td><td class="f">am / is / are + V-ing</td><td>passiert jetzt gerade; vorübergehend; fix abgemachte Pläne</td><td><em class="ex">I'm studying right now.</em></td><td>now, at the moment, Look!, Listen!, this week</td></tr>
+          <tr><td class="name">Past simple</td><td class="f">V-ed / 2. Form<br>didn't + V</td><td>abgeschlossen, Zeitpunkt in der Vergangenheit bekannt</td><td><em class="ex">We went to Bern last weekend.</em></td><td>yesterday, ago, last …, in 2019</td></tr>
+          <tr><td class="name">Past continuous</td><td class="f">was / were + V-ing</td><td>lief gerade in der Vergangenheit (oft unterbrochen)</td><td><em class="ex">I was sleeping when the phone rang.</em></td><td>while, when, at 8 pm yesterday</td></tr>
+          <tr><td class="name">Present perfect</td><td class="f">have / has + 3. Form</td><td>Resultat zählt jetzt; Erfahrung; kein genauer Zeitpunkt</td><td><em class="ex">I have lost my phone.</em></td><td>ever, never, already, yet, just, since, for</td></tr>
+          <tr><td class="name">Present perfect continuous</td><td class="f">have / has been + V-ing</td><td>Dauer von früher bis jetzt, Tätigkeit im Fokus</td><td><em class="ex">I've been waiting for 20 minutes.</em></td><td>for, since, how long, all day</td></tr>
+          <tr><td class="name">Past perfect</td><td class="f">had + 3. Form</td><td>Vorvergangenheit: passierte <i>vor</i> etwas anderem in der Vergangenheit</td><td><em class="ex">The film had started when we arrived.</em></td><td>before, after, already, by the time</td></tr>
+          <tr><td class="name">Past perfect continuous</td><td class="f">had been + V-ing</td><td>Dauer bis zu einem Punkt in der Vergangenheit</td><td><em class="ex">She was tired because she had been working all day.</em></td><td>for, since, how long (+ Vergangenheit)</td></tr>
+          <tr><td class="name">will-future</td><td class="f">will + V</td><td>spontane Entscheidung, Vermutung, Versprechen</td><td><em class="ex">I think it will rain. / I'll help you.</em></td><td>I think, probably, maybe, I promise</td></tr>
+          <tr><td class="name">going to</td><td class="f">am / is / are going to + V</td><td>Plan / Absicht; Vorhersage mit sichtbarem Anzeichen</td><td><em class="ex">Look at those clouds – it's going to rain.</em></td><td>Pläne, sichtbare Hinweise</td></tr>
+          <tr><td class="name">Future continuous</td><td class="f">will be + V-ing</td><td>läuft zu einem Zeitpunkt in der Zukunft</td><td><em class="ex">This time tomorrow I'll be writing the test.</em></td><td>this time tomorrow, at 10 tomorrow</td></tr>
+          <tr><td class="name">Future perfect</td><td class="f">will have + 3. Form</td><td>abgeschlossen bis zu einem Zeitpunkt in der Zukunft</td><td><em class="ex">By Friday I'll have finished the project.</em></td><td>by …, by the time</td></tr>
+          <tr><td class="name">Future perfect continuous</td><td class="f">will have been + V-ing</td><td>Dauer bis zu einem Zeitpunkt in der Zukunft</td><td><em class="ex">By June I'll have been living here for five years.</em></td><td>by … for …</td></tr>
+        </tbody>
+      </table></div>
+      <div class="rule tip"><b>Present perfect oder past simple?</b> Steht ein abgeschlossener Zeitpunkt da (<i>yesterday, last year, two days ago</i>) → <b>past simple</b>. Kein Zeitpunkt, oder es geht um das Resultat jetzt → <b>present perfect</b>. <br><em class="ex">I have seen that film.</em> vs. <em class="ex">I saw that film last week.</em></div>
+      <div class="rule tip"><b>since vs. for:</b> <i>since</i> + Startpunkt (<i>since 2020, since Monday</i>), <i>for</i> + Zeitdauer (<i>for two years, for an hour</i>).</div>
+      <div class="rule tip"><b>Present simple für die Zukunft:</b> bei Fahrplänen und Programmen: <em class="ex">The train leaves at 7:15.</em></div>
+    </div>
+    <div class="ex-head"><h3>Übungen: Zeitformen</h3><span class="tag">5 Sets</span></div>
+    <div id="ex-tenses"></div>
+  </section>
+
+  <!-- ============ PASSIVE ============ -->
+  <section class="topic" id="passive" hidden>
+    <div class="kicker">Thema 2</div>
+    <h2>Passiv und Aktiv</h2>
+    <div class="theory">
+      <p><b>Aktiv:</b> Wer macht etwas? <em class="ex">The police arrested the thief.</em><br><b>Passiv:</b> Was passiert mit wem/was? <em class="ex">The thief was arrested (by the police).</em></p>
+      <div class="rule"><b>Bildung:</b> <span class="f">be</span> (in der gleichen Zeit wie im Aktivsatz) + <span class="f">Past Participle (3. Form)</span>
+        <ul>
+          <li>Das <b>Objekt</b> des Aktivsatzes wird zum <b>Subjekt</b>.</li>
+          <li><i>be</i> übernimmt die Zeitform, das Hauptverb steht immer in der 3. Form.</li>
+          <li>Der Täter kommt mit <span class="f">by</span> dazu, aber nur wenn er wichtig ist. <i>someone, they, people</i> lässt man weg.</li>
+        </ul>
+      </div>
+      <div class="tbl"><table>
+        <thead><tr><th>Zeitform</th><th>Aktiv</th><th>Passiv</th></tr></thead>
+        <tbody>
+          <tr><td class="name">Present simple</td><td>They <b>make</b> cars here.</td><td>Cars <span class="f">are made</span> here.</td></tr>
+          <tr><td class="name">Present continuous</td><td>They <b>are building</b> a school.</td><td>A school <span class="f">is being built</span>.</td></tr>
+          <tr><td class="name">Past simple</td><td>Someone <b>stole</b> my bike.</td><td>My bike <span class="f">was stolen</span>.</td></tr>
+          <tr><td class="name">Past continuous</td><td>They <b>were cleaning</b> the room.</td><td>The room <span class="f">was being cleaned</span>.</td></tr>
+          <tr><td class="name">Present perfect</td><td>They <b>have sold</b> the house.</td><td>The house <span class="f">has been sold</span>.</td></tr>
+          <tr><td class="name">Past perfect</td><td>They <b>had finished</b> the work.</td><td>The work <span class="f">had been finished</span>.</td></tr>
+          <tr><td class="name">will-future</td><td>They <b>will publish</b> the results.</td><td>The results <span class="f">will be published</span>.</td></tr>
+          <tr><td class="name">going to</td><td>They <b>are going to open</b> a shop.</td><td>A shop <span class="f">is going to be opened</span>.</td></tr>
+          <tr><td class="name">Future perfect</td><td>They <b>will have fixed</b> it.</td><td>It <span class="f">will have been fixed</span>.</td></tr>
+          <tr><td class="name">Modalverben</td><td>You <b>must do</b> the homework.</td><td>The homework <span class="f">must be done</span>.</td></tr>
+        </tbody>
+      </table></div>
+      <div class="rule tip"><b>Wann Passiv?</b> Wenn der Täter unbekannt oder unwichtig ist, wenn die Handlung im Fokus steht, oder in formellen Texten (News, Berichte, Technik): <em class="ex">The data is encrypted before it is sent.</em></div>
+      <div class="rule tip"><b>Passiv → Aktiv:</b> Den <i>by</i>-Teil nach vorne als Subjekt nehmen, Verb in derselben Zeit ins Aktiv setzen. Achtung auf Kongruenz: <em class="ex">The IT team <b>checks</b>…</em> (3. Person Singular).</div>
+    </div>
+    <div class="ex-head"><h3>Übungen: Passiv / Aktiv</h3><span class="tag">4 Sets</span></div>
+    <div id="ex-passive"></div>
+  </section>
+
+  <!-- ============ INDIRECT ============ -->
+  <section class="topic" id="indirect" hidden>
+    <div class="kicker">Thema 3</div>
+    <h2>Indirect Questions</h2>
+    <div class="theory">
+      <p>Indirekte Fragen sind <b>höflicher</b> als direkte Fragen. Sie beginnen mit einer Einleitung wie <i>Can you tell me…, Do you know…, Could you tell me…, I wonder…, I'd like to know…, I'm not sure…</i></p>
+      <div class="rule"><b>Die 4 Regeln</b>
+        <ul>
+          <li><b>Wortstellung wie im Aussagesatz:</b> Subjekt vor Verb. <br><em class="ex">Where <u>is the station</u>? → Can you tell me where <u>the station is</u>?</em></li>
+          <li><b>Kein do / does / did:</b> Das Hilfsverb fällt weg, das Verb bekommt wieder -s oder die Vergangenheitsform. <br><em class="ex">What time does the film start? → Do you know what time the film <u>starts</u>?</em><br><em class="ex">Where did you buy it? → Can you tell me where you <u>bought</u> it?</em></li>
+          <li><b>Ja/Nein-Fragen → if / whether:</b> <br><em class="ex">Is the shop open? → Do you know <u>if</u> the shop is open?</em></li>
+          <li><b>Satzzeichen:</b> Fragezeichen nur, wenn die Einleitung selbst eine Frage ist. <br><em class="ex">Can you tell me where he is?</em> – aber: <em class="ex">I wonder where he is.</em></li>
+        </ul>
+      </div>
+      <div class="tbl"><table>
+        <thead><tr><th>Direkte Frage</th><th>Indirekte Frage</th></tr></thead>
+        <tbody>
+          <tr><td>Where <b>is</b> the bank?</td><td>Could you tell me where the bank <b>is</b>?</td></tr>
+          <tr><td>How much <b>does</b> it <b>cost</b>?</td><td>Do you know how much it <b>costs</b>?</td></tr>
+          <tr><td>Why <b>did</b> she <b>leave</b>?</td><td>I'd like to know why she <b>left</b>.</td></tr>
+          <tr><td><b>Can</b> I pay by card?</td><td>Do you know <b>if</b> I <b>can</b> pay by card?</td></tr>
+          <tr><td>Who <b>is</b> that guy?</td><td>Do you know who that guy <b>is</b>?</td></tr>
+          <tr><td><b>Have</b> you <b>finished</b>?</td><td>I wonder <b>whether</b> you <b>have finished</b>.</td></tr>
+        </tbody>
+      </table></div>
+      <div class="rule tip"><b>Spezialfall:</b> Wenn das Fragewort selbst das Subjekt ist, bleibt die Stellung gleich: <em class="ex">Who called? → Do you know who called?</em></div>
+    </div>
+    <div class="ex-head"><h3>Übungen: Indirect Questions</h3><span class="tag">3 Sets</span></div>
+    <div id="ex-indirect"></div>
+  </section>
+
+  <!-- ============ TAGS ============ -->
+  <section class="topic" id="tags" hidden>
+    <div class="kicker">Thema 4</div>
+    <h2>Question Tags</h2>
+    <div class="theory">
+      <p>Question Tags sind kurze Anhängsel wie „…, oder?“ / „…, gell?“. Man will eine Bestätigung oder fragt nach: <em class="ex">You're from Zurich, aren't you?</em></p>
+      <div class="rule"><b>Grundregeln</b>
+        <ul>
+          <li><b>Positiver Satz → negativer Tag</b>, <b>negativer Satz → positiver Tag</b>.</li>
+          <li>Das <b>Hilfsverb</b> aus dem Satz wird wiederholt (be, have, can, will, should …).</li>
+          <li>Kein Hilfsverb im Satz → <span class="f">do / does / did</span>.</li>
+          <li>Im Tag steht immer ein <b>Pronomen</b>: Tom → he, the bag → it, my parents → they.</li>
+        </ul>
+      </div>
+      <div class="tbl"><table>
+        <thead><tr><th>Satz</th><th>Tag</th><th>Warum</th></tr></thead>
+        <tbody>
+          <tr><td>She <b>is</b> nice,</td><td class="f">isn't she?</td><td>be wiederholen, positiv → negativ</td></tr>
+          <tr><td>You <b>can't</b> swim,</td><td class="f">can you?</td><td>negativ → positiv</td></tr>
+          <tr><td>He <b>lives</b> in Bern,</td><td class="f">doesn't he?</td><td>kein Hilfsverb, present simple → does</td></tr>
+          <tr><td>They <b>went</b> home,</td><td class="f">didn't they?</td><td>kein Hilfsverb, past simple → did</td></tr>
+          <tr><td>You <b>have finished</b>,</td><td class="f">haven't you?</td><td>have als Hilfsverb</td></tr>
+        </tbody>
+      </table></div>
+      <div class="rule"><b>Spezialfälle</b>
+        <ul>
+          <li><em class="ex">I am right, <b>aren't I</b>?</em> (nicht „amn't I“)</li>
+          <li><em class="ex">Let's go, <b>shall we</b>?</em></li>
+          <li>Befehl: <em class="ex">Close the window, <b>will you</b>?</em> (auch <i>would / could / can you</i>)</li>
+          <li><i>never, nobody, nothing, hardly, no one</i> machen den Satz negativ → positiver Tag: <em class="ex">She never calls, <b>does she</b>?</em></li>
+          <li><i>nobody, everyone, somebody</i> → <b>they</b>: <em class="ex">Everyone was there, <b>weren't they</b>?</em></li>
+          <li><i>this / that</i> → <b>it</b>; <i>there is</i> → <b>isn't there</b>.</li>
+        </ul>
+      </div>
+      <div class="rule tip"><b>Betonung:</b> Stimme geht <b>runter</b> → du erwartest Zustimmung. Stimme geht <b>hoch</b> → echte Frage, du bist unsicher.</div>
+    </div>
+    <div class="ex-head"><h3>Übungen: Question Tags</h3><span class="tag">2 Sets</span></div>
+    <div id="ex-tags"></div>
+  </section>
+
+  <!-- ============ MIX ============ -->
+  <section class="topic" id="mix" hidden>
+    <div class="kicker">Prüfungsvorbereitung</div>
+    <h2>Mix-Test</h2>
+    <div class="theory"><p>15 zufällige Aufgaben aus allen vier Themen. Nach „Neue Runde“ kommen andere Aufgaben. Ziel: 13 von 15.</p></div>
+    <div id="ex-mix"></div>
+  </section>
+</div>
+
+<script>
+const T = "tenses", P = "passive", I = "indirect", Q = "tags";
+// gap: q mit ___ ; a = akzeptierte Antworten. tf: ganze Umformung. mc: Auswahl.
+const DATA = {
+ tenses: [
+  {title:"A · Present simple oder continuous", intro:"Setze das Verb in der Klammer in die richtige Form.", type:"gap", items:[
+   {q:"Look! It ___ (snow) outside.", a:["is snowing"]},
+   {q:"My brother ___ (work) in a bank in Zurich.", a:["works"]},
+   {q:"Water ___ (boil) at 100 degrees.", a:["boils"]},
+   {q:"I can't talk now, I ___ (cook) dinner.", a:["am cooking"]},
+   {q:"She usually ___ (not / take) the bus to school.", a:["doesn't take"]},
+   {q:"Why ___ (you / laugh)? What's so funny?", a:["are you laughing"]},
+   {q:"How often ___ (you / play) football?", a:["do you play"]},
+   {q:"This week we ___ (learn) about the passive.", a:["are learning"]},
+   {q:"My parents ___ (not / understand) TikTok.", a:["don't understand"]},
+   {q:"Listen! Somebody ___ (sing) in the next room.", a:["is singing"]}
+  ]},
+  {title:"B · Past simple, past continuous, past perfect", intro:"Welche Vergangenheitsform passt?", type:"gap", items:[
+   {q:"Yesterday I ___ (meet) an old friend at the station.", a:["met"]},
+   {q:"While I ___ (walk) home, it started to rain.", a:["was walking"]},
+   {q:"When the teacher came in, the students ___ (talk).", a:["were talking"]},
+   {q:"The train ___ (already / leave) when we arrived at the station.", a:["had already left"]},
+   {q:"She ___ (not / see) the film before, so she was excited.", a:["hadn't seen"]},
+   {q:"What ___ (you / do) at 8 pm last night?", a:["were you doing"]},
+   {q:"They ___ (wait) for two hours before the bus finally came.", a:["had been waiting","had waited"]},
+   {q:"I couldn't open the door because I ___ (lose) my keys.", a:["had lost"]},
+   {q:"We ___ (play) Fortnite when the power went out.", a:["were playing"]},
+   {q:"After he ___ (finish) his homework, he went out.", a:["had finished","finished"]}
+  ]},
+  {title:"C · Present perfect oder past simple", intro:"Achte auf Signalwörter wie ago, since, for, ever, yet.", type:"gap", items:[
+   {q:"I ___ (never / be) to London.", a:["have never been"]},
+   {q:"We ___ (go) to Italy last summer.", a:["went"]},
+   {q:"___ (you / ever / eat) sushi?", a:["have you ever eaten"]},
+   {q:"She ___ (live) here since 2020.", a:["has lived","has been living"]},
+   {q:"I ___ (just / finish) my homework.", a:["have just finished"]},
+   {q:"He ___ (break) his leg two years ago.", a:["broke"]},
+   {q:"How long ___ (you / learn) English?", a:["have you been learning","have you learned","have you learnt"]},
+   {q:"They ___ (not / call) me yet.", a:["haven't called"]},
+   {q:"I'm tired because I ___ (run) for an hour.", a:["have been running"]},
+   {q:"When ___ (you / start) your apprenticeship?", a:["did you start"]}
+  ]},
+  {title:"D · Zukunft", intro:"will, going to, present continuous, future continuous oder future perfect?", type:"gap", items:[
+   {q:"Look at those dark clouds! It ___ (rain).", a:["is going to rain"]},
+   {q:"I'm hungry. – Wait, I ___ (make) you a sandwich.", a:["will make"]},
+   {q:"The film ___ (start) at 8 pm, it says so on the ticket.", a:["starts"]},
+   {q:"I ___ (meet) Lisa tomorrow at 3, it's in my calendar.", a:["am meeting","am going to meet"]},
+   {q:"This time next week we ___ (lie) on the beach.", a:["will be lying"]},
+   {q:"By 2030 I ___ (finish) my apprenticeship.", a:["will have finished"]},
+   {q:"I think Switzerland ___ (win) the game.", a:["will win"]},
+   {q:"By June, she ___ (work) here for ten years.", a:["will have been working"]},
+   {q:"I've decided: I ___ (buy) a new laptop next month.", a:["am going to buy"]},
+   {q:"Don't call at 10, I ___ (write) my test then.", a:["will be writing"]}
+  ]},
+  {title:"E · Welche Zeit stimmt?", intro:"Wähle die richtige Form.", type:"mc", items:[
+   {q:"She ___ to school by bike every day.", o:["goes","is going","has gone"], a:0, why:"every day → present simple"},
+   {q:"Listen! Someone ___ at the door.", o:["knocks","is knocking","knocked"], a:1, why:"Listen! → passiert jetzt"},
+   {q:"I ___ him since we were kids.", o:["know","have known","knew"], a:1, why:"since → present perfect"},
+   {q:"When I got home, my sister ___ dinner.", o:["already made","had already made","has already made"], a:1, why:"vor einem anderen Punkt in der Vergangenheit → past perfect"},
+   {q:"I promise I ___ tell anyone.", o:["won't","am not going to","don't"], a:0, why:"Versprechen → will"},
+   {q:"By the time you arrive, we ___ eating.", o:["will have finished","will finish","finish"], a:0, why:"by the time → future perfect"},
+   {q:"He ___ his phone when the teacher took it away.", o:["used","was using","has used"], a:1, why:"lief gerade, wurde unterbrochen → past continuous"},
+   {q:"I ___ my homework yesterday evening.", o:["did","have done","had been doing"], a:0, why:"yesterday → past simple"}
+  ]}
+ ],
+ passive: [
+  {title:"A · Passiv bilden", intro:"Setze das Verb im Passiv ein. Achte auf die Zeit.", type:"gap", items:[
+   {q:"English ___ (speak) all over the world.", a:["is spoken"]},
+   {q:"The Mona Lisa ___ (paint) by Leonardo da Vinci.", a:["was painted"]},
+   {q:"A new school ___ (build) at the moment.", a:["is being built"]},
+   {q:"My bike ___ (steal)! I can't find it anywhere.", a:["has been stolen"]},
+   {q:"The results ___ (publish) next week.", a:["will be published","are going to be published"]},
+   {q:"The letter ___ (already / send) when I noticed the mistake.", a:["had already been sent"]},
+   {q:"This problem must ___ (solve) quickly.", a:["be solved"]},
+   {q:"When I arrived, the room ___ (clean), so I waited outside.", a:["was being cleaned"]},
+   {q:"Cheese ___ (make) from milk.", a:["is made"]},
+   {q:"The homework has to ___ (do) by Friday.", a:["be done"]},
+   {q:"By next year, the old stadium ___ (replace).", a:["will have been replaced"]},
+   {q:"Passwords should never ___ (share) with other people.", a:["be shared"]}
+  ]},
+  {title:"B · Aktiv → Passiv", intro:"Schreib den ganzen Satz im Passiv. Lass den Täter weg, wenn er unwichtig ist.", type:"tf", items:[
+   {q:"Someone cleans the classroom every day.", a:["The classroom is cleaned every day."]},
+   {q:"The police arrested the thief.", a:["The thief was arrested by the police.","The thief was arrested."]},
+   {q:"They are repairing the road.", a:["The road is being repaired."]},
+   {q:"Somebody has eaten my sandwich.", a:["My sandwich has been eaten."]},
+   {q:"The teacher will correct the tests.", a:["The tests will be corrected by the teacher.","The tests will be corrected."]},
+   {q:"Millions of people watched the final.", a:["The final was watched by millions of people."]},
+   {q:"They had finished the project before the deadline.", a:["The project had been finished before the deadline."]},
+   {q:"Hackers attacked the server last night.", a:["The server was attacked by hackers last night.","The server was attacked last night by hackers.","Last night the server was attacked by hackers."]}
+  ]},
+  {title:"C · Passiv → Aktiv", intro:"Schreib den Satz im Aktiv. Der by-Teil wird zum Subjekt.", type:"tf", items:[
+   {q:"The window was broken by Tom.", a:["Tom broke the window."]},
+   {q:"The emails are checked by the IT team every morning.", a:["The IT team checks the emails every morning.","Every morning the IT team checks the emails."]},
+   {q:"The app has been downloaded by thousands of users.", a:["Thousands of users have downloaded the app."]},
+   {q:"The cake was being eaten by the kids.", a:["The kids were eating the cake."]},
+   {q:"The match will be shown by SRF.", a:["SRF will show the match."]},
+   {q:"The bug had been found by our developer.", a:["Our developer had found the bug."]}
+  ]},
+  {title:"D · Aktiv oder Passiv?", intro:"Wähle die richtige Form.", type:"mc", items:[
+   {q:"The pyramids ___ thousands of years ago.", o:["built","were built","have built"], a:1, why:"Pyramiden bauen nicht selbst → Passiv, past simple"},
+   {q:"Our house ___ at the moment, so we're staying with friends.", o:["is painting","is being painted","is painted"], a:1, why:"at the moment → present continuous Passiv"},
+   {q:"Every year, millions of tourists ___ Switzerland.", o:["visit","are visited","were visited"], a:0, why:"Touristen machen die Handlung → Aktiv"},
+   {q:"The thief ___ yet.", o:["hasn't been caught","hasn't caught","didn't catch"], a:0, why:"yet → present perfect, Dieb wird gefangen → Passiv"},
+   {q:"This song ___ by a famous DJ.", o:["was produced","produced","was producing"], a:0, why:"by + Täter → Passiv"},
+   {q:"The new update ___ tomorrow.", o:["will release","will be released","is releasing"], a:1, why:"das Update wird veröffentlicht → Passiv"}
+  ]}
+ ],
+ indirect: [
+  {title:"A · Direkte → indirekte Frage", intro:"Schreib nur den Teil, der in die Lücke gehört.", type:"gap", wide:true, items:[
+   {q:"Where is the station? → Can you tell me ___?", a:["where the station is"]},
+   {q:"What time does the film start? → Do you know ___?", a:["what time the film starts"]},
+   {q:"Is the shop open on Sunday? → I wonder ___.", a:["if the shop is open on Sunday","whether the shop is open on Sunday"]},
+   {q:"How much does this jacket cost? → Could you tell me ___?", a:["how much this jacket costs"]},
+   {q:"Where did you buy your phone? → Can you tell me ___?", a:["where you bought your phone"]},
+   {q:"Has the bus already left? → Do you know ___?", a:["if the bus has already left","whether the bus has already left"]},
+   {q:"Why was she late? → I'd like to know ___.", a:["why she was late"]},
+   {q:"Can I park here? → Do you know ___?", a:["if I can park here","whether I can park here"]},
+   {q:"Who is your English teacher? → Can you tell me ___?", a:["who your English teacher is"]},
+   {q:"When will the results be published? → Do you know ___?", a:["when the results will be published"]},
+   {q:"Do they speak German? → I'm not sure ___.", a:["if they speak German","whether they speak German"]},
+   {q:"What did he say? → I didn't hear ___.", a:["what he said"]}
+  ]},
+  {title:"B · Ganze Sätze umformen", intro:"Mach eine höfliche indirekte Frage mit der angegebenen Einleitung. Satzzeichen am Schluss nicht vergessen.", type:"tf", items:[
+   {q:"Where does Mr Keller work? (Do you know …)", a:["Do you know where Mr Keller works?"]},
+   {q:"How long does the course take? (Could you tell me …)", a:["Could you tell me how long the course takes?"]},
+   {q:"Did you pass the exam? (I'd like to know …)", a:["I'd like to know if you passed the exam.","I'd like to know whether you passed the exam."]},
+   {q:"What are you doing? (Can you tell me …)", a:["Can you tell me what you are doing?"]},
+   {q:"Why did the server crash? (Nobody knows …)", a:["Nobody knows why the server crashed."]}
+  ]},
+  {title:"C · Richtig oder falsch gebaut?", intro:"Wähle die korrekte indirekte Frage.", type:"mc", items:[
+   {q:"Can you tell me where ___?", o:["is the toilet","the toilet is","does the toilet is"], a:1, why:"Subjekt vor Verb"},
+   {q:"Do you know what time ___?", o:["does the shop close","the shop closes","closes the shop"], a:1, why:"kein does, Verb bekommt -s"},
+   {q:"I wonder ___ he will come to the party.", o:["that","if","does"], a:1, why:"Ja/Nein-Frage → if/whether"},
+   {q:"Could you tell me how much ___?", o:["does it cost","it costs","costs it"], a:1, why:"kein does, Wortstellung wie Aussage"},
+   {q:"I'd like to know where ___ last night.", o:["you went","did you go","went you"], a:0, why:"kein did, Verb in Vergangenheit"},
+   {q:"Do you know who ___ the window?", o:["did break","broke","did he break"], a:1, why:"who ist Subjekt → normale Stellung"}
+  ]}
+ ],
+ tags: [
+  {title:"A · Den richtigen Tag ergänzen", intro:"Nur den Tag schreiben, z. B. isn't it.", type:"gap", items:[
+   {q:"You're from Zurich, ___?", a:["aren't you"]},
+   {q:"She doesn't like coffee, ___?", a:["does she"]},
+   {q:"They went to the party, ___?", a:["didn't they"]},
+   {q:"He can swim, ___?", a:["can't he"]},
+   {q:"It isn't raining, ___?", a:["is it"]},
+   {q:"You have finished, ___?", a:["haven't you"]},
+   {q:"We won't be late, ___?", a:["will we"]},
+   {q:"I'm right, ___?", a:["aren't I"]},
+   {q:"Let's go, ___?", a:["shall we"]},
+   {q:"Open the door, ___?", a:["will you","would you","could you","can you","won't you"]},
+   {q:"Nobody called, ___?", a:["did they"]},
+   {q:"She never studies, ___?", a:["does she"]},
+   {q:"There is a problem, ___?", a:["isn't there"]},
+   {q:"Tom should apologise, ___?", a:["shouldn't he"]},
+   {q:"Your parents had already left, ___?", a:["hadn't they"]},
+   {q:"This is your bag, ___?", a:["isn't it"]},
+   {q:"Everyone was there, ___?", a:["weren't they"]},
+   {q:"Lisa plays the guitar, ___?", a:["doesn't she"]},
+   {q:"You didn't forget your laptop, ___?", a:["did you"]},
+   {q:"The test will be easy, ___?", a:["won't it"]}
+  ]},
+  {title:"B · Spezialfälle", intro:"Wähle den richtigen Tag.", type:"mc", items:[
+   {q:"I'm late, ___?", o:["amn't I","aren't I","isn't I"], a:1, why:"I am → aren't I"},
+   {q:"Nothing happened, ___?", o:["did it","didn't it","did they"], a:0, why:"nothing = negativ, Pronomen it"},
+   {q:"Let's start, ___?", o:["will we","shall we","don't we"], a:1, why:"Let's → shall we"},
+   {q:"Don't touch that, ___?", o:["do you","will you","don't you"], a:1, why:"Befehl → will you"},
+   {q:"He hardly ever calls, ___?", o:["doesn't he","does he","is he"], a:1, why:"hardly = negativ → positiver Tag"},
+   {q:"Somebody has taken my charger, ___?", o:["hasn't he","haven't they","hasn't it"], a:1, why:"somebody → they"}
+  ]}
+ ]
+};
+
+/* ---------- helpers ---------- */
+function norm(s){
+  s=(s||"").toLowerCase().replace(/[’‘`´]/g,"'").replace(/[.?!,;:–—-]+/g," ").replace(/\s+/g," ").trim();
+  s=s.replace(/\bwon't\b/g,"will not").replace(/\bcan't\b/g,"can not").replace(/\bcannot\b/g,"can not")
+     .replace(/\bshan't\b/g,"shall not").replace(/n't\b/g," not").replace(/'ll\b/g," will")
+     .replace(/'ve\b/g," have").replace(/'re\b/g," are").replace(/\bi'm\b/g,"i am")
+     .replace(/\bi'd\b/g,"i would");
+  return s.replace(/\s+/g," ").trim();
+}
+// "I'd like" muss zu "I would like" passen – Satzzeichen-Check bei tf zusätzlich
+const store={get(){try{return JSON.parse(localStorage.getItem("egw1")||"{}")}catch(e){return{}}},
+  set(o){try{localStorage.setItem("egw1",JSON.stringify(o))}catch(e){}}};
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+
+let uid=0;
+function renderSet(set, key){
+  const el=document.createElement("div"); el.className="set";
+  const best=store.get()[key];
+  el.innerHTML=`<h4>${esc(set.title)}</h4><p class="intro">${esc(set.intro)}</p><ol class="items"></ol>
+   <div class="bar"><button class="primary" data-act="check">Prüfen</button><button data-act="show">Lösungen zeigen</button><button data-act="reset">Zurücksetzen</button>
+   <span class="score">${best!=null?`Bestwert: <b>${best}</b>/${set.items.length}`:`${set.items.length} Aufgaben`}</span></div>`;
+  const ol=el.querySelector("ol");
+  set.items.forEach(it=>{
+    const li=document.createElement("li"); const q=document.createElement("div"); q.className="q";
+    const type=it._type||set.type;
+    if(type==="gap"){
+      const parts=it.q.split("___"); const w=Math.max(...it.a.map(x=>x.length))+3;
+      const id="i"+(uid++);
+      q.innerHTML=(it._tag?`<span class="tag">${it._tag}</span>`:"")+esc(parts[0])+`<input type="text" id="${id}" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Antwort" size="${Math.min(w,set.wide?40:24)}">`+esc(parts[1]||"");
+    } else if(type==="tf"){
+      const id="i"+(uid++);
+      q.innerHTML=(it._tag?`<span class="tag">${it._tag}</span>`:"")+esc(it.q)+`<input class="full" type="text" id="${id}" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Umgeformter Satz">`;
+    } else {
+      const name="r"+(uid++);
+      q.innerHTML=(it._tag?`<span class="tag">${it._tag}</span>`:"")+esc(it.q)+`<div class="opts">`+it.o.map((o,i)=>`<label><input type="radio" name="${name}" id="${name}_${i}" value="${i}">${esc(o)}</label>`).join("")+`</div>`;
+    }
+    const fb=document.createElement("div"); fb.className="fb";
+    li.append(q,fb); li._it=it; li._type=type; ol.append(li);
+    q.querySelectorAll("input[type=text]").forEach(inp=>inp.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();checkItem(li);}}));
+  });
+  el.querySelector(".bar").addEventListener("click",e=>{
+    const act=e.target.dataset.act; if(!act) return;
+    const lis=[...ol.children];
+    if(act==="check"){
+      const n=lis.filter(li=>checkItem(li)).length;
+      const s=store.get(); if(s[key]==null||n>s[key]){s[key]=n;store.set(s)}
+      if(key==="mix"&&window.Lernregal) Lernregal.fortschritt(Math.round(n/lis.length*100),"Mix-Test "+Math.round(n/lis.length*100)+" %");
+      el.querySelector(".score").innerHTML=`<b>${n}</b>/${lis.length} richtig · Bestwert ${Math.max(n,store.get()[key]||0)}/${lis.length}`;
+    }
+    if(act==="show") lis.forEach(li=>{checkItem(li); if(!li.classList.contains("ok")) showSol(li,true)});
+    if(act==="reset"){lis.forEach(li=>{li.className="";li.querySelector(".fb").innerHTML="";li.querySelectorAll("input[type=text]").forEach(i=>i.value="");li.querySelectorAll("input[type=radio]").forEach(i=>i.checked=false)});
+      el.querySelector(".score").textContent=`${lis.length} Aufgaben`;}
+  });
+  return el;
+}
+function showSol(li,force){
+  const it=li._it, fb=li.querySelector(".fb");
+  const sol= li._type==="mc"? it.o[it.a] : it.a[0];
+  fb.innerHTML=`Lösung: <span class="sol">${esc(sol)}</span>`+(it.why?`<span class="why">${esc(it.why)}</span>`:"")+
+    (li._type!=="mc"&&it.a.length>1?`<span class="why">Auch richtig: ${it.a.slice(1).map(esc).join(" / ")}</span>`:"");
+}
+function checkItem(li){
+  const it=li._it; let ok;
+  if(li._type==="mc"){
+    const c=li.querySelector("input[type=radio]:checked"); ok=!!c&&+c.value===it.a;
+  } else {
+    const v=norm(li.querySelector("input[type=text]").value); ok=v!==""&&it.a.some(a=>norm(a)===v);
+  }
+  li.className=ok?"ok":"bad";
+  if(ok){li.querySelector(".fb").innerHTML="Richtig ✓"+(it.why?`<span class="why">${esc(it.why)}</span>`:"")}
+  else showSol(li);
+  return ok;
+}
+
+/* ---------- build ---------- */
+for(const k of [T,P,I,Q]){
+  const box=document.getElementById("ex-"+k);
+  DATA[k].forEach((s,i)=>box.append(renderSet(s,k+i)));
+}
+const LABEL={tenses:"Zeiten",passive:"Passiv",indirect:"Indirect Q",tags:"Tags"};
+function buildMix(){
+  const pool=[];
+  for(const k of [T,P,I,Q]) DATA[k].forEach(s=>s.items.forEach(it=>pool.push(Object.assign({},it,{_type:s.type,_tag:LABEL[k]}))));
+  for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]]}
+  const box=document.getElementById("ex-mix"); box.innerHTML="";
+  const set=renderSet({title:"Mix-Runde",intro:"Lies genau: Jede Aufgabe ist mit ihrem Thema markiert.",type:"gap",wide:true,items:pool.slice(0,15)},"mix");
+  const again=document.createElement("button"); again.textContent="Neue Runde"; again.addEventListener("click",buildMix);
+  set.querySelector(".bar").insertBefore(again,set.querySelector(".score"));
+  box.append(set);
+}
+buildMix();
+
+/* ---------- tabs ---------- */
+const tabs=document.getElementById("tabs");
+function openTab(id){
+  tabs.querySelectorAll("button").forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===id));
+  document.querySelectorAll("section.topic").forEach(s=>s.hidden=s.id!==id);
+  try{localStorage.setItem("egw1-tab",id)}catch(e){}
+}
+tabs.addEventListener("click",e=>{const b=e.target.closest("button");if(b){openTab(b.dataset.tab);window.scrollTo({top:0})}});
+const start=(location.hash||"").slice(1);
+let saved=null; try{saved=localStorage.getItem("egw1-tab")}catch(e){}
+if(DATA[start]||start==="mix") openTab(start); else if(saved&&document.getElementById(saved)) openTab(saved);
+</script>
+
+<script src="../regal.js" defer></script>
+</body>
+</html>
