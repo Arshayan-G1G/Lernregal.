@@ -1,0 +1,1004 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Vokabel Quiz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap">
+
+<style>
+:root {
+  --bg: #f0eeff;
+  --surface: #ffffff;
+  --surface2: #e8e4ff;
+  --border: rgba(108,79,255,0.18);
+  --accent: #6c4fff;
+  --accent2: #9b83ff;
+  --text: #0e0c1f;
+  --text-muted: #7b78a8;
+  --correct: #16a34a;
+  --correct-bg: #dcfce7;
+  --wrong: #dc2626;
+  --wrong-bg: #fee2e2;
+  --shadow-card: 0 20px 60px rgba(108,79,255,0.15), 0 4px 12px rgba(0,0,0,0.06);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e0c1f; --surface: #1c1a35; --surface2: #252345;
+    --border: rgba(155,131,255,0.18); --accent: #9b83ff; --accent2: #c4b4ff;
+    --text: #f0eeff; --text-muted: #8f8bbf;
+    --correct: #4ade80; --correct-bg: #052e16;
+    --wrong: #f87171; --wrong-bg: #450a0a;
+    --shadow-card: 0 20px 60px rgba(0,0,0,0.5), 0 4px 12px rgba(0,0,0,0.3);
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e0c1f; --surface: #1c1a35; --surface2: #252345;
+  --border: rgba(155,131,255,0.18); --accent: #9b83ff; --accent2: #c4b4ff;
+  --text: #f0eeff; --text-muted: #8f8bbf;
+  --correct: #4ade80; --correct-bg: #052e16;
+  --wrong: #f87171; --wrong-bg: #450a0a;
+  --shadow-card: 0 20px 60px rgba(0,0,0,0.5), 0 4px 12px rgba(0,0,0,0.3);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Outfit', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  transition: background 0.3s;
+}
+
+/* ── PROGRESS ── */
+#progress-bar-wrap {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 4px; background: var(--border); z-index: 100;
+}
+#progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  border-radius: 0 2px 2px 0;
+  transition: width 0.4s ease; width: 0%;
+}
+#progress-counter {
+  position: fixed; top: 14px; right: 20px;
+  font-size: 13px; font-weight: 600; color: var(--text-muted);
+  letter-spacing: 0.04em; font-variant-numeric: tabular-nums;
+}
+#streak-display {
+  position: fixed; top: 14px; left: 20px;
+  font-size: 13px; font-weight: 600; color: var(--text-muted);
+  display: flex; align-items: center; gap: 5px;
+}
+#streak-display.hot { color: #f59e0b; }
+
+/* ── START ── */
+#start-screen {
+  text-align: center; max-width: 520px; width: 100%;
+  display: flex; flex-direction: column; align-items: center; gap: 24px;
+  animation: fadeUp 0.5s ease both;
+}
+.logo {
+  width: 64px; height: 64px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border-radius: 18px; display: flex; align-items: center; justify-content: center;
+  font-size: 32px;
+}
+.start-title {
+  font-size: clamp(2rem, 8vw, 3rem); font-weight: 900;
+  letter-spacing: -0.04em; line-height: 1.05; text-wrap: balance;
+}
+.start-title span { color: var(--accent); }
+.start-subtitle {
+  font-size: 16px; color: var(--text-muted);
+  line-height: 1.6; max-width: 340px; text-wrap: balance;
+}
+.badge-row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.badge {
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 100px; padding: 6px 14px;
+  font-size: 13px; font-weight: 600; color: var(--text-muted);
+}
+.badge strong { color: var(--accent); }
+
+/* ── SET PICKER ── */
+.set-picker {
+  display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
+  width: 100%;
+}
+.set-btn {
+  flex: 1; min-width: 100px;
+  background: var(--surface2); color: var(--text-muted);
+  border: 2px solid var(--border); border-radius: 12px; padding: 10px 14px;
+  font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 600;
+  cursor: pointer; transition: all 0.15s;
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+}
+.set-btn span {
+  font-size: 20px; font-weight: 900; color: var(--text-muted);
+  letter-spacing: -0.04em;
+}
+.set-btn:hover { border-color: var(--accent2); color: var(--text); }
+.set-btn:hover span { color: var(--accent2); }
+.set-btn.active {
+  background: var(--accent); color: #fff; border-color: var(--accent);
+  box-shadow: 0 4px 16px rgba(108,79,255,0.35);
+}
+.set-btn.active span { color: rgba(255,255,255,0.85); }
+
+/* ── IMPORT BOX ── */
+#import-box {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 20px;
+  display: flex; flex-direction: column; gap: 14px;
+  text-align: left;
+  box-shadow: var(--shadow-card);
+}
+#import-box.hidden { display: none !important; }
+
+.import-header {
+  display: flex; justify-content: space-between; align-items: center;
+}
+.import-title {
+  font-size: 15px; font-weight: 700; color: var(--text);
+}
+.import-close {
+  background: none; border: none; cursor: pointer;
+  color: var(--text-muted); font-size: 20px; line-height: 1;
+  padding: 2px 6px; border-radius: 6px;
+  transition: background 0.15s;
+}
+.import-close:hover { background: var(--surface2); }
+
+.import-hint {
+  font-size: 12px; color: var(--text-muted); line-height: 1.6;
+}
+.import-hint code {
+  background: var(--surface2); border-radius: 5px;
+  padding: 1px 5px; font-size: 11px; font-family: monospace;
+  color: var(--accent);
+}
+
+#vocab-input {
+  width: 100%;
+  min-height: 160px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-family: 'Outfit', monospace, sans-serif;
+  font-size: 13px;
+  color: var(--text);
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.2s;
+  line-height: 1.6;
+}
+#vocab-input:focus { border-color: var(--accent); }
+#vocab-input::placeholder { color: var(--text-muted); opacity: 0.7; }
+
+.import-row {
+  display: flex; gap: 10px; align-items: center;
+}
+#word-count-badge {
+  font-size: 12px; font-weight: 600; color: var(--text-muted);
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 100px; padding: 4px 10px;
+  transition: color 0.2s;
+}
+#word-count-badge.has-words { color: var(--correct); }
+
+.import-error {
+  font-size: 12px; color: var(--wrong); font-weight: 500;
+}
+.import-error.hidden { display: none !important; }
+
+/* ── BUTTONS ── */
+.btn-row {
+  display: flex; gap: 10px; width: 100%; flex-wrap: wrap;
+}
+.start-btn {
+  flex: 1;
+  background: var(--accent); color: #fff; border: none;
+  border-radius: 14px; padding: 17px 24px;
+  font-family: 'Outfit', sans-serif; font-size: 17px; font-weight: 700;
+  cursor: pointer; letter-spacing: -0.01em;
+  transition: transform 0.15s, box-shadow 0.15s;
+  box-shadow: 0 8px 24px rgba(108,79,255,0.35);
+  white-space: nowrap;
+}
+.start-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(108,79,255,0.45); }
+.start-btn:active { transform: translateY(0); }
+.start-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+
+.import-btn {
+  background: var(--surface2); color: var(--accent);
+  border: 2px solid var(--border); border-radius: 14px; padding: 15px 20px;
+  font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 700;
+  cursor: pointer; letter-spacing: -0.01em;
+  display: flex; align-items: center; gap: 7px;
+  transition: transform 0.15s, background 0.15s;
+  white-space: nowrap;
+}
+.import-btn:hover { background: var(--accent); color: #fff; transform: translateY(-2px); }
+
+/* ── QUIZ ── */
+#quiz-screen {
+  width: 100%; max-width: 520px;
+  display: flex; flex-direction: column; align-items: center; gap: 20px;
+}
+
+/* ── SINGLE-FACE FLIP CARD ── */
+.card-wrap { width: 100%; perspective: 1200px; }
+
+.card {
+  width: 100%;
+  background: var(--surface);
+  border-radius: 24px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 36px;
+  text-align: center;
+  gap: 16px;
+  min-height: 260px;
+  cursor: pointer;
+  transform-origin: center center;
+  will-change: transform;
+}
+.card.no-click { cursor: default; }
+
+.card.to-edge {
+  transition: transform 0.22s ease-in;
+  transform: rotateY(90deg);
+}
+.card.from-edge {
+  transition: transform 0.22s ease-out;
+  transform: rotateY(0deg);
+}
+
+/* ── CARD CONTENT ── */
+.lang-pill {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--text-muted);
+  background: var(--surface2);
+  padding: 5px 12px; border-radius: 100px;
+  border: 1px solid var(--border);
+}
+.main-word {
+  font-size: clamp(2rem, 7vw, 3rem);
+  font-weight: 900; letter-spacing: -0.04em; line-height: 1.1;
+  text-wrap: balance;
+}
+.main-word.de-style { color: var(--text); }
+.main-word.en-style { color: var(--accent); }
+.word-type { font-size: 14px; color: var(--text-muted); font-weight: 500; }
+.translation-chip {
+  font-size: 15px; font-weight: 600; color: var(--text-muted);
+  background: var(--surface2); padding: 8px 18px;
+  border-radius: 100px; border: 1px solid var(--border);
+}
+.flip-hint {
+  font-size: 13px; font-weight: 500; color: var(--text-muted);
+  display: flex; align-items: center; gap: 6px; margin-top: 4px;
+}
+.flip-hint svg { opacity: 0.5; }
+
+/* ── ANSWER BUTTONS ── */
+.answer-row {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 12px; width: 100%;
+  animation: fadeUp 0.3s ease both;
+}
+.ans-btn {
+  border: 2px solid transparent; border-radius: 16px; padding: 18px 12px;
+  font-family: 'Outfit', sans-serif; font-size: 17px; font-weight: 700;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  gap: 8px; letter-spacing: -0.01em;
+  transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+}
+.ans-btn:active { transform: scale(0.97); }
+.ans-richtig { background: var(--correct-bg); color: var(--correct); border-color: var(--correct); }
+.ans-richtig:hover { background: var(--correct); color: #fff; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(34,197,94,0.3); }
+.ans-falsch { background: var(--wrong-bg); color: var(--wrong); border-color: var(--wrong); }
+.ans-falsch:hover { background: var(--wrong); color: #fff; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(239,68,68,0.3); }
+
+/* ── NEXT BUTTON ── */
+.next-btn {
+  width: 100%; background: var(--accent); color: #fff; border: none;
+  border-radius: 16px; padding: 18px;
+  font-family: 'Outfit', sans-serif; font-size: 17px; font-weight: 700;
+  cursor: pointer; letter-spacing: -0.01em;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  transition: transform 0.15s, box-shadow 0.15s;
+  box-shadow: 0 6px 20px rgba(108,79,255,0.3);
+  animation: fadeUp 0.3s ease both;
+}
+.next-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(108,79,255,0.4); }
+.next-btn:active { transform: translateY(0); }
+
+/* ── FLIP CTA ── */
+.flip-cta-btn {
+  width: 100%; background: var(--surface2); color: var(--accent);
+  border: 2px solid var(--border); border-radius: 16px; padding: 16px;
+  font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 700;
+  cursor: pointer; letter-spacing: -0.01em;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+}
+.flip-cta-btn:hover { background: var(--accent); color: #fff; transform: translateY(-2px); }
+
+/* ── SCORE MINI ── */
+.score-mini {
+  width: 100%; display: flex; justify-content: space-between; align-items: center;
+  font-size: 13px; font-weight: 600; color: var(--text-muted); padding: 0 2px;
+}
+.score-dots { display: flex; gap: 4px; }
+.score-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); transition: background 0.3s; }
+.score-dot.c { background: var(--correct); }
+.score-dot.w { background: var(--wrong); }
+
+/* ── RESULT ── */
+#result-screen {
+  max-width: 520px; width: 100%; text-align: center;
+  display: flex; flex-direction: column; align-items: center; gap: 24px;
+  animation: fadeUp 0.5s ease both;
+}
+.result-card {
+  width: 100%; background: var(--surface);
+  border: 1px solid var(--border); border-radius: 24px;
+  box-shadow: var(--shadow-card); padding: 40px 36px;
+  display: flex; flex-direction: column; align-items: center; gap: 20px;
+}
+.result-emoji { font-size: 52px; line-height: 1; }
+.result-msg { font-size: 22px; font-weight: 800; letter-spacing: -0.03em; }
+.result-score-big {
+  font-size: clamp(3rem, 12vw, 5rem); font-weight: 900;
+  letter-spacing: -0.06em; line-height: 1; color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+.result-label { font-size: 14px; color: var(--text-muted); font-weight: 500; }
+.result-stats { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.stat-tile { background: var(--surface2); border: 1px solid var(--border); border-radius: 14px; padding: 16px; text-align: center; }
+.stat-tile .stat-num { font-size: 28px; font-weight: 800; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
+.stat-tile.green .stat-num { color: var(--correct); }
+.stat-tile.red .stat-num { color: var(--wrong); }
+.stat-tile .stat-lbl { font-size: 12px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 2px; }
+.result-bar-wrap { width: 100%; height: 10px; background: var(--surface2); border-radius: 100px; overflow: hidden; }
+.result-bar-fill { height: 100%; background: linear-gradient(90deg, var(--correct), #86efac); border-radius: 100px; transition: width 0.8s cubic-bezier(0.34,1.1,0.64,1); }
+.restart-btn {
+  width: 100%; background: var(--accent); color: #fff; border: none;
+  border-radius: 16px; padding: 18px;
+  font-family: 'Outfit', sans-serif; font-size: 17px; font-weight: 700;
+  cursor: pointer; letter-spacing: -0.01em;
+  transition: transform 0.15s, box-shadow 0.15s;
+  box-shadow: 0 8px 24px rgba(108,79,255,0.35);
+}
+.restart-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(108,79,255,0.45); }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hidden { display: none !important; }
+button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+@media (max-width: 440px) {
+  .card { padding: 28px 24px; min-height: 220px; }
+  .btn-row { flex-direction: column; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+</style>
+
+<div id="progress-bar-wrap"><div id="progress-fill"></div></div>
+<div id="progress-counter" class="hidden"></div>
+<div id="streak-display" class="hidden">🔥 <span id="streak-num">0</span></div>
+
+<!-- ─────── START ─────── -->
+<section id="start-screen">
+  <div class="logo">🧠</div>
+  <h1 class="start-title">Vokabel<span>Quiz</span></h1>
+  <p class="start-subtitle">Sieh das deutsche Wort — dreh die Karte um — bewertet ob du es gewusst hast.</p>
+
+  <!-- SET PICKER -->
+  <div class="set-picker" id="set-picker">
+    <button class="set-btn" id="btn-all" onclick="selectSet('all')">Alle <span>192</span></button>
+    <button class="set-btn active" id="btn-new" onclick="selectSet('new')">Neu – S. 11–13 <span>100</span></button>
+    <button class="set-btn" id="btn-old" onclick="selectSet('old')">Alt – S. 8–10 <span>92</span></button>
+  </div>
+
+  <div class="badge-row" id="badge-row">
+    <span class="badge" id="word-count-badge-start"><strong>100</strong> Wörter</span>
+    <span class="badge" id="source-badge">L2, L3b, L4b, Culture</span>
+    <span class="badge">🇩🇪 → 🇬🇧 Karten</span>
+  </div>
+
+  <!-- IMPORT BOX (hidden by default) -->
+  <div id="import-box" class="hidden">
+    <div class="import-header">
+      <span class="import-title">📝 Eigene Vokabeln eingeben</span>
+      <button class="import-close" onclick="closeImport()" title="Schließen">×</button>
+    </div>
+    <div class="import-hint">
+      Ein Wort pro Zeile, Format: <code>Deutsch | Englisch</code><br>
+      Optional mit Lektion: <code>Deutsch | Englisch | Lektion 1</code><br>
+      Leer lassen = eingebaute Wörter verwenden.
+    </div>
+    <textarea id="vocab-input" placeholder="Hund | dog&#10;Katze | cat | Lektion 1&#10;Haus | house&#10;Auto | car | Unit 2" oninput="onInputChange()"></textarea>
+    <div class="import-row">
+      <span id="word-count-live" style="font-size:12px;font-weight:600;color:var(--text-muted)">0 Wörter erkannt</span>
+      <span class="import-error hidden" id="import-error">⚠ Ungültige Zeilen gefunden</span>
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button class="import-btn" id="import-toggle-btn" onclick="toggleImport()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+      </svg>
+      Eigene Wörter
+    </button>
+    <button class="start-btn" id="start-btn" onclick="startQuiz()">Quiz starten →</button>
+  </div>
+</section>
+
+<!-- ─────── QUIZ ─────── -->
+<section id="quiz-screen" class="hidden">
+
+  <div class="card-wrap">
+    <div class="card" id="card" onclick="flipCard()">
+      <div class="lang-pill" id="lang-pill">🇩🇪 Deutsch</div>
+      <div class="main-word de-style" id="main-word">Gemälde</div>
+      <div class="word-type hidden" id="word-type"></div>
+      <div class="translation-chip hidden" id="translation-chip"></div>
+      <div class="flip-hint" id="flip-hint">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M1 4v6h6M23 20v-6h-6"/>
+          <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/>
+        </svg>
+        Tippen zum Umdrehen
+      </div>
+    </div>
+  </div>
+
+  <button class="flip-cta-btn" id="flip-cta-btn" onclick="flipCard()">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <path d="M1 4v6h6M23 20v-6h-6"/>
+      <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/>
+    </svg>
+    Karte umdrehen
+  </button>
+
+  <div class="answer-row hidden" id="answer-row">
+    <button class="ans-btn ans-falsch" onclick="answer(false)">✗ Nicht gewusst</button>
+    <button class="ans-btn ans-richtig" onclick="answer(true)">✓ Gewusst!</button>
+  </div>
+
+  <button class="next-btn hidden" id="next-btn" onclick="nextCard()">Nächste Karte →</button>
+
+  <div class="score-mini">
+    <span id="score-text">0 gewusst</span>
+    <div class="score-dots" id="score-dots"></div>
+  </div>
+
+</section>
+
+<!-- ─────── RESULT ─────── -->
+<section id="result-screen" class="hidden">
+  <div class="result-card">
+    <div class="result-emoji" id="result-emoji">🎉</div>
+    <div class="result-msg" id="result-msg">Ausgezeichnet!</div>
+    <div>
+      <div class="result-score-big" id="result-score">--</div>
+      <div class="result-label" id="result-label">von 92 gewusst</div>
+    </div>
+    <div class="result-bar-wrap"><div class="result-bar-fill" id="result-bar" style="width:0%"></div></div>
+    <div class="result-stats">
+      <div class="stat-tile green"><div class="stat-num" id="stat-correct">--</div><div class="stat-lbl">Gewusst ✓</div></div>
+      <div class="stat-tile red"><div class="stat-num" id="stat-wrong">--</div><div class="stat-lbl">Nicht gewusst ✗</div></div>
+    </div>
+  </div>
+  <button class="restart-btn" onclick="restartQuiz()">🔄 Nochmal spielen</button>
+</section>
+
+<script>
+/* ── VOCAB SETS ── */
+const oldVocab = [
+  { en:"unique",type:"adj",de:"einmalig",lesson:"Lektion 4"},
+  { en:"virtual",type:"adj",de:"virtuell",lesson:"Lektion 4"},
+  { en:"a great deal",type:"",de:"sehr viel",lesson:"Lektion 4"},
+  { en:"attractive",type:"adj",de:"gut aussehend",lesson:"Lektion 4"},
+  { en:"background",type:"n",de:"Hintergrund",lesson:"Lektion 4"},
+  { en:"careless",type:"adj",de:"achtlos",lesson:"Lektion 4"},
+  { en:"colourful",type:"adj",de:"farbenfroh",lesson:"Lektion 4"},
+  { en:"colourless",type:"adj",de:"farblos",lesson:"Lektion 4"},
+  { en:"cry",type:"v",de:"weinen",lesson:"Lektion 4"},
+  { en:"depend on",type:"v",de:"ankommen auf",lesson:"Lektion 4"},
+  { en:"expression",type:"n",de:"Ausdruck",lesson:"Lektion 4"},
+  { en:"foreground",type:"n",de:"Vordergrund",lesson:"Lektion 4"},
+  { en:"handkerchief",type:"n",de:"Taschentuch",lesson:"Lektion 4"},
+  { en:"hopeful",type:"adj",de:"voller Hoffnung",lesson:"Lektion 4"},
+  { en:"hopeless",type:"adj",de:"hoffnungslos",lesson:"Lektion 4"},
+  { en:"in particular",type:"",de:"besonders",lesson:"Lektion 4"},
+  { en:"painful",type:"adj",de:"schmerzhaft",lesson:"Lektion 4"},
+  { en:"painless",type:"adj",de:"schmerzlos",lesson:"Lektion 4"},
+  { en:"painting",type:"n",de:"Gemälde",lesson:"Lektion 4"},
+  { en:"realistic",type:"adj",de:"realistisch",lesson:"Lektion 4"},
+  { en:"relaxed",type:"adj",de:"entspannt",lesson:"Lektion 4"},
+  { en:"remind of",type:"v",de:"erinnern",lesson:"Lektion 4"},
+  { en:"response",type:"n",de:"Reaktion",lesson:"Lektion 4"},
+  { en:"river",type:"n",de:"Fluss",lesson:"Lektion 4"},
+  { en:"successful",type:"adj",de:"erfolgreich",lesson:"Lektion 4"},
+  { en:"sunset",type:"n",de:"Sonnenuntergang",lesson:"Lektion 4"},
+  { en:"truthful",type:"adj",de:"ehrlich",lesson:"Lektion 4"},
+  { en:"upset",type:"adj",de:"aus der Fassung sein",lesson:"Lektion 4"},
+  { en:"war",type:"n",de:"Krieg",lesson:"Lektion 4"},
+  { en:"wonder",type:"v",de:"(sich) fragen",lesson:"Lektion 4"},
+  { en:"computer",type:"n",de:"Computer",lesson:"Lektion 4"},
+  { en:"experiment",type:"v",de:"experimentieren",lesson:"Lektion 3"},
+  { en:"low",type:"adj",de:"niedrig",lesson:"Lektion 3"},
+  { en:"manage",type:"v",de:"(es) schaffen",lesson:"Lektion 3"},
+  { en:"obey",type:"v",de:"gehorchen",lesson:"Lektion 3"},
+  { en:"poet",type:"n",de:"Dichter/in",lesson:"Lektion 3"},
+  { en:"pretend",type:"v",de:"so tun als ob",lesson:"Lektion 3"},
+  { en:"promise",type:"n",de:"Versprechen",lesson:"Lektion 3"},
+  { en:"range",type:"n",de:"Vielzahl",lesson:"Lektion 3"},
+  { en:"rule",type:"n",de:"Regel",lesson:"Lektion 3"},
+  { en:"style",type:"n",de:"Stil",lesson:"Lektion 3"},
+  { en:"talent",type:"n",de:"Begabung",lesson:"Lektion 3"},
+  { en:"try out",type:"v",de:"ausprobieren",lesson:"Lektion 3"},
+  { en:"come up with",type:"v",de:"einfallen (lassen)",lesson:"Lektion 3"},
+  { en:"comment",type:"n",de:"Kommentar",lesson:"Lektion 3"},
+  { en:"enthusiastic",type:"adj",de:"begeistert",lesson:"Lektion 3"},
+  { en:"give up",type:"v",de:"aufhören",lesson:"Lektion 3"},
+  { en:"globe",type:"n",de:"Welt",lesson:"Lektion 3"},
+  { en:"goal",type:"n",de:"Ziel",lesson:"Lektion 3"},
+  { en:"grow up",type:"v",de:"erwachsen werden",lesson:"Lektion 3"},
+  { en:"increasing",type:"adj",de:"zunehmend",lesson:"Lektion 3"},
+  { en:"label",type:"v",de:"beschriften",lesson:"Lektion 3"},
+  { en:"library",type:"n",de:"Bibliothek",lesson:"Lektion 3"},
+  { en:"lie on",type:"v",de:"auf … liegen",lesson:"Lektion 3"},
+  { en:"look up",type:"v",de:"nachschauen",lesson:"Lektion 3"},
+  { en:"pick up",type:"v",de:"aufheben",lesson:"Lektion 3"},
+  { en:"register",type:"v",de:"eintragen",lesson:"Lektion 3"},
+  { en:"report back",type:"v",de:"berichten",lesson:"Lektion 3"},
+  { en:"set up",type:"v",de:"einrichten",lesson:"Lektion 3"},
+  { en:"stand up",type:"v",de:"aufstehen",lesson:"Lektion 3"},
+  { en:"take out",type:"v",de:"ausleihen",lesson:"Lektion 3"},
+  { en:"turn up",type:"v",de:"auftauchen",lesson:"Lektion 3"},
+  { en:"suburb",type:"n",de:"Vorort",lesson:"Unit 3 L1"},
+  { en:"ballet",type:"n",de:"Ballett",lesson:"Unit 3 L1"},
+  { en:"breakdancing",type:"n",de:"Breakdance",lesson:"Unit 3 L1"},
+  { en:"careful",type:"adj",de:"vorsichtig",lesson:"Unit 3 L1"},
+  { en:"dream of",type:"v",de:"träumen von",lesson:"Unit 3 L1"},
+  { en:"according to",type:"prep",de:"laut",lesson:"Unit 3 L1"},
+  { en:"astronomer",type:"n",de:"Astronom",lesson:"Unit 3 L1"},
+  { en:"atmosphere",type:"n",de:"Atmosphäre",lesson:"Unit 3 L1"},
+  { en:"claim",type:"v",de:"behaupten",lesson:"Unit 3 L1"},
+  { en:"cloud",type:"n",de:"Wolke",lesson:"Unit 3 L1"},
+  { en:"distance",type:"n",de:"Entfernung",lesson:"Unit 3 L1"},
+  { en:"gravity",type:"n",de:"Schwerkraft",lesson:"Unit 3 L1"},
+  { en:"gun",type:"n",de:"Schusswaffe",lesson:"Unit 3 L1"},
+  { en:"identify",type:"v",de:"identifizieren",lesson:"Unit 3 L1"},
+  { en:"in other words",type:"",de:"in anderen Worten",lesson:"Unit 3 L1"},
+  { en:"light year",type:"n",de:"Lichtjahr",lesson:"Unit 3 L1"},
+  { en:"liquid",type:"n",de:"Flüssigkeit",lesson:"Unit 3 L1"},
+  { en:"mirror",type:"n",de:"Spiegel",lesson:"Unit 3 L1"},
+  { en:"mixture",type:"n",de:"Mischung",lesson:"Unit 3 L1"},
+  { en:"neither … nor",type:"conj",de:"weder … noch",lesson:"Unit 3 L1"},
+  { en:"planet",type:"n",de:"Planet",lesson:"Unit 3 L1"},
+  { en:"possibility",type:"n",de:"Möglichkeit",lesson:"Unit 3 L1"},
+  { en:"report",type:"n",de:"Bericht",lesson:"Unit 3 L1"},
+  { en:"robot",type:"n",de:"Roboter",lesson:"Unit 3 L1"},
+  { en:"rocky",type:"adj",de:"steinig",lesson:"Unit 3 L1"},
+  { en:"scientist",type:"n",de:"Wissenschaftler/in",lesson:"Unit 3 L1"},
+  { en:"similar",type:"adj",de:"ähnlich",lesson:"Unit 3 L1"},
+  { en:"solar system",type:"n",de:"Sonnensystem",lesson:"Unit 3 L1"},
+  { en:"star",type:"n",de:"Stern",lesson:"Unit 3 L1"},
+  { en:"support",type:"v",de:"unterstützen",lesson:"Unit 3 L1"},
+];
+
+const newVocab = [
+  // Unit 3 L1 – continuation (page 11)
+  { en:"surface",type:"n",de:"Oberfläche",lesson:"Unit 3 L1"},
+  { en:"telescope",type:"n",de:"Teleskop",lesson:"Unit 3 L1"},
+  { en:"temperature",type:"n",de:"Temperatur",lesson:"Unit 3 L1"},
+  { en:"torch",type:"n",de:"Taschenlampe",lesson:"Unit 3 L1"},
+  { en:"universe",type:"n",de:"Universum",lesson:"Unit 3 L1"},
+  // Lesson 2 – When can you drive a car?
+  { en:"aim",type:"v",de:"anstreben",lesson:"Lektion 2"},
+  { en:"army",type:"n",de:"Armee",lesson:"Lektion 2"},
+  { en:"as long as",type:"conj",de:"so lange wie",lesson:"Lektion 2"},
+  { en:"break a law",type:"",de:"Gesetze brechen",lesson:"Lektion 2"},
+  { en:"factory",type:"n",de:"Fabrik",lesson:"Lektion 2"},
+  { en:"forbidden",type:"adj",de:"verboten",lesson:"Lektion 2"},
+  { en:"full-time",type:"adj",de:"vollzeit",lesson:"Lektion 2"},
+  { en:"get married",type:"",de:"heiraten",lesson:"Lektion 2"},
+  { en:"intend",type:"v",de:"planen",lesson:"Lektion 2"},
+  { en:"law-breaking",type:"adj",de:"Gesetze brechend",lesson:"Lektion 2"},
+  { en:"licence",type:"n",de:"Lizenz (Gebühr)",lesson:"Lektion 2"},
+  { en:"limit",type:"v",de:"beschränken",lesson:"Lektion 2"},
+  { en:"lottery ticket",type:"n",de:"Lottoschein",lesson:"Lektion 2"},
+  { en:"motorbike",type:"n",de:"Motorrad",lesson:"Lektion 2"},
+  { en:"partner",type:"n",de:"Partner",lesson:"Lektion 2"},
+  { en:"purpose",type:"n",de:"Grund",lesson:"Lektion 2"},
+  { en:"pyjamas",type:"n",de:"Pyjama",lesson:"Lektion 2"},
+  { en:"refrigerator",type:"n",de:"Kühlschrank",lesson:"Lektion 2"},
+  { en:"stay awake",type:"",de:"wachbleiben",lesson:"Lektion 2"},
+  { en:"whale-hunting",type:"n",de:"Walfang",lesson:"Lektion 2"},
+  // Lesson 3 – You should calm down!
+  { en:"balanced diet",type:"n",de:"ausgewogene Ernährung",lesson:"Lektion 3b"},
+  { en:"break a promise",type:"",de:"ein Versprechen brechen",lesson:"Lektion 3b"},
+  { en:"bully",type:"v",de:"drangsalieren",lesson:"Lektion 3b"},
+  { en:"calm down",type:"v",de:"(sich) beruhigen",lesson:"Lektion 3b"},
+  { en:"cheat",type:"v",de:"betrügen",lesson:"Lektion 3b"},
+  { en:"concentrate",type:"v",de:"konzentrieren",lesson:"Lektion 3b"},
+  { en:"fair",type:"adj",de:"fair",lesson:"Lektion 3b"},
+  { en:"firmly",type:"adv",de:"fest",lesson:"Lektion 3b"},
+  { en:"helpful",type:"adj",de:"hilfreich",lesson:"Lektion 3b"},
+  { en:"ignore",type:"v",de:"ignorieren",lesson:"Lektion 3b"},
+  { en:"keep a secret",type:"",de:"ein Geheimnis für sich behalten",lesson:"Lektion 3b"},
+  { en:"lie down",type:"v",de:"hinlegen",lesson:"Lektion 3b"},
+  { en:"make sure",type:"",de:"sicher zu stellen",lesson:"Lektion 3b"},
+  { en:"marks",type:"n",de:"Noten",lesson:"Lektion 3b"},
+  { en:"mood",type:"n",de:"Stimmung",lesson:"Lektion 3b"},
+  { en:"nicely",type:"adv",de:"freundlich",lesson:"Lektion 3b"},
+  { en:"panic",type:"v",de:"in Panik geraten",lesson:"Lektion 3b"},
+  { en:"(im)possible",type:"adj",de:"(un)möglich",lesson:"Lektion 3b"},
+  { en:"put on weight",type:"",de:"Gewicht zunehmen",lesson:"Lektion 3b"},
+  { en:"rapidly",type:"adv",de:"schnell",lesson:"Lektion 3b"},
+  { en:"revision",type:"n",de:"Lernen/Wiederholen",lesson:"Lektion 3b"},
+  { en:"sensible",type:"adj",de:"vernünftig",lesson:"Lektion 3b"},
+  { en:"sit down",type:"v",de:"hinsetzen",lesson:"Lektion 3b"},
+  { en:"slow down",type:"v",de:"langsamer fahren",lesson:"Lektion 3b"},
+  { en:"solve",type:"v",de:"lösen",lesson:"Lektion 3b"},
+  { en:"stressed",type:"adj",de:"gestresst sein",lesson:"Lektion 3b"},
+  { en:"tell lies",type:"",de:"Lügen erzählen",lesson:"Lektion 3b"},
+  { en:"turn down",type:"v",de:"leiser machen",lesson:"Lektion 3b"},
+  { en:"write down",type:"v",de:"aufschreiben",lesson:"Lektion 3b"},
+  // Lesson 4 – Discussing facts and opinions
+  { en:"against the law",type:"",de:"rechtswidrig",lesson:"Lektion 4b"},
+  { en:"aid",type:"n",de:"Entwicklungshilfe",lesson:"Lektion 4b"},
+  { en:"boil",type:"v",de:"abkochen",lesson:"Lektion 4b"},
+  { en:"cause",type:"v",de:"verursachen",lesson:"Lektion 4b"},
+  { en:"control",type:"n",de:"Kontrolle",lesson:"Lektion 4b"},
+  { en:"(in)correct",type:"adj",de:"falsch/richtig",lesson:"Lektion 4b"},
+  { en:"(in)credible",type:"adj",de:"unglaublich/glaubwürdig",lesson:"Lektion 4b"},
+  { en:"developing world",type:"n",de:"Entwicklungsländer",lesson:"Lektion 4b"},
+  { en:"dirty",type:"adj",de:"schmutzig",lesson:"Lektion 4b"},
+  { en:"drinking water",type:"n",de:"Trinkwasser",lesson:"Lektion 4b"},
+  { en:"electricity",type:"n",de:"Strom",lesson:"Lektion 4b"},
+  { en:"figure",type:"n",de:"Zahl",lesson:"Lektion 4b"},
+  { en:"greenhouse gas",type:"n",de:"Treibhausgas",lesson:"Lektion 4b"},
+  { en:"heating",type:"n",de:"Heizung",lesson:"Lektion 4b"},
+  { en:"however",type:"conj",de:"trotzdem",lesson:"Lektion 4b"},
+  { en:"(il)logical",type:"adj",de:"(un)logisch",lesson:"Lektion 4b"},
+  { en:"make a difference",type:"",de:"einen Unterschied machen",lesson:"Lektion 4b"},
+  { en:"on standby",type:"adv",de:"auf Standby",lesson:"Lektion 4b"},
+  { en:"(im)perfect",type:"adj",de:"mangelhaft/makellos",lesson:"Lektion 4b"},
+  { en:"policy",type:"n",de:"Politik",lesson:"Lektion 4b"},
+  { en:"(im)polite",type:"adj",de:"(un)höflich",lesson:"Lektion 4b"},
+  { en:"poverty",type:"n",de:"Armut",lesson:"Lektion 4b"},
+  { en:"price",type:"n",de:"Preis",lesson:"Lektion 4b"},
+  { en:"proper",type:"adj",de:"richtig",lesson:"Lektion 4b"},
+  { en:"proverb",type:"n",de:"Sprichwort",lesson:"Lektion 4b"},
+  { en:"remote",type:"adj",de:"abgelegen",lesson:"Lektion 4b"},
+  { en:"respect",type:"n",de:"Respekt",lesson:"Lektion 4b"},
+  { en:"respect",type:"v",de:"respektieren",lesson:"Lektion 4b"},
+  { en:"skill",type:"n",de:"Fähigkeit",lesson:"Lektion 4b"},
+  { en:"switch off",type:"v",de:"abschalten",lesson:"Lektion 4b"},
+  { en:"treat",type:"v",de:"behandeln",lesson:"Lektion 4b"},
+  { en:"(in)visible",type:"adj",de:"(un)sichtbar",lesson:"Lektion 4b"},
+  { en:"work for a living",type:"",de:"für den Lebensunterhalt arbeiten",lesson:"Lektion 4b"},
+  { en:"make friends",type:"",de:"Freundschaften schliessen",lesson:"Lektion 4b"},
+  // Culture
+  { en:"author",type:"n",de:"Autor/in",lesson:"Culture"},
+  { en:"biography",type:"n",de:"Biografie",lesson:"Culture"},
+  { en:"breath",type:"n",de:"Atemzug",lesson:"Culture"},
+  { en:"breathe",type:"v",de:"atmen",lesson:"Culture"},
+];
+
+const allVocab = [...oldVocab, ...newVocab];
+const builtInVocab = newVocab; // default: neue Wörter
+
+const typeLabels = { adj:"Adjektiv", n:"Nomen", v:"Verb", adv:"Adverb", prep:"Präposition", conj:"Konjunktion", "":"" };
+
+let activeVocab = newVocab; // default: neue Wörter
+let currentSet = 'new';
+let cards = [], currentIndex = 0, score = 0, streak = 0, history = [];
+let flipped = false, answered = false, animating = false;
+let importOpen = false;
+
+function selectSet(set) {
+  currentSet = set;
+  ['all','new','old'].forEach(s => document.getElementById('btn-'+s).classList.toggle('active', s === set));
+  const setVocab = set === 'all' ? allVocab : set === 'new' ? newVocab : oldVocab;
+  const labels = { all:'L2, L3b, L4b, Culture + Lektionen 3&4', new:'L2, L3b, L4b, Culture', old:'Lektion 3 & 4, Unit 3' };
+  document.getElementById('word-count-badge-start').innerHTML = `<strong>${setVocab.length}</strong> Wörter`;
+  document.getElementById('source-badge').textContent = labels[set];
+  // clear custom input so set picker wins
+  document.getElementById('vocab-input').value = '';
+  document.getElementById('word-count-live').textContent = '0 Wörter erkannt — eingebaute Wörter werden verwendet';
+}
+
+/* ── IMPORT LOGIC ── */
+function parseVocab(text) {
+  const lines = text.split('\n');
+  const result = [];
+  let hasErrors = false;
+
+  for (const raw of lines) {
+    const line = raw.trim();
+    if (!line) continue; // skip blank lines
+
+    // Support both | and = as separator
+    const parts = line.split(/\s*[|=]\s*/);
+    if (parts.length < 2) { hasErrors = true; continue; }
+
+    const de = parts[0].trim();
+    const en = parts[1].trim();
+    const lesson = parts[2] ? parts[2].trim() : '';
+
+    if (!de || !en) { hasErrors = true; continue; }
+
+    result.push({ de, en, type: '', lesson });
+  }
+
+  return { words: result, hasErrors };
+}
+
+function onInputChange() {
+  const text = document.getElementById('vocab-input').value;
+  const liveEl = document.getElementById('word-count-live');
+  const errEl  = document.getElementById('import-error');
+
+  if (!text.trim()) {
+    liveEl.textContent = '0 Wörter erkannt — eingebaute Wörter werden verwendet';
+    liveEl.style.color = 'var(--text-muted)';
+    errEl.classList.add('hidden');
+    selectSet(currentSet); // restore set picker badges
+    return;
+  }
+
+  const { words, hasErrors } = parseVocab(text);
+  liveEl.textContent = `${words.length} Wörter erkannt`;
+  liveEl.style.color = words.length > 0 ? 'var(--correct)' : 'var(--wrong)';
+  hasErrors ? errEl.classList.remove('hidden') : errEl.classList.add('hidden');
+  updateStartBadges(words, false);
+}
+
+function toggleImport() {
+  importOpen = !importOpen;
+  const box = document.getElementById('import-box');
+  const btn = document.getElementById('import-toggle-btn');
+  if (importOpen) {
+    box.classList.remove('hidden');
+    btn.style.background = 'var(--accent)';
+    btn.style.color = '#fff';
+    document.getElementById('vocab-input').focus();
+  } else {
+    closeImport();
+  }
+}
+
+function closeImport() {
+  importOpen = false;
+  document.getElementById('import-box').classList.add('hidden');
+  const btn = document.getElementById('import-toggle-btn');
+  btn.style.background = '';
+  btn.style.color = '';
+}
+
+function updateStartBadges(words, isBuiltIn) {
+  const countEl = document.getElementById('word-count-badge-start');
+  const srcEl   = document.getElementById('source-badge');
+  if (isBuiltIn) {
+    countEl.innerHTML = '<strong>92</strong> Wörter';
+    srcEl.textContent = 'Lektion 3 & 4, Unit 3';
+  } else {
+    countEl.innerHTML = `<strong>${words.length}</strong> Wörter`;
+    // collect unique lessons
+    const lessons = [...new Set(words.map(w => w.lesson).filter(Boolean))];
+    srcEl.textContent = lessons.length ? lessons.join(', ') : 'Eigene Wörter';
+  }
+}
+
+/* ── QUIZ LOGIC ── */
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function prepareCards() {
+  const text = document.getElementById('vocab-input').value;
+  if (text.trim()) {
+    const { words } = parseVocab(text);
+    activeVocab = words.length > 0 ? words : newVocab;
+  } else {
+    activeVocab = currentSet === 'all' ? allVocab : currentSet === 'new' ? newVocab : oldVocab;
+  }
+
+  cards = shuffle(activeVocab);
+  currentIndex = 0; score = 0; streak = 0; history = [];
+  flipped = false; answered = false; animating = false;
+}
+
+function showFront(card) {
+  document.getElementById('lang-pill').textContent = '🇩🇪 Deutsch';
+  document.getElementById('main-word').textContent = card.de;
+  document.getElementById('main-word').className   = 'main-word de-style';
+  document.getElementById('word-type').classList.add('hidden');
+  document.getElementById('translation-chip').classList.add('hidden');
+  document.getElementById('flip-hint').classList.remove('hidden');
+  document.getElementById('card').style.cursor = 'pointer';
+}
+
+function showBack(card) {
+  document.getElementById('lang-pill').textContent = card.lesson || '🇬🇧 Englisch';
+  document.getElementById('main-word').textContent = card.en;
+  document.getElementById('main-word').className   = 'main-word en-style';
+
+  const typeEl = document.getElementById('word-type');
+  const tl = typeLabels[card.type] || '';
+  typeEl.textContent = tl;
+  tl ? typeEl.classList.remove('hidden') : typeEl.classList.add('hidden');
+
+  const chipEl = document.getElementById('translation-chip');
+  chipEl.textContent = '= ' + card.de;
+  chipEl.classList.remove('hidden');
+
+  document.getElementById('flip-hint').classList.add('hidden');
+  document.getElementById('card').style.cursor = 'default';
+}
+
+function renderCard() {
+  const card  = cards[currentIndex];
+  const total = cards.length;
+
+  document.getElementById('progress-fill').style.width = `${(currentIndex / total) * 100}%`;
+  document.getElementById('progress-counter').textContent = `${currentIndex + 1} / ${total}`;
+
+  showFront(card);
+
+  const cardEl = document.getElementById('card');
+  cardEl.classList.remove('to-edge', 'from-edge', 'no-click');
+  flipped = false; answered = false; animating = false;
+
+  document.getElementById('flip-cta-btn').classList.remove('hidden');
+  document.getElementById('answer-row').classList.add('hidden');
+  document.getElementById('next-btn').classList.add('hidden');
+
+  document.getElementById('score-text').textContent = `${score} gewusst`;
+  renderDots();
+  updateStreak();
+}
+
+function flipCard() {
+  if (flipped || animating || answered) return;
+  animating = true;
+
+  const cardEl = document.getElementById('card');
+  cardEl.classList.add('no-click');
+  cardEl.classList.add('to-edge');
+
+  setTimeout(() => {
+    showBack(cards[currentIndex]);
+    cardEl.classList.remove('to-edge');
+    void cardEl.offsetWidth;
+    cardEl.classList.add('from-edge');
+
+    setTimeout(() => {
+      cardEl.classList.remove('from-edge');
+      flipped = true;
+      animating = false;
+      document.getElementById('flip-cta-btn').classList.add('hidden');
+      document.getElementById('answer-row').classList.remove('hidden');
+    }, 230);
+  }, 220);
+}
+
+function answer(knew) {
+  if (!flipped || answered) return;
+  answered = true;
+
+  if (knew) { score++; streak++; history.push('c'); }
+  else { streak = 0; history.push('w'); }
+
+  document.getElementById('answer-row').classList.add('hidden');
+  document.getElementById('next-btn').classList.remove('hidden');
+  document.getElementById('score-text').textContent = `${score} gewusst`;
+  renderDots();
+  updateStreak();
+}
+
+function nextCard() {
+  currentIndex++;
+  if (currentIndex >= cards.length) showResult();
+  else renderCard();
+}
+
+function renderDots() {
+  document.getElementById('score-dots').innerHTML =
+    history.slice(-12).map(h => `<div class="score-dot ${h}"></div>`).join('');
+}
+
+function updateStreak() {
+  document.getElementById('streak-num').textContent = streak;
+  document.getElementById('streak-display').className = streak >= 3 ? 'hot' : '';
+}
+
+function showResult() {
+  document.getElementById('quiz-screen').classList.add('hidden');
+  document.getElementById('progress-counter').classList.add('hidden');
+  document.getElementById('streak-display').classList.add('hidden');
+  document.getElementById('result-screen').classList.remove('hidden');
+
+  const total = cards.length, wrong = total - score;
+  const pct = Math.round((score / total) * 100);
+  document.getElementById('result-score').textContent = score;
+  document.getElementById('result-label').textContent = `von ${total} gewusst`;
+  document.getElementById('stat-correct').textContent = score;
+  document.getElementById('stat-wrong').textContent   = wrong;
+
+  let emoji, msg;
+  if (pct >= 90)      { emoji = '🎉'; msg = 'Ausgezeichnet!'; }
+  else if (pct >= 75) { emoji = '👏'; msg = 'Sehr gut!'; }
+  else if (pct >= 60) { emoji = '📚'; msg = 'Gut gemacht!'; }
+  else if (pct >= 45) { emoji = '💪'; msg = 'Weiter üben!'; }
+  else                { emoji = '🔁'; msg = 'Nochmal versuchen!'; }
+  document.getElementById('result-emoji').textContent = emoji;
+  document.getElementById('result-msg').textContent   = msg;
+
+  setTimeout(() => { document.getElementById('result-bar').style.width = `${pct}%`; }, 100);
+}
+
+function startQuiz() {
+  prepareCards();
+  if (cards.length === 0) return;
+  closeImport();
+  document.getElementById('start-screen').classList.add('hidden');
+  document.getElementById('quiz-screen').classList.remove('hidden');
+  document.getElementById('progress-counter').classList.remove('hidden');
+  document.getElementById('streak-display').classList.remove('hidden');
+  renderCard();
+}
+
+function restartQuiz() {
+  document.getElementById('result-screen').classList.add('hidden');
+  startQuiz();
+}
+
+// Keyboard shortcuts
+document.addEventListener('keydown', e => {
+  if (e.key === ' ' || e.key === 'ArrowUp') {
+    e.preventDefault();
+    if (!flipped) flipCard();
+  }
+  if (flipped && !answered) {
+    if (e.key === '1' || e.key === 'f' || e.key === 'ArrowLeft') answer(false);
+    if (e.key === '2' || e.key === 'r' || e.key === 'ArrowRight') answer(true);
+  }
+  if (answered && (e.key === 'Enter' || e.key === 'ArrowDown')) nextCard();
+});
+</script>
+
+</body></html>

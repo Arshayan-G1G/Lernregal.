@@ -1,0 +1,823 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style></head><body>
+<title>Bio Einleitung Lernpfad</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+/* Layout: eine Lese-Spalte wie ein Laborheft, Kapitel mit Check-Box am Ende, Prüfung als eigenes Blatt */
+:root{
+  --bg:#f2f5f1; --paper:#ffffff; --fg:#17221b; --muted:#5a685f; --line:#d6ded7;
+  --leaf:#2c7a4b; --leaf-soft:#e0eee5; --ink:#4a3fae; --ink-soft:#e8e6f7;
+  --ok:#1f7a45; --ok-bg:#dcf1e3; --bad:#b3322b; --bad-bg:#f8e1df;
+  --f-display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --f-body:"Atkinson Hyperlegible",ui-sans-serif,system-ui,sans-serif;
+  --f-mono:ui-monospace,"SF Mono",Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#111813; --paper:#18211b; --fg:#e4ece6; --muted:#9aa89f; --line:#2c3a31;
+  --leaf:#6cc791; --leaf-soft:#1d3326; --ink:#a99cff; --ink-soft:#26224a;
+  --ok:#6cd398; --ok-bg:#16301f; --bad:#ff8f86; --bad-bg:#3a1b19; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111813; --paper:#18211b; --fg:#e4ece6; --muted:#9aa89f; --line:#2c3a31;
+  --leaf:#6cc791; --leaf-soft:#1d3326; --ink:#a99cff; --ink-soft:#26224a;
+  --ok:#6cd398; --ok-bg:#16301f; --bad:#ff8f86; --bad-bg:#3a1b19; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:16px/1.6 var(--f-body);padding-inline:16px;padding-block:0 64px}
+.wrap{max-width:760px;margin:0 auto}
+header.top{padding-block:28px 8px}
+.eyebrow{font:700 12px/1 var(--f-body);letter-spacing:.12em;text-transform:uppercase;color:var(--leaf)}
+h1{font:800 clamp(34px,8vw,54px)/1 var(--f-display);margin:10px 0 12px;letter-spacing:-.02em;text-wrap:balance}
+h2{font:700 clamp(24px,5.5vw,32px)/1.1 var(--f-display);margin:0 0 14px;text-wrap:balance}
+h3{font:700 18px/1.3 var(--f-display);margin:22px 0 8px}
+p{margin:0 0 12px}
+.lead{color:var(--muted);max-width:60ch}
+nav.toc{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:10px;border-bottom:1px solid var(--line);display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-bottom:8px}
+nav.toc a{flex:none;font:700 13px/1 var(--f-body);color:var(--fg);text-decoration:none;padding:8px 11px;border:1px solid var(--line);border-radius:99px;background:var(--paper)}
+nav.toc a.exam{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+nav.toc a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+section.ch{padding-block:30px 10px;border-bottom:1px solid var(--line);scroll-margin-top:60px}
+.num{font:700 13px/1 var(--f-mono);color:var(--leaf);margin-bottom:8px;display:block}
+ul,ol{padding-left:20px;margin:0 0 12px}
+li{margin-bottom:4px}
+b,strong{font-weight:700}
+.key{background:var(--leaf-soft);padding:0 4px;border-radius:4px}
+.tbl{overflow-x:auto;margin:8px 0 16px;border:1px solid var(--line);border-radius:10px;background:var(--paper)}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:700 12px/1.2 var(--f-body);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:var(--bg)}
+tr:last-child td{border-bottom:0}
+td:first-child{font-weight:700;white-space:nowrap}
+.tip{border-left:4px solid var(--ink);background:var(--ink-soft);padding:10px 14px;border-radius:0 8px 8px 0;margin:12px 0}
+.tip b{color:var(--ink)}
+.warn{border-left:4px solid var(--bad);background:var(--bad-bg);padding:10px 14px;border-radius:0 8px 8px 0;margin:12px 0}
+.ladder{display:flex;flex-direction:column;gap:0;margin:8px 0 16px}
+.rung{display:grid;grid-template-columns:92px 1fr;gap:12px;padding:8px 0;border-bottom:1px dashed var(--line)}
+.rung .sz{font:700 13px/1.4 var(--f-mono);color:var(--leaf)}
+.rung div{min-width:0}
+.mnemo{font:800 clamp(26px,7vw,40px)/1 var(--f-display);letter-spacing:.06em;color:var(--leaf);display:flex;flex-wrap:wrap;gap:2px 10px;margin:8px 0}
+.mnemo span small{display:block;font:400 11px/1.2 var(--f-body);letter-spacing:0;color:var(--muted)}
+/* quiz */
+.quiz{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px;margin:20px 0 10px}
+.quiz>.qhead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:6px}
+.quiz>.qhead span{font:700 12px/1 var(--f-body);letter-spacing:.1em;text-transform:uppercase;color:var(--ink)}
+.quiz>.qhead output{font:700 13px var(--f-mono);color:var(--muted)}
+.q{padding-block:12px;border-top:1px solid var(--line)}
+.q:first-of-type{border-top:0}
+.q p.qt{font-weight:700;margin-bottom:8px}
+.opts{display:flex;flex-direction:column;gap:6px}
+.opt{text-align:left;font:inherit;font-size:15px;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:9px 12px;cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--ink)}
+.opt:disabled{cursor:default}
+.opt.right{background:var(--ok-bg);border-color:var(--ok);color:var(--fg)}
+.opt.wrong{background:var(--bad-bg);border-color:var(--bad);color:var(--fg)}
+.expl{font-size:14.5px;color:var(--muted);margin-top:8px}
+.expl b{color:var(--fg)}
+/* exam */
+#pruefung{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:20px 16px;margin-top:30px}
+.task{border-top:2px solid var(--fg);padding-block:16px 6px;margin-top:10px}
+.task h3{margin-top:0;display:flex;justify-content:space-between;gap:10px}
+.task h3 small{font:700 13px var(--f-mono);color:var(--muted);white-space:nowrap}
+.sub{margin:12px 0}
+.sub>p{margin-bottom:6px}
+textarea{width:100%;min-height:76px;font:inherit;font-size:15px;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px;resize:vertical}
+.chk{display:flex;gap:10px;align-items:flex-start;padding:7px 10px;border:1px solid var(--line);border-radius:10px;margin-bottom:6px;background:var(--bg);cursor:pointer}
+.chk input{margin-top:5px;accent-color:var(--ink)}
+.chk.right{background:var(--ok-bg);border-color:var(--ok)}
+.chk.wrong{background:var(--bad-bg);border-color:var(--bad)}
+.sol{margin-top:8px;padding:10px 12px;border-radius:10px;background:var(--leaf-soft);font-size:15px}
+.self{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;align-items:center;font-size:14px;color:var(--muted)}
+.self button,.btn{font:700 14px var(--f-body);border:1px solid var(--line);background:var(--bg);color:var(--fg);border-radius:99px;padding:7px 12px;cursor:pointer}
+.self button.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.btn.primary{background:var(--ink);color:var(--paper);border-color:var(--ink);padding:11px 18px;font-size:15px}
+.btnrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.result{margin-top:16px;padding:16px;border-radius:12px;background:var(--ink-soft)}
+.result .big{font:800 44px/1 var(--f-display);color:var(--ink)}
+#tiere{scroll-margin-top:60px}
+td.look{min-width:220px;font-size:14px;color:var(--muted)}
+.trainer .animal{font:800 clamp(26px,7vw,34px)/1.1 var(--f-display);color:var(--leaf);margin:6px 0 14px}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.fields label{display:flex;flex-direction:column;gap:4px;font:700 12px/1.2 var(--f-body);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);min-width:0}
+select{font:inherit;font-size:15px;font-weight:400;text-transform:none;letter-spacing:0;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px 10px;width:100%}
+select.right{border-color:var(--ok);background:var(--ok-bg)}
+select.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.fixmsg{font-size:13px;font-weight:700;text-transform:none;letter-spacing:0;color:var(--bad)}
+.fill{display:inline-block;min-width:4ch;border-bottom:2px solid var(--leaf);font-weight:700;color:var(--leaf);padding:0 2px}
+.mrow{display:grid;grid-template-columns:minmax(0,1fr) minmax(150px,230px);gap:6px 12px;align-items:center;padding-block:9px;border-top:1px solid var(--line);font-size:15px}
+.mrow>div{min-width:0}
+.msel{display:flex;flex-direction:column;gap:4px;min-width:0}
+@media (max-width:540px){.mrow{grid-template-columns:1fr}}
+#training h3{margin-top:30px}
+.oq p.qt{font-weight:700;margin-bottom:8px}
+footer{color:var(--muted);font-size:13px;padding-top:24px}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}.opt{transition:background .15s,border-color .15s}}
+</style>
+
+<div class="wrap">
+<header class="top">
+  <div class="eyebrow">GLF Biologie · 1. Klasse · Einleitung</div>
+  <h1>Bio Einleitung Lernpfad</h1>
+  <p class="lead">Das ganze Dossier in 8 Kapiteln. Nach jedem Kapitel ein kurzer Check, am Schluss eine Übungsprüfung im Stil der echten Ex. Die Fehler aus deiner alten Prüfung sind extra markiert.</p>
+</header>
+
+<nav class="toc" aria-label="Kapitel">
+  <a href="#k1">1 Leben</a><a href="#k2">2 Ebenen</a><a href="#k3">3 Organsysteme</a><a href="#k4">4 Fachgebiete</a><a href="#k5">5 Reiche</a><a href="#k6">6 Linné</a><a href="#k7">7 Stammbaum</a><a href="#tiere">Tiertabelle</a><a href="#k8">8 Homologie</a><a href="#k9">9 Evolution</a><a href="#training">Training</a><a href="#pruefung" class="exam">Prüfung</a>
+</nav>
+
+<!-- 1 -->
+<section class="ch" id="k1">
+<span class="num">KAPITEL 1</span>
+<h2>Was ist Leben?</h2>
+<p><b>Biologie</b> = bios (Leben) + logos (Lehre). Ein Lebewesen muss <b>alle</b> Lebensmerkmale gleichzeitig haben. Ein Auto hat «Stoffwechsel», ein Kristall «wächst», aber keins hat alle zusammen.</p>
+<h3>Die Lebensmerkmale</h3>
+<div class="tbl"><table>
+<tr><th>Merkmal</th><th>Was es heisst</th><th>Bsp. Euglena</th></tr>
+<tr><td>Aufbau aus Zellen</td><td>Zelle = kleinste lebensfähige Einheit. Es gibt Ein- und Vielzeller (nicht «Klein-/Grosszeller»). Alle Zellen haben einen ähnlichen Grundbauplan und enthalten Zellorganellen.</td><td>Besteht aus 1 Zelle (Zellplasma, Kern, Chloroplasten, Geissel)</td></tr>
+<tr><td>Stoffwechsel</td><td>Stoffaufnahme (Nahrung, Atemgase, Diffusion) → Umwandlung mit <b>Enzymen</b> in körpereigene Stoffe → Abfall wird <b>ausgeschieden</b></td><td>Photosynthese im Licht, im Dunkeln Nahrung aufnehmen + verdauen; Zellatmung für Energie</td></tr>
+<tr><td>Wachstum & Entwicklung</td><td><b>Aktive</b>, <b>planmässige</b> Prozesse (Erbinfo). Durch Zellteilung, Zellwachstum und programmierten Zelltod (Apoptose). Führt meist zu einer <b>Gestaltänderung</b>.</td><td>Zelle wird grösser durch Stoffwechsel</td></tr>
+<tr><td>Fortpflanzung</td><td>Grund: der <b>Tod</b>. Asexuell (Ausläufer, Zweiteilung, Sporen) oder sexuell (Befruchtung, Verschmelzung von Gameten → Neukombination von Erbmaterial → Evolution & Vielfalt)</td><td>Längsteilung bei artspezifischer Grösse</td></tr>
+<tr><td>Reizbarkeit</td><td>Reize aufnehmen (Sinnesorgane), verarbeiten (Gehirn), reagieren (Bewegung, Farb-, Laut-, Duftänderung)</td><td>Augenfleck + Fotorezeptor → schwimmt zum Licht</td></tr>
+<tr><td>Ordnung</td><td>Lebewesen sind hoch geordnet, in Organisationsebenen aufgebaut</td><td>–</td></tr>
+<tr><td>Selbstregulation</td><td>Selbst regulierte biochemische Reaktionen, Kompartimentierung der Zelle (Organellen)</td><td>–</td></tr>
+</table></div>
+<div class="tip"><b>Zusammenfassung zum Lernen:</b> Leben ist aus Zellen aufgebaut, betreibt Stoffwechsel, wächst und entwickelt sich, pflanzt sich fort, ist reizbar, geordnet und reguliert sich selbst.</div>
+<div class="warn"><b>Aus deiner alten Prüfung:</b> Bei «Beispiel der unbelebten Umwelt» genau sein. Nicht nur «Auto», sondern: <i>Ein Auto nimmt Benzin auf und stösst Abgase aus</i> (wie Stoffwechsel, aber ohne Zellen und Wachstum). Weitere gute Beispiele: Kristall wächst · Feuer «vermehrt» sich · Thermostat reagiert auf Temperatur.</div>
+<div class="quiz" data-quiz="k1"></div>
+</section>
+
+<!-- 2 -->
+<section class="ch" id="k2">
+<span class="num">KAPITEL 2</span>
+<h2>Organisationsebenen & Elemente</h2>
+<p>Vom Kleinsten zum Grössten. Grössen sind prüfungsrelevant.</p>
+<div class="ladder">
+  <div class="rung"><span class="sz">0,1 nm</span><div><b>Atome</b> · z.B. ein O-Atom</div></div>
+  <div class="rung"><span class="sz">~0,1–1 nm</span><div><b>Kleine Moleküle</b> · z.B. Wasser (H₂O). Grosse Moleküle (Proteine, DNA/RNA) sind über 10 nm.</div></div>
+  <div class="rung"><span class="sz">1–10 µm</span><div><b>Zellorganellen</b> · Mitochondrien, Chloroplasten (Ribosomen nur ca. 15–30 nm)</div></div>
+  <div class="rung"><span class="sz">~100 µm</span><div><b>Zellen</b> · Hautzelle, rote Blutkörperchen, Muskel-, Knorpel-, Sinneszelle</div></div>
+  <div class="rung"><span class="sz">mm–cm</span><div><b>Gewebe</b> · 4 Grundgewebe: Deckgewebe (Häute), Binde-/Stützgewebe, Muskelgewebe, Nervengewebe</div></div>
+  <div class="rung"><span class="sz">cm–dm</span><div><b>Organe</b> · aus allen 4 Gewebetypen. Lunge, Darm, Herz, Gehirn</div></div>
+  <div class="rung"><span class="sz">dm–m</span><div><b>Organsysteme</b> · Atmungstrakt, Nervensystem, Verdauung, Urogenitaltrakt, Skelett</div></div>
+  <div class="rung"><span class="sz">dm–m</span><div><b>Organismus</b> · funktionelle Ganzheit aller Organsysteme = Lebewesen</div></div>
+</div>
+<h3>Elemente im Körper</h3>
+<p>Über 95 % des Körpers bestehen aus <b>Sauerstoff (O), Kohlenstoff (C), Wasserstoff (H)</b> und <b>Stickstoff (N)</b>.</p>
+<div class="tbl"><table><tr><th>Element</th><th>Anteil am Gewicht</th></tr>
+<tr><td>Sauerstoff O</td><td>~65 % (am häufigsten, wegen Wasser)</td></tr>
+<tr><td>Kohlenstoff C</td><td>~18–20 %</td></tr>
+<tr><td>Wasserstoff H</td><td>~10 %</td></tr>
+<tr><td>Stickstoff N</td><td>~3 %</td></tr></table></div>
+<div class="warn"><b>Fehler alte Prüfung:</b> Das häufigste Element ist <b>Sauerstoff</b>, nicht Kohlenstoff. Und Stickstoff nicht vergessen.</div>
+<div class="quiz" data-quiz="k2"></div>
+</section>
+
+<!-- 3 -->
+<section class="ch" id="k3">
+<span class="num">KAPITEL 3</span>
+<h2>Die Organsysteme des Menschen</h2>
+<div class="tbl"><table>
+<tr><th>System</th><th>Besteht aus</th><th>Wichtige Aufgaben</th></tr>
+<tr><td>Haut</td><td>Oberhaut, Schleimhaut, Hautanhangsgebilde (Haare, Nägel, Drüsen)</td><td>Regulation Körpertemperatur · Schutz · Sekretion (Schweiss, Talg) · Synthese Vitamin D · Sinnesorgan (Tastsinn)</td></tr>
+<tr><td>Bewegungsapparat</td><td>Skelett (Knochen, Gelenke), Skelettmuskulatur, Sehnen & Bänder</td><td>Stütze & Bewegung · Bildung von Blutzellen · Speicher von Mineralstoffen · Produktion von Wärme</td></tr>
+<tr><td>Nervensystem</td><td>ZNS (Gehirn & Rückenmark), PNS, vegetatives NS</td><td>Aufnahme von Reizen · schnelle Steuerung · Verarbeitung/Speicherung · Sitz des Bewusstseins</td></tr>
+<tr><td>Hormonsystem</td><td>Alle Hormondrüsen, hormonbildende Gewebe</td><td>Langsame Steuerung (Wachstum, Stoffwechsel, Fortpflanzung)</td></tr>
+<tr><td>Immunsystem</td><td>Lymphatische Organe, weisse Blutkörperchen</td><td>Reinigung (Blut, Lymphe) · Bekämpfung von Erregern · Aufbau von Immunität</td></tr>
+<tr><td>Atmungssystem</td><td>Atemwege (Nase, Rachen, Luftröhre, Bronchien), Lunge</td><td>Gasaustausch · Aufnahme O₂ · Abgabe CO₂ · Säure-Base-Gleichgewicht</td></tr>
+<tr><td>Herz-Kreislauf</td><td>Herz, Blut- & Lymphgefässe, Blut</td><td>Transport (O₂, CO₂, Nährstoffe, Hormone) · Regulation Temperatur · Wundverschluss</td></tr>
+<tr><td>Verdauungstrakt</td><td>Mund bis Darm + Leber, Gallenblase, Pankreas</td><td>Nährstoffe zerlegen & aufnehmen · Sekretion von Verdauungssäften · Entgiftung (Leber)</td></tr>
+<tr><td>Harntrakt</td><td>Nieren, Harnleiter, Harnblase, Harnröhre</td><td>Regulation Wasser/Salz · Säure-Base · Blutdruck · Urin bilden & ausscheiden</td></tr>
+<tr><td>Fortpflanzung</td><td>♂ Hoden, Nebenhoden, Prostata, Penis · ♀ Eierstöcke, Eileiter, Gebärmutter, Scheide</td><td>Arterhaltung · Libido (Sexualtrieb)</td></tr>
+</table></div>
+<div class="quiz" data-quiz="k3"></div>
+</section>
+
+<!-- 4 -->
+<section class="ch" id="k4">
+<span class="num">KAPITEL 4</span>
+<h2>Fachgebiete der Biologie</h2>
+<div class="tbl"><table>
+<tr><th>Name</th><th>untersucht …</th><th>Beispiel</th></tr>
+<tr><td>Morphologie</td><td>äussere Form</td><td>Flossen Fisch vs. Delphin</td></tr>
+<tr><td>Anatomie</td><td>inneren Bau, Lage der Organe</td><td>Sektion des Herzens</td></tr>
+<tr><td>Physiologie</td><td>Funktionen der Organe</td><td>Funktion der Leber</td></tr>
+<tr><td>Genetik</td><td>Vererbung (Vererbungslehre)</td><td>Erbkrankheiten</td></tr>
+<tr><td>Phylogenie</td><td>Stammesgeschichte (Evolution)</td><td>Evolution des Menschen</td></tr>
+<tr><td>Ökologie</td><td>Lebewesen ↔ Umwelt</td><td>Umweltgifte</td></tr>
+<tr><td>Ethologie</td><td>Verhalten (Verhaltenslehre)</td><td>Balzverhalten</td></tr>
+<tr><td>Biotechnologie</td><td>wirtschaftliche Nutzung</td><td>Bierherstellung</td></tr>
+<tr><td>Bionik / Biotechnik</td><td>Statik & Bewegung</td><td>Bienenwaben</td></tr>
+<tr><td>Botanik</td><td>Pflanzen (Pflanzenkunde)</td><td>Aufbau der Blüte</td></tr>
+<tr><td>Zoologie</td><td>Tiere (Tierkunde)</td><td>Bau der Wirbeltiere</td></tr>
+<tr><td>Mikrobiologie</td><td>Mikroorganismen</td><td>Antibiotika aus Pilzen</td></tr>
+<tr><td>Ontogenese</td><td>Entwicklung eines Individuums (Keimesentwicklung)</td><td>Embryonalentwicklung</td></tr>
+</table></div>
+<div class="tip"><b>Merktrick:</b> <i>Phylo</i>genie = Stamm (ganze Linie), <i>Onto</i>genese = Einzelwesen. <i>Morpho</i> = Form aussen, <i>Ana</i>tomie = aufschneiden, innen.</div>
+<div class="quiz" data-quiz="k4"></div>
+</section>
+
+<!-- 5 -->
+<section class="ch" id="k5">
+<span class="num">KAPITEL 5</span>
+<h2>Domänen & die 5 Reiche</h2>
+<p><b>3 Domänen:</b> Bakterien, Archaeen (beide = Prokaryoten, <b>kein</b> Zellkern) und Eukaryoten (<b>mit</b> Zellkern).</p>
+<p><b>5 Reiche</b> von einfach nach komplex: <span class="key">Prokaryoten → Protisten → Pilze → Pflanzen → Tiere</span></p>
+<div class="tbl"><table>
+<tr><th>Reich</th><th>Zellzahl</th><th>Kern</th><th>Zellwand</th><th>Fortpflanzung</th><th>Bsp.</th></tr>
+<tr><td>Prokaryoten</td><td>einzellig</td><td>nein</td><td>ja (Murein)</td><td>asexuell (Teilung)</td><td>E. coli, methanogene Bakterien</td></tr>
+<tr><td>Protisten</td><td>ein- bis wenigzellig</td><td>ja</td><td>teils</td><td>meist asexuell (Teilung)</td><td>Amöbe, Euglena</td></tr>
+<tr><td>Pilze</td><td>ein- bis vielzellig</td><td>ja</td><td>ja (Chitin)</td><td>asexuell (Sporen) + sexuell</td><td>Champignon, Hefe</td></tr>
+<tr><td>Pflanzen</td><td>vielzellig</td><td>ja</td><td>ja (Cellulose)</td><td>sexuell + asexuell</td><td>Tanne</td></tr>
+<tr><td>Tiere</td><td>vielzellig</td><td>ja</td><td>nein</td><td>sexuell (selten asexuell)</td><td>Wolf</td></tr>
+</table></div>
+<div class="warn"><b>Fehler alte Prüfung (Aufgabe 3):</b> Die 5 Reiche sind <b>nicht</b> «Pilze, Pflanzen, Tiere, Archaeen, Bakterien». Archaeen und Bakterien sind zusammen <b>ein</b> Reich (Prokaryoten). Die Protisten fehlten. Und Tiere haben <b>keine</b> Zellwand.</div>
+<div class="quiz" data-quiz="k5"></div>
+</section>
+
+<!-- 6 -->
+<section class="ch" id="k6">
+<span class="num">KAPITEL 6</span>
+<h2>Linné & DRASKOFGA</h2>
+<p>Carl von Linné (18. Jh., schwedischer Arzt & Botaniker) wollte Ordnung in die Vielfalt bringen. Er glaubte <b>nicht</b> an Evolution: Arten waren für ihn unveränderliche Schöpfungen Gottes. Ironie: Sein System half später Darwin.</p>
+<h3>Hauptmerkmal 1: Ordnungssystem</h3>
+<div class="mnemo">
+<span>D<small>Domäne</small></span><span>R<small>Reich</small></span><span>A<small>Abteilung</small></span><span>S<small>Stamm</small></span><span>K<small>Klasse</small></span><span>O<small>Ordnung</small></span><span>F<small>Familie</small></span><span>G<small>Gattung</small></span><span>A<small>Art</small></span>
+</div>
+<h3>Hauptmerkmal 2: Binäre Nomenklatur</h3>
+<p>Jede Art hat einen zweiteiligen wissenschaftlichen Namen: <b>1. Wort = Gattung</b> (gross), <b>2. Wort = Artname</b> (klein). Beide kursiv. Zweck: eindeutig und international verständlich.</p>
+<p>Bsp.: <i>Felis silvestris</i> = Wildkatze · <i>Homo sapiens</i> = Mensch · <i>Echinococcus multilocularis</i> = Fuchsbandwurm</p>
+<div class="tbl"><table>
+<tr><th>Stufe</th><th>Hauskatze</th><th>Mensch</th></tr>
+<tr><td>Domäne</td><td colspan="2">Eukarya</td></tr>
+<tr><td>Reich</td><td colspan="2">Animalia (Tiere)</td></tr>
+<tr><td>Abteilung</td><td colspan="2">Eumetazoa (Gewebetiere)</td></tr>
+<tr><td>Stamm</td><td colspan="2">Chordata (Chordatiere), Unterstamm Wirbeltiere</td></tr>
+<tr><td>Klasse</td><td colspan="2">Mammalia (Säugetiere)</td></tr>
+<tr><td>Ordnung</td><td>Carnivora (Raubtiere)</td><td>Primates (Primaten)</td></tr>
+<tr><td>Familie</td><td>Felidae (Katzenartige)</td><td>Hominidae (Menschenaffen)</td></tr>
+<tr><td>Gattung</td><td><i>Felis</i></td><td><i>Homo</i></td></tr>
+<tr><td>Art</td><td><i>Felis domestica</i></td><td><i>Homo sapiens</i></td></tr>
+</table></div>
+<div class="warn"><b>Fehler alte Prüfung (Aufgabe 2):</b> Fuchsbandwurm richtig: Eukaryoten → Tiere → Gewebetiere → Stamm <b>Plattwürmer</b> → Klasse <b>Bandwürmer</b> → Gattung <i>Echinococcus</i> → Art <i>E. multilocularis</i>. Kein Gliederfüsser! Und Reihenfolge D-R-A-S-K einhalten.</div>
+<h3>Wale & Artenzahl</h3>
+<p>Wale sind <b>Säugetiere</b>. Fischähnlich: Flossen, stromlinienförmiger Körper, leben im Wasser (Anpassung = Konvergenz). Klar keine Fische: Lungenatmung, säugen ihre Jungen, lebendgebärend, gleichwarm, waagrechte Schwanzflosse.</p>
+<p>Beschrieben sind ca. <b>1,5–2 Mio. Arten</b>. Geschätzt gibt es insgesamt viele Millionen mehr (Schätzungen meist um 8–10 Mio., teils höher). Frag am besten nach, welche Zahl euer Lehrer will.</p>
+<div class="quiz" data-quiz="k6"></div>
+</section>
+
+<!-- 7 -->
+<section class="ch" id="k7">
+<span class="num">KAPITEL 7</span>
+<h2>Stammbaum der Tiere</h2>
+<p>Gruppen von unten (einfach) nach oben:</p>
+<ul>
+<li><b>Ohne echte Gewebe:</b> Schwämme</li>
+<li><b>Ohne sekundäre Leibeshöhle:</b> Hohltiere (Nesseltiere, Rippenquallen), Plattwürmer (Bandwürmer, Saugwürmer), Rundwürmer (Fadenwürmer)</li>
+<li><b>Mit sekundärer Leibeshöhle, Urmünder:</b> Weichtiere, Ringelwürmer, Gliederfüsser</li>
+<li><b>Mit sekundärer Leibeshöhle, Neumünder:</b> Stachelhäuter, Chordatiere</li>
+</ul>
+<h3>Die 5 Stämme mit sekundärer Leibeshöhle + Klassen</h3>
+<div class="tbl"><table>
+<tr><th>Stamm</th><th>Klassen</th></tr>
+<tr><td>Chordatiere</td><td>Fische, Amphibien, Reptilien, Vögel, Säugetiere (= Wirbeltiere)</td></tr>
+<tr><td>Stachelhäuter</td><td>Seesterne, Seeigel</td></tr>
+<tr><td>Weichtiere</td><td>Schnecken, Muscheln, Kopffüsser</td></tr>
+<tr><td>Ringelwürmer</td><td>Gürtelwürmer (Wenigborster, Egel)</td></tr>
+<tr><td>Gliederfüsser</td><td>Insekten, Krebstiere, Spinnentiere, Vielfüsser, Hundertfüsser</td></tr>
+</table></div>
+<h3 id="tiere">Tiertabelle: die 20 Prüfungstiere</h3>
+<p>Eins dieser Tiere kommt an der Prüfung. Ordnung und Familie lässt man weg. A = Abteilung: <b>UM</b> = Urmünder, <b>NM</b> = Neumünder (wie auf deinem Lösungsblatt). Du musst auch wissen, wie die Tiere aussehen, darum die letzte Spalte.</p>
+<div class="tbl"><table id="animalTable"><thead><tr><th>Art</th><th>D</th><th>R</th><th>A</th><th>Stamm</th><th>Klasse</th><th>Gattung</th><th>So sieht es aus</th></tr></thead><tbody></tbody></table></div>
+<h3>Tier-Trainer</h3>
+<p>Zufälliges Tier aus der Tabelle. Alle Stufen auswählen, dann prüfen. Geht so lange weiter, bis du alle 20 durch hast.</p>
+<div class="quiz trainer" id="trainer"></div>
+<div class="tip"><b>Fallen:</b> Tintenfisch ist kein Fisch (Weichtier). Kellerassel ist kein Insekt (Krebstier). Milbe & Zecke sind Spinnentiere (8 Beine). Spinnen 8 Beine, Insekten 6.</div>
+<div class="quiz" data-quiz="k7"></div>
+</section>
+
+<!-- 8 -->
+<section class="ch" id="k8">
+<span class="num">KAPITEL 8</span>
+<h2>Homologie vs. Analogie</h2>
+<div class="tbl"><table>
+<tr><th></th><th>Homologie</th><th>Analogie</th></tr>
+<tr><td>Ähnlichkeit</td><td>gleicher <b>Bauplan</b> (anatomisch)</td><td>gleiche <b>Funktion</b></td></tr>
+<tr><td>Ursache</td><td>gemeinsame <b>Abstammung</b></td><td>unabhängig entwickelt (Anpassung, Konvergenz)</td></tr>
+<tr><td>Aussehen</td><td>kann ganz verschieden sein</td><td>sieht oft ähnlich aus</td></tr>
+<tr><td>Beispiel</td><td>Vordergliedmassen der Wirbeltiere (Arm, Flügel, Flosse)</td><td>Vogelflügel vs. Insektenflügel</td></tr>
+</table></div>
+<p>Stammbäume dürfen nur auf Basis von <b>homologen</b> Ähnlichkeiten erstellt werden.</p>
+<p><b>Homologie erkennen an:</b> 1. anatomischer Ähnlichkeit (Schädel Mensch/Schimpanse) · 2. Embryonalentwicklung · 3. Lage der Organe.</p>
+<p>Je mehr homologe Teile, desto näher verwandt. Konvergenz (Anpassung an gleiche Umwelt) kann Homologien verschleiern.</p>
+<p><b>Ziele der Systematik:</b> Arten auseinanderhalten · in Kategorien einteilen · Merkmale beschreiben · Benennung (Nomenklatur) · seit Darwin: Evolution aufzeigen.</p>
+<h3>Die Flugtier-Aufgabe (alte Prüfung, Aufgabe 4)</h3>
+<p><b>Vogelflügel-Knochen:</b> Oberarmknochen → Elle & Speiche → Handwurzel/Mittelhand (verwachsen) → Fingerknochen.</p>
+<p><b>Knochen:</b> Fledermaus, Flugsaurier und Flugfrosch spannen ihre Fläche mit Knochen der <b>Gliedmassen</b> (Arm-/Hand-/Fingerknochen). Das ist der gleiche Wirbeltier-Bauplan wie beim Vogel → <b>homolog</b>. Der Flugdrache spannt seine Fläche mit <b>Rippen</b> → <b>analog</b>.</p>
+<p><b>Flächen:</b> Beim Vogel tragen <b>Federn</b>. Bei allen anderen ist es <b>Haut</b> (Flughaut, Schwimmhäute, Hautsegel). Gleiche Funktion, anderer Aufbau → alle Flächen <b>analog</b>.</p>
+<div class="warn"><b>Deine alte Begründung</b> («Knochen verläuft aussen») war zu ungenau. Immer so argumentieren: <i>Gleicher Bauplan / gleiche Knochen = homolog. Nur gleiche Funktion, anderer Bau = analog.</i></div>
+<div class="quiz" data-quiz="k8"></div>
+</section>
+
+<!-- 9 -->
+<section class="ch" id="k9">
+<span class="num">KAPITEL 9</span>
+<h2>Evolution: Darwin vs. Lamarck</h2>
+<p>Charles Darwin, 1859, «On the Origin of Species». Zwei Anliegen: 1. Arten stammen von gemeinsamen Vorfahren ab (gemeinsame Abstammung mit allmählicher Abänderung). 2. Mechanismus: <b>natürliche Selektion</b>.</p>
+<h3>Darwins Gedankenkette</h3>
+<ol>
+<li>Populationen erzeugen viel mehr Nachkommen als der Lebensraum versorgen kann.</li>
+<li>Trotzdem bleiben Populationen meist stabil.</li>
+<li>Ressourcen (Nahrung, Platz) sind begrenzt.</li>
+</ol>
+<p>→ <b>Struggle for life:</b> ständiger <span class="fill">Konkurrenzkampf</span>, nur ein <span class="fill">Bruchteil</span> der Nachkommen überlebt.</p>
+<ol start="4">
+<li>Keine zwei Individuen sind gleich (Variation).</li>
+<li>Ein Grossteil dieser Merkmale ist vererbt.</li>
+</ol>
+<p>→ <b>Survival of the fittest:</b> Überleben ist nicht nur <span class="fill">Zufall</span>, sondern hängt von den <span class="fill">Erbanlagen</span> ab. Die am besten angepassten Individuen hinterlassen mehr <span class="fill">Nachkommen</span>.</p>
+<p>→ <b>Natural selection:</b> Vorteilhafte Merkmale häufen sich über viele Generationen an. Fitness = Fortpflanzungserfolg. Die Mutationen entstehen <b>zufällig</b>, die Selektion «prüft» sie nur.</p>
+<div class="tbl"><table>
+<tr><th></th><th>Lamarck</th><th>Darwin</th></tr>
+<tr><td>Variation ist</td><td><b>acquired</b> (erworben)</td><td><b>inherited</b> (vererbt)</td></tr>
+<tr><td>Giraffe</td><td>streckt sich → Hals wird länger → wird vererbt</td><td>Giraffen sind zufällig verschieden gross → grosse fressen mehr → mehr Nachkommen → mehr Gene für Grösse</td></tr>
+<tr><td>Status</td><td>widerlegt (Wachstum ≠ Evolution)</td><td>bis heute nicht widerlegt</td></tr>
+</table></div>
+<div class="warn"><b>Falle:</b> «Schlecht angepasste Individuen bringen <b>niemals</b> Nachkommen hervor» ist <b>nicht</b> Darwin. Sie haben nur <b>weniger</b> Nachkommen.</div>
+<div class="quiz" data-quiz="k9"></div>
+</section>
+
+<!-- TRAINING -->
+<section class="ch" id="training">
+<span class="num">EXTRA</span>
+<h2>Training: mehr Übungsaufgaben</h2>
+<p class="lead">Gemischt aus dem ganzen Dossier, mit neuen Beispielen statt denen aus dem Blatt. Mit «Neu mischen» kommen andere Fragen in anderer Reihenfolge.</p>
+
+<h3>Wahr oder falsch?</h3>
+<div class="quiz" id="wf"></div>
+<div class="btnrow"><button class="btn" type="button" id="wfNew">10 neue Aussagen</button></div>
+
+<h3>Welches Fachgebiet?</h3>
+<p>Neue Beispiele. Welches Fachgebiet beschäftigt sich mit dieser Frage?</p>
+<div class="quiz" data-match="fach"></div>
+
+<h3>Welches Organsystem?</h3>
+<div class="quiz" data-match="organ"></div>
+
+<h3>Organisationsebenen ordnen</h3>
+<div class="quiz" data-match="ebenen"></div>
+
+<h3>Welche Grösse?</h3>
+<div class="quiz" data-match="groesse"></div>
+
+<h3>Welches Reich?</h3>
+<p>Achtung, ein paar Fallen sind dabei.</p>
+<div class="quiz" data-match="reich"></div>
+
+<h3>Welche Klasse? Merkmale erkennen</h3>
+<div class="quiz" data-match="klasse"></div>
+
+<h3>Homolog oder analog?</h3>
+<div class="quiz" data-match="homo"></div>
+
+<h3>Lückentext Darwin</h3>
+<div class="quiz" data-match="darwin"></div>
+
+<h3>Offene Fragen wie an der Prüfung</h3>
+<p>Zuerst selbst aufschreiben, dann die Lösung anschauen.</p>
+<div id="openq"></div>
+</section>
+
+<!-- EXAM -->
+<section id="pruefung">
+<div class="eyebrow" style="color:var(--ink)">Übungsprüfung · ca. 30 Min</div>
+<h2 style="margin-top:8px">Ex «Einführung Biologie»</h2>
+<p class="lead">Ohne Spicken lösen. Multiple Choice wird automatisch korrigiert. Bei offenen Fragen: Antwort schreiben, Lösung zeigen, dann ehrlich selbst bewerten. «Neue Prüfung» gibt jedes Mal andere Fragen und ein anderes Tier.</p>
+<div id="exam"></div>
+<div class="btnrow"><button class="btn primary" id="grade" type="button">Prüfung auswerten</button><button class="btn" id="reset" type="button">Neue Prüfung</button></div>
+<div class="result" id="result" hidden></div>
+</section>
+
+<footer>Basiert auf deinem Dossier «Einleitung Biologie» (GLF Biologie 1. Klasse) und der alten Ex. Bei Abweichungen gilt, was dein Lehrer im Unterricht gesagt hat.</footer>
+</div>
+
+<script>
+const ANIMALS=[
+{n:"Auster",a:"Urmünder",s:"Weichtiere",k:"Muscheln",g:"Ostrea",look:"Raue, unregelmässige Schale aus zwei Klappen, sitzt fest auf Felsen im Meer."},
+{n:"Weinbergschnecke",a:"Urmünder",s:"Weichtiere",k:"Schnecken",g:"Helix",look:"Grosses braunes Spiralhaus, schleimiger Kriechfuss, 4 Fühler (Augen auf den langen)."},
+{n:"Tintenfisch",a:"Urmünder",s:"Weichtiere",k:"Kopffüsser",g:"Sepia",look:"Ovaler Körper mit Flossensaum, grosse Augen, 8 Arme + 2 lange Fangarme, stösst Tinte aus."},
+{n:"Blutegel",a:"Urmünder",s:"Ringelwürmer",k:"Gürtelwürmer",g:"Hirudo",look:"Flacher, geringelter, dunkler Wurm mit Saugnapf vorne und hinten. Saugt Blut."},
+{n:"Flusskrebs",a:"Urmünder",s:"Gliederfüsser",k:"Krebstiere",g:"Astacus",look:"Harter Panzer, 10 Beine, vorne zwei grosse Scheren, lange Fühler, Schwanzfächer."},
+{n:"Kellerassel",a:"Urmünder",s:"Gliederfüsser",k:"Krebstiere",g:"Porcellio",look:"Grau, flach-oval, Rücken aus Panzerplatten, 14 Beine. Lebt feucht unter Steinen."},
+{n:"Honigbiene",a:"Urmünder",s:"Gliederfüsser",k:"Insekten",g:"Apis",look:"6 Beine, 4 Flügel, Kopf-Brust-Hinterleib, braun-gelb gestreift und behaart."},
+{n:"Milbe",a:"Urmünder",s:"Gliederfüsser",k:"Spinnentiere",g:"–",look:"Winzig (oft unter 1 mm), rundlicher Körper ohne sichtbare Gliederung, 8 Beine."},
+{n:"Gemeiner Holzbock",a:"Urmünder",s:"Gliederfüsser",k:"Spinnentiere",g:"Ixodes",look:"Zecke: flach, rotbraun, 8 Beine. Saugt Blut und schwillt dabei kugelig an."},
+{n:"Weberknecht",a:"Urmünder",s:"Gliederfüsser",k:"Spinnentiere",g:"Phalangium",look:"Kleiner runder Körper (ohne Taille) mit 8 extrem langen, dünnen Beinen."},
+{n:"Schwarze Witwe",a:"Urmünder",s:"Gliederfüsser",k:"Spinnentiere",g:"Latrodectus",look:"Glänzend schwarze Spinne, rote Sanduhr-Zeichnung auf dem Bauch, 8 Beine. Giftig."},
+{n:"Schnurfüsser",a:"Urmünder",s:"Gliederfüsser",k:"Vielfüsser",g:"Julus",look:"Langer, runder, dunkler Körper mit sehr vielen Beinen (2 Paar pro Segment). Rollt sich spiralig ein."},
+{n:"Spulwurm",a:"ohne sek. Leibeshöhle",s:"Rundwürmer",k:"Fadenwürmer",g:"Ascaris",look:"Weiss-rosa, rund und glatt (nicht geringelt), bis ca. 30 cm lang. Lebt als Parasit im Darm."},
+{n:"Seeigel",a:"Neumünder",s:"Stachelhäuter",k:"Seeigel",g:"Echinus",look:"Kugelige Kalkschale, rundherum mit Stacheln bedeckt. Lebt im Meer."},
+{n:"Bachforelle",a:"Neumünder",s:"Chordatiere",k:"Fische",g:"Salmo",look:"Schlanker Fisch mit roten und schwarzen Punkten, kleine Fettflosse vor dem Schwanz."},
+{n:"Geburtshelferkröte",a:"Neumünder",s:"Chordatiere",k:"Amphibien",g:"Alytes",look:"Kleine graue Kröte. Das Männchen trägt die Eischnüre um die Hinterbeine gewickelt."},
+{n:"Gelbbauchunke",a:"Neumünder",s:"Chordatiere",k:"Amphibien",g:"Bombina",look:"Oben grau-braun und warzig, Bauch leuchtend gelb mit schwarzen Flecken. Herzförmige Pupille."},
+{n:"Ringelnatter",a:"Neumünder",s:"Chordatiere",k:"Reptilien",g:"Natrix",look:"Graugrüne Schlange mit zwei gelben Halbmonden am Hinterkopf. Ungiftig."},
+{n:"Pirol",a:"Neumünder",s:"Chordatiere",k:"Vögel",g:"Oriolus",look:"Singvogel. Männchen leuchtend gelb mit schwarzen Flügeln, Weibchen grünlich."},
+{n:"Buckelwal",a:"Neumünder",s:"Chordatiere",k:"Säugetiere",g:"Megaptera",look:"Riesiger Wal mit sehr langen Brustflossen, Höckern am Kopf und kleinem Buckel vor der Rückenflosse."}
+];
+const ABBR={"Urmünder":"UM","Neumünder":"NM","ohne sek. Leibeshöhle":"ohne sek. LH"};
+const deSort=a=>a.sort((x,y)=>x.localeCompare(y,"de"));
+const FIELD_DEFS=[
+ {k:"d",l:"Domäne",o:["Eukaryoten","Prokaryoten"]},
+ {k:"r",l:"Reich",o:["Tiere","Pflanzen","Pilze","Protisten","Prokaryoten"]},
+ {k:"a",l:"Abteilung",o:["Urmünder","Neumünder","ohne sek. Leibeshöhle","ohne echte Gewebe"]},
+ {k:"s",l:"Stamm",o:deSort(["Chordatiere","Stachelhäuter","Weichtiere","Ringelwürmer","Gliederfüsser","Rundwürmer","Plattwürmer","Hohltiere","Schwämme"])},
+ {k:"k",l:"Klasse",o:deSort([...new Set(ANIMALS.map(a=>a.k).concat(["Bandwürmer","Seesterne","Hundertfüsser","Saugwürmer","Nesseltiere"]))])},
+ {k:"g",l:"Gattung",o:deSort([...new Set(ANIMALS.map(a=>a.g).filter(g=>g!=="–"))])}
+];
+function makeAnimalForm(host,an,pre){
+  const exp={d:"Eukaryoten",r:"Tiere",a:an.a,s:an.s,k:an.k,g:an.g};
+  const defs=FIELD_DEFS.filter(f=>!(f.k==="g"&&an.g==="–"));
+  host.innerHTML=`<div class="fields">${defs.map(f=>`<label for="${pre}_${f.k}">${f.l}<select id="${pre}_${f.k}"><option value="">wählen</option>${f.o.map(o=>`<option>${o}</option>`).join("")}</select><span class="fixmsg" hidden></span></label>`).join("")}</div>${an.g==="–"?'<p class="expl">Gattung entfällt: «Milbe» ist eine ganze Gruppe, keine einzelne Gattung.</p>':""}`;
+  return {check(){
+    let right=0;
+    defs.forEach(f=>{
+      const sel=host.querySelector(`#${pre}_${f.k}`),m=sel.nextElementSibling,ok=sel.value===exp[f.k];
+      sel.classList.toggle("right",ok); sel.classList.toggle("wrong",!ok);
+      m.hidden=ok; m.textContent=ok?"":"Richtig: "+exp[f.k]; if(ok)right++;
+    });
+    return {right,total:defs.length};
+  }};
+}
+document.querySelector("#animalTable tbody").innerHTML=ANIMALS.map(a=>`<tr><td>${a.n}</td><td>Eukaryoten</td><td>Tiere</td><td>${ABBR[a.a]}</td><td>${a.s}</td><td>${a.k}</td><td>${a.g==="–"?"–":`<i>${a.g}</i>`}</td><td class="look">${a.look}</td></tr>`).join("");
+
+const trainer=document.getElementById("trainer");
+let trOrder=[],trI=0,trScore={r:0,t:0};
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function nextAnimal(){
+  if(trI>=trOrder.length){trOrder=shuffle([...ANIMALS]);trI=0;}
+  const an=trOrder[trI++];
+  trainer.innerHTML=`<div class="qhead"><span>Tier ${trI} von 20</span><output>${trScore.r} / ${trScore.t} Felder richtig</output></div>
+  <div class="animal">${an.n}</div><div class="afh"></div><p class="expl" hidden></p>
+  <div class="btnrow"><button class="btn primary" type="button" data-check>Prüfen</button><button class="btn" type="button" data-next>Nächstes Tier</button></div>`;
+  const form=makeAnimalForm(trainer.querySelector(".afh"),an,"tr"); let counted=false;
+  trainer.querySelector("[data-check]").onclick=()=>{
+    const r=form.check();
+    if(!counted){trScore.r+=r.right;trScore.t+=r.total;counted=true;}
+    trainer.querySelector("output").textContent=`${trScore.r} / ${trScore.t} Felder richtig`;
+    const ex=trainer.querySelector(".expl"); ex.innerHTML=`<b>${r.right} von ${r.total} richtig.</b> So sieht es aus: ${an.look}`; ex.hidden=false;
+  };
+  trainer.querySelector("[data-next]").onclick=nextAnimal;
+}
+nextAnimal();
+
+const Q={
+k1:[
+{q:"Was bedeutet «Biologie» wörtlich?",o:["Lehre vom Leben","Lehre vom Körper","Lehre von der Natur"],a:0,e:"bios = Leben, logos = Lehre."},
+{q:"Welches Merkmal zeigt Euglena, wenn sie zum Licht schwimmt?",o:["Stoffwechsel","Reizbarkeit","Wachstum"],a:1,e:"Augenfleck + Fotorezeptor nehmen den Lichtreiz auf, sie reagiert mit Bewegung."},
+{q:"Warum ist ein Kristall kein Lebewesen, obwohl er wächst?",o:["Er ist zu klein","Er hat nicht ALLE Lebensmerkmale","Er besteht aus Atomen"],a:1,e:"Alle Merkmale müssen gemeinsam vorhanden sein. Kristall hat keine Zellen, keinen Stoffwechsel, keine Fortpflanzung."},
+{q:"Was ist laut Dossier der Grund für Fortpflanzung?",o:["Der Tod","Die Evolution","Das Wachstum"],a:0,e:"Weil Lebewesen sterben, muss die Art sich fortpflanzen."},
+{q:"Wie heisst der energiegewinnende Abbau von Zucker mit Sauerstoff?",o:["Photosynthese","Verdauung","Zellatmung"],a:2,e:"Zellatmung = Energiegewinnung. Photosynthese baut Zucker AUF."}],
+k2:[
+{q:"Welches Element kommt im Körper am häufigsten vor (Gewicht)?",o:["Kohlenstoff","Sauerstoff","Wasserstoff"],a:1,e:"Sauerstoff ~65 %, vor allem wegen des vielen Wassers. Das war ein Fehler in deiner alten Prüfung."},
+{q:"Welche Grösse passt zu einer Zelle?",o:["0,1 nm","~100 µm","dm"],a:1,e:"Zellen um 10–100 µm, im Dossier ±100 µm."},
+{q:"Welche Grösse passt zu einem Mitochondrium (Zellorganell)?",o:["1–10 µm","15 nm","mm–cm"],a:0,e:"Organellen wie Mitochondrien: 1–10 µm."},
+{q:"Was ist KEIN Grundgewebe?",o:["Muskelgewebe","Nervengewebe","Blutgewebe","Deckgewebe"],a:2,e:"Die 4 Grundgewebe: Deck-, Binde-/Stütz-, Muskel- und Nervengewebe. Blut zählt zum Bindegewebe."},
+{q:"Richtige Reihenfolge?",o:["Zelle → Organ → Gewebe","Gewebe → Zelle → Organ","Zelle → Gewebe → Organ"],a:2,e:"Atom → Molekül → Organell → Zelle → Gewebe → Organ → Organsystem → Organismus."}],
+k3:[
+{q:"Welches System ist für die SCHNELLE Steuerung zuständig?",o:["Hormonsystem","Nervensystem","Immunsystem"],a:1,e:"Nerven = schnell, Hormone = langsam."},
+{q:"Welches System bildet Vitamin D?",o:["Haut","Verdauung","Harntrakt"],a:0,e:"Die Haut synthetisiert Vitamin D mit Sonnenlicht."},
+{q:"Wo werden Blutzellen gebildet?",o:["Im Herz","Im Knochenmark (Bewegungsapparat)","In der Lunge"],a:1,e:"Rotes Knochenmark gehört zum Bewegungsapparat."},
+{q:"Welches Organ entgiftet?",o:["Leber","Lunge","Gallenblase"],a:0,e:"Die Leber ist eine akzessorische Verdauungsdrüse und entgiftet."}],
+k4:[
+{q:"Bau und Stabilität von Bienenwaben untersucht die …",o:["Biotechnologie","Bionik/Biotechnik","Ökologie"],a:1,e:"Statik & Bewegung = Bionik. Wirtschaftliche Nutzung = Biotechnologie."},
+{q:"Embryonalentwicklung gehört zur …",o:["Phylogenie","Ontogenese","Genetik"],a:1,e:"Ontogenese = Entwicklung eines einzelnen Organismus."},
+{q:"Vergleich der Flossen von Fisch und Delphin ist …",o:["Morphologie","Anatomie","Physiologie"],a:0,e:"Äussere Form = Morphologie."},
+{q:"Balzverhalten untersucht die …",o:["Ethologie","Ökologie","Zoologie"],a:0,e:"Ethologie = Verhaltenslehre."}],
+k5:[
+{q:"Wie viele Reiche gibt es im Dossier?",o:["3","5","6"],a:1,e:"5 Reiche, verteilt auf 3 Domänen."},
+{q:"Welches Reich hat Zellwände aus Chitin?",o:["Pflanzen","Pilze","Prokaryoten"],a:1,e:"Pilze: Chitin. Pflanzen: Cellulose. Prokaryoten: Murein."},
+{q:"Was haben Prokaryoten NICHT?",o:["Zellwand","Zellkern","Erbgut"],a:1,e:"Prokaryoten = ohne Zellkern."},
+{q:"Welche Reiche haben KEINE Zellwand?",o:["Tiere","Pflanzen","Pilze"],a:0,e:"Nur Tiere haben keine Zellwand."},
+{q:"Richtige Reihenfolge von einfach zu komplex?",o:["Bakterien, Archaeen, Pilze, Pflanzen, Tiere","Prokaryoten, Protisten, Pilze, Pflanzen, Tiere","Protisten, Prokaryoten, Pflanzen, Pilze, Tiere"],a:1,e:"Archaeen + Bakterien = 1 Reich (Prokaryoten). Protisten nicht vergessen!"}],
+k6:[
+{q:"Wofür steht das S in DRASKOFGA?",o:["Spezies","Stamm","Sippe"],a:1,e:"Domäne, Reich, Abteilung, Stamm, Klasse, Ordnung, Familie, Gattung, Art."},
+{q:"Bei «Homo sapiens» ist «Homo» …",o:["die Art","die Gattung","die Familie"],a:1,e:"1. Wort = Gattung, 2. Wort = Artname. Zusammen = wissenschaftlicher Artname."},
+{q:"Was glaubte Linné?",o:["Arten entwickeln sich","Arten sind unveränderliche Schöpfungen Gottes","Arten entstehen durch Selektion"],a:1,e:"Natürliche Theologie: «Gott erschafft, Linné ordnet»."},
+{q:"Zu welchem Stamm gehört der Fuchsbandwurm?",o:["Gliederfüsser","Rundwürmer","Plattwürmer"],a:2,e:"Plattwürmer, Klasse Bandwürmer."},
+{q:"Welches Merkmal zeigt klar, dass Wale keine Fische sind?",o:["Sie haben Flossen","Sie säugen ihre Jungen","Sie leben im Meer"],a:1,e:"Säugen, Lungenatmung, gleichwarm = Säugetier."}],
+k7:[
+{q:"Zu welchem Stamm gehört der Tintenfisch?",o:["Chordatiere","Weichtiere","Gliederfüsser"],a:1,e:"Tintenfisch = Weichtier, Klasse Kopffüsser."},
+{q:"Kellerassel: welche Klasse?",o:["Insekten","Krebstiere","Vielfüsser"],a:1,e:"Asseln sind Krebstiere."},
+{q:"Welche Tiere sind Neumünder?",o:["Weichtiere & Ringelwürmer","Stachelhäuter & Chordatiere","Gliederfüsser & Weichtiere"],a:1,e:"Neumünder: Stachelhäuter + Chordatiere."},
+{q:"Welcher Stamm hat KEINE sekundäre Leibeshöhle?",o:["Rundwürmer","Ringelwürmer","Weichtiere"],a:0,e:"Rundwürmer (z.B. Spulwurm), Plattwürmer, Hohltiere: ohne sek. Leibeshöhle."},
+{q:"Was hat KEINE echten Gewebe?",o:["Quallen","Schwämme","Bandwürmer"],a:1,e:"Schwämme stehen ganz unten im Stammbaum."},
+{q:"Der Gemeine Holzbock (Zecke) ist ein …",o:["Insekt","Spinnentier","Krebstier"],a:1,e:"Zecken & Milben = Spinnentiere (8 Beine)."}],
+k8:[
+{q:"Vogelflügel und Insektenflügel sind …",o:["homolog","analog"],a:1,e:"Gleiche Funktion, ganz anderer Bau → analog."},
+{q:"Arm des Menschen und Flosse des Wals sind …",o:["homolog","analog"],a:0,e:"Gleiche Knochen (Oberarm, Elle, Speiche, Hand) → homolog."},
+{q:"Stammbäume basieren auf …",o:["analogen Ähnlichkeiten","homologen Ähnlichkeiten"],a:1,e:"Nur Homologien zeigen Verwandtschaft."},
+{q:"Die Flugfläche des Flugdrachens wird gespannt durch …",o:["Fingerknochen","Rippen","Federn"],a:1,e:"Rippen ≠ Vordergliedmasse → Knochen analog zum Vogelflügel."},
+{q:"Was ist KEIN Kriterium für Homologie?",o:["Lage der Organe","Embryonalentwicklung","Gleiche Funktion"],a:2,e:"Gleiche Funktion allein = Analogie-Hinweis."}],
+k9:[
+{q:"Lamarck: Variation ist …",o:["acquired (erworben)","inherited (vererbt)"],a:0,e:"Lamarck: aktiv erworbene Merkmale werden vererbt. Falsch."},
+{q:"Wie entstehen laut heutiger Sicht neue Merkmale?",o:["Durch Gebrauch der Organe","Durch zufällige Mutationen","Durch die Selektion selbst"],a:1,e:"Mutationen sind zufällig; Selektion prüft sie nur."},
+{q:"Was ist «biologische Fitness»?",o:["Körperliche Stärke","Fortpflanzungserfolg","Lebensdauer"],a:1,e:"Fitness = wie viele fortpflanzungsfähige Nachkommen."},
+{q:"Welche Aussage passt NICHT zu Darwin?",o:["Es gibt Konkurrenz um begrenzte Ressourcen","Schlecht Angepasste haben niemals Nachkommen","Angepasste haben im Allgemeinen mehr Nachkommen"],a:1,e:"Nicht «niemals», sondern «weniger»."},
+{q:"Darwins Buch erschien …",o:["1759","1859","1959"],a:1,e:"1859, «On the Origin of Species»."}]
+};
+
+function renderQuiz(el,list){
+  const id=el.dataset.quiz, qs=list||Q[id]; let done=0,right=0;
+  el.innerHTML=`<div class="qhead"><span>Check</span><output>0 / ${qs.length}</output></div>`;
+  const out=el.querySelector("output");
+  qs.forEach(item=>{
+    const d=document.createElement("div"); d.className="q";
+    d.innerHTML=`<p class="qt">${item.q}</p><div class="opts"></div><p class="expl" hidden></p>`;
+    const box=d.querySelector(".opts"), ex=d.querySelector(".expl");
+    item.o.forEach((t,i)=>{
+      const b=document.createElement("button"); b.type="button"; b.className="opt"; b.textContent=t;
+      b.onclick=()=>{
+        box.querySelectorAll("button").forEach((x,j)=>{x.disabled=true; if(j===item.a)x.classList.add("right")});
+        if(i!==item.a)b.classList.add("wrong"); else right++;
+        done++; out.textContent=`${right} / ${qs.length}`;
+        ex.innerHTML=(i===item.a?"<b>Richtig.</b> ":"<b>Falsch.</b> ")+item.e; ex.hidden=false;
+      };
+      box.appendChild(b);
+    });
+    el.appendChild(d);
+  });
+}
+document.querySelectorAll("[data-quiz]").forEach(el=>renderQuiz(el));
+
+/* TRAINING */
+const WF=[
+["Ein Lebewesen muss nur die meisten Lebensmerkmale erfüllen.",0,"Es muss ALLE Merkmale gleichzeitig zeigen."],
+["Alle Lebewesen bestehen aus Zellen.",1,"Die Zelle ist die kleinste lebensfähige Einheit."],
+["Prokaryoten haben einen Zellkern.",0,"Pro-karyoten = ohne Zellkern (Bakterien, Archaeen)."],
+["Pilze gehören zu den Pflanzen.",0,"Pilze sind ein eigenes Reich: Zellwand aus Chitin, keine Photosynthese."],
+["Tiere haben keine Zellwand.",1,"Nur Tiere haben keine Zellwand."],
+["Der Tintenfisch ist ein Fisch.",0,"Er ist ein Weichtier (Kopffüsser)."],
+["Die Kellerassel ist ein Krebstier.",1,"Asseln gehören zu den Krebstieren, nicht zu den Insekten."],
+["Spinnen haben 6 Beine.",0,"Spinnentiere haben 8 Beine. Insekten haben 6."],
+["Wale atmen mit Lungen.",1,"Wale sind Säugetiere und tauchen zum Atmen auf."],
+["Homologe Organe haben den gleichen Grundbauplan.",1,"Gleicher Bauplan wegen gemeinsamer Abstammung."],
+["Analoge Organe zeigen eine enge Verwandtschaft.",0,"Analoge Organe haben nur die gleiche Funktion. Sie zeigen keine Verwandtschaft."],
+["Lamarck: Erworbene Eigenschaften werden vererbt.",1,"Das war Lamarcks Idee. Sie ist widerlegt."],
+["Laut Darwin entstehen Mutationen gezielt, weil das Tier sie braucht.",0,"Mutationen entstehen zufällig. Die Selektion wählt danach aus."],
+["Linné glaubte an die Evolution.",0,"Für Linné waren Arten unveränderliche Schöpfungen Gottes."],
+["Bei der binären Nomenklatur steht die Gattung zuerst.",1,"Gattung (gross) + Artname (klein), z.B. Homo sapiens."],
+["Das Hormonsystem steuert schneller als das Nervensystem.",0,"Umgekehrt: Nerven sind schnell, Hormone langsam."],
+["Sauerstoff ist das häufigste Element im Körper.",1,"Ca. 65 %, vor allem wegen des Wassers."],
+["Ein Organ besteht aus nur einem Gewebetyp.",0,"Organe sind aus mehreren (meist allen 4) Gewebetypen aufgebaut."],
+["Seeigel sind näher mit uns Chordatieren verwandt als mit Schnecken.",1,"Stachelhäuter und Chordatiere sind beide Neumünder."],
+["Der Spulwurm ist ein Ringelwurm.",0,"Der Spulwurm ist ein Rundwurm (Fadenwurm) ohne sekundäre Leibeshöhle."],
+["Euglena kann Photosynthese betreiben.",1,"Sie hat Chloroplasten. Im Dunkeln nimmt sie Nahrung auf."],
+["Schwämme haben keine echten Gewebe.",1,"Sie stehen ganz unten im Stammbaum der Tiere."],
+["Biologische Fitness bedeutet Fortpflanzungserfolg.",1,"Wer mehr fortpflanzungsfähige Nachkommen hat, ist «fitter»."],
+["Archaeen gehören zu den Prokaryoten.",1,"Archaeen und Bakterien sind beide Prokaryoten."],
+["Die Ontogenese untersucht die Stammesgeschichte.",0,"Das ist die Phylogenie. Ontogenese = Entwicklung eines einzelnen Organismus."],
+["Der Weberknecht ist eine Spinne.",0,"Er ist ein Spinnentier, aber keine echte Webspinne: kein Gift, keine Spinnfäden, Körper ohne Taille."],
+["Die Haut ist ein Sinnesorgan.",1,"Tastsinn: Druck, Temperatur, Schmerz."],
+["Die Lunge gehört zum Herz-Kreislauf-System.",0,"Die Lunge gehört zum Atmungssystem."]
+];
+const wfEl=document.getElementById("wf");
+function newWF(){renderQuiz(wfEl,shuffle([...WF]).slice(0,10).map(w=>({q:w[0],o:["Wahr","Falsch"],a:w[1]?0:1,e:w[2]})));}
+newWF(); document.getElementById("wfNew").onclick=newWF;
+
+const MATCH={
+fach:{n:9,rows:[
+["Vergleich der Schnabelformen verschiedener Vögel","Morphologie"],
+["Wo genau liegt die Milz im Bauchraum?","Anatomie"],
+["Wie filtern die Nieren das Blut?","Physiologie"],
+["Warum hat das Kind die gleiche Augenfarbe wie die Mutter?","Genetik"],
+["Stammen die Vögel von Dinosauriern ab?","Phylogenie"],
+["Wie wirkt sich Dünger im See auf die Fische aus?","Ökologie"],
+["Warum markieren Hunde ihr Revier?","Ethologie"],
+["Joghurt im Grossbetrieb mit Bakterien herstellen","Biotechnologie"],
+["Klettverschluss nach dem Vorbild der Klette","Bionik"],
+["Wie ist ein Laubblatt aufgebaut?","Botanik"],
+["Körperbau und Lebensweise der Insekten","Zoologie"],
+["Wie vermehren sich Bakterien?","Mikrobiologie"],
+["Wie entwickelt sich eine Kaulquappe zum Frosch?","Ontogenese"]]},
+organ:{n:10,rows:[
+["Gasaustausch: O₂ aufnehmen, CO₂ abgeben","Atmungssystem"],
+["Synthese von Vitamin D","Haut"],
+["Bildung von Blutzellen im Knochenmark","Bewegungsapparat"],
+["Langsame Steuerung über Botenstoffe im Blut","Hormonsystem"],
+["Schnelle Steuerung, Reize verarbeiten","Nervensystem"],
+["Bekämpfung von Krankheitserregern","Immunsystem"],
+["Wundverschluss (Blutgerinnung)","Herz-Kreislauf-System"],
+["Entgiftung durch die Leber","Verdauungstrakt"],
+["Urin bilden, Wasserhaushalt regulieren","Harntrakt"],
+["Arterhaltung","Fortpflanzungssystem"],
+["Gehört dazu: Bronchien","Atmungssystem"],
+["Gehört dazu: Schilddrüse","Hormonsystem"],
+["Gehört dazu: Pankreas","Verdauungstrakt"],
+["Gehört dazu: Sehnen und Bänder","Bewegungsapparat"],
+["Gehört dazu: weisse Blutkörperchen","Immunsystem"],
+["Gehört dazu: Harnleiter","Harntrakt"],
+["Gehört dazu: Haare und Nägel","Haut"],
+["Gehört dazu: Rückenmark","Nervensystem"]]},
+ebenen:{keep:true,rows:[["Stufe 1 (kleinste)","Atom"],["Stufe 2","Molekül"],["Stufe 3","Zellorganell"],["Stufe 4","Zelle"],["Stufe 5","Gewebe"],["Stufe 6","Organ"],["Stufe 7","Organsystem"],["Stufe 8 (grösste)","Organismus"]]},
+groesse:{opts:["0,1 nm","15 nm","1–10 µm","100 µm","mm–cm","dm"],rows:[["Sauerstoff-Atom","0,1 nm"],["Mitochondrium (Zellorganell)","1–10 µm"],["Hautzelle","100 µm"],["Stück Fettgewebe","mm–cm"],["Herz (Organ)","dm"]]},
+reich:{n:10,rows:[
+["Hefe","Pilze"],["Champignon","Pilze"],["Schimmelpilz","Pilze"],["Amöbe","Protisten"],["Pantoffeltierchen","Protisten"],["Euglena","Protisten"],
+["E. coli (Darmbakterium)","Prokaryoten"],["Methanbildende Archaee","Prokaryoten"],["Tanne","Pflanzen"],["Moos","Pflanzen"],["Schwamm (lebt im Meer)","Tiere"],["Wolf","Tiere"]]},
+klasse:{n:10,rows:[
+["6 Beine, Körper aus Kopf, Brust und Hinterleib","Insekten"],
+["8 Beine, keine Fühler","Spinnentiere"],
+["Harter Panzer, 10 Beine, oft Scheren","Krebstiere"],
+["Langer Körper mit sehr vielen Beinpaaren","Vielfüsser"],
+["Schale aus zwei Klappen","Muscheln"],
+["Arme mit Saugnäpfen, grosse Augen, Tinte","Kopffüsser"],
+["Kriechfuss, oft mit Gehäuse","Schnecken"],
+["Kiemen, Schuppen, Flossen","Fische"],
+["Nackte, feuchte Haut, Larve (Kaulquappe) im Wasser","Amphibien"],
+["Trockene Schuppenhaut, wechselwarm, Eier an Land","Reptilien"],
+["Federn, Schnabel, legt Eier","Vögel"],
+["Haare, säugt die Jungen mit Milch","Säugetiere"],
+["Kalkschale voller Stacheln, lebt im Meer","Seeigel"],
+["Geringelter Wurm mit Saugnapf an beiden Enden","Gürtelwürmer"]]},
+homo:{opts:["homolog","analog"],rows:[
+["Arm Mensch ↔ Flosse Wal","homolog"],
+["Flügel Vogel ↔ Flügel Schmetterling","analog"],
+["Armknochen Fledermaus ↔ Flügelknochen Vogel","homolog"],
+["Flughaut Fledermaus ↔ Federfläche Vogel","analog"],
+["Flosse Hai ↔ Flosse Delphin","analog"],
+["Vorderbein Pferd ↔ Arm Mensch","homolog"],
+["Grabhand Maulwurf ↔ Grabbein Maulwurfsgrille (Insekt)","analog"],
+["Auge Tintenfisch ↔ Auge Mensch","analog"],
+["Hautsegel auf Rippen (Flugdrache) ↔ Vogelflügel","analog"],
+["Flügelknochen Flugsaurier ↔ Flügelknochen Fledermaus","homolog"]]},
+darwin:{keep:true,rows:[
+["Populationen erzeugen mehr … als der Lebensraum versorgen kann.","Nachkommen"],
+["Nahrung und Platz sind begrenzte …","Ressourcen"],
+["Daraus folgt ein ständiger … (struggle for life).","Konkurrenzkampf"],
+["Keine zwei Individuen sind gleich: es gibt …","Variation"],
+["Ein Grossteil dieser Merkmale wird …","vererbt"],
+["Neue Merkmale entstehen durch Mutationen, und zwar …","zufällig"],
+["Vorteilhafte Merkmale häufen sich durch natürliche … an.","Selektion"],
+["Biologische Fitness bedeutet …","Fortpflanzungserfolg"]]}
+};
+function renderMatch(el){
+  const key=el.dataset.match,set=MATCH[key];
+  const opts=set.opts||deSort([...new Set(set.rows.map(r=>r[1]))]);
+  function draw(){
+    let rows=set.keep?set.rows:shuffle([...set.rows]);
+    if(set.n) rows=rows.slice(0,set.n);
+    el.innerHTML=`<div class="qhead"><span>Zuordnen</span><output>– / ${rows.length}</output></div>`+
+      rows.map((r,i)=>`<div class="mrow"><div>${r[0]}</div><label class="msel"><select id="m_${key}_${i}" aria-label="Antwort"><option value="">wählen</option>${opts.map(o=>`<option>${o}</option>`).join("")}</select><span class="fixmsg" hidden></span></label></div>`).join("")+
+      `<div class="btnrow"><button class="btn primary" type="button" data-c>Prüfen</button><button class="btn" type="button" data-n>Neu mischen</button></div>`;
+    el.querySelector("[data-c]").onclick=()=>{
+      let ok=0;
+      rows.forEach((r,i)=>{const s=el.querySelector(`#m_${key}_${i}`),m=s.nextElementSibling,good=s.value===r[1];
+        s.classList.toggle("right",good);s.classList.toggle("wrong",!good);m.hidden=good;m.textContent=good?"":"Richtig: "+r[1];if(good)ok++;});
+      el.querySelector("output").textContent=`${ok} / ${rows.length}`;
+    };
+    el.querySelector("[data-n]").onclick=draw;
+  }
+  draw();
+}
+document.querySelectorAll("[data-match]").forEach(renderMatch);
+
+const OPEN=[
+{q:"Erkläre den Unterschied zwischen Prokaryoten und Eukaryoten.",s:"<b>Prokaryoten</b> (Bakterien, Archaeen): kein Zellkern, Erbgut liegt frei im Zellplasma, immer einzellig. <b>Eukaryoten</b> (Protisten, Pilze, Pflanzen, Tiere): mit Zellkern und Zellorganellen."},
+{q:"Warum ist ein Feuer kein Lebewesen? Nenne 2 Lebensmerkmale, die es zu zeigen scheint, und 2, die fehlen.",s:"Scheint zu zeigen: «Stoffwechsel» (braucht O₂ und Brennstoff, gibt CO₂ ab), «Wachstum/Vermehrung» (breitet sich aus). Fehlt: Aufbau aus Zellen, Fortpflanzung mit Erbinformation, Reizbarkeit, Selbstregulation. Ein Lebewesen braucht alle Merkmale."},
+{q:"Nenne die zwei Hauptmerkmale von Linnés System.",s:"1. Hierarchisches <b>Ordnungssystem</b> (DRASKOFGA). 2. <b>Binäre Nomenklatur</b>: jede Art hat einen zweiteiligen lateinischen Namen aus Gattung + Artname."},
+{q:"Schreib den wissenschaftlichen Namen der Wildkatze korrekt und erkläre die Schreibregeln.",s:"<i>Felis silvestris</i>. Kursiv geschrieben, Gattung (<i>Felis</i>) gross, Artname (<i>silvestris</i>) klein."},
+{q:"Ordne den Menschen in alle 9 Stufen von DRASKOFGA ein.",s:"Eukaryoten → Tiere → Gewebetiere → Chordatiere → Säugetiere → Primaten → Menschenaffen (Hominidae) → <i>Homo</i> → <i>Homo sapiens</i>"},
+{q:"Was ist Konvergenz? Erkläre am Beispiel von Hai und Delphin.",s:"Nicht verwandte Tiere entwickeln wegen der gleichen Umwelt eine ähnliche Form. Hai (Fisch) und Delphin (Säugetier) haben beide eine Stromlinienform und Flossen, weil sie schnell schwimmen müssen. Ähnlichkeit = <b>analog</b>, keine Verwandtschaft."},
+{q:"Nenne die 3 Kriterien, an denen man Homologie erkennt.",s:"1. Ähnlicher anatomischer Bau (gleiche Knochen) · 2. ähnliche Embryonalentwicklung · 3. gleiche Lage im Körper."},
+{q:"Vergleiche Nervensystem und Hormonsystem: Wie steuern sie?",s:"<b>Nervensystem:</b> schnell, über elektrische Signale in Nerven, Wirkung kurz. <b>Hormonsystem:</b> langsam, über Hormone im Blut, Wirkung lange anhaltend (z.B. Wachstum)."},
+{q:"Erkläre mit Darwin, warum Bakterien gegen Antibiotika resistent werden.",s:"In einer Bakterienpopulation gibt es durch <b>zufällige Mutationen</b> einzelne Bakterien, die das Antibiotikum überleben. Alle anderen sterben (<b>Selektion</b>). Die Überlebenden vermehren sich und geben die Resistenz weiter. So wird die ganze Population resistent."},
+{q:"Warum zählt man den Tintenfisch nicht zu den Fischen? Nenne 2 Gründe.",s:"Er ist ein <b>Weichtier</b> (Kopffüsser): kein Knochenskelett und keine Wirbelsäule, Weichkörper mit Mantel, Arme mit Saugnäpfen, atmet nicht mit Fischkiemen hinter einem Kiemendeckel. Fische sind Chordatiere."},
+{q:"Woran erkennst du den Unterschied zwischen einem Weberknecht und einer echten Spinne?",s:"<b>Weberknecht:</b> Körper ist ein einziges rundes Stück (keine Taille), extrem lange dünne Beine, kein Gift, macht keine Netze. <b>Spinne:</b> Vorder- und Hinterkörper durch eine dünne Taille getrennt, Spinndrüsen, meist Giftklauen. Beide sind Spinnentiere mit 8 Beinen."},
+{q:"Wozu dient die Systematik? Nenne 3 Ziele.",s:"Arten auseinanderhalten · in Kategorien einteilen · Merkmale beschreiben · eindeutig benennen (Nomenklatur) · seit Darwin: Verwandtschaft und Evolution aufzeigen."}
+];
+document.getElementById("openq").innerHTML=OPEN.map((o,i)=>`<div class="quiz oq"><p class="qt">${o.q}</p><textarea id="oq_${i}" aria-label="Deine Antwort"></textarea><div class="btnrow"><button class="btn" type="button" data-i>Lösung zeigen</button></div><div class="sol" hidden>${o.s}</div></div>`).join("");
+document.querySelectorAll("#openq [data-i]").forEach(b=>b.onclick=()=>{b.closest(".oq").querySelector(".sol").hidden=false;});
+
+/* EXAM: type mc (single), multi (checkbox), open (self-graded) */
+const EXAM=[
+{t:"Aufgabe 1: Merkmale des Lebens",parts:[
+ {type:"open",pts:2,q:"Nenne 4 Lebensmerkmale und je ein Beispiel aus der belebten Welt (2× Euglena) und eins aus der unbelebten Welt.",sol:"z.B. <b>Stoffwechsel</b>: Euglena macht Photosynthese · Auto nimmt Benzin auf und stösst Abgase aus.<br><b>Fortpflanzung</b>: Euglena teilt sich längs · Feuer «vermehrt» sich (Funkenflug).<br><b>Wachstum</b>: Löwenbaby wird gross · Kristall wächst.<br><b>Reizbarkeit</b>: Pferd riecht Apfel und frisst ihn · Thermostat reagiert auf Temperatur."},
+ {pick:[
+  {type:"open",pts:1,q:"Aus welchen 4 Elementen besteht der Körper zu über 95 %? Welches ist am häufigsten?",sol:"Sauerstoff, Kohlenstoff, Wasserstoff, Stickstoff. Am häufigsten: <b>Sauerstoff</b> (~65 %)."},
+  {type:"open",pts:1,q:"Ordne die Organisationsebenen von klein nach gross und gib zu jeder ein Beispiel aus deinem Körper.",sol:"Atom (O-Atom) → Molekül (Wasser) → Zellorganell (Mitochondrium) → Zelle (Hautzelle) → Gewebe (Fettgewebe) → Organ (Herz) → Organsystem (Verdauungstrakt) → Organismus (Mensch)"}]},
+ {pick:[
+  {type:"mc",pts:0.5,q:"Welche Grösse hat ein Gewebe typischerweise?",o:["1–10 µm","100 µm","mm–cm","0,1 nm"],a:2},
+  {type:"mc",pts:0.5,q:"Welche Grösse hat eine Zelle typischerweise?",o:["15 nm","100 µm","mm–cm","dm"],a:1},
+  {type:"mc",pts:0.5,q:"Welche Grösse hat ein Organ wie das Herz?",o:["100 µm","mm","dm","0,1 nm"],a:2}]},
+ {pick:[
+  {type:"mc",pts:0.5,q:"Welche Grösse hat ein Atom?",o:["0,1 nm","15 nm","1–10 µm","dm"],a:0},
+  {type:"mc",pts:0.5,q:"Welche Grösse hat ein Zellorganell wie ein Mitochondrium?",o:["0,1 nm","1–10 µm","mm–cm","dm"],a:1}]}
+]},
+{t:"Aufgabe 2: Klassifizierung",parts:[
+ {type:"animal",pts:2.25,q:"Ordne dieses Tier aus der Tabelle nach DRASKOFGA ein (ohne Ordnung & Familie):"},
+ {pick:[
+  {type:"open",pts:1,q:"Was bedeuten die zwei Wörter in «Echinococcus multilocularis»? Warum benutzt man solche Namen?",sol:"<i>Echinococcus</i> = Gattung, <i>multilocularis</i> = Artname; zusammen der Name der Art (binäre Nomenklatur nach Linné). Kursiv, Gattung gross, Art klein. Zweck: eindeutig, international verständlich, keine Verwechslungen."},
+  {type:"open",pts:1,q:"Was bedeuten die zwei Wörter in «Apis mellifera» (Honigbiene)? Wer hat diese Namensgebung eingeführt?",sol:"<i>Apis</i> = Gattung, <i>mellifera</i> = Artname; zusammen der Name der Art. Eingeführt von Carl von Linné (binäre Nomenklatur). Kursiv, Gattung gross, Art klein."}]},
+ {pick:[
+  {type:"open",pts:1,q:"Nenne 2 Merkmale, warum Wale manchmal «Walfische» genannt werden, und 2, die zeigen, dass sie keine Fische sind.",sol:"Fischähnlich: Flossen, stromlinienförmiger Körper (leben im Wasser). Keine Fische: Lungenatmung, säugen Junge, lebendgebärend, gleichwarm, waagrechte Schwanzflosse."},
+  {type:"open",pts:1,q:"Der Tintenfisch heisst «Fisch», ist aber keiner. Zu welchem Stamm gehört er, und nenne 2 Merkmale, die ihn klar von Fischen unterscheiden.",sol:"Stamm <b>Weichtiere</b>, Klasse Kopffüsser. Kein Knochenskelett/keine Wirbelsäule, Weichkörper mit Mantel, Arme mit Saugnäpfen, Tintenbeutel."}]},
+ {pick:[
+  {type:"mc",pts:0.5,q:"Wie viele Arten sind ungefähr beschrieben?",o:["15'000","150'000","1'500'000–2'000'000","150'000'000"],a:2},
+  {type:"mc",pts:0.5,q:"Was glaubte Carl von Linné über die Arten?",o:["Sie entwickeln sich durch Selektion","Sie sind unveränderliche Schöpfungen Gottes","Sie entstehen durch Gebrauch der Organe","Sie stammen alle von Bakterien ab"],a:1}]}
+]},
+{t:"Aufgabe 3: Die fünf Reiche",parts:[
+ {pick:[
+  {type:"open",pts:1.5,q:"Nenne die 5 Reiche von einfach nach komplex mit je einem Beispiel.",sol:"Prokaryoten (E. coli) → Protisten (Amöbe, Euglena) → Pilze (Champignon) → Pflanzen (Tanne) → Tiere (Wolf)"},
+  {type:"open",pts:1.5,q:"Ordne jedem Lebewesen sein Reich zu und begründe mit einem Merkmal: Hefe, Pantoffeltierchen, Moos, Schwamm, E. coli.",sol:"Hefe → <b>Pilze</b> (Zellwand aus Chitin) · Pantoffeltierchen → <b>Protisten</b> (Einzeller mit Zellkern) · Moos → <b>Pflanzen</b> (Photosynthese, Cellulose-Zellwand) · Schwamm → <b>Tiere</b> (vielzellig, keine Zellwand) · E. coli → <b>Prokaryoten</b> (kein Zellkern)"}]},
+ {pick:[
+  {type:"multi",pts:1,q:"Welche Aussagen stimmen? (mehrere möglich)",o:["Pilze haben eine Zellwand aus Chitin","Tiere haben eine Zellwand","Prokaryoten haben keinen Zellkern","Pflanzen sind eukaryotisch"],a:[0,2,3]},
+  {type:"multi",pts:1,q:"Welche Aussagen stimmen? (mehrere möglich)",o:["Archaeen gehören zu den Prokaryoten","Pilze gehören zu den Pflanzen","Euglena gehört zu den Protisten","Schwämme gehören zu den Tieren"],a:[0,2,3]}]}
+]},
+{t:"Aufgabe 4: Homologie oder Analogie",parts:[
+ {type:"open",pts:1.5,q:"Beschrifte die Knochen eines Vogelflügels von der Schulter bis zur Spitze.",sol:"Oberarmknochen → Elle & Speiche → Handwurzel- und Mittelhandknochen (verwachsen) → Fingerknochen."},
+ {pick:[
+  {type:"open",pts:2,q:"Sind die Flugorgan-KNOCHEN von Flugfrosch, Fledermaus, Flugsaurier und Flugdrache homolog oder analog zum Vogelflügel? Begründe.",sol:"<b>Homolog:</b> Fledermaus, Flugsaurier, Flugfrosch. Sie spannen die Fläche mit Gliedmassen-/Fingerknochen, also dem gleichen Wirbeltier-Bauplan wie der Vogel (gemeinsame Abstammung).<br><b>Analog:</b> Flugdrache. Er nutzt Rippen, also anderer Bau, nur gleiche Funktion."},
+  {type:"open",pts:2,q:"Arm des Menschen, Flosse des Wals, Flügel der Fledermaus, Vorderbein des Pferdes: homolog oder analog? Begründe und nenne die 3 Homologie-Kriterien.",sol:"<b>Homolog</b>: Alle haben die gleichen Knochen (Oberarm, Elle & Speiche, Hand-/Fingerknochen) trotz verschiedener Funktion → gemeinsame Abstammung. Kriterien: ähnlicher anatomischer Bau, ähnliche Embryonalentwicklung, gleiche Lage im Körper."}]},
+ {pick:[
+  {type:"open",pts:2,q:"Und die Flug-FLÄCHEN?",sol:"Alle <b>analog</b>. Beim Vogel tragen Federn. Bei Fledermaus und Flugsaurier ist es eine Flughaut, beim Frosch Schwimmhäute, beim Flugdrachen ein Hautsegel. Gleiche Funktion, unterschiedlicher Aufbau."},
+  {type:"open",pts:2,q:"Hai und Delphin sehen sich ähnlich. Erkläre warum, ob die Flossen homolog oder analog sind, und warum man auf dieser Ähnlichkeit keinen Stammbaum aufbauen darf.",sol:"Gleiche Umwelt (schnell schwimmen im Wasser) → ähnliche Form = <b>Konvergenz</b>. Die Flossen sind <b>analog</b> (gleiche Funktion, anderer Bau; Delphin = Säugetier, Hai = Fisch). Stammbäume dürfen nur auf <b>homologen</b> Ähnlichkeiten beruhen, weil nur diese Verwandtschaft zeigen."}]}
+]},
+{t:"Aufgabe 5: Evolution",parts:[
+ {pick:[
+  {type:"multi",pts:1,q:"Welche Aussage(n) beruhen NICHT auf Darwins Theorie?",o:["Schlecht angepasste Individuen bringen niemals Nachkommen hervor","Zwischen Individuen gibt es erblich bedingte Unterschiede","Giraffen bekommen lange Hälse, weil sie sich strecken","Wegen Nachkommenüberschuss gibt es Konkurrenz"],a:[0,2]},
+  {type:"multi",pts:1,q:"Welche Aussage(n) passen zu Darwins Theorie?",o:["Mutationen entstehen zufällig","Ein Organ, das oft gebraucht wird, wird grösser, und das wird vererbt","Gut angepasste Individuen haben im Allgemeinen mehr Nachkommen","Es entstehen mehr Nachkommen, als überleben können"],a:[0,2,3]}]},
+ {pick:[
+  {type:"open",pts:1.5,q:"Erkläre den Unterschied zwischen Lamarck und Darwin am Beispiel der Giraffe.",sol:"<b>Lamarck:</b> Giraffen strecken sich, der Hals wird länger, diese erworbene Eigenschaft wird vererbt (falsch).<br><b>Darwin:</b> Giraffen sind durch Mutationen zufällig verschieden gross. Die Grossen erreichen mehr Futter, überleben besser, haben mehr Nachkommen → Gene für Grösse werden häufiger (natürliche Selektion)."},
+  {type:"open",pts:1.5,q:"Erkläre mit Darwins Theorie, warum Bakterien gegen ein Antibiotikum resistent werden.",sol:"Durch <b>zufällige Mutationen</b> sind einzelne Bakterien schon resistent. Das Antibiotikum tötet die anderen (<b>Selektion</b>). Die Resistenten überleben, vermehren sich und vererben die Resistenz → die Population wird resistent."}]},
+ {pick:[
+  {type:"mc",pts:0.5,q:"Welches Fachgebiet untersucht die Stammesgeschichte?",o:["Ontogenese","Phylogenie","Morphologie","Ökologie"],a:1},
+  {type:"mc",pts:0.5,q:"Welches Fachgebiet untersucht, wie sich eine Kaulquappe zum Frosch entwickelt?",o:["Ontogenese","Phylogenie","Ethologie","Physiologie"],a:0},
+  {type:"mc",pts:0.5,q:"Welches Fachgebiet untersucht, warum Vögel im Frühling singen?",o:["Ökologie","Ethologie","Genetik","Anatomie"],a:1}]}
+]}
+];
+
+const examEl=document.getElementById("exam");
+let state=[];
+function buildExam(){
+  examEl.innerHTML=""; state=[];
+  EXAM.map(t=>({t:t.t,parts:t.parts.map(p=>p.pick?p.pick[Math.floor(Math.random()*p.pick.length)]:p)})).forEach((task,ti)=>{
+    const tot=task.parts.reduce((s,p)=>s+p.pts,0);
+    const t=document.createElement("div"); t.className="task";
+    t.innerHTML=`<h3>${task.t}<small>${tot} P.</small></h3>`;
+    task.parts.forEach((p,pi)=>{
+      const key=`e${ti}_${pi}`; const s={p,score:null,key}; state.push(s);
+      if(p.type==="animal") s.animal=ANIMALS[Math.floor(Math.random()*ANIMALS.length)];
+      const d=document.createElement("div"); d.className="sub";
+      let h=`<p><b>${String.fromCharCode(97+pi)})</b> ${p.q}${s.animal?` <span class="key"><b>${s.animal.n}</b></span>`:""} <span style="color:var(--muted)">(${p.pts} P.)</span></p>`;
+      if(p.type==="open"){
+        h+=`<textarea id="${key}" aria-label="Antwort"></textarea>
+        <div class="btnrow"><button class="btn" type="button" data-show>Lösung zeigen</button></div>
+        <div class="sol" hidden>${p.sol}</div>
+        <div class="self" hidden>Selbst bewerten: <button type="button" data-v="1">voll</button><button type="button" data-v="0.5">halb</button><button type="button" data-v="0">0</button></div>`;
+      } else if(p.type==="animal"){
+        h+=`<div class="afh"></div>`;
+      } else {
+        const typ=p.type==="mc"?"radio":"checkbox";
+        p.o.forEach((o,oi)=>{h+=`<label class="chk"><input type="${typ}" name="${key}" id="${key}_${oi}" value="${oi}"><span>${o}</span></label>`});
+      }
+      d.innerHTML=h;
+      if(p.type==="animal") s.form=makeAnimalForm(d.querySelector(".afh"),s.animal,key);
+      if(p.type==="open"){
+        d.querySelector("[data-show]").onclick=()=>{d.querySelector(".sol").hidden=false;d.querySelector(".self").hidden=false};
+        d.querySelectorAll("[data-v]").forEach(b=>b.onclick=()=>{
+          d.querySelectorAll("[data-v]").forEach(x=>x.classList.remove("on")); b.classList.add("on");
+          s.score=p.pts*parseFloat(b.dataset.v);
+        });
+      }
+      s.el=d; t.appendChild(d);
+    });
+    examEl.appendChild(t);
+  });
+  document.getElementById("result").hidden=true;
+}
+buildExam();
+
+document.getElementById("grade").onclick=()=>{
+  let got=0,max=0,open=0;
+  state.forEach(s=>{
+    const p=s.p; max+=p.pts;
+    if(p.type==="open"){ if(s.score===null) open++; else got+=s.score; return; }
+    if(p.type==="animal"){ const r=s.form.check(); got+=p.pts*r.right/r.total; return; }
+    const inputs=[...s.el.querySelectorAll("input")];
+    const picked=inputs.filter(i=>i.checked).map(i=>+i.value);
+    const correct=p.type==="mc"?[p.a]:p.a;
+    inputs.forEach((inp,i)=>{const l=inp.parentElement;l.classList.remove("right","wrong");
+      if(correct.includes(i))l.classList.add("right"); else if(inp.checked)l.classList.add("wrong");});
+    if(p.type==="mc"){ if(picked[0]===p.a) got+=p.pts; }
+    else { // like real exam: falsch angekreuzt gibt Abzug
+      let pts=0; picked.forEach(i=>pts+=correct.includes(i)?p.pts/correct.length:-p.pts/correct.length);
+      got+=Math.max(0,pts);
+    }
+  });
+  const note=Math.round((5*got/max+1)*4)/4;
+  const r=document.getElementById("result"); r.hidden=false;
+  r.innerHTML=`<div class="big">${got.toFixed(2).replace(/\.?0+$/,"")} / ${max} P.</div>
+  <p style="margin-top:8px">Note ungefähr: <b>${note.toFixed(2)}</b> (Schweizer Skala, 6 = beste)</p>
+  ${open?`<p style="color:var(--muted)">${open} offene Frage(n) noch nicht selbst bewertet. Die zählen gerade als 0.</p>`:""}
+  <p style="color:var(--muted)">Grün = richtige Antwort, Rot = falsch angekreuzt. Schwache Kapitel nochmal oben durchgehen.</p>`;
+  r.scrollIntoView({block:"nearest"});
+};
+document.getElementById("reset").onclick=buildExam;
+</script>
+
+</body></html>

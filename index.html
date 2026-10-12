@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Lernregal</title>
+<meta name="description" content="Lernmodule nach Fach sortiert: Biologie, Geschichte, Französisch, Englisch – mit Zusammenfassungen, Übungen und Übungsprüfungen.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#f3f4f7; --card:#ffffff; --fg:#14161c; --muted:#5d6271; --line:#dcdfe7;
+  --bio:#23804f; --chem:#6a43c9; --ges:#b04a21; --fra:#2457b8; --eng:#0b7d86;
+  --deu:#a3366b; --mat:#8a6a00; --inf:#3b5bdb; --geo:#5b7a1e; --other:#5d6271;
+  --f-display:"Archivo",ui-sans-serif,system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#101217; --card:#181b22; --fg:#e8eaf0; --muted:#9aa0ae; --line:#2a2e38;
+  --bio:#5fcf92; --chem:#a88cf5; --ges:#f08a5d; --fra:#7aa6ff; --eng:#4fd0d8;
+  --deu:#f07fb5; --mat:#e3c14f; --inf:#8ea6ff; --geo:#a9d16a; --other:#9aa0ae; color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 var(--f-display);padding-inline:16px;padding-block:0 56px}
+.wrap{max-width:1040px;margin:0 auto}
+header{padding-block:32px 18px}
+h1{font:900 clamp(38px,9vw,72px)/.92 var(--f-display);font-stretch:118%;letter-spacing:-.02em;margin:0}
+.sub{color:var(--muted);margin:12px 0 0;max-width:56ch}
+.bar{position:sticky;top:0;z-index:5;background:var(--bg);padding-block:10px;border-bottom:1px solid var(--line);display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;flex:1 1 auto;min-width:0}
+.chip{flex:none;font:700 14px/1 var(--f-display);color:var(--fg);background:var(--card);border:1px solid var(--line);border-radius:99px;padding:9px 13px;cursor:pointer;display:flex;align-items:center;gap:7px}
+.chip i{width:9px;height:9px;border-radius:50%;background:var(--c,var(--fg))}
+.chip[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.chip small{font:500 12px var(--f-mono);opacity:.7}
+#q{flex:0 1 220px;min-width:0;font:inherit;font-size:15px;color:var(--fg);background:var(--card);border:1px solid var(--line);border-radius:99px;padding:8px 14px}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--fg);outline-offset:2px}
+section{padding-top:30px}
+section h2{font:800 clamp(24px,5vw,34px)/1 var(--f-display);font-stretch:112%;margin:0 0 14px;display:flex;align-items:baseline;gap:10px;color:var(--c)}
+section h2 small{font:500 13px var(--f-mono);color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
+a.mod{display:flex;flex-direction:column;gap:8px;text-decoration:none;color:var(--fg);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:16px;min-width:0;transition:border-color .15s,transform .15s}
+a.mod:hover{border-color:var(--c)}
+a.mod h3{font:800 19px/1.2 var(--f-display);margin:0}
+a.mod p{margin:0;color:var(--muted);font-size:14.5px}
+.tags{display:flex;flex-wrap:wrap;gap:5px}
+.tag{font:700 11px/1 var(--f-display);letter-spacing:.06em;text-transform:uppercase;color:var(--c);border:1px solid currentColor;border-radius:99px;padding:4px 8px}
+.foot{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:6px;font:500 12px var(--f-mono);color:var(--muted)}
+.foot b{font:700 14px var(--f-display);color:var(--c)}
+.empty,.state{color:var(--muted);margin:0}
+.state{padding-top:30px}
+@media (prefers-reduced-motion:no-preference){a.mod:hover{transform:translateY(-2px)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>Lernregal</h1>
+  <p class="sub">Alle Lernmodule an einem Ort, nach Fach sortiert. Antippen öffnet das Modul.</p>
+</header>
+
+<div class="bar">
+  <div class="chips" id="chips" role="group" aria-label="Fach filtern"></div>
+  <input id="q" type="search" placeholder="Suchen…" aria-label="Module durchsuchen">
+</div>
+
+<div id="shelves"></div>
+</div>
+
+<script>
+/* ===== Neues Modul eintragen: HTML-Datei in den Ordner "module" legen
+   und hier eine Zeile ergänzen. Fach muss genau so heissen wie unten in FAECHER. ===== */
+const MODULE=[
+ {fach:"Biologie",titel:"Bio Einleitung Lernpfad",text:"Lebensmerkmale, Organsysteme, Fachgebiete, 5 Reiche, DRASKOFGA mit Tiertabelle, Homologie und Evolution.",tags:["Zusammenfassung","Training","Übungsprüfung"],datum:"2026-10-12",datei:"module/bio-einleitung.html"},
+ {fach:"Biologie",titel:"Bio Übungsmodul Kapitel 1–3",text:"Theorie und Quiz zu allen Kapiteln der Einleitung, mit Prüfungssimulation.",tags:["Übungen","Übungsprüfung"],datum:"2026-10-06",datei:"module/bio-uebungen.html"},
+ {fach:"Geschichte",titel:"Lernatlas Mittelmeer",text:"GSW: Mittelmeer als heterogener Raum, Arabischer Frühling, Syrienkrieg, Flucht und Migration. 9 Lernziele.",tags:["Zusammenfassung","Übungen","Übungsprüfung"],datum:"2026-09-15",datei:"module/mittelmeer.html"},
+ {fach:"Französisch",titel:"Lernpfad Vocabulaire I",text:"Wortschatz Dossier S. 1–6: Identität, Aussehen, Körper, die fünf Sinne. Mit Prüfungssimulation.",tags:["Vokabeln","Übungsprüfung"],datum:"2026-09-15",datei:"module/vocabulaire-1.html"},
+ {fach:"Englisch",titel:"Vokabel Quiz",text:"Karteikarten Deutsch → Englisch: 192 Wörter aus Lektion 2–4, Unit 3 und Culture.",tags:["Vokabeln","Karteikarten"],datum:"2026-09-09",datei:"module/vokabel-quiz.html"}
+];
+
+const FAECHER=[
+ {name:"Biologie",c:"var(--bio)",immer:1},{name:"Chemie",c:"var(--chem)",immer:1},{name:"Geschichte",c:"var(--ges)",immer:1},
+ {name:"Französisch",c:"var(--fra)",immer:1},{name:"Englisch",c:"var(--eng)",immer:1},
+ {name:"Deutsch",c:"var(--deu)"},{name:"Mathematik",c:"var(--mat)"},{name:"Informatik",c:"var(--inf)"},{name:"Geografie",c:"var(--geo)"}
+];
+
+let active="Alle";
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const fmt=d=>{const m=/^(\d{4})-(\d{2})-(\d{2})/.exec(d||"");return m?`${m[3]}.${m[2]}.${m[1]}`:""};
+try{const f=localStorage.getItem("fach");if(f)active=f;}catch(e){}
+
+function faecher(){
+  const extra=[...new Set(MODULE.map(m=>m.fach).filter(s=>!FAECHER.some(x=>x.name===s)))].map(n=>({name:n,c:"var(--other)"}));
+  return FAECHER.concat(extra).filter(s=>s.immer||MODULE.some(m=>m.fach===s.name));
+}
+function chips(){
+  const subs=faecher();
+  if(active!=="Alle"&&!subs.some(s=>s.name===active))active="Alle";
+  const all=[{name:"Alle",c:"var(--fg)",n:MODULE.length}].concat(subs.map(s=>({...s,n:MODULE.filter(m=>m.fach===s.name).length})));
+  $("chips").innerHTML=all.map(s=>`<button class="chip" type="button" data-n="${esc(s.name)}" aria-pressed="${s.name===active}" style="--c:${s.c}"><i></i>${esc(s.name)} <small>${s.n}</small></button>`).join("");
+  $("chips").querySelectorAll(".chip").forEach(b=>b.onclick=()=>{active=b.dataset.n;try{localStorage.setItem("fach",active)}catch(e){};chips();render();});
+}
+function render(){
+  const q=$("q").value.trim().toLowerCase();let html="",shown=0;
+  faecher().filter(s=>active==="Alle"||s.name===active).forEach(s=>{
+    const all=MODULE.filter(m=>m.fach===s.name);
+    const mods=all.filter(m=>!q||[m.titel,m.text,m.tags.join(" "),s.name].join(" ").toLowerCase().includes(q)).sort((a,b)=>b.datum.localeCompare(a.datum));
+    if(!mods.length&&(q||all.length))return;
+    shown++;
+    html+=`<section style="--c:${s.c}"><h2>${esc(s.name)}<small>${mods.length} ${mods.length===1?"Modul":"Module"}</small></h2>`+
+      (mods.length?`<div class="grid">`+mods.map(m=>`<a class="mod" href="${esc(m.datei)}"><h3>${esc(m.titel)}</h3><p>${esc(m.text)}</p><div class="tags">${m.tags.map(t=>`<span class="tag">${esc(t)}</span>`).join("")}</div><div class="foot"><span>${fmt(m.datum)}</span><b>Öffnen →</b></div></a>`).join("")+`</div>`:`<p class="empty">Noch keine Module.</p>`)+`</section>`;
+  });
+  $("shelves").innerHTML=shown?html:'<p class="state">Nichts gefunden. Probier ein anderes Wort.</p>';
+}
+$("q").oninput=render;
+chips();render();
+</script>
+</body>
+</html>

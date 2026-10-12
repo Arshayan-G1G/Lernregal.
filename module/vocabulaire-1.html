@@ -1,0 +1,1119 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Lernpfad Vocabulaire I</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=IBM+Plex+Mono:wght@500;600&family=Instrument+Serif:ital@0;1&family=Public+Sans:wght@400;500;700&display=swap">
+<style>
+:root{
+  --paper:#F4F6FA;
+  --grid:#DCE5F4;
+  --card:#FFFFFF;
+  --card-2:#F7F8FC;
+  --ink:#151A2B;
+  --ink-2:#5B6379;
+  --line:#DCE0EA;
+  --line-2:#EAEDF4;
+  --encre:#2A47A8;
+  --encre-soft:#E8EDFB;
+  --rouge:#BF362A;
+  --rouge-soft:#FBEAE7;
+  --vert:#1B7551;
+  --vert-soft:#E4F3EC;
+  --jaune:#E2B133;
+  --band:#DFE2EA;
+  --shadow:0 1px 2px rgba(21,26,43,.05),0 12px 32px -18px rgba(21,26,43,.35);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0D101A;
+    --grid:#181D2C;
+    --card:#151A26;
+    --card-2:#1B2130;
+    --ink:#E7EAF3;
+    --ink-2:#98A0B5;
+    --line:#28304180;
+    --line-2:#222938;
+    --encre:#8AA3F5;
+    --encre-soft:#1B2340;
+    --rouge:#EC7A69;
+    --rouge-soft:#2E1A18;
+    --vert:#54C79C;
+    --vert-soft:#14291F;
+    --jaune:#E2B133;
+    --band:#222A3C;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 16px 40px -20px rgba(0,0,0,.8);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0D101A;
+  --grid:#181D2C;
+  --card:#151A26;
+  --card-2:#1B2130;
+  --ink:#E7EAF3;
+  --ink-2:#98A0B5;
+  --line:#28304180;
+  --line-2:#222938;
+  --encre:#8AA3F5;
+  --encre-soft:#1B2340;
+  --rouge:#EC7A69;
+  --rouge-soft:#2E1A18;
+  --vert:#54C79C;
+  --vert-soft:#14291F;
+  --jaune:#E2B133;
+  --band:#222A3C;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 16px 40px -20px rgba(0,0,0,.8);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  padding-block:28px 56px;
+  padding-left:16px;padding-right:16px;
+  font-family:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:16px;line-height:1.5;
+  color:var(--ink);
+  background-color:var(--paper);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:27px 27px;
+  -webkit-font-smoothing:antialiased;
+}
+.sheet{
+  max-width:820px;margin:0 auto;
+  background:var(--card);
+  border:1px solid var(--line);
+  box-shadow:var(--shadow);
+  padding:clamp(20px,4vw,40px);
+  display:flex;flex-direction:column;gap:26px;
+}
+.kicker{font-size:13.5px;color:var(--ink-2);letter-spacing:.01em}
+.head-rule{height:3px;background:var(--ink);margin-top:6px;opacity:.85}
+.titlebar{
+  background:var(--band);margin:0;
+  font-family:"Instrument Serif",Georgia,serif;
+  font-weight:400;font-size:clamp(26px,5vw,34px);
+  text-align:center;padding:7px 12px;letter-spacing:.01em;
+  text-wrap:balance;
+}
+.metarow{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:baseline;margin-top:16px}
+.metarow .date{font-weight:700;border-bottom:1.5px solid var(--ink);padding-bottom:1px}
+.metarow .lbl{color:var(--ink-2)}
+.chip{
+  font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:12px;font-weight:600;
+  padding:3px 9px;border:1px solid var(--line);background:var(--card-2);color:var(--ink-2);
+  letter-spacing:.02em;white-space:nowrap;
+}
+.chip.hot{color:var(--rouge);border-color:var(--rouge);background:var(--rouge-soft)}
+.chip.ok{color:var(--vert);border-color:var(--vert);background:var(--vert-soft)}
+.chip.blue{color:var(--encre);border-color:var(--encre);background:var(--encre-soft)}
+.eyebrow{
+  font-family:"IBM Plex Mono",ui-monospace,monospace;
+  font-size:11.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-2);
+}
+h2{font-family:"Instrument Serif",Georgia,serif;font-weight:400;font-size:25px;margin:0;text-wrap:balance}
+.bar{height:6px;background:var(--line-2);overflow:hidden}
+.bar>i{display:block;height:100%;background:var(--encre);transition:width .35s ease}
+.overall{display:flex;flex-direction:column;gap:8px}
+.overall .row{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+
+.turbo{border:1px solid var(--encre);background:var(--encre-soft);padding:16px 18px;display:flex;flex-direction:column;gap:12px}
+.turbo p{margin:0;font-size:14.5px;line-height:1.45}
+.turbo .actions{margin:0}
+/* ---- Lernpfad ---- */
+.path{display:flex;flex-direction:column;border-top:1px solid var(--line-2)}
+.step{
+  display:grid;grid-template-columns:38px 1fr auto;gap:14px;align-items:center;
+  width:100%;text-align:left;padding:13px 6px;background:none;border:0;border-bottom:1px solid var(--line-2);
+  font:inherit;color:inherit;cursor:pointer;
+}
+.step:hover:not(.locked){background:var(--card-2)}
+.step:focus-visible{outline:2px solid var(--encre);outline-offset:-2px}
+.step.locked{cursor:pointer;opacity:.62}
+.step .num{
+  font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:13px;font-weight:600;
+  color:var(--encre);border:1px solid var(--encre);background:var(--encre-soft);
+  width:34px;height:34px;display:grid;place-items:center;
+}
+.step.locked .num{color:var(--ink-2);border-color:var(--line);background:var(--card-2)}
+.step.done .num{color:var(--vert);border-color:var(--vert);background:var(--vert-soft)}
+.step .nm{font-weight:500;line-height:1.3}
+.step .sb{font-size:13px;color:var(--ink-2)}
+.step .right{display:flex;align-items:center;gap:10px}
+.dots{display:flex;gap:4px}
+.dots i{width:7px;height:7px;background:var(--line);display:block;border-radius:50%}
+.dots i.on{background:var(--vert)}
+.exam-step{background:linear-gradient(90deg,var(--encre-soft),transparent 70%)}
+
+/* ---- Stage ---- */
+.stagehead{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}
+.link{background:none;border:0;font:inherit;color:var(--encre);cursor:pointer;padding:0;text-decoration:underline;text-underline-offset:3px}
+.link:hover{color:var(--ink)}
+.rounds{display:flex;gap:8px;flex-wrap:wrap}
+.rtab{
+  font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11.5px;font-weight:600;letter-spacing:.04em;
+  padding:5px 10px;border:1px solid var(--line);color:var(--ink-2);background:var(--card-2);
+}
+.rtab.cur{color:var(--card);background:var(--ink);border-color:var(--ink)}
+.rtab.fin{color:var(--vert);border-color:var(--vert);background:var(--vert-soft)}
+.qcard{
+  border:1px solid var(--line);background:var(--card-2);
+  padding:clamp(18px,3.5vw,30px);display:flex;flex-direction:column;gap:18px;min-height:210px;
+}
+.ask{font-size:13px;color:var(--ink-2)}
+.prompt{font-family:"Instrument Serif",Georgia,serif;font-size:clamp(26px,5.5vw,36px);line-height:1.15;text-wrap:balance}
+.prompt small{font-family:"Public Sans",sans-serif;font-size:14px;color:var(--ink-2);display:block;margin-top:8px;line-height:1.4}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{
+  text-align:left;font:inherit;color:inherit;cursor:pointer;
+  padding:11px 14px;border:1px solid var(--line);background:var(--card);
+  display:flex;gap:10px;align-items:baseline;
+}
+.opt:hover:not(:disabled){border-color:var(--encre);background:var(--encre-soft)}
+.opt:disabled{cursor:default}
+.opt .k{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-2);min-width:14px}
+.opt.good{border-color:var(--vert);background:var(--vert-soft);color:var(--ink)}
+.opt.bad{border-color:var(--rouge);background:var(--rouge-soft)}
+.typerow{display:flex;flex-direction:column;gap:10px}
+input[type=text]{
+  font:inherit;font-size:19px;padding:12px 14px;width:100%;
+  border:1px solid var(--line);background:var(--card);color:var(--ink);
+}
+input[type=text]:focus{outline:2px solid var(--encre);outline-offset:-1px;border-color:var(--encre)}
+.accents{display:flex;flex-wrap:wrap;gap:5px}
+.accents button{
+  font:inherit;font-size:15px;width:34px;height:32px;cursor:pointer;
+  border:1px solid var(--line);background:var(--card);color:var(--ink-2);
+}
+.accents button:hover{border-color:var(--encre);color:var(--encre)}
+.fb{display:flex;flex-direction:column;gap:4px;min-height:44px}
+.fb .verdict{font-family:"Caveat",cursive;font-size:26px;line-height:1}
+.fb.good .verdict{color:var(--vert)}
+.fb.bad .verdict{color:var(--rouge)}
+.fb .sol{font-size:15px}
+.fb .sol b{font-weight:700}
+.actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.btn{
+  font:inherit;font-weight:500;padding:11px 20px;cursor:pointer;
+  border:1px solid var(--ink);background:var(--ink);color:var(--card);
+}
+.btn:hover{opacity:.88}
+.btn.ghost{background:var(--card);color:var(--ink);border-color:var(--line)}
+.btn.ghost:hover{border-color:var(--ink);opacity:1}
+.btn.blue{background:var(--encre);border-color:var(--encre);color:#fff}
+.btn:focus-visible,.opt:focus-visible,.link:focus-visible,.accents button:focus-visible{outline:2px solid var(--encre);outline-offset:2px}
+.counter{font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--ink-2);font-variant-numeric:tabular-nums;margin-left:auto}
+
+/* flashcard */
+.flash{
+  border:1px solid var(--line);background:var(--card);cursor:pointer;
+  min-height:190px;display:grid;place-items:center;text-align:center;padding:24px;gap:10px;
+  align-content:center;
+}
+.flash .side{font-family:"Instrument Serif",Georgia,serif;font-size:clamp(26px,6vw,38px);line-height:1.15;text-wrap:balance}
+.flash .back{font-size:19px;font-family:"Public Sans",sans-serif;color:var(--encre);font-weight:500}
+.flash .tap{font-size:12.5px;color:var(--ink-2);font-family:"IBM Plex Mono",monospace}
+
+/* result */
+.score{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.score .big{font-family:"Instrument Serif",Georgia,serif;font-size:64px;line-height:1;font-variant-numeric:tabular-nums}
+.score .note{font-family:"Instrument Serif",Georgia,serif;font-size:64px;line-height:1;color:var(--encre)}
+.wronglist{display:flex;flex-direction:column;gap:0;border-top:1px solid var(--line-2)}
+.wronglist div{display:flex;justify-content:space-between;gap:14px;padding:8px 2px;border-bottom:1px solid var(--line-2);font-size:15px}
+.wronglist .f{font-weight:500}
+.wronglist .d{color:var(--ink-2);text-align:right}
+.foot{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--ink-2);border-top:1px solid var(--line-2);padding-top:16px}
+.hide{display:none!important}
+@media (max-width:520px){
+  .step{grid-template-columns:32px 1fr;gap:11px}
+  .step .right{grid-column:2;justify-content:flex-start}
+  .score .big,.score .note{font-size:48px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<main class="sheet">
+  <header>
+    <div class="kicker">KSWO, classe G1G, cours de français</div>
+    <div class="head-rule"></div>
+    <h1 class="titlebar">Examen de vocabulaire I</h1>
+    <div class="metarow">
+      <span><span class="lbl">Date :</span> <span class="date">le mercredi 16 septembre 2026</span></span>
+      <span class="chip hot" id="countdown">…</span>
+      <span class="chip">Dossier pp. 1–6</span>
+    </div>
+  </header>
+
+  <section id="view"></section>
+
+  <div class="foot">
+    <span>Prüfungsstoff: Übersetzen (F↔D), Ausdrücke, Sätze, Synonyme, Antonyme, Wortfamilien, Lücken. <span id="savechip"></span></span>
+    <button class="link" id="reset">Fortschritt zurücksetzen</button>
+  </div>
+</main>
+
+<script>
+/* ============================ DATEN ============================ */
+/* Wortschatz: [französisch, deutsch] – Dossier de vocabulaire, pp. 1–6 */
+const PAGES = [
+ {n:1, fr:"A.1 L'identité", de:"Die Identität", w:[
+  ["l'être humain m.","das menschliche Wesen"],
+  ["la personne","die Person"],
+  ["le personnage","die Persönlichkeit, Person (Buch, Film)"],
+  ["personnel, -le","persönlich"],
+  ["le nom de famille","der Familienname, der Nachname"],
+  ["le prénom","der Vorname"],
+  ["s'appeler","heissen"],
+  ["la naissance","die Geburt"],
+  ["la date de naissance","das Geburtsdatum"],
+  ["naître","geboren werden"],
+  ["je suis né,-e le 15 août 2004","ich bin am 15. August 2004 geboren"],
+  ["je suis né,-e en 2004","ich bin 2004 geboren"],
+  ["l'âge m.","das Alter"],
+  ["quel âge as-tu?","wie alt bist du?"],
+  ["avoir ... ans","... Jahre alt sein"],
+  ["l'enfant m./f.","das Kind"],
+  ["l'enfance f.","die Kindheit"],
+  ["la (jeune) fille","das Mädchen"],
+  ["le garçon","der Knabe"],
+  ["mineur, -e","minderjährig"],
+  ["jeune","jung"],
+  ["la jeunesse","die Jugend"],
+  ["l'adolescent m.","der/die Jugendliche, der Teenager"],
+  ["l'adolescence f.","das Jugendalter"],
+  ["majeur, -e","volljährig, mündig"],
+  ["adulte","erwachsen"],
+  ["vieux (vieil), vieille","alt"],
+  ["la vieillesse","das (hohe Lebens)Alter"],
+  ["la nationalité","die Staatsangehörigkeit"],
+  ["l'adresse f.","die Adresse"],
+  ["le domicile","der Wohnort"],
+  ["l'état civil m.","der Familienstand, der Zivilstand"],
+  ["célibataire","ledig"],
+  ["fiancé, -e","verlobt"],
+  ["marié, -e","verheiratet"],
+  ["divorcé, -e","geschieden"],
+  ["veuf, -ve","verwitwet"],
+  ["le sexe","das Geschlecht"],
+  ["masculin, -e","männlich"],
+  ["féminin, -e","weiblich"],
+  ["l'homme m.","der Mensch, der Mann"],
+  ["la femme","die Frau, die Ehefrau"],
+  ["l'identité f.","die Identität, die Personalien"],
+  ["les papiers (d'identité)","die (Ausweis-)Papiere"],
+  ["la carte d'identité","der Personalausweis"],
+  ["le passeport","der Reisepass"],
+  ["le permis de conduire","der Führerschein"]
+ ]},
+ {n:2, fr:"A.2 Le physique d'une personne", de:"Das Äussere einer Person", w:[
+  ["le physique","das Aussehen, die äussere Erscheinung"],
+  ["l'apparence f.","die äussere Erscheinung"],
+  ["sembler (paraître)","scheinen"],
+  ["l'impression f.","der Eindruck"],
+  ["ressembler à qn.","jemandem gleichen"],
+  ["avoir l'air sportif, -ve","sportlich aussehen"],
+  ["avoir l'air d'un artiste","wie ein Künstler aussehen"],
+  ["grand, -e","gross"],
+  ["petit, -e","klein"],
+  ["mince (svelte)","schlank"],
+  ["maigre","mager"],
+  ["maigrir (aux. avoir)","abnehmen"],
+  ["gros, -se","dick"],
+  ["grossir (aux. avoir)","dick werden"],
+  ["de taille moyenne","von mittlerer Statur"],
+  ["moyen, -ne","mittel, mittelmässig, durchschnittlich"],
+  ["beau (bel), belle","schön"],
+  ["la beauté","die Schönheit"],
+  ["joli, -e","hübsch"],
+  ["magnifique (merveilleux, -se)","wunderbar"],
+  ["laid, -e","hässlich"],
+  ["la laideur","die Hässlichkeit"],
+  ["affreux, -se (horrible)","schrecklich"],
+  ["avoir le visage allongé/rond/ovale","ein längliches/rundes/ovales Gesicht haben"],
+  ["avoir les yeux bleus/verts/marron","blaue/grüne/braune Augen haben"],
+  ["avoir les cheveux bruns/blonds/roux","braune/blonde/rote Haare haben"],
+  ["avoir le teint pâle/clair/foncé","einen blassen/hellen/dunklen Teint haben"],
+  ["pâlir (aux. avoir)","bleich werden"],
+  ["rougir (aux. avoir)","rot werden"],
+  ["la taille","die Taille, die Grösse"],
+  ["fort, -e (robuste)","kräftig, stark"],
+  ["la force","die Kraft"],
+  ["faible","schwach"],
+  ["la faiblesse","die Schwäche"],
+  ["fragile","zart, zerbrechlich"],
+  ["agréable","angenehm"],
+  ["désagréable","unangenehm"]
+ ]},
+ {n:3, fr:"A.3.1 La tête", de:"Der Kopf", w:[
+  ["hocher la tête","mit dem Kopf nicken, den Kopf schütteln"],
+  ["le visage (la figure)","das Gesicht"],
+  ["le cheveu (pl. -x)","das Haar"],
+  ["se faire couper les cheveux","sich die Haare schneiden lassen"],
+  ["se laisser pousser les cheveux","sich die Haare wachsen lassen"],
+  ["la barbe","der Bart"],
+  ["la moustache","der Schnauz"],
+  ["le front","die Stirn"],
+  ["l'oeil m., les yeux","das Auge, die Augen"],
+  ["le sourcil","die Augenbraue"],
+  ["le cil","die Wimper"],
+  ["la paupière","das Augenlid"],
+  ["l'oreille f.","das Ohr"],
+  ["le nez","die Nase"],
+  ["la bouche","der Mund"],
+  ["parler la bouche pleine","mit vollem Mund sprechen"],
+  ["la lèvre","die Lippe"],
+  ["la langue","die Zunge, die Sprache"],
+  ["la joue","die Wange"],
+  ["le menton","das Kinn"],
+  ["la dent","der Zahn"],
+  ["le cou","der Hals (aussen)"],
+  ["la gorge","der Hals, der Rachen"],
+  ["avoir mal à la gorge","Halsweh haben"]
+ ]},
+ {n:4, fr:"A.3.2/3 Le tronc, les membres, les organes", de:"Rumpf, Glieder, Organe", w:[
+  ["le tronc","der Rumpf"],
+  ["la poitrine","die Brust"],
+  ["le sein","die (weibliche) Brust"],
+  ["le ventre","der Bauch"],
+  ["le derrière (les fesses f.)","der Hintern, das Hinterteil"],
+  ["les membres m.","die Glieder"],
+  ["le bras","der Arm"],
+  ["l'épaule f.","die Schulter"],
+  ["hausser les épaules","mit den Schultern zucken"],
+  ["le dos","der Rücken"],
+  ["le coude","der Ellenbogen"],
+  ["la main","die Hand"],
+  ["le poing","die Faust"],
+  ["le doigt","der Finger"],
+  ["l'ongle m.","der Fingernagel"],
+  ["la jambe","das Bein"],
+  ["boiter","hinken"],
+  ["la cuisse","der Oberschenkel"],
+  ["le genou (pl. -x)","das Knie"],
+  ["le pied","der Fuss"],
+  ["le talon","die Ferse, der Schuhabsatz"],
+  ["le doigt de pied (l'orteil m.)","die Zehe"],
+  ["le corps","der Körper"],
+  ["l'os m., les os m.","der Knochen"],
+  ["le squelette","das Skelett"],
+  ["l'articulation f.","das Gelenk"],
+  ["se fouler qc.","sich etwas verstauchen"],
+  ["l'organe m.","das Organ"],
+  ["le cerveau","das Gehirn"],
+  ["le cœur","das Herz"],
+  ["le poumon","die Lunge"],
+  ["le rein","die Niere"],
+  ["le foie","die Leber"],
+  ["l'estomac m.","der Magen"],
+  ["la peau","die Haut"],
+  ["le muscle","der Muskel"],
+  ["le sang","das Blut"],
+  ["saigner","bluten"],
+  ["la veine","die Ader, die Vene"],
+  ["le nerf","der Nerv"]
+ ]},
+ {n:5, fr:"A.4 Les cinq sens & la vue", de:"Die fünf Sinne · Der Sehsinn", w:[
+  ["le sens","der Sinn"],
+  ["les cinq sens","die fünf Sinne"],
+  ["le dégoût","die Abscheu"],
+  ["dégoûtant, -e","widerwärtig, abscheulich"],
+  ["le plaisir","das Vergnügen, die Sinneslust"],
+  ["plaire à qn.","jemandem gefallen"],
+  ["déplaire à qn.","jemandem missfallen"],
+  ["la vue","der Sehsinn, die Sicht"],
+  ["le regard","der Blick"],
+  ["voir","sehen (zufällig)"],
+  ["regarder qc.","etwas anschauen"],
+  ["apercevoir","erblicken, sehen"],
+  ["aveugle","blind"],
+  ["la lumière","das Licht"],
+  ["la clarté","die Helligkeit"],
+  ["clair, -e","hell"],
+  ["la bougie","die Kerze"],
+  ["éclairer","erhellen"],
+  ["l'obscurité f.","die Dunkelheit"],
+  ["obscur, -e (sombre)","dunkel"],
+  ["la couleur","die Farbe"],
+  ["la photo en couleurs","das Farbfoto"],
+  ["multicolore (coloré, -e)","bunt"],
+  ["rouge","rot"],
+  ["bleu, -e","blau"],
+  ["bleu foncé (invariable)","dunkelblau"],
+  ["bleu clair (invariable)","hellblau"],
+  ["la robe bleue","das blaue Kleid"],
+  ["la robe bleu foncé","das dunkelblaue Kleid"],
+  ["jaune","gelb"],
+  ["vert, -e","grün"],
+  ["brun, -e","braun"],
+  ["marron (invariable)","kastanienbraun"],
+  ["la jupe marron","der kastanienbraune Jupe"],
+  ["violet, -te","violett"],
+  ["rose","rosa"],
+  ["blanc, blanche","weiss"],
+  ["noir, -e","schwarz"],
+  ["gris, -e","grau"],
+  ["orange (invariable)","orange"],
+  ["les chaussures orange","die orangen Schuhe"],
+  ["beige","beige"],
+  ["transparent, -e","durchsichtig, transparent"]
+ ]},
+ {n:6, fr:"A.4.2-5 Les autres sens", de:"Gehör, Geruch, Geschmack, Tastsinn", w:[
+  ["l'ouïe f.","das Gehör, der Gehörsinn"],
+  ["entendre qc.","etwas hören"],
+  ["écouter qc.","etwas anhören, zuhören"],
+  ["le son (le ton)","der Ton, der Klang"],
+  ["le bruit","der Lärm"],
+  ["le silence","die Ruhe, das Schweigen"],
+  ["sourd, -e","taub"],
+  ["muet, -te","stumm"],
+  ["l'odorat m.","der Geruchsinn"],
+  ["l'odeur f.","der Geruch"],
+  ["sentir","riechen"],
+  ["la rose sent bon","die Rose riecht gut"],
+  ["le fromage sent mauvais","der Käse riecht schlecht"],
+  ["puer","stinken"],
+  ["le parfum","der Duft, das Parfum"],
+  ["respirer","atmen, einatmen"],
+  ["le goût","der Geschmacksinn, der Geschmack"],
+  ["la soupe a un bon goût","die Suppe schmeckt gut"],
+  ["le toucher","der Tastsinn"],
+  ["toucher","berühren, anfassen"],
+  ["la surface","die Oberfläche"],
+  ["plat, -e","eben"],
+  ["fin, -e","fein"],
+  ["mou (mol), molle","weich"],
+  ["dur, -e","hart"]
+ ]}
+];
+
+const SYN = [
+ ["le physique","l'apparence"],["sembler","paraître"],["mince","svelte"],
+ ["magnifique","merveilleux"],["affreux","horrible"],["le domicile","le lieu d'habitation"],
+ ["le visage","la figure"],["le derrière","les fesses"],["fort","robuste"],
+ ["multicolore","coloré"],["obscur","sombre"],["le son","le ton"],["le doigt de pied","l'orteil"]
+];
+const ANT = [
+ ["grand","petit"],["mince","gros"],["maigrir","grossir"],["beau","laid"],
+ ["la beauté","la laideur"],["jeune","vieux"],["la jeunesse","la vieillesse"],
+ ["mineur","majeur"],["masculin","féminin"],["l'homme","la femme"],
+ ["célibataire","marié"],["fort","faible"],["la force","la faiblesse"],
+ ["agréable","désagréable"],["plaire à qn.","déplaire à qn."],["le plaisir","le dégoût"],
+ ["la lumière","l'obscurité"],["la clarté","l'obscurité"],["clair","obscur"],
+ ["blanc","noir"],["le bruit","le silence"],["mou","dur"],["pâlir","rougir"],
+ ["l'enfance","la vieillesse"]
+];
+const FAM = [
+ ["naître → das Nomen","la naissance","die Geburt"],
+ ["la personne → das Adjektiv","personnel","persönlich"],
+ ["l'enfant → das Nomen für die Lebensphase","l'enfance","die Kindheit"],
+ ["l'adolescent → das Nomen für die Lebensphase","l'adolescence","das Jugendalter"],
+ ["jeune → das Nomen","la jeunesse","die Jugend"],
+ ["vieux → das Nomen","la vieillesse","das hohe Alter"],
+ ["beau → das Nomen","la beauté","die Schönheit"],
+ ["laid → das Nomen","la laideur","die Hässlichkeit"],
+ ["fort → das Nomen","la force","die Kraft"],
+ ["faible → das Nomen","la faiblesse","die Schwäche"],
+ ["maigre → das Verb","maigrir","abnehmen"],
+ ["gros → das Verb","grossir","dick werden"],
+ ["rouge → das Verb","rougir","rot werden"],
+ ["pâle → das Verb","pâlir","bleich werden"],
+ ["clair → das Nomen","la clarté","die Helligkeit"],
+ ["clair → das Verb","éclairer","erhellen"],
+ ["obscur → das Nomen","l'obscurité","die Dunkelheit"],
+ ["la couleur → das Adjektiv","multicolore","bunt"],
+ ["le dégoût → das Adjektiv","dégoûtant","widerwärtig"],
+ ["le sang → das Verb","saigner","bluten"],
+ ["voir → das Nomen","la vue","der Sehsinn"],
+ ["l'odeur → das Nomen für den Sinn","l'odorat","der Geruchsinn"],
+ ["toucher → das Nomen","le toucher","der Tastsinn"],
+ ["plaire → das Nomen","le plaisir","das Vergnügen"]
+];
+const GAP = [
+ ["Je suis né ___ 15 août 2004.","le","ich bin am 15. August 2004 geboren"],
+ ["Je suis né ___ 2004.","en","ich bin 2004 geboren"],
+ ["Quel ___ as-tu ?","âge","wie alt bist du?"],
+ ["J'ai seize ___.","ans","ich bin sechzehn Jahre alt"],
+ ["Elle ___ la tête pour dire oui.","hoche","hocher la tête = nicken"],
+ ["Il ___ les épaules.","hausse","hausser les épaules = mit den Schultern zucken"],
+ ["Ne parle pas la bouche ___ !","pleine","mit vollem Mund sprechen"],
+ ["J'ai mal à la ___.","gorge","ich habe Halsweh"],
+ ["Je vais me faire ___ les cheveux.","couper","sich die Haare schneiden lassen"],
+ ["Elle se laisse ___ les cheveux.","pousser","sich die Haare wachsen lassen"],
+ ["Il a l'___ sportif.","air","er sieht sportlich aus"],
+ ["Elle a le ___ ovale.","visage","sie hat ein ovales Gesicht"],
+ ["Il a les yeux ___.","marron","er hat braune Augen (invariabel!)"],
+ ["Elle a les cheveux ___.","roux","sie hat rote Haare"],
+ ["Il a le ___ foncé.","teint","er hat einen dunklen Teint"],
+ ["Elle est de ___ moyenne.","taille","sie ist von mittlerer Statur"],
+ ["La rose ___ bon.","sent","die Rose riecht gut"],
+ ["Le fromage sent ___.","mauvais","der Käse riecht schlecht"],
+ ["La soupe a un bon ___.","goût","die Suppe schmeckt gut"],
+ ["Il ___ à son père.","ressemble","er gleicht seinem Vater"],
+ ["J'ai acheté une robe bleu ___.","foncé","ein dunkelblaues Kleid (invariabel!)"],
+ ["Il s'est ___ la cheville.","foulé","er hat sich den Knöchel verstaucht"],
+ ["Il est ___ : il n'entend rien.","sourd","taub"],
+ ["Elle est ___ : elle ne voit rien.","aveugle","blind"],
+ ["Il est ___ : il ne parle pas.","muet","stumm"],
+ ["Depuis l'accident, il ___.","boite","er hinkt"],
+ ["La blessure ___ encore.","saigne","die Wunde blutet noch"]
+];
+/* Ganze Sätze D → F, nur mit Wortschatz von pp. 1–6 */
+const SENT=[
+ ["Ich heisse Paul.","Je m'appelle Paul.",[],""],
+ ["Wie alt bist du?","Quel âge as-tu ?",["Quel âge tu as ?","Tu as quel âge ?","Quel âge avez-vous ?"],""],
+ ["Ich bin sechzehn Jahre alt.","J'ai seize ans.",["J'ai 16 ans."],"avoir ... ans – nicht être!"],
+ ["Ich bin 2004 geboren.","Je suis né en 2004.",["Je suis née en 2004."],"naître mit être"],
+ ["Sie ist am 15. August 2004 geboren.","Elle est née le 15 août 2004.",[],"le + Datum"],
+ ["Mein Vorname ist Paul, mein Nachname ist Bucher.","Mon prénom est Paul, mon nom de famille est Bucher.",[],""],
+ ["Was ist deine Staatsangehörigkeit?","Quelle est ta nationalité ?",["Quelle est votre nationalité ?","C'est quoi ta nationalité ?"],""],
+ ["Er ist ledig und sie ist verheiratet.","Il est célibataire et elle est mariée.",[],""],
+ ["Der Mann ist geschieden, die Frau ist verwitwet.","L'homme est divorcé, la femme est veuve.",[],"veuf → veuve"],
+ ["Ich habe einen Reisepass und einen Personalausweis.","J'ai un passeport et une carte d'identité.",[],""],
+ ["Er hat den Führerschein.","Il a le permis de conduire.",[],""],
+ ["Der Jugendliche ist minderjährig.","L'adolescent est mineur.",["L'adolescente est mineure."],""],
+ ["Das Mädchen ist jung, der Mann ist alt.","La jeune fille est jeune, l'homme est vieux.",["La fille est jeune, l'homme est vieux."],""],
+ ["Sie ist gross und schlank.","Elle est grande et mince.",["Elle est grande et svelte."],"Adjektiv anpassen"],
+ ["Er sieht sportlich aus.","Il a l'air sportif.",[],"avoir l'air + Adjektiv"],
+ ["Sie hat blaue Augen und braune Haare.","Elle a les yeux bleus et les cheveux bruns.",[],""],
+ ["Ich habe ein ovales Gesicht.","J'ai le visage ovale.",[],"le, nicht un"],
+ ["Er ist rot geworden.","Il a rougi.",[],"aux. avoir!"],
+ ["Sie hat abgenommen.","Elle a maigri.",[],"aux. avoir!"],
+ ["Der Mann ist stark, das Kind ist schwach.","L'homme est fort, l'enfant est faible.",[],""],
+ ["Er nickt mit dem Kopf.","Il hoche la tête.",[],""],
+ ["Ich lasse mir die Haare schneiden.","Je me fais couper les cheveux.",[],"se faire couper"],
+ ["Sprich nicht mit vollem Mund!","Ne parle pas la bouche pleine !",[],""],
+ ["Ich habe Halsweh.","J'ai mal à la gorge.",[],""],
+ ["Er zuckt mit den Schultern.","Il hausse les épaules.",[],""],
+ ["Sie hat sich den Fuss verstaucht.","Elle s'est foulé le pied.",[],"se fouler qc."],
+ ["Das Herz und die Lunge sind Organe.","Le cœur et le poumon sont des organes.",["Le coeur et le poumon sont des organes."],""],
+ ["Der Mensch hat fünf Sinne.","L'être humain a cinq sens.",["L'homme a cinq sens.","L'être humain a les cinq sens."],""],
+ ["Die Farbe gefällt mir.","La couleur me plaît.",["La couleur me plait."],"plaire à qn."],
+ ["Er ist blind und sie ist taub.","Il est aveugle et elle est sourde.",[],""],
+ ["Ich höre einen Lärm.","J'entends un bruit.",[],"entendre = hören"],
+ ["Ich höre zu.","J'écoute.",[],"écouter = zuhören"],
+ ["Die Rose riecht gut, der Käse riecht schlecht.","La rose sent bon, le fromage sent mauvais.",[],"bon/mauvais bleiben invariabel"],
+ ["Die Suppe schmeckt gut.","La soupe a un bon goût.",[],""],
+ ["Ich atme.","Je respire.",[],""],
+ ["Die Oberfläche ist weich.","La surface est molle.",[],"mou → molle"],
+ ["Das Kleid ist dunkelblau.","La robe est bleu foncé.",[],"bleu foncé ist invariabel"],
+ ["Die Schuhe sind orange.","Les chaussures sont orange.",[],"orange ist invariabel"],
+ ["Sie hat einen kastanienbraunen Jupe.","Elle a une jupe marron.",[],"marron ist invariabel"],
+ ["Die Kerze ist schön.","La bougie est belle.",[],"beau → belle"],
+ ["Schau das Farbfoto an!","Regarde la photo en couleurs !",[],""],
+ ["Das ist sehr unangenehm.","C'est très désagréable.",[],""]
+];
+const TRAP = [
+ ["Plural von « le cheveu » ?","les cheveux",["les cheveus","les cheveaux","les chevaux"]],
+ ["Plural von « le genou » ?","les genoux",["les genous","les genoues","les genaux"]],
+ ["Plural von « l'oeil » ?","les yeux",["les oeils","les oeilles","les yeuls"]],
+ ["« der kastanienbraune Jupe »","la jupe marron",["la jupe marronne","la jupe marrone","la jupe marrons"]],
+ ["« die orangen Schuhe »","les chaussures orange",["les chaussures oranges","les chaussures orangées","les chaussures d'orange"]],
+ ["« das dunkelblaue Kleid »","la robe bleu foncé",["la robe bleue foncée","la robe bleue foncé","la robe foncée bleue"]],
+ ["« das blaue Kleid »","la robe bleue",["la robe bleu","la robe bleus","la robe de bleu"]],
+ ["« Ich habe abgenommen. »","j'ai maigri",["je suis maigri","je me suis maigri","j'ai maigré"]],
+ ["« Sie ist rot geworden. »","elle a rougi",["elle est rougie","elle s'est rougie","elle est rougi"]],
+ ["« sentir » bedeutet je nach Sinn …","riechen, schmecken und fühlen",["nur riechen","nur fühlen","nur schmecken"]],
+ ["« la langue » bedeutet …","die Zunge und die Sprache",["nur die Zunge","die Lippe","der Rachen"]],
+ ["« l'homme » bedeutet …","der Mensch und der Mann",["nur der Mann",  "die Menschheit","der Junge"]],
+ ["« le personnage » bedeutet …","die Person/Figur in Buch oder Film",["die Person allgemein","der Charakterzug","der Schauspieler"]],
+ ["Welches Verb heisst « zuhören » ?","écouter",["entendre","apercevoir","regarder"]],
+ ["Welches Verb heisst « (zufällig) sehen » ?","voir",["regarder","éclairer","apercevoir"]],
+ ["« la taille » bedeutet …","die Taille und die Grösse",["nur die Taille","der Rumpf","die Statur"]],
+ ["« le talon » bedeutet …","die Ferse und der Schuhabsatz",["nur die Ferse","die Zehe","das Knie"]],
+ ["1. Person Singular von « apercevoir » ?","j'aperçois",["j'apercois","j'aperçoie","j'aperçève"]],
+ ["Participe passé von « apercevoir » ?","aperçu",["apercevu","aperçois","aperçut"]],
+ ["« Halsweh haben » heisst …","avoir mal à la gorge",["avoir mal au cou","avoir mal à la langue","avoir mal du cou"]],
+ ["« mou » im Femininum","molle",["moue","mou","molles"]],
+ ["« un ___ homme » (schön, vor Vokal)","bel",["beau","belle","bell"]],
+ ["« un ___ homme » (alt, vor Vokal)","vieil",["vieux","vieille","viel"]],
+ ["« blanc » im Femininum","blanche",["blance","blanque","blanc"]],
+ ["« veuf » im Femininum","veuve",["veufe","veuvre","veuf"]],
+ ["« affreux » im Femininum","affreuse",["affreux","affreue","affreusse"]]
+];
+
+/* ============================ HILFSFUNKTIONEN ============================ */
+const $=(s,r=document)=>r.querySelector(s);
+const norm=s=>s.toLowerCase().replace(/[’‘`]/g,"'").replace(/\s+/g," ").replace(/[.!?;:]+$/,"").trim();
+const deacc=s=>s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/œ/g,"oe").replace(/æ/g,"ae");
+const ART=/^(le |la |les |l'|un |une |des )/;
+const lnorm=s=>norm(s).replace(/[.,;:!?«»"]/g,"").replace(/-/g," ").replace(/\s+/g," ").trim();
+
+function fem(m,suf){
+  if(suf==="se"&&m.endsWith("x"))return m.slice(0,-1)+"se";
+  if(suf==="ve"&&m.endsWith("f"))return m.slice(0,-1)+"ve";
+  return m+suf;
+}
+function acceptable(fr){
+  const out=new Set();
+  let s=fr.replace(/\s*\((aux\.[^)]*|pl\.[^)]*|invariable|inv\.)\)/gi,"")
+          .replace(/\s+m\.\/f\./g,"").replace(/\s+m\./g,"").replace(/\s+f\./g,"")
+          .replace(/\s+/g," ").trim();
+  const base=[];
+  const pm=s.match(/^([^()]*)\(([^)]+)\)(.*)$/);
+  if(pm){
+    base.push((pm[1]+pm[3]).replace(/\s+/g," ").trim());
+    base.push((pm[2]+pm[3]).replace(/\s+/g," ").trim());
+    base.push(s);
+  }else base.push(s);
+  base.forEach(v=>{
+    out.add(v);
+    const am=v.match(/^(.*?),\s*-(\w+)$/);
+    if(am){out.add(am[1]);out.add(fem(am[1],am[2]));}
+    if(v.includes(",")){
+      v.split(",").map(x=>x.trim()).forEach(p=>{if(p&&!p.startsWith("-")&&p.split(" ").length<=3)out.add(p);});
+    }
+    if(v.includes("/")&&v.split(" ").length<=3){
+      v.split("/").map(x=>x.trim()).forEach(p=>{if(p)out.add(p);});
+    }
+  });
+  return [...out].filter(Boolean).map(norm);
+}
+function typable(fr){
+  const w=fr.split(" ").length;
+  if(fr.includes("/"))return false;
+  if(w>6)return false;
+  if(w>4&&fr.includes(","))return false;
+  return true;
+}
+/* 0 = falsch, 1 = richtig, 2 = richtig, aber Akzente, 3 = Artikel fehlt */
+function check(input,answers,loose){
+  const t=loose?lnorm(input):norm(input);
+  if(!t)return 0;
+  if(loose)answers=answers.map(lnorm);
+  if(answers.includes(t))return 1;
+  const td=deacc(t);
+  if(answers.some(a=>deacc(a)===td))return 2;
+  if(loose){
+    const strip=x=>deacc(x).replace(/'/g,"").replace(/\s+/g," ").trim();
+    if(answers.some(a=>strip(a)===strip(t)))return 2;
+    return 0;
+  }
+  if(answers.some(a=>deacc(a.replace(ART,""))===deacc(t.replace(ART,""))))return 3;
+  return 0;
+}
+function rng(seed){let a=seed>>>0;return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function shuffle(arr,r){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function pick(pool,n,r,not){
+  const out=[],seen=new Set(not.map(norm));
+  const s=shuffle(pool,r);
+  for(const x of s){if(out.length>=n)break;if(seen.has(norm(x)))continue;seen.add(norm(x));out.push(x);}
+  return out;
+}
+const esc=s=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+
+const ALL=PAGES.flatMap(p=>p.w.map(w=>({f:w[0],d:w[1],p:p.n})));
+const ALL_DE=[...new Set(ALL.map(w=>w.d))];
+const ALL_FRAW=[...new Set(ALL.map(w=>w.f))];
+const ALL_FR=[...new Set(ALL.map(w=>w.f.replace(/\s*\((aux\.[^)]*|pl\.[^)]*|invariable|inv\.)\)/gi,"").replace(/\s+m\.|\s+f\./g,"").trim()))];
+
+/* ============================ ETAPPEN ============================ */
+const STAGES=[
+ ...PAGES.map(p=>({id:"p"+p.n,kind:"voc",page:p.n,name:"Seite "+p.n+" · "+p.fr.replace(/^A[\d./–-]*\s/,""),sub:p.de+" · "+p.w.length+" Einträge"})),
+ {id:"syn",kind:"set",name:"Synonyme & Gegenteile",sub:SYN.length+" Synonyme, "+ANT.length+" Antonyme"},
+ {id:"fam",kind:"set",name:"Wortfamilien",sub:FAM.length+" Ableitungen – schreiben"},
+ {id:"exp",kind:"set",name:"Ausdrücke & Lückensätze",sub:GAP.length+" Sätze ergänzen"},
+ {id:"trap",kind:"set",name:"Stolperfallen",sub:TRAP.length+" Fragen zu Plural, invariabel, aux."},
+ {id:"sent",kind:"set",name:"Sätze übersetzen (D → F)",sub:SENT.length+" ganze Sätze schreiben"},
+ {id:"exam",kind:"exam",name:"Prüfungssimulation",sub:"24 gemischte Fragen · mit Note"}
+];
+const ROUNDS={voc:["Karteikarten","Erkennen","Schreiben"],set:["Üben"],exam:["Prüfung"]};
+
+/* ============================ FRAGEN BAUEN ============================ */
+function buildQuestions(stage,round,seed){
+  const r=rng(seed);
+  if(stage.kind==="voc"){
+    const page=PAGES.find(p=>p.n===stage.page);
+    const words=shuffle(page.w.map(w=>({f:w[0],d:w[1]})),r);
+    const df=state.dir!=="fd";
+    if(round===0)return words.map(w=>({type:"flash",front:df?w.d:w.f,back:df?w.f:w.d,key:w.f}));
+    if(round===1)return words.map(w=>{
+      const tgt=df?w.f:w.d;
+      const pool=df?page.w.map(x=>x[0]).concat(ALL_FRAW):page.w.map(x=>x[1]).concat(ALL_DE);
+      const opts=shuffle([tgt,...pick(pool,3,r,[tgt])],r);
+      return {type:"mc",ask:df?"Was heisst das auf Französisch?":"Was heisst das auf Deutsch?",prompt:df?w.d:w.f,options:opts,correct:tgt,key:w.f};
+    });
+    return words.filter(w=>typable(w.f)).map(w=>({
+      type:"type",ask:"Wie heisst das auf Französisch?",prompt:w.d,
+      answers:acceptable(w.f),show:w.f,key:w.f
+    }));
+  }
+  if(stage.id==="syn"){
+    const qs=[];
+    SYN.forEach(([a,b])=>{
+      qs.push({type:"mc",ask:"Was ist ein Synonym?",prompt:a,options:null,correct:b,key:a,pool:"fr"});
+      qs.push({type:"mc",ask:"Was ist ein Synonym?",prompt:b,options:null,correct:a,key:b,pool:"fr"});
+    });
+    ANT.forEach(([a,b])=>{
+      qs.push({type:"mc",ask:"Was ist das Gegenteil?",prompt:a,options:null,correct:b,key:a,pool:"fr"});
+      qs.push({type:"mc",ask:"Was ist das Gegenteil?",prompt:b,options:null,correct:a,key:b,pool:"fr"});
+    });
+    const list=shuffle(qs,r);
+    list.forEach(q=>{q.options=shuffle([q.correct,...pick(ALL_FR,3,r,[q.correct,q.prompt])],r);});
+    return list;
+  }
+  if(stage.id==="fam")return shuffle(FAM,r).map(([q,a,h])=>({
+    type:"type",ask:"Wortfamilie – schreib das Wort (mit Artikel).",prompt:q,hint:h,
+    answers:acceptable(a),show:a,key:a
+  }));
+  if(stage.id==="exp")return shuffle(GAP,r).map(([s,a,h])=>({
+    type:"type",ask:"Ergänze die Lücke.",prompt:s,hint:h,answers:acceptable(a),show:a,key:s
+  }));
+  if(stage.id==="sent")return shuffle(SENT,r).map(([de,fr,alts,hint])=>({
+    type:"type",ask:"Übersetze den ganzen Satz ins Französische.",prompt:de,hint:hint||"",
+    answers:[fr,...(alts||[])],loose:true,show:fr,key:de
+  }));
+  if(stage.id==="trap")return shuffle(TRAP,r).map(([q,a,ds])=>({
+    type:"mc",ask:"Stolperfalle",prompt:q,options:shuffle([a,...ds],r),correct:a,key:q
+  }));
+  if(stage.id==="exam"){
+    const df=state.dir!=="fd";
+    const mc=shuffle(ALL,r).slice(0,7).map(w=>({
+      type:"mc",ask:df?"Übersetze ins Französische.":"Übersetze ins Deutsche.",prompt:df?w.d:w.f,
+      options:shuffle([df?w.f:w.d,...pick(df?ALL_FRAW:ALL_DE,3,r,[df?w.f:w.d])],r),correct:df?w.f:w.d,key:w.f
+    }));
+    const ty=shuffle(ALL.filter(w=>typable(w.f)),r).slice(0,6).map(w=>({
+      type:"type",ask:"Übersetze ins Französische.",prompt:w.d,answers:acceptable(w.f),show:w.f,key:w.f
+    }));
+    const sy=shuffle(SYN,r).slice(0,2).map(([a,b])=>({
+      type:"mc",ask:"Synonym?",prompt:a,options:shuffle([b,...pick(ALL_FR,3,r,[b,a])],r),correct:b,key:a
+    }));
+    const an=shuffle(ANT,r).slice(0,2).map(([a,b])=>({
+      type:"mc",ask:"Gegenteil?",prompt:a,options:shuffle([b,...pick(ALL_FR,3,r,[b,a])],r),correct:b,key:a
+    }));
+    const fa=shuffle(FAM,r).slice(0,2).map(([q,a,h])=>({
+      type:"type",ask:"Wortfamilie",prompt:q,hint:h,answers:acceptable(a),show:a,key:a
+    }));
+    const ga=shuffle(GAP,r).slice(0,2).map(([s,a,h])=>({
+      type:"type",ask:"Ergänze die Lücke.",prompt:s,hint:h,answers:acceptable(a),show:a,key:s
+    }));
+    const tr=shuffle(TRAP,r).slice(0,1).map(([q,a,ds])=>({
+      type:"mc",ask:"Stolperfalle",prompt:q,options:shuffle([a,...ds],r),correct:a,key:q
+    }));
+    const se=shuffle(SENT,r).slice(0,2).map(([de2,fr2,alts,hint])=>({
+      type:"type",ask:"Übersetze den ganzen Satz.",prompt:de2,hint:hint||"",
+      answers:[fr2,...(alts||[])],loose:true,show:fr2,key:de2
+    }));
+    return shuffle([...mc,...ty,...sy,...an,...fa,...ga,...tr,...se],r);
+  }
+  return [];
+}
+
+/* ============================ STATE ============================ */
+const DEFAULT={v:1,dir:"df",best:{},prog:{},hard:{},open:1};
+let state=JSON.parse(JSON.stringify(DEFAULT));
+let dbref=null,saveTimer=null;
+
+function loadLocal(){
+  try{const raw=localStorage.getItem("kswo-voc-1");if(raw)state=Object.assign(JSON.parse(JSON.stringify(DEFAULT)),JSON.parse(raw));}catch(e){}
+}
+function save(){
+  try{localStorage.setItem("kswo-voc-1",JSON.stringify(state));}catch(e){}
+  if(!dbref)return;
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(()=>{dbref.set({data:JSON.stringify(state),at:Date.now()}).catch(()=>{});},700);
+}
+async function initStore(){
+  loadLocal();
+  render();
+  try{
+    const db=await (window.claude&&window.claude.use?window.claude.use("db"):null);
+    if(!db)return;
+    dbref=db.doc("progress/main");
+    const snap=await dbref.get();
+    if(snap&&snap.exists){
+      const d=snap.data();
+      if(d&&d.data){
+        const remote=JSON.parse(d.data);
+        if(Object.keys(remote.best||{}).length>=Object.keys(state.best||{}).length){
+          state=Object.assign(JSON.parse(JSON.stringify(DEFAULT)),remote);
+        }
+      }
+    }
+    const chip=$("#savechip");if(chip)chip.textContent="· Fortschritt wird geräteübergreifend gespeichert.";
+    render();
+  }catch(e){}
+}
+function unlocked(i){return true;}
+function stageDone(s){
+  const rs=ROUNDS[s.kind].length;
+  const done=(state.prog[s.id]&&state.prog[s.id].fin)||0;
+  return done>=rs;
+}
+function hardCount(){return Object.keys(state.hard).length;}
+
+/* ============================ VIEWS ============================ */
+let view={name:"home"};
+const V=()=>$("#view");
+
+function daysLeft(){
+  const ex=new Date(2026,8,16);
+  const now=new Date();
+  return Math.ceil((ex-new Date(now.getFullYear(),now.getMonth(),now.getDate()))/864e5);
+}
+function renderCountdown(){
+  const d=daysLeft(),el=$("#countdown");
+  el.textContent=d>1?"noch "+d+" Tage":d===1?"morgen!":d===0?"heute!":"vorbei";
+  if(d>7)el.className="chip blue";
+}
+
+function render(){
+  renderCountdown();
+  if(view.name==="home")renderHome();
+  else if(view.name==="run")renderQuestion();
+  else if(view.name==="result")renderResult();
+}
+
+function renderHome(){
+  const total=STAGES.length;
+  const fin=STAGES.filter(stageDone).length;
+  const pct=Math.round(fin/total*100);
+  let h=`<div class="overall">
+    <div class="row"><span class="eyebrow">Lernpfad</span><span style="display:flex;gap:8px;align-items:center"><button class="chip blue" id="dirbtn" title="Abfragerichtung wechseln" style="cursor:pointer">${state.dir!=="fd"?"D → F":"F → D"}</button><span class="chip">${fin}/${total} Etappen</span></span></div>
+    <div class="bar"><i style="width:${pct}%"></i></div>
+  </div>
+  <div class="turbo">
+    <span class="eyebrow">Wenig Zeit? So stopfsch am meischte ine</span>
+    <p><b>1.</b> Crash-Modus: alli <b>${ALL.length}</b> Wörter einisch als Multiple Choice – goht schnell, du gsehsch sofort was sitzt.
+    <b>2.</b> Dänn nur no d schwierige Wörter drille. <b>3.</b> Erscht am Schluss d Etappe 7–10 (Synonyme, Wortfamilie, Lücke) und d Prüfigssimulation.</p>
+    <div class="actions">
+      <button class="btn blue" id="crashbtn">Crash-Modus starten</button>
+      <button class="btn ghost" id="hardbtn" ${hardCount()?"":"disabled style=\"opacity:.45\""}>Schwierige Wörter (${hardCount()})</button>
+    </div>
+  </div>
+  <div class="path">`;
+  STAGES.forEach((s,i)=>{
+    const open=unlocked(i),done=stageDone(s),best=state.best[s.id];
+    const rs=ROUNDS[s.kind].length,fd=(state.prog[s.id]&&state.prog[s.id].fin)||0;
+    let dots="";
+    if(rs>1){dots='<span class="dots">'+Array.from({length:rs},(_,k)=>`<i class="${k<fd?"on":""}"></i>`).join("")+"</span>";}
+    const chip=done?`<span class="chip ok">${best!==undefined?best+"%":"fertig"}</span>`
+      :best!==undefined?`<span class="chip">${best}%</span>`
+      :`<span class="chip blue">starten</span>`;
+    h+=`<button class="step ${open?"":"locked"} ${done?"done":""} ${s.kind==="exam"?"exam-step":""}" data-i="${i}">
+      <span class="num">${done?"✓":i+1}</span>
+      <span><span class="nm">${esc(s.name)}</span><br><span class="sb">${esc(s.sub)}</span></span>
+      <span class="right">${dots}${chip}</span>
+    </button>`;
+  });
+  h+="</div>";
+  V().innerHTML=h;
+  V().querySelectorAll(".step").forEach(b=>b.addEventListener("click",()=>startStage(+b.dataset.i)));
+  const hb=$("#hardbtn");if(hb&&hardCount())hb.addEventListener("click",startHard);
+  const cb=$("#crashbtn");if(cb)cb.addEventListener("click",startCrash);
+  const db2=$("#dirbtn");if(db2)db2.addEventListener("click",()=>{state.dir=state.dir==="fd"?"df":"fd";save();render();});
+}
+
+/* --- Lauf --- */
+let run=null;
+function startStage(i,round){
+  const s=STAGES[i];
+  const p=state.prog[s.id]||(state.prog[s.id]={seed:Math.floor(Math.random()*1e9),fin:0,r:0,i:0,ok:0,wrong:[]});
+  const r=round!==undefined?round:Math.min(p.r||0,ROUNDS[s.kind].length-1);
+  if(round!==undefined||p.r!==r){p.r=r;p.i=0;p.ok=0;p.wrong=[];}
+  const qs=buildQuestions(s,r,p.seed+r*7919);
+  if(p.i>=qs.length){p.i=0;p.ok=0;p.wrong=[];}
+  run={stage:s,si:i,round:r,qs,idx:p.i,ok:p.ok,wrong:p.wrong||[],answered:false,flip:false,hard:false};
+  view={name:"run"};
+  save();render();
+}
+function startCrash(){
+  const r=rng(Date.now()&0xffff);
+  const df=state.dir!=="fd";
+  const qs=shuffle(ALL,r).map(w=>({
+    type:"mc",ask:df?"Übersetze ins Französische.":"Übersetze ins Deutsche.",prompt:df?w.d:w.f,
+    options:shuffle([df?w.f:w.d,...pick(df?ALL_FRAW:ALL_DE,3,r,[df?w.f:w.d])],r),correct:df?w.f:w.d,key:w.f
+  }));
+  run={stage:{id:"crash",kind:"set",name:"Crash-Modus · alle Seiten"},si:-1,round:0,qs,idx:0,ok:0,wrong:[],answered:false,hard:true,mode:"crash"};
+  view={name:"run"};render();
+}
+function startHard(){
+  const keys=Object.keys(state.hard);
+  const words=ALL.filter(w=>keys.includes(w.f));
+  const r=rng(Date.now()&0xffff);
+  const qs=shuffle(words,r).map(w=>typable(w.f)
+    ? {type:"type",ask:"Übersetze ins Französische.",prompt:w.d,answers:acceptable(w.f),show:w.f,key:w.f}
+    : {type:"mc",ask:state.dir!=="fd"?"Übersetze ins Französische.":"Übersetze ins Deutsche.",prompt:state.dir!=="fd"?w.d:w.f,options:shuffle([state.dir!=="fd"?w.f:w.d,...pick(state.dir!=="fd"?ALL_FRAW:ALL_DE,3,r,[state.dir!=="fd"?w.f:w.d])],r),correct:state.dir!=="fd"?w.f:w.d,key:w.f});
+  if(!qs.length)return;
+  run={stage:{id:"hard",kind:"set",name:"Schwierige Wörter"},si:-1,round:0,qs,idx:0,ok:0,wrong:[],answered:false,hard:true,mode:"hard"};
+  view={name:"run"};render();
+}
+
+function markHard(key,bad){
+  if(bad){state.hard[key]=(state.hard[key]||0)+1;}
+  else if(state.hard[key]){delete state.hard[key];}
+}
+
+function renderQuestion(){
+  const {stage,qs,idx}=run;
+  if(idx>=qs.length){finish();return;}
+  const q=qs[idx];
+  const rlist=ROUNDS[stage.kind]||["Üben"];
+  const fd=(state.prog[stage.id]&&state.prog[stage.id].fin)||0;
+  let h=`<div class="stagehead">
+    <div><span class="eyebrow">Etappe ${run.si>=0?run.si+1:"·"}</span><h2>${esc(stage.name)}</h2></div>
+    <button class="link" id="back">← Lernpfad</button>
+  </div>
+  <div class="rounds">`+rlist.map((n,k)=>`<span class="rtab ${k===run.round?"cur":""} ${k<fd?"fin":""}">${k+1}. ${n}</span>`).join("")+`</div>
+  <div class="bar"><i style="width:${Math.round(idx/qs.length*100)}%"></i></div>`;
+
+  if(q.type==="flash"){
+    h+=`<div class="flash" id="flash" tabindex="0" role="button" aria-label="Karte umdrehen">
+      <div class="side">${esc(q.front)}</div>
+      ${run.flip?`<div class="back">${esc(q.back)}</div>`:`<div class="tap">tippen oder Leertaste zum Umdrehen</div>`}
+    </div>
+    <div class="actions">
+      ${run.flip?`<button class="btn ghost" id="again">Nochmals zeigen</button><button class="btn" id="known">Kann ich</button>`:`<button class="btn blue" id="flipbtn">Umdrehen</button>`}
+      <span class="counter">${idx+1} / ${qs.length}</span>
+    </div>`;
+  }else if(q.type==="mc"){
+    h+=`<div class="qcard">
+      <div class="ask">${esc(q.ask)}</div>
+      <div class="prompt">${esc(q.prompt)}</div>
+      <div class="opts">`+q.options.map((o,k)=>`<button class="opt" data-o="${k}" ${run.answered?"disabled":""}><span class="k">${"ABCD"[k]}</span><span>${esc(o)}</span></button>`).join("")+`</div>
+    </div>
+    <div class="fb" id="fb"></div>
+    <div class="actions"><button class="btn ${run.answered?"":"ghost"}" id="next" ${run.answered?"":"disabled"}>Weiter</button><span class="counter">${idx+1} / ${qs.length}</span></div>`;
+  }else{
+    h+=`<div class="qcard">
+      <div class="ask">${esc(q.ask)}</div>
+      <div class="prompt">${esc(q.prompt)}${q.hint?`<small>${esc(q.hint)}</small>`:""}</div>
+      <div class="typerow">
+        <input type="text" id="ans" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="auf Französisch tippen …" ${run.answered?"disabled":""}>
+        <div class="accents">`+["é","è","ê","à","â","ç","î","ï","ô","û","ù","œ"].map(c=>`<button data-c="${c}" tabindex="-1">${c}</button>`).join("")+`</div>
+      </div>
+    </div>
+    <div class="fb" id="fb"></div>
+    <div class="actions"><button class="btn" id="next">${run.answered?"Weiter":"Prüfen"}</button><span class="counter">${idx+1} / ${qs.length}</span></div>`;
+  }
+  V().innerHTML=h;
+  $("#back").addEventListener("click",()=>{view={name:"home"};render();});
+
+  if(q.type==="flash"){
+    const f=$("#flash");
+    const flip=()=>{run.flip=true;render();};
+    f.addEventListener("click",()=>{if(!run.flip)flip();});
+    f.addEventListener("keydown",e=>{if(e.key===" "||e.key==="Enter"){e.preventDefault();if(!run.flip)flip();}});
+    if($("#flipbtn"))$("#flipbtn").addEventListener("click",flip);
+    if($("#known"))$("#known").addEventListener("click",()=>{run.ok++;markHard(q.key,false);advance();});
+    if($("#again"))$("#again").addEventListener("click",()=>{run.qs.push(q);markHard(q.key,true);advance();});
+    f.focus({preventScroll:true});
+  }else if(q.type==="mc"){
+    V().querySelectorAll(".opt").forEach(b=>b.addEventListener("click",()=>answerMC(+b.dataset.o)));
+    if(run.answered)$("#next").addEventListener("click",advance);
+  }else{
+    const inp=$("#ans");
+    V().querySelectorAll(".accents button").forEach(b=>b.addEventListener("click",()=>{
+      const s=inp.selectionStart||inp.value.length;
+      inp.value=inp.value.slice(0,s)+b.dataset.c+inp.value.slice(inp.selectionEnd||s);
+      inp.focus();inp.setSelectionRange(s+1,s+1);
+    }));
+    $("#next").addEventListener("click",()=>run.answered?advance():answerType());
+    inp.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();answerType();}});
+    if(!run.answered)inp.focus({preventScroll:true});
+    else document.addEventListener("keydown",enterNext,{once:true});
+  }
+}
+function enterNext(e){if(e.key==="Enter"){e.preventDefault();advance();}}
+
+function answerMC(k){
+  if(run.answered)return;
+  const q=run.qs[run.idx],chosen=q.options[k],good=chosen===q.correct;
+  run.answered=true;
+  if(good)run.ok++;else run.wrong.push([q.prompt,q.correct]);
+  markHard(q.key,!good);
+  V().querySelectorAll(".opt").forEach((b,i)=>{
+    b.disabled=true;
+    if(q.options[i]===q.correct)b.classList.add("good");
+    else if(i===k)b.classList.add("bad");
+  });
+  const fb=$("#fb");
+  fb.className="fb "+(good?"good":"bad");
+  fb.innerHTML=`<div class="verdict">${good?"juste !":"faux"}</div>`+(good?"":`<div class="sol">richtig: <b>${esc(q.correct)}</b></div>`);
+  const n=$("#next");n.disabled=false;n.classList.remove("ghost");n.addEventListener("click",advance);n.focus();
+  save();
+}
+function answerType(){
+  if(run.answered)return;
+  const q=run.qs[run.idx],inp=$("#ans"),res=check(inp.value,q.answers,q.loose);
+  if(!inp.value.trim())return;
+  run.answered=true;
+  const good=res===1||res===2;
+  if(good)run.ok++;else run.wrong.push([q.prompt,q.show]);
+  markHard(q.key,!good);
+  inp.disabled=true;
+  const fb=$("#fb");
+  fb.className="fb "+(good?"good":"bad");
+  fb.innerHTML=res===1?`<div class="verdict">juste !</div><div class="sol"><b>${esc(q.show)}</b></div>`
+   :res===2?`<div class="verdict">juste !</div><div class="sol">Achtung ${q.loose?"Akzente/Apostroph":"Akzente"}: <b>${esc(q.show)}</b></div>`
+   :res===3?`<div class="verdict">presque</div><div class="sol">Der Artikel fehlt: <b>${esc(q.show)}</b></div>`
+   :`<div class="verdict">faux</div><div class="sol">richtig: <b>${esc(q.show)}</b></div>`+(q.loose?`<div><button class="link" id="wasright">War doch richtig ✓</button></div>`:"");
+  const wr=$("#wasright");
+  if(wr)wr.addEventListener("click",()=>{
+    run.ok++;run.wrong.pop();markHard(q.key,false);
+    fb.className="fb good";
+    fb.innerHTML=`<div class="verdict">juste !</div><div class="sol">Musterlösung: <b>${esc(q.show)}</b></div>`;
+    save();
+  });
+  const n=$("#next");n.textContent="Weiter";n.focus();
+  save();
+}
+function advance(){
+  run.idx++;run.answered=false;run.flip=false;
+  const p=state.prog[run.stage.id];
+  if(p){p.i=run.idx;p.ok=run.ok;p.wrong=run.wrong;}
+  save();
+  if(run.idx>=run.qs.length)finish();else render();
+}
+function finish(){
+  const pct=run.qs.length?Math.round(run.ok/run.qs.length*100):0;
+  if(!run.hard){
+    const p=state.prog[run.stage.id];
+    if(p){
+      p.i=0;p.ok=0;
+      if(run.round+1>(p.fin||0))p.fin=run.round+1;
+      p.r=Math.min(run.round+1,(ROUNDS[run.stage.kind]||[""]).length-1);
+    }
+    const prev=state.best[run.stage.id];
+    const rs=(ROUNDS[run.stage.kind]||[""]).length;
+    if((p.fin||0)>=rs)state.best[run.stage.id]=Math.max(prev||0,pct);
+    if(run.si>=0&&state.open<run.si+2)state.open=run.si+2;
+    save();
+  }
+  view={name:"result",pct};render();
+}
+function renderResult(){
+  const pct=view.pct,ex=run.stage.id==="exam";
+  const note=Math.round((1+5*(run.ok/Math.max(1,run.qs.length)))*10)/10;
+  const rs=ROUNDS[run.stage.kind]||["Üben"];
+  const more=run.round+1<rs.length;
+  let h=`<div class="stagehead"><div><span class="eyebrow">${esc(rs[run.round]||"Runde")} beendet</span><h2>${esc(run.stage.name)}</h2></div>
+  <button class="link" id="back">← Lernpfad</button></div>
+  <div class="score">
+    <span class="big">${pct}%</span>
+    <span>${run.ok} von ${run.qs.length} richtig</span>
+    ${ex?`<span class="note">${note.toFixed(1)}</span><span>Note (1 + 5 · Punkte/Max)</span>`:""}
+  </div>`;
+  if(run.wrong.length){
+    h+=`<div><div class="eyebrow" style="margin-bottom:8px">Nochmals anschauen</div><div class="wronglist">`+
+      run.wrong.slice(0,40).map(([a,b])=>`<div><span class="f">${esc(a)}</span><span class="d">${esc(b)}</span></div>`).join("")+`</div></div>`;
+  }else{
+    h+=`<p style="margin:0;color:var(--vert);font-family:Caveat,cursive;font-size:26px">tout juste – bravo !</p>`;
+  }
+  h+=`<div class="actions">
+    ${more?`<button class="btn blue" id="nextround">Weiter: ${rs[run.round+1]}</button>`:""}
+    <button class="btn ghost" id="again">Runde wiederholen</button>
+    <button class="btn ${more?"ghost":""}" id="home2">Zum Lernpfad</button>
+  </div>`;
+  V().innerHTML=h;
+  $("#back").addEventListener("click",()=>{view={name:"home"};render();});
+  $("#home2").addEventListener("click",()=>{view={name:"home"};render();});
+  $("#again").addEventListener("click",()=>{run.mode==="crash"?startCrash():run.mode==="hard"?startHard():startStage(run.si,run.round);});
+  if($("#nextround"))$("#nextround").addEventListener("click",()=>startStage(run.si,run.round+1));
+}
+
+$("#reset").addEventListener("click",()=>{
+  if(!confirm("Wirklich den ganzen Fortschritt löschen?"))return;
+  state=JSON.parse(JSON.stringify(DEFAULT));save();view={name:"home"};render();
+});
+
+initStore();
+</script>
+
+</body></html>

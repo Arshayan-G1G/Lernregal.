@@ -1,0 +1,1586 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Lernatlas Mittelmeer</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --ink:#12252B; --ink-soft:#42585E; --ink-faint:#6C8288;
+  --ground:#E6ECEB; --surface:#F8FAF9; --surface-2:#EEF3F2;
+  --line:#C6D2D1; --line-soft:#DCE4E3;
+  --sea:#0B5E63; --sea-ink:#08494D; --sea-soft:#D6E6E6;
+  --sand:#9C6E14; --sand-soft:#F1E3BE;
+  --ember:#A0381F; --ember-soft:#F4DDD5;
+  --good:#2C6549; --good-soft:#D8E8DF;
+  --shadow:0 1px 2px rgba(18,37,43,.06), 0 8px 24px -16px rgba(18,37,43,.35);
+  --fdisplay:"Zilla Slab", Georgia, "Times New Roman", serif;
+  --fbody:"IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+  --fmono:"IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ink:#DEE8E6; --ink-soft:#A2B5B6; --ink-faint:#7B9193;
+    --ground:#091518; --surface:#0F2126; --surface-2:#142A30;
+    --line:#234249; --line-soft:#1A343A;
+    --sea:#5CB8BA; --sea-ink:#8FD3D3; --sea-soft:#0F333A;
+    --sand:#E0B45E; --sand-soft:#3A2E11;
+    --ember:#E4795C; --ember-soft:#3B1E16;
+    --good:#82C49D; --good-soft:#14332A;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 26px -18px rgba(0,0,0,.9);
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#DEE8E6; --ink-soft:#A2B5B6; --ink-faint:#7B9193;
+  --ground:#091518; --surface:#0F2126; --surface-2:#142A30;
+  --line:#234249; --line-soft:#1A343A;
+  --sea:#5CB8BA; --sea-ink:#8FD3D3; --sea-soft:#0F333A;
+  --sand:#E0B45E; --sand-soft:#3A2E11;
+  --ember:#E4795C; --ember-soft:#3B1E16;
+  --good:#82C49D; --good-soft:#14332A;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 26px -18px rgba(0,0,0,.9);
+}
+*{box-sizing:border-box}
+body{margin:0; background:var(--ground); color:var(--ink); font-family:var(--fbody); font-size:15px; line-height:1.5; -webkit-font-smoothing:antialiased;}
+h1,h2,h3,h4,h5{font-family:var(--fdisplay); font-weight:600; text-wrap:balance; margin:0; line-height:1.15;}
+p{margin:0}
+a{color:var(--sea)}
+button{font:inherit; color:inherit; cursor:pointer}
+:focus-visible{outline:2px solid var(--sea); outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important}}
+
+/* shell */
+.wrap{max-width:1180px; margin:0 auto; padding-inline:16px;}
+.topbar{position:sticky; top:0; z-index:40; background:color-mix(in srgb, var(--ground) 88%, transparent); backdrop-filter:blur(10px); border-bottom:1px solid var(--line-soft);}
+.topbar-in{display:flex; align-items:center; gap:10px; padding-block:7px; flex-wrap:wrap;}
+.brandmark{font-family:var(--fmono); font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint);}
+.topbar .spacer{flex:1}
+.pill{font-family:var(--fmono); font-size:10.5px; letter-spacing:.05em; text-transform:uppercase; border:1px solid var(--line); padding:3px 8px; border-radius:99px; color:var(--ink-soft); background:var(--surface); white-space:nowrap;}
+.pill.hot{border-color:var(--ember); color:var(--ember); background:var(--ember-soft)}
+.iconbtn{background:var(--surface); border:1px solid var(--line); border-radius:99px; padding:3px 10px; font-family:var(--fmono); font-size:10.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--ink-soft)}
+.iconbtn:hover{border-color:var(--sea); color:var(--sea)}
+.progressline{height:3px; background:var(--line-soft)}
+.progressline > i{display:block; height:100%; width:0%; background:var(--sea); transition:width .35s ease}
+
+/* hero */
+.hero{padding-block:24px 16px; border-bottom:1px solid var(--line); display:flex; gap:24px; align-items:flex-end; flex-wrap:wrap;}
+.hero .eyebrow{font-family:var(--fmono); font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--sea); margin-bottom:7px}
+.hero h1{font-size:clamp(27px,4.4vw,43px); letter-spacing:-.02em; font-weight:700}
+.hero h1 .thin{color:var(--ink-faint); font-weight:400}
+.hero .lede{margin-top:8px; max-width:54ch; font-size:14px; color:var(--ink-soft)}
+.herostats{display:flex; gap:7px; flex-wrap:wrap}
+.stat{border:1px solid var(--line); background:var(--surface); padding:5px 10px}
+.stat b{display:block; font-family:var(--fmono); font-size:16px; font-weight:600; font-variant-numeric:tabular-nums}
+.stat span{font-family:var(--fmono); font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-faint)}
+
+/* layout */
+.layout{display:grid; grid-template-columns:180px minmax(0,1fr); gap:32px; padding-block:22px 56px; align-items:start}
+.rail{position:sticky; top:58px; display:flex; flex-direction:column; border-left:1px solid var(--line)}
+.rail a{display:flex; gap:8px; align-items:baseline; text-decoration:none; color:var(--ink-soft); padding:3.5px 9px; border-left:2px solid transparent; margin-left:-1px; font-size:12.5px;}
+.rail a em{font-family:var(--fmono); font-style:normal; font-size:9.5px; color:var(--ink-faint); letter-spacing:.05em}
+.rail a:hover{color:var(--sea); background:var(--surface-2)}
+.rail a.on{border-left-color:var(--sea); color:var(--ink); font-weight:500}
+.rail a.on em{color:var(--sea)}
+.rail .railhead{font-family:var(--fmono); font-size:9.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint); padding:0 9px 6px}
+@media (max-width:900px){
+  .layout{grid-template-columns:minmax(0,1fr); gap:0; padding-block:16px 50px}
+  .rail{position:sticky; top:48px; z-index:30; flex-direction:row; overflow-x:auto; border-left:0; border-bottom:1px solid var(--line); background:var(--ground); margin-bottom:18px; gap:2px}
+  .rail a{border-left:0; border-bottom:2px solid transparent; white-space:nowrap; padding:6px 9px}
+  .rail a.on{border-left-color:transparent; border-bottom-color:var(--sea)}
+  .rail .railhead{display:none}
+}
+
+/* sections */
+section{scroll-margin-top:62px; margin-bottom:40px}
+.shead{display:flex; gap:11px; align-items:flex-start; border-top:2px solid var(--ink); padding-top:9px; margin-bottom:13px}
+.shead .lz{font-family:var(--fmono); font-size:10px; letter-spacing:.06em; color:var(--surface); background:var(--ink); padding:2px 6px; margin-top:3px; white-space:nowrap}
+.shead h2{font-size:clamp(20px,2.8vw,26px); letter-spacing:-.01em}
+.shead .goal{font-size:12.5px; color:var(--ink-faint); margin-top:3px; max-width:72ch}
+.prose{max-width:72ch; display:flex; flex-direction:column; gap:8px; font-size:14.5px}
+.prose strong{font-weight:600; background:linear-gradient(transparent 62%, var(--sand-soft) 62%)}
+.sub{font-family:var(--fdisplay); font-size:15.5px; font-weight:600; margin-top:16px; margin-bottom:7px; display:flex; align-items:center; gap:9px}
+.sub::after{content:""; flex:1; height:1px; background:var(--line-soft)}
+.tag{font-family:var(--fmono); font-size:9px; letter-spacing:.14em; text-transform:uppercase; padding:1px 6px; border:1px solid var(--line); color:var(--ink-faint); border-radius:99px}
+.tag.do{color:var(--sand); border-color:var(--sand)}
+.tag.see{color:var(--sea); border-color:var(--sea)}
+.tag.hear{color:var(--good); border-color:var(--good)}
+.tag.test{color:var(--ember); border-color:var(--ember)}
+.note{font-size:12.5px; color:var(--ink-faint); border-left:2px solid var(--line); padding-left:10px; line-height:1.45}
+
+/* blocks */
+.grid{display:grid; gap:8px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(255px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(205px,1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(158px,1fr))}
+.card{background:var(--surface); border:1px solid var(--line-soft); padding:10px 12px}
+.card h4{font-size:14px; margin-bottom:3px}
+.card p, .card li{font-size:12.5px; color:var(--ink-soft); line-height:1.45}
+.card ul{margin:4px 0 0; padding-left:15px; display:flex; flex-direction:column; gap:3px}
+.klabel{font-family:var(--fmono); font-size:9px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); display:block; margin-bottom:3px}
+table{border-collapse:collapse; width:100%; font-size:12.5px}
+.tablewrap{overflow-x:auto; border:1px solid var(--line-soft); background:var(--surface)}
+th,td{text-align:left; padding:6px 9px; border-bottom:1px solid var(--line-soft); vertical-align:top; line-height:1.4}
+th{font-family:var(--fmono); font-size:9.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-faint); background:var(--surface-2)}
+tr:last-child td{border-bottom:0}
+
+/* checkliste */
+.goalbox{border:1px solid var(--line); background:var(--surface); padding:7px 11px}
+.goalrow{display:flex; gap:9px; align-items:flex-start; padding:3.5px 0; border-bottom:1px solid var(--line-soft); font-size:12.5px}
+.goalrow:last-child{border-bottom:0}
+.goalrow input{margin-top:2px; accent-color:var(--sea); width:15px; height:15px; flex:none}
+.goalrow label{cursor:pointer}
+.goalrow.done label{color:var(--ink-faint); text-decoration:line-through}
+
+/* zahlen */
+.numgrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(132px,1fr)); gap:6px}
+.numcard{background:var(--surface); border:1px solid var(--line); padding:8px 10px; text-align:left; transition:border-color .2s}
+.numcard b{display:block; font-family:var(--fmono); font-size:15px; font-weight:600; font-variant-numeric:tabular-nums}
+.numcard span{display:block; margin-top:3px; font-size:11.5px; color:var(--ink-faint); min-height:2.3em; line-height:1.3}
+.numcard:hover{border-color:var(--sea)}
+.numcard.open{border-color:var(--sea); background:var(--sea-soft)}
+.numcard.open span{color:var(--ink)}
+
+/* compass */
+.compass{display:grid; grid-template-columns:repeat(3,1fr); gap:6px; max-width:620px}
+.cc{border:1px solid var(--line-soft); background:var(--surface); padding:7px 9px; font-size:11.5px; color:var(--ink-soft); line-height:1.35}
+.cc b{display:block; font-size:13px; color:var(--ink); font-family:var(--fdisplay); font-weight:600}
+.cc em{font-style:normal; font-family:var(--fmono); font-size:8.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); display:block}
+.cc.core{background:var(--sea); border-color:var(--sea); color:#fff}
+.cc.core b, .cc.core em{color:#fff}
+.cc.sea{background:var(--sea-soft); border-color:var(--sea-soft)}
+.cc.empty{background:transparent; border-color:transparent}
+@media (max-width:620px){ .compass{grid-template-columns:1fr} .cc.empty{display:none} }
+
+/* timeline */
+.tl{display:flex; overflow-x:auto; border:1px solid var(--line); background:var(--surface); scrollbar-width:thin}
+.tl button{flex:1 0 86px; border:0; border-right:1px solid var(--line-soft); background:transparent; padding:7px; text-align:left; transition:background .2s;}
+.tl button:last-child{border-right:0}
+.tl button b{display:block; font-family:var(--fmono); font-size:11.5px; font-weight:600; font-variant-numeric:tabular-nums}
+.tl button span{display:block; font-size:10.5px; color:var(--ink-faint); margin-top:1px; line-height:1.2}
+.tl button:hover{background:var(--surface-2)}
+.tl button.on{background:var(--ink)}
+.tl button.on b{color:var(--surface)}
+.tl button.on span{color:var(--line)}
+.tlpanel{border:1px solid var(--line); border-top:0; background:var(--surface); padding:12px 14px}
+.tlpanel h4{font-size:16px}
+.tlpanel p{font-size:13px; color:var(--ink-soft); margin-top:3px}
+.tlpanel .when{font-family:var(--fmono); font-size:9.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--sea); margin-bottom:2px}
+.tlpanel ul{margin:7px 0 0; padding-left:16px; display:flex; flex-direction:column; gap:3px; font-size:13px; color:var(--ink-soft); line-height:1.45}
+
+/* akteure */
+.actorgrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(112px,1fr)); gap:5px}
+.actorbtn{background:var(--surface); border:1px solid var(--line); padding:6px 8px; text-align:left; font-size:12px; font-weight:500; line-height:1.2; transition:all .18s}
+.actorbtn small{display:block; font-family:var(--fmono); font-size:8.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-faint); margin-top:2px}
+.actorbtn.on{background:var(--ink); color:var(--surface); border-color:var(--ink)}
+.actorbtn.on small{color:var(--line)}
+.actorbtn.ally{border-color:var(--good); box-shadow:inset 3px 0 0 var(--good)}
+.actorbtn.foe{border-color:var(--ember); box-shadow:inset 3px 0 0 var(--ember)}
+.actorpanel{border:1px solid var(--line); background:var(--surface); padding:12px 14px; margin-top:7px}
+.actorpanel h4{font-size:16px; margin-bottom:2px}
+.actorpanel .camp{font-family:var(--fmono); font-size:9.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--sea); margin-bottom:8px}
+.relrow{display:flex; gap:5px; flex-wrap:wrap; margin-top:4px}
+.chip{font-size:11px; padding:2px 7px; border:1px solid var(--line); border-radius:99px; background:var(--surface-2)}
+.chip.a{border-color:var(--good); color:var(--good); background:var(--good-soft)}
+.chip.f{border-color:var(--ember); color:var(--ember); background:var(--ember-soft)}
+
+/* sortieren */
+.sortpool{display:flex; flex-wrap:wrap; gap:5px; margin-bottom:9px; min-height:30px}
+.token{border:1px solid var(--line); background:var(--surface); padding:4px 9px; font-size:12px; transition:all .15s}
+.token:hover{border-color:var(--sea)}
+.token.picked{background:var(--ink); color:var(--surface); border-color:var(--ink)}
+.token.ok{border-color:var(--good); background:var(--good-soft); color:var(--good)}
+.token.no{border-color:var(--ember); background:var(--ember-soft); color:var(--ember)}
+.bins{display:grid; grid-template-columns:repeat(auto-fit,minmax(162px,1fr)); gap:6px}
+.bin{border:1px dashed var(--line); background:var(--surface-2); padding:7px 8px; min-height:70px}
+.bin h5{font-family:var(--fmono); font-size:9.5px; letter-spacing:.1em; text-transform:uppercase; margin:0 0 3px; color:var(--ink-soft)}
+.bin p{font-size:10.5px; color:var(--ink-faint); margin-bottom:5px; line-height:1.3}
+.bin .drop{display:flex; flex-wrap:wrap; gap:5px}
+.bin.active{border-color:var(--sea); border-style:solid; background:var(--sea-soft)}
+
+/* karteikarten */
+.fcstage{display:flex; flex-direction:column; gap:8px; max-width:600px}
+.fc{border:1px solid var(--line); background:var(--surface); padding:16px; min-height:118px; display:flex; flex-direction:column; justify-content:center; gap:6px; cursor:pointer; box-shadow:var(--shadow)}
+.fc .q{font-family:var(--fdisplay); font-size:18px; font-weight:600}
+.fc .a{font-size:13.5px; color:var(--ink-soft); line-height:1.45}
+.fc .hint{font-family:var(--fmono); font-size:9px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint)}
+.fcbar{display:flex; gap:6px; align-items:center; flex-wrap:wrap}
+.btn{border:1px solid var(--line); background:var(--surface); padding:5px 11px; font-size:12.5px; transition:all .15s}
+.btn:hover{border-color:var(--sea); color:var(--sea)}
+.btn.primary{background:var(--ink); color:var(--surface); border-color:var(--ink)}
+.btn.primary:hover{background:var(--sea); border-color:var(--sea); color:#fff}
+.btn.good{border-color:var(--good); color:var(--good)}
+.btn.bad{border-color:var(--ember); color:var(--ember)}
+.counter{font-family:var(--fmono); font-size:11px; color:var(--ink-faint); font-variant-numeric:tabular-nums}
+
+/* quiz */
+.qcard{border:1px solid var(--line-soft); background:var(--surface); padding:10px 12px; margin-bottom:6px}
+.qcard .qtext{font-size:13.5px; font-weight:500; margin-bottom:6px; display:flex; gap:8px; line-height:1.4}
+.qcard .qtext i{font-family:var(--fmono); font-style:normal; color:var(--sea); font-size:11.5px; padding-top:1px}
+.opts{display:flex; flex-direction:column; gap:4px}
+.opt{text-align:left; border:1px solid var(--line); background:var(--surface); padding:5px 9px; font-size:12.5px; line-height:1.4; transition:all .15s}
+.opt:hover{border-color:var(--sea)}
+.opt.right{border-color:var(--good); background:var(--good-soft)}
+.opt.wrong{border-color:var(--ember); background:var(--ember-soft)}
+.opt.muted{opacity:.5}
+.why{margin-top:6px; font-size:12px; color:var(--ink-soft); border-left:2px solid var(--sea); padding-left:9px; line-height:1.45; display:none}
+.why.show{display:block}
+
+/* reveal */
+details.rev{border:1px solid var(--line); background:var(--surface); margin-top:7px}
+details.rev > summary{cursor:pointer; padding:6px 11px; font-family:var(--fmono); font-size:9.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--sea); list-style:none}
+details.rev > summary::-webkit-details-marker{display:none}
+details.rev > summary::before{content:"▸ "}
+details.rev[open] > summary::before{content:"▾ "}
+details.rev .body{padding:0 12px 12px; font-size:13px; color:var(--ink-soft); display:flex; flex-direction:column; gap:7px; line-height:1.5}
+details.rev .body ul{margin:0; padding-left:16px; display:flex; flex-direction:column; gap:3px}
+
+/* cloze */
+.cloze{font-size:14px; line-height:1.95; max-width:72ch}
+.cloze select{font:inherit; font-size:12.5px; background:var(--surface); color:var(--ink); border:1px solid var(--line); padding:2px 4px; border-radius:2px}
+.cloze select.ok{border-color:var(--good); color:var(--good); background:var(--good-soft)}
+.cloze select.no{border-color:var(--ember); color:var(--ember); background:var(--ember-soft)}
+
+/* waage */
+.scale{display:grid; grid-template-columns:repeat(auto-fit,minmax(255px,1fr)); gap:8px}
+.scalecol h5{font-family:var(--fmono); font-size:9.5px; letter-spacing:.1em; text-transform:uppercase; margin:0 0 6px; color:var(--ink-soft)}
+.argbtn{display:block; width:100%; text-align:left; border:1px solid var(--line-soft); background:var(--surface); padding:6px 9px; font-size:12.5px; line-height:1.4; margin-bottom:4px; color:var(--ink-soft)}
+.argbtn:hover{border-color:var(--sea)}
+.argbtn.sel{border-color:var(--ink); color:var(--ink); box-shadow:inset 3px 0 0 var(--ink)}
+.beam{height:5px; background:var(--line-soft); display:flex; margin:8px 0 3px}
+.beam i{display:block; height:100%; transition:width .3s ease}
+.beam .pro{background:var(--ember)}
+.beam .con{background:var(--sea)}
+
+/* glossar */
+.searchbar{display:flex; gap:7px; margin-bottom:8px; flex-wrap:wrap}
+.searchbar input{font:inherit; font-size:13px; padding:6px 10px; border:1px solid var(--line); background:var(--surface); color:var(--ink); flex:1; min-width:180px; border-radius:2px}
+.glosslist{display:grid; grid-template-columns:repeat(auto-fit,minmax(232px,1fr)); gap:6px}
+.gloss{border:1px solid var(--line-soft); background:var(--surface); padding:8px 10px}
+.gloss b{font-family:var(--fdisplay); font-size:13.5px}
+.gloss p{font-size:12px; color:var(--ink-soft); margin-top:2px; line-height:1.4}
+
+/* prüfung */
+.exam{border:2px solid var(--ink); background:var(--surface)}
+.examhead{display:flex; align-items:center; gap:10px; padding:9px 13px; border-bottom:1px solid var(--line); flex-wrap:wrap; background:var(--surface-2)}
+.examhead h3{font-family:var(--fdisplay); font-size:16px; font-weight:600; margin:0}
+.clock{font-family:var(--fmono); font-size:20px; font-weight:600; font-variant-numeric:tabular-nums}
+.clock.warn{color:var(--ember)}
+.exambody{padding:13px}
+.task{border-top:1px solid var(--line-soft); padding-top:11px; margin-top:11px}
+.task:first-child{border-top:0; margin-top:0; padding-top:0}
+.taskhead{display:flex; gap:9px; align-items:baseline; margin-bottom:6px; flex-wrap:wrap}
+.taskhead h4{font-size:15px}
+.pts{font-family:var(--fmono); font-size:9.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-faint); border:1px solid var(--line); padding:1px 6px; border-radius:99px}
+textarea{font:inherit; font-size:13px; width:100%; min-height:70px; padding:8px 10px; border:1px solid var(--line); background:var(--surface-2); color:var(--ink); border-radius:2px; resize:vertical; line-height:1.5}
+.selfscore{display:flex; gap:5px; align-items:center; flex-wrap:wrap; margin-top:6px; font-size:11.5px; color:var(--ink-faint)}
+.selfscore button{border:1px solid var(--line); background:var(--surface); width:26px; height:24px; font-family:var(--fmono); font-size:11px}
+.selfscore button.on{background:var(--sea); border-color:var(--sea); color:#fff}
+.result{border:1px solid var(--line); background:var(--surface-2); padding:13px; margin-top:14px; display:none}
+.result.show{display:block}
+.result .big{font-family:var(--fmono); font-size:30px; font-weight:600; font-variant-numeric:tabular-nums; line-height:1}
+.gradebar{height:8px; background:var(--line-soft); margin:10px 0 4px}
+.gradebar i{display:block; height:100%; background:var(--sea)}
+
+footer{border-top:1px solid var(--line); padding-block:16px 30px; font-size:11px; color:var(--ink-faint); display:flex; flex-direction:column; gap:4px; line-height:1.5}
+.srcs{font-family:var(--fmono); font-size:10px; letter-spacing:.03em}
+</style>
+
+<div class="topbar">
+  <div class="wrap topbar-in">
+    <span class="brandmark">KSWO · GSW Geschichte</span>
+    <span class="spacer"></span>
+    <span class="pill hot" id="countdown">Prüfung 18.09.</span>
+    <span class="pill" id="progresstxt">0 / 9 Lernziele</span>
+    <button class="iconbtn" id="themebtn" type="button">Dunkel</button>
+    <button class="iconbtn" id="readbtn" type="button">Vorlesen aus</button>
+  </div>
+  <div class="progressline"><i id="progressbar"></i></div>
+</div>
+
+<div class="wrap">
+  <header class="hero">
+    <div style="flex:1 1 320px">
+      <div class="eyebrow">Lernmodul · Mittelmeer, Syrienkrieg &amp; Flucht</div>
+      <h1>Ein Meer, <span class="thin">zwei Wirklichkeiten.</span></h1>
+      <p class="lede">Der ganze Stoff auf das Prüfungsrelevante eingedampft — mit Übungen und einer Übungsprüfung mit 30-Minuten-Uhr.</p>
+    </div>
+    <div class="herostats">
+      <div class="stat"><b>9</b><span>Lernziele</span></div>
+      <div class="stat"><b>30′</b><span>Dauer</span></div>
+      <div class="stat"><b>0.5</b><span>Gewicht</span></div>
+      <div class="stat"><b id="daysleft">–</b><span>Tage übrig</span></div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <nav class="rail" id="rail">
+      <div class="railhead">Inhalt</div>
+      <a href="#lz1"><em>LZ1</em> Heterogener Raum</a>
+      <a href="#lz2"><em>LZ2</em> Syrien konkret</a>
+      <a href="#lz3"><em>LZ3</em> 3 Revolten</a>
+      <a href="#lz4"><em>LZ4</em> Arabischer Frühling</a>
+      <a href="#lz5"><em>LZ5a</em> Phasen des Kriegs</a>
+      <a href="#lz5b"><em>LZ5b</em> Akteure</a>
+      <a href="#lz6"><em>LZ6</em> Flucht &amp; Migration</a>
+      <a href="#lz7"><em>LZ7</em> Karten &amp; Karikaturen</a>
+      <a href="#lz8"><em>LZ8</em> Argumentieren</a>
+      <a href="#lz9"><em>LZ9</em> Fachbegriffe</a>
+      <a href="#pruefung"><em>▣</em> Übungsprüfung</a>
+    </nav>
+
+    <main>
+
+      <section id="check">
+        <div class="shead">
+          <span class="lz">Start</span>
+          <div><h2>Wo stehst du gerade?</h2>
+          <p class="goal">Lernzielliste der Lehrperson — abhaken, was sitzt. Der Balken oben zeigt den Stand.</p></div>
+        </div>
+        <div class="goalbox" id="goalbox"></div>
+      </section>
+
+      <!-- LZ1 -->
+      <section id="lz1">
+        <div class="shead">
+          <span class="lz">LZ 1</span>
+          <div><h2>Das Mittelmeer als heterogener Raum</h2>
+          <p class="goal">Ich kann erklären, was unter dem «Mittelmeer als heterogener Raum» zu verstehen ist.</p></div>
+        </div>
+        <div class="prose" data-read>
+          <p><strong>Heterogen = uneinheitlich.</strong> Geografisch ein Raum, aber völlig verschiedene Wirklichkeiten an den Ufern: dasselbe Wasser trägt Kreuzfahrtschiffe nach Venedig und Schlauchboote nach Lampedusa. Es ist <strong>Brücke und Grenze zugleich</strong> — seit der Antike Handelsraum zwischen drei Kontinenten, heute eine der tödlichsten Aussengrenzen der Welt.</p>
+        </div>
+        <div class="sub"><span class="tag see">Sehen</span> Zahlenrätsel — antippen für die Auflösung</div>
+        <div class="numgrid" id="numgrid"></div>
+        <div class="tablewrap" style="margin-top:14px">
+          <table>
+            <thead><tr><th>Dimension</th><th>Nordufer (EU)</th><th>Süd- und Ostufer</th></tr></thead>
+            <tbody>
+              <tr><td><b>Wirtschaft</b></td><td>Tourismus, Handel, hohe Löhne</td><td>Jugendarbeitslosigkeit, Korruption, zerstörte Volkswirtschaften</td></tr>
+              <tr><td><b>Politik</b></td><td>Demokratien, EU, Schengen</td><td>Autokratien, Bürgerkriegsstaaten (Syrien, Libyen)</td></tr>
+              <tr><td><b>Das Meer ist …</b></td><td>Ferien, Kreuzfahrt, Badebucht</td><td>Fluchtweg, Grenze, Seenotrettung</td></tr>
+              <tr><td><b>Bewegung</b></td><td>freiwillig, mit Pass, hin und zurück</td><td>erzwungen, ohne Papiere, nur in eine Richtung</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note" style="margin-top:8px"><span class="tag hear">Sagen</span> Laut erklären: «Das Mittelmeer ist heterogen, weil …» — zwei Gegensatzpaare, ein Beispiel.</p>
+      </section>
+
+      <!-- LZ2 -->
+      <section id="lz2">
+        <div class="shead">
+          <span class="lz">LZ 2</span>
+          <div><h2>Syrien: Geografie, Gesellschaft, Politik</h2>
+          <p class="goal">Ich kann grundlegende geografische, gesellschaftliche und politische Daten zu Syrien nennen und einordnen.</p></div>
+        </div>
+        <div class="compass">
+          <div class="cc empty"></div>
+          <div class="cc"><em>Norden</em><b>Türkei</b>Längste Grenze; Kurdenfrage, türkische Einsätze im Norden.</div>
+          <div class="cc empty"></div>
+          <div class="cc sea"><em>Westen</em><b>Mittelmeer</b>Küste bei Latakia/Tartus — russische Basen.</div>
+          <div class="cc core"><em>Zentrum</em><b>SYRIEN</b>Damaskus (Hauptstadt), Aleppo, Homs, Rakka.</div>
+          <div class="cc"><em>Osten</em><b>Irak</b>IS-Grenzraum 2014–2019; Euphrat.</div>
+          <div class="cc"><em>Westen/Süd</em><b>Libanon</b>Hisbollah; grösste Flüchtlingsaufnahme pro Kopf.</div>
+          <div class="cc"><em>Süden</em><b>Jordanien</b>Grosse Flüchtlingslager (Zaatari).</div>
+          <div class="cc"><em>Südwesten</em><b>Israel</b>Golanhöhen: 1967 besetzt, 1981 annektiert.</div>
+        </div>
+        <div class="grid g2" style="margin-top:8px">
+          <div class="card"><span class="klabel">Geografie</span><ul>
+            <li>ca. 185'000 km²; fruchtbare Küste, innen Steppe und Wüste, Euphrat als Lebensader</li>
+            <li>Dürre 2006–2010 → Landflucht in die Städte, Spannungen schon vor 2011</li></ul></div>
+          <div class="card"><span class="klabel">Bevölkerung</span><ul>
+            <li>vor dem Krieg ca. 21 Mio.; Arabisch, dazu Kurdisch</li>
+            <li>sunnitische Mehrheit (~¾), Alawiten (Machtbasis der Assads), Christen, Drusen; Kurden im Nordosten</li>
+            <li>→ eine Minderheit herrschte über eine sunnitische Mehrheit</li></ul></div>
+          <div class="card"><span class="klabel">Wirtschaft</span><ul>
+            <li>Landwirtschaft, etwas Erdöl, Phosphat; Ölfelder liegen im kurdischen Nordosten</li>
+            <li>heute zerstört, Armut, abhängig von Hilfsorganisationen</li></ul></div>
+          <div class="card"><span class="klabel">Politik</span><ul>
+            <li>1946 unabhängig · 1963 Baath-Putsch · 1970 Hafiz al-Assad · 2000 Baschar al-Assad</li>
+            <li>Einparteienstaat, Geheimdienste, Repression</li>
+            <li>Dez. 2024: Sturz Assads, Übergangsregierung unter Ahmed al-Scharaa (HTS)</li></ul></div>
+        </div>
+      </section>
+
+      <!-- LZ3 -->
+      <section id="lz3">
+        <div class="shead">
+          <span class="lz">LZ 3</span>
+          <div><h2>100 Jahre, 3 Revolten — dreifaches Scheitern?</h2>
+          <p class="goal">Ich kann die Hintergründe und Ursachen des Arabischen Frühlings erklären und ihn als überregionales Phänomen einordnen.</p></div>
+        </div>
+        <div class="grid g3">
+          <div class="card"><span class="klabel">1 · 1916–20</span><h4>Gegen die Osmanen</h4><p>Aufstand im Ersten Weltkrieg, im Vertrauen auf britische Versprechen. <b>Ende:</b> von europäischen Mächten niedergeschlagen, Region aufgeteilt.</p></div>
+          <div class="card"><span class="klabel">2 · 1950/60er</span><h4>Gegen die Kolonialordnung</h4><p>Aufstände gegen die britisch-französische Ordnung. <b>Ende:</b> autokratische, korrupte Regime — in Syrien Baath (1963), Assad (1970).</p></div>
+          <div class="card"><span class="klabel">3 · 2011</span><h4>Arabischer Frühling</h4><p>Die <b>Bürger:innen selbst</b> fordern Würde und Gerechtigkeit. <b>Ende:</b> je nach Land völlig unterschiedlich.</p></div>
+        </div>
+        <div class="sub"><span class="tag see">Sehen</span> Der lange Weg Syriens</div>
+        <div class="tl" id="tlHist"></div>
+        <div class="tlpanel" id="tlHistPanel"></div>
+        <details class="rev">
+          <summary>Warum Sykes-Picot bis heute nachwirkt</summary>
+          <div class="body"><ul>
+            <li><b>«Teile und herrsche»:</b> Minderheiten gefördert und in Armee/Verwaltung eingesetzt → Zusammenhalt geschwächt.</li>
+            <li><b>Gebrochenes Versprechen:</b> statt Unabhängigkeit ein Mandatsgebiet → Misstrauen gegenüber dem Westen.</li>
+            <li><b>Staatenlose Kurden:</b> verteilt auf Türkei, Syrien, Irak, Iran — Kern des Kurdenkonflikts.</li>
+            <li><b>Kunstgrenzen:</b> Fällt die Zentralmacht weg (2011), organisieren sich Menschen nach Religion, Region, Ethnie.</li>
+          </ul></div>
+        </details>
+      </section>
+
+      <!-- LZ4 -->
+      <section id="lz4">
+        <div class="shead">
+          <span class="lz">LZ 4</span>
+          <div><h2>Arabischer Frühling 2011 — und der Weg in den Krieg</h2>
+          <p class="goal">Ich kann den Zusammenhang zwischen dem Arabischen Frühling und dem Beginn des Syrienkriegs erklären.</p></div>
+        </div>
+        <div class="prose" data-read>
+          <p>Am <strong>17. Dezember 2010</strong> verbrennt sich der tunesische Gemüsehändler <strong>Mohamed Bouazizi</strong> (26) selbst: Für seinen Stand fehlt die Bewilligung, weil die Bestechungssummen zu hoch sind — also ist er der Polizeiwillkür ausgeliefert. Seine Tat ist der <strong>Auslöser</strong>, nicht die Ursache: Millionen teilen dieselbe Erfahrung. Innert Wochen protestiert die ganze arabische Welt — die <strong>«Arabellion»</strong>.</p>
+        </div>
+        <div class="grid g3" style="margin-top:10px">
+          <div class="card" style="border-color:var(--line)"><span class="klabel" style="color:var(--sea)">Ursachen</span><ul>
+            <li>Autokraten seit Jahrzehnten an der Macht (Ben Ali 1987, Mubarak 1981)</li>
+            <li>Korruption und Willkür im Alltag</li>
+            <li>ab 2008 steigende Nahrungsmittelpreise</li>
+            <li>geburtenstarke Jahrgänge + hohe Jugendarbeitslosigkeit = keine Perspektiven</li></ul></div>
+          <div class="card" style="border-color:var(--ember)"><span class="klabel" style="color:var(--ember)">Auslöser</span><ul>
+            <li>Selbstverbrennung Bouazizis, 17.12.2010</li>
+            <li>Symbolwirkung, weil Millionen dasselbe erleben</li>
+            <li>Syrien: gefolterte Schüler in Deraa, März 2011</li></ul></div>
+          <div class="card" style="border-color:var(--sand)"><span class="klabel" style="color:var(--sand)">Verstärker</span><ul>
+            <li>Internet und Handy: Machtmissbrauch sofort dokumentier- und verbreitbar</li>
+            <li>Proteste in Stunden organisierbar</li>
+            <li>→ die Herrschaft der Diktatoren wird fragil</li></ul></div>
+        </div>
+
+        <div class="sub"><span class="tag do">Machen</span> Lückentext: die Kausalkette</div>
+        <div class="cloze" id="cloze"></div>
+        <div class="fcbar" style="margin-top:8px">
+          <button class="btn primary" id="clozeCheck" type="button">Prüfen</button>
+          <button class="btn" id="clozeReset" type="button">Zurücksetzen</button>
+          <span class="counter" id="clozeScore"></span>
+        </div>
+
+        <div class="sub">Drei Reaktionen — drei Ergebnisse</div>
+        <div class="grid g3">
+          <div class="card"><span class="klabel" style="color:var(--good)">A · Sturz</span><p><b>Tunesien:</b> Ben Ali flieht 2011, neue Verfassung, Wahlen → einziger demokratischer Erfolg.<br><b>Ägypten:</b> Militär stürzt Mubarak, Mursi (Muslimbrüder) gewinnt — <b>2013 Militärputsch</b>, Ende der Demokratie.</p></div>
+          <div class="card"><span class="klabel" style="color:var(--sand)">B · Zugeständnisse</span><p><b>Jordanien, Marokko, Oman, Algerien:</b> Reformen und Entgegenkommen schwächen die Bewegung ab — die Herrscher bleiben.</p></div>
+          <div class="card"><span class="klabel" style="color:var(--ember)">C · Repression</span><p><b>Bahrain, Saudi-Arabien:</b> Proteste erfolgreich niedergeschlagen.<br><b>Libyen, Syrien, Jemen:</b> dieselbe Strategie eskaliert zum <b>Bürgerkrieg</b>.</p></div>
+        </div>
+
+        <div class="sub"><span class="tag do">Machen</span> Länder ihrem Ausgang zuordnen</div>
+        <div class="sortpool" id="sortPool"></div>
+        <div class="bins" id="sortBins"></div>
+        <div class="fcbar" style="margin-top:8px">
+          <button class="btn primary" id="sortCheck" type="button">Prüfen</button>
+          <button class="btn" id="sortReset" type="button">Zurücksetzen</button>
+          <span class="counter" id="sortScore"></span>
+        </div>
+
+        <div class="sub">Vom Protest zum Bürgerkrieg</div>
+        <div class="card" data-read>
+          <ul>
+            <li><b>1. Repression</b> — massive Gewalt gegen Demonstrierende.</li>
+            <li><b>2. Bewaffnung</b> — Opposition greift zu den Waffen, Sicherheitskräfte laufen über.</li>
+            <li><b>3. Fragmentierung</b> — Organisation nach Ethnie, Region, Religion; keine geschlossene Opposition, Islamisten gewinnen.</li>
+            <li><b>4. Internationalisierung</b> — fremde Mächte mischen sich ein, der Krieg wird länger.</li>
+          </ul>
+          <p style="margin-top:5px">Gleiches Muster in <b>Syrien, Libyen, Jemen</b>.</p>
+        </div>
+        <details class="rev">
+          <summary>Kurzvergleich Libyen und Jemen</summary>
+          <div class="body">
+            <p><b>Libyen:</b> Gaddafi setzt Heer und Luftwaffe ein → UN-Flugverbotszone, von der NATO durchgesetzt; Gaddafi gestürzt und getötet. Danach Zerfall in Gebiete bewaffneter Gruppen.</p>
+            <p><b>Jemen:</b> Präsident Salih tritt 2011 zurück, der Staat zerfällt. Schiitische <b>Huthi-Rebellen</b> (Iran) gegen die Regierung (Saudi-Arabien) = Stellvertreterkrieg; 2021 über 24 Mio. Menschen in humanitärer Not.</p>
+          </div>
+        </details>
+      </section>
+
+      <!-- LZ5 -->
+      <section id="lz5">
+        <div class="shead">
+          <span class="lz">LZ 5a</span>
+          <div><h2>Die Phasen des Syrienkriegs</h2>
+          <p class="goal">Ich kann die Entwicklung des Syrienkriegs erklären und zentrale Phasen zeitlich einordnen. 2011–2016 nach der SRF-Doku, danach ergänzt.</p></div>
+        </div>
+        <div class="tl" id="tlWar"></div>
+        <div class="tlpanel" id="tlWarPanel"></div>
+        <div class="sub"><span class="tag do">Machen</span> Phase und Jahr verbinden</div>
+        <div class="sortpool" id="phasePool"></div>
+        <div class="bins" id="phaseBins"></div>
+        <div class="fcbar" style="margin-top:8px">
+          <button class="btn primary" id="phaseCheck" type="button">Prüfen</button>
+          <button class="btn" id="phaseReset" type="button">Zurücksetzen</button>
+          <span class="counter" id="phaseScore"></span>
+        </div>
+      </section>
+
+      <!-- LZ5b -->
+      <section id="lz5b">
+        <div class="shead">
+          <span class="lz">LZ 5b</span>
+          <div><h2>Die Akteure und ihre Interessen</h2>
+          <p class="goal">Ich kann die wichtigsten Akteur:innen benennen und deren Ziele und Rolle erläutern. Antippen: Verbündete grün, Gegner rot.</p></div>
+        </div>
+        <div class="actorgrid" id="actorGrid"></div>
+        <div class="actorpanel" id="actorPanel"></div>
+        <div class="sub">Die grosse Linie</div>
+        <div class="card" data-read><ul>
+          <li><b>UNO blockiert:</b> Die Vetomächte (USA, GB, Frankreich ↔ Russland, China) einigten sich nie — alle Vermittlungsversuche scheiterten.</li>
+          <li><b>Stellvertreterkrieg:</b> USA und Europa halten sich seit Irak/Afghanistan zurück (Luftschläge, Waffen); Russland, Türkei, Iran und Saudi-Arabien greifen direkt ein.</li>
+          <li><b>Der Widerspruch:</b> Die Türkei marschierte 2019 gegen genau die Kurdenmilizen ein, die mit der NATO den IS besiegt hatten — die Kurden näherten sich danach wieder Assad an.</li>
+        </ul></div>
+        <details class="rev">
+          <summary>Der IS füllt das Machtvakuum (2014–2019)</summary>
+          <div class="body"><p>Zwei Machtvakuen machten den Aufstieg möglich: der Bürgerkrieg in Syrien und die fehlende Staatsmacht im Irak seit 2003 (sunnitische Ex-Saddam-Kader unterstützten den IS). Eroberte Ölfelder brachten Geld, der Erfolg eine Sogwirkung bis nach Europa. Ziel: Kalifat über den arabischen Raum plus globaler Kampf gegen den Westen, mit Attentaten in Europa. Eine US-geführte Koalition führte den Luftkrieg, am Boden kämpften kurdische Milizen — bis 2019 war das Territorium zurückerobert.</p></div>
+        </details>
+      </section>
+
+      <!-- LZ6 -->
+      <section id="lz6">
+        <div class="shead">
+          <span class="lz">LZ 6</span>
+          <div><h2>Flucht, Migration und die «Flüchtlingskrise»</h2>
+          <p class="goal">Ich kann Flucht als Folge der Bürgerkriege erklären und den Zusammenhang zwischen Krieg, Zerstörung und «Flüchtlingskrise» einordnen.</p></div>
+        </div>
+        <div class="grid g4">
+          <div class="card"><span class="klabel">geschützt</span><h4>Flüchtling</h4><p>Musste das Land verlassen aus Furcht vor Verfolgung oder Krieg/Gewalt.</p></div>
+          <div class="card"><span class="klabel">Verfahren läuft</span><h4>Asylbewerber:in</h4><p>Sucht in einem anderen Staat Schutz; Antrag wird noch geprüft.</p></div>
+          <div class="card"><span class="klabel">Oberbegriff</span><h4>Migrant:in</h4><p>Verlegt den Lebenssitz längerfristig in einen anderen Staat.</p></div>
+          <div class="card"><span class="klabel">im eigenen Land</span><h4>Binnenflüchtling</h4><p>Flucht ohne Grenzübertritt — deshalb kein Asylrecht.</p></div>
+        </div>
+        <p class="note" style="margin-top:8px"><b>Merksatz:</b> Jeder Flüchtling ist ein Migrant, aber nicht jeder Migrant ein Flüchtling. — <b>Wohin geflohen wurde:</b> Die Mehrheit blieb in den Nachbarländern (Libanon, Jordanien, Irak, Türkei, Ägypten), dazu Millionen Binnenflüchtlinge; weltweit 21,3 Mio. Flüchtlinge (UNHCR 2015/16). Europas «Krise» war nur ein Ausschnitt.</p>
+
+        <div class="sub">Das Rechtsgerüst</div>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th style="width:20%">Regelwerk</th><th style="width:30%">Inhalt</th><th style="width:22%">Ursprung</th><th style="width:28%">Problem</th></tr></thead>
+            <tbody>
+              <tr><td><b>AEMR Art. 14</b><br><span class="counter">1948</span></td><td>Recht, in anderen Ländern Asyl zu suchen.</td><td>Reaktion auf den Zweiten Weltkrieg.</td><td>Kein Recht auf Asyl<i>gewährung</i>, nicht bindend.</td></tr>
+              <tr><td><b>Genfer Konvention</b><br><span class="counter">1951/54</span></td><td>Flüchtling = begründete Furcht vor Verfolgung wegen Rasse, Religion, Nationalität, sozialer Gruppe, politischer Überzeugung. Kern: <b>Non-Refoulement</b>.</td><td>Folge der Flüchtlingsbewegungen nach 1945.</td><td>Krieg und Armut allein zählen nicht; wer nicht ins Land kommt, kann kein Asyl beantragen.</td></tr>
+              <tr><td><b>Schengen II</b><br><span class="counter">1990</span></td><td>Keine Binnengrenzkontrollen, gemeinsame Aussengrenze.</td><td>Binnenmarkt, Freizügigkeit.</td><td>Offen innen = hart aussen; seit 2015 wieder Kontrollen.</td></tr>
+              <tr><td><b>Dublin</b><br><span class="counter">1990, ab 1997</span></td><td>Zuständig ist der <b>Ersteinreisestaat</b>; ab 2005 Fingerabdrücke in <b>EURODAC</b>.</td><td>Sollte Mehrfachanträge verhindern.</td><td>Überlastet Griechenland und Italien; Abschiebungen dorthin untersagt → Kollaps 2015.</td></tr>
+              <tr><td><b>GEAS</b><br><span class="counter">ab 2003</span></td><td>Einheitliche Asylstandards in der EU.</td><td>Folge von Schengen und Dublin.</td><td>Wettlauf nach unten; Streit um Verteilquoten.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="sub"><span class="tag see">Sehen</span> «Festung Europa» — 1990 bis heute</div>
+        <div class="tl" id="tlMig"></div>
+        <div class="tlpanel" id="tlMigPanel"></div>
+
+        <div class="sub">Die drei Fluchtrouten</div>
+        <div class="grid g3">
+          <div class="card"><span class="klabel">westlich</span><p>Marokko → Spanien (Gibraltar, Kanaren, Ceuta/Melilla); Zubringer aus Westafrika.</p></div>
+          <div class="card"><span class="klabel">zentral</span><p>Libyen/Tunesien → Italien (Lampedusa). Die gefährlichste Route; Schmuggler und Lager in Libyen.</p></div>
+          <div class="card"><span class="klabel">östlich</span><p>Türkei → Griechenland → <b>Balkanroute</b>. 2015 die Hauptroute der Syrer:innen.</p></div>
+        </div>
+
+        <div class="sub"><span class="tag test">Prüfen</span> Karikatur: Gerhard Mester, 2018</div>
+        <div class="card">
+          <p style="color:var(--ink)"><b>Bild:</b> Auf einer Kaimauer ruft eine Gruppe gutgekleideter Menschen vor einer EU-Fahne «Sie bedrohen unsere christliche Zivilisation!!!». Im Wasser darunter gehen Menschen unter; eine einzelne Person greift nach einer Hand.</p>
+          <details class="rev">
+            <summary>Musteranalyse</summary>
+            <div class="body">
+              <p><b>Aussage:</b> Kritik am <b>Widerspruch zwischen Wort und Tat</b> — man beruft sich auf die «christliche Zivilisation», deren Kern Nächstenliebe ist, und sieht genau dann zu, wie Menschen ertrinken.</p>
+              <ul>
+                <li><b>Mauer (oben/unten):</b> trennt Wohlstand von Todesgefahr → Abschottung der EU.</li>
+                <li><b>Bedrohungsumkehr:</b> Die angeblich Bedrohenden sind selbst in Lebensgefahr.</li>
+                <li><b>Helfende Einzelfigur:</b> Zivilgesellschaft/Seenotrettung handelt, die Gruppe redet.</li>
+                <li><b>EU-Fahne:</b> Kritik gilt der europäischen Politik, nicht Einzelpersonen.</li>
+                <li><b>Kontext 2018:</b> nach 2015/16, Grenzen nach Nordafrika und in die Türkei vorverlagert, Seenotrettung behindert.</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <!-- LZ7 -->
+      <section id="lz7">
+        <div class="shead">
+          <span class="lz">LZ 7</span>
+          <div><h2>Methode: Karten und Karikaturen analysieren</h2>
+          <p class="goal">Ich kann Karten und Karikaturen analysieren, ihre Aussage herausarbeiten und historisch einordnen.</p></div>
+        </div>
+        <div class="grid g2">
+          <div class="card"><span class="klabel">Karte</span><h4>Beschreiben → Lesen → Deuten → Prüfen</h4><ul>
+            <li>Titel, Legende, Quelle, <b>Jahr</b> — ohne Jahr keine Einordnung.</li>
+            <li>Was bedeuten Farben, Symbole, Pfeilbreiten?</li>
+            <li>Welcher Zusammenhang wird sichtbar? (Krieg → Flucht; Nachbarländer als Hauptaufnahmeländer.)</li>
+            <li>Was fehlt (Tote auf See, Zeitverlauf)? Wer hat sie mit welcher Absicht gemacht?</li></ul></div>
+          <div class="card"><span class="klabel">Karikatur</span><h4>Beschreiben → Symbole → Aussage → Position</h4><ul>
+            <li>Sachlich beschreiben, Text zitieren — noch nicht deuten.</li>
+            <li>Mittel benennen: Übertreibung, Gegensätze, bekannte Zeichen.</li>
+            <li>Aussage in einem Satz: Worauf zielt die Kritik?</li>
+            <li>Kontext + eigene Beurteilung: berechtigt? was verkürzt sie?</li></ul></div>
+        </div>
+        <p class="note" style="margin-top:8px">Typischer Punkteverlust: nur beschreiben und nicht deuten — oder deuten, ohne zu beschreiben.</p>
+      </section>
+
+      <!-- LZ8 -->
+      <section id="lz8">
+        <div class="shead">
+          <span class="lz">LZ 8</span>
+          <div><h2>Stellung nehmen: Pro und Kontra</h2>
+          <p class="goal">Ich kann zu einer These Pro- und Kontraargumente formulieren, abwägen und begründet Stellung beziehen.</p></div>
+        </div>
+        <div class="card" style="border-color:var(--ink); border-width:2px">
+          <span class="klabel">These aus dem Unterricht</span>
+          <p style="font-family:var(--fdisplay); font-size:17px; color:var(--ink); line-height:1.3">«Der Arabische Frühling hat mehr Instabilität als Freiheit gebracht.»</p>
+        </div>
+        <div class="sub"><span class="tag do">Machen</span> Argumente auswählen</div>
+        <div class="scale">
+          <div class="scalecol"><h5 style="color:var(--ember)">Pro · «mehr Instabilität»</h5><div id="argPro"></div></div>
+          <div class="scalecol"><h5 style="color:var(--sea)">Kontra · «doch Freiheit»</h5><div id="argCon"></div></div>
+        </div>
+        <div class="beam"><i class="pro" id="beamPro" style="width:50%"></i><i class="con" id="beamCon" style="width:50%"></i></div>
+        <div class="counter" id="beamTxt">0 Pro · 0 Kontra ausgewählt</div>
+
+        <div class="sub">Schreibgerüst (8 Sätze)</div>
+        <div class="card"><ul>
+          <li><b>1–2 Entstehung:</b> Bouazizi 17.12.2010 + zwei Ursachen.</li>
+          <li><b>3–4 Pro:</b> zwei Argumente, je mit Beispiel.</li>
+          <li><b>5–6 Kontra:</b> zwei Argumente, je mit Beispiel.</li>
+          <li><b>7 Abwägung:</b> Was wiegt schwerer — nach welchem Kriterium?</li>
+          <li><b>8 Fazit:</b> eigene Position, ohne neues Argument.</li>
+        </ul>
+        <p style="margin-top:5px; color:var(--ink-faint)">«Dafür spricht …» · «Dagegen spricht, dass …» · «Entscheidend erscheint mir …» · «Abschliessend halte ich fest …»</p></div>
+        <details class="rev">
+          <summary>Musterantwort</summary>
+          <div class="body">
+            <p>Der Arabische Frühling begann mit der Selbstverbrennung des tunesischen Gemüsehändlers Mohamed Bouazizi am 17. Dezember 2010; seine Tat wurde zum Symbol, weil Millionen dieselben Erfahrungen machten — Korruption, steigende Nahrungsmittelpreise seit 2008, hohe Jugendarbeitslosigkeit und Herrscher, die seit Jahrzehnten an der Macht waren. Für die These spricht, dass in Syrien, Libyen und im Jemen aus Protesten Bürgerkriege mit hunderttausenden Toten und Millionen Flüchtlingen wurden. Hinzu kommt, dass der Zerfall staatlicher Ordnung dem «Islamischen Staat» ab 2014 ein Machtvakuum verschaffte. Dagegen spricht, dass Tunesien eine demokratische Verfassung und freie Wahlen erhielt und dass die Herrscher in Marokko, Jordanien und Oman zu Zugeständnissen gezwungen wurden. Ausserdem zeigte die Bewegung, dass die Macht der Autokraten durch Handy und Internet fragil geworden ist. Entscheidend erscheint mir der Massstab: Misst man an der Zahl der unmittelbar Betroffenen, überwiegt die Instabilität klar; misst man am veränderten politischen Bewusstsein, ist das Urteil offener. Abschliessend halte ich fest, dass die Bilanz kurzfristig gegen den Arabischen Frühling spricht — die Ursachen der Proteste aber ungelöst bleiben.</p>
+            <p style="color:var(--ink-faint)">8 Sätze: 1 Entstehung, 2 Pro, 2 Kontra, 1 Abwägung, 1 Fazit.</p>
+          </div>
+        </details>
+      </section>
+
+      <!-- LZ9 -->
+      <section id="lz9">
+        <div class="shead">
+          <span class="lz">LZ 9</span>
+          <div><h2>Fachbegriffe</h2>
+          <p class="goal">Ich verwende zentrale Fachbegriffe korrekt und kann sie erklären.</p></div>
+        </div>
+        <div class="fcstage">
+          <div class="fc" id="flashcard">
+            <div class="hint" id="fcHint">Frage · zum Umdrehen klicken</div>
+            <div class="q" id="fcQ">Lade …</div>
+            <div class="a" id="fcA" style="display:none"></div>
+          </div>
+          <div class="fcbar">
+            <button class="btn good" id="fcKnew" type="button">Gewusst</button>
+            <button class="btn bad" id="fcAgain" type="button">Nochmal</button>
+            <button class="btn" id="fcShuffle" type="button">Mischen</button>
+            <span class="counter" id="fcCount"></span>
+          </div>
+        </div>
+        <div class="sub">Glossar</div>
+        <div class="searchbar"><input type="text" id="glossSearch" placeholder="Begriff suchen …"></div>
+        <div class="glosslist" id="glossList"></div>
+      </section>
+
+      <!-- QUIZ -->
+      <section id="quiz">
+        <div class="shead">
+          <span class="lz">Check</span>
+          <div><h2>Schnellcheck</h2>
+          <p class="goal">Zehn Fragen quer durch alle Lernziele. Die Begründung unter der Antwort ist der Lernstoff.</p></div>
+        </div>
+        <div id="quizBox"></div>
+        <div class="fcbar" style="margin-top:8px">
+          <span class="counter" id="quizScore">0 von 10 richtig</span>
+          <button class="btn" id="quizReset" type="button">Von vorne</button>
+        </div>
+      </section>
+
+      <!-- PRÜFUNG -->
+      <section id="pruefung">
+        <div class="shead">
+          <span class="lz">▣</span>
+          <div><h2>Übungsprüfung — 30 Minuten</h2>
+          <p class="goal">Wie die echte Prüfung: 40 Punkte, gemischte Aufgaben, am Schluss Punkte und Note.</p></div>
+        </div>
+        <div class="exam">
+          <div class="examhead">
+            <h3>Geschichte · Mittelmeer, Syrien, Flucht</h3>
+            <span style="flex:1"></span>
+            <span class="clock" id="clock">30:00</span>
+            <button class="btn primary" id="startExam" type="button">Uhr starten</button>
+            <button class="btn" id="resetExam" type="button">Neu</button>
+          </div>
+          <div class="exambody">
+            <div class="task">
+              <div class="taskhead"><h4>Aufgabe 1 — Multiple Choice</h4><span class="pts">8 Punkte</span></div>
+              <div id="examMC"></div>
+            </div>
+            <div class="task">
+              <div class="taskhead"><h4>Aufgabe 2 — Fachbegriffe erklären</h4><span class="pts">8 Punkte</span></div>
+              <p class="note" style="margin-bottom:8px">Je 2 Punkte: 1 Definition, 1 Bezug zum Thema.</p>
+              <div id="examTerms"></div>
+            </div>
+            <div class="task">
+              <div class="taskhead"><h4>Aufgabe 3 — Zeitliche Einordnung</h4><span class="pts">6 Punkte</span></div>
+              <div id="examOrder"></div>
+              <div class="fcbar" style="margin-top:8px">
+                <button class="btn" id="orderCheck" type="button">Prüfen</button>
+                <span class="counter" id="orderScore"></span>
+              </div>
+            </div>
+            <div class="task">
+              <div class="taskhead"><h4>Aufgabe 4 — Quellenanalyse</h4><span class="pts">8 Punkte</span></div>
+              <p style="font-size:13px; margin-bottom:8px">Karikatur von Gerhard Mester (2018): Auf einer Kaimauer ruft eine Gruppe gutgekleideter Menschen vor einer EU-Fahne «Sie bedrohen unsere christliche Zivilisation!!!»; im Wasser darunter gehen Menschen unter, eine einzelne Person greift nach einer Hand. <b>Auftrag:</b> Erläutern Sie die Aussage, arbeiten Sie den Widerspruch zwischen Aussage und Handlung heraus und ordnen Sie die Karikatur historisch ein.</p>
+              <textarea id="ex4" placeholder="Beschreiben – deuten – einordnen …"></textarea>
+              <details class="rev"><summary>Erwartungshorizont</summary><div class="body"><ul>
+                <li>Bildelemente beschrieben: Mauer, Gruppe, Ertrinkende, EU-Fahne, helfende Figur. (2 P)</li>
+                <li>Widerspruch: christliche Werte im Wort, Wegschauen in der Tat; Bedrohungsumkehr. (3 P)</li>
+                <li>Mauer = «Festung Europa»; Einzelfigur = Zivilgesellschaft. (1 P)</li>
+                <li>Kontext: nach 2015/16, Vorverlagerung der Grenzen, behinderte Seenotrettung. (2 P)</li>
+              </ul></div></details>
+              <div class="selfscore" data-max="8" data-id="ex4">Selbsteinschätzung:</div>
+            </div>
+            <div class="task">
+              <div class="taskhead"><h4>Aufgabe 5 — Argumentativer Text</h4><span class="pts">10 Punkte</span></div>
+              <p style="font-size:13px; margin-bottom:8px"><b>These:</b> «Der Arabische Frühling hat mehr Instabilität als Freiheit gebracht.» Mindestens acht Sätze: zuerst erklären, wie und weshalb es zum Arabischen Frühling kam, dann mit Argumenten auf die These eingehen, im Schlusssatz persönlich Stellung beziehen.</p>
+              <textarea id="ex5" style="min-height:140px" placeholder="Mindestens 8 Sätze …"></textarea>
+              <div class="counter" id="ex5count">0 Wörter</div>
+              <details class="rev"><summary>Bewertungsraster</summary><div class="body"><ul>
+                <li><b>Entstehung</b> — Auslöser + zwei Ursachen. (3 P)</li>
+                <li><b>Pro</b> — zwei Argumente mit Beispiel. (2 P)</li>
+                <li><b>Kontra</b> — zwei Argumente mit Beispiel. (2 P)</li>
+                <li><b>Abwägung</b> — gewichten, nicht aufzählen. (2 P)</li>
+                <li><b>Fazit</b> — klare Position. (1 P)</li>
+              </ul></div></details>
+              <div class="selfscore" data-max="10" data-id="ex5">Selbsteinschätzung:</div>
+            </div>
+            <div class="fcbar" style="margin-top:14px">
+              <button class="btn primary" id="evalExam" type="button">Auswerten</button>
+              <span class="counter">Aufgabe 1 und 3 zählen automatisch.</span>
+            </div>
+            <div class="result" id="examResult"></div>
+          </div>
+        </div>
+      </section>
+
+      <footer>
+        <div class="srcs">Quellen: Dossier «Mittelmeer» · Handout Syrien · Lektüredossier «Arabischer Frühling» / «Bürgerkriege in Libyen, im Jemen und in Syrien» (nach Notz/Frey, 2021) · Dossier «Migration» / «Atlas der Migration» · Präsentation und Akteursfolien der Klasse.</div>
+        <div>Angaben zu 2024–2026 nach den Unterrichtsmaterialien vom September 2026. Im Zweifel gilt, was im Unterricht gesagt wurde.</div>
+      </footer>
+    </main>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var LS = {
+  get:function(k,d){ try{ var v=localStorage.getItem("mm26."+k); return v===null?d:JSON.parse(v);}catch(e){return d;} },
+  set:function(k,v){ try{ localStorage.setItem("mm26."+k, JSON.stringify(v)); }catch(e){} }
+};
+var $ = function(s){ return document.querySelector(s); };
+var el = function(tag, cls, html){ var n=document.createElement(tag); if(cls)n.className=cls; if(html!==undefined)n.innerHTML=html; return n; };
+
+/* ---------------- Theme ---------------- */
+var themeBtn = $("#themebtn");
+function applyTheme(t){
+  if(t){ document.documentElement.setAttribute("data-theme", t); }
+  else { document.documentElement.removeAttribute("data-theme"); }
+  var dark = t==="dark" || (!t && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
+  themeBtn.textContent = dark ? "Hell" : "Dunkel";
+}
+applyTheme(LS.get("theme", null));
+themeBtn.addEventListener("click", function(){
+  var cur = document.documentElement.getAttribute("data-theme");
+  var dark = cur==="dark" || (!cur && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
+  var next = dark ? "light" : "dark";
+  LS.set("theme", next); applyTheme(next);
+});
+
+/* ---------------- Countdown ---------------- */
+(function(){
+  var target = new Date(2026,8,18,8,0,0);
+  var diff = Math.ceil((target - new Date())/86400000);
+  var cd = $("#countdown"), dl = $("#daysleft");
+  if(diff > 0){ cd.textContent = "Prüfung 18.09. · noch " + diff + (diff===1?" Tag":" Tage"); dl.textContent = diff; }
+  else { cd.textContent = "Prüfung 18.09."; cd.classList.remove("hot"); dl.textContent = "–"; }
+})();
+
+/* ---------------- Vorlesen ---------------- */
+(function(){
+  var btn = $("#readbtn"), on = false;
+  if(!("speechSynthesis" in window)){ btn.style.display="none"; return; }
+  function stop(){ window.speechSynthesis.cancel(); }
+  function speak(node){
+    stop();
+    var u = new SpeechSynthesisUtterance(node.innerText.replace(/\s+/g," ").slice(0,4000));
+    u.lang = "de-DE"; u.rate = 1;
+    window.speechSynthesis.speak(u);
+  }
+  document.querySelectorAll("[data-read]").forEach(function(n){
+    n.addEventListener("click", function(){ if(on) speak(n); });
+  });
+  btn.addEventListener("click", function(){
+    on = !on;
+    btn.textContent = on ? "Vorlesen an" : "Vorlesen aus";
+    btn.style.borderColor = on ? "var(--good)" : "";
+    btn.style.color = on ? "var(--good)" : "";
+    if(!on) stop();
+    if(on) alert("Vorlesen ist aktiv: Tippe auf einen Textabschnitt, um ihn dir vorlesen zu lassen. Nochmals auf den Knopf tippt es wieder aus.");
+  });
+})();
+
+/* ---------------- Lernziel-Checkliste ---------------- */
+var GOALS = [
+ "Ich kann erklären, was unter dem «Mittelmeer als heterogener Raum» zu verstehen ist.",
+ "Ich kann grundlegende geografische, gesellschaftliche und politische Daten zu Syrien nennen und einordnen.",
+ "Ich kann die wichtigsten Hintergründe und Ursachen des Arabischen Frühlings erklären und ihn als überregionales Phänomen einordnen.",
+ "Ich kann den Zusammenhang zwischen dem Arabischen Frühling und dem Beginn des Syrienkriegs erklären.",
+ "Ich kann die Entstehung und Entwicklung des Syrienkriegs erklären und zentrale Phasen zeitlich einordnen.",
+ "Ich kann die wichtigsten Akteur:innen benennen und deren Interessen, Ziele und Rolle erläutern.",
+ "Ich kann Flucht als Folge der Bürgerkriege erklären und den Zusammenhang zur «Flüchtlingskrise» einordnen.",
+ "Ich kann Karten und Karikaturen analysieren und in den historischen Kontext einordnen.",
+ "Ich kann zu einer These Pro- und Kontraargumente formulieren, abwägen und Stellung beziehen.",
+ "Ich verwende zentrale Fachbegriffe korrekt und kann sie erklären."
+];
+(function(){
+  var box = $("#goalbox"), state = LS.get("goals", []);
+  GOALS.forEach(function(g,i){
+    var row = el("div","goalrow");
+    var id = "goal"+i;
+    var cb = el("input"); cb.type="checkbox"; cb.id=id; cb.checked = state.indexOf(i)>=0;
+    var lb = el("label","", g); lb.setAttribute("for", id);
+    if(cb.checked) row.classList.add("done");
+    cb.addEventListener("change", function(){
+      var s = LS.get("goals", []);
+      if(cb.checked){ if(s.indexOf(i)<0) s.push(i); row.classList.add("done"); }
+      else { s = s.filter(function(x){return x!==i;}); row.classList.remove("done"); }
+      LS.set("goals", s); updateProgress();
+    });
+    row.appendChild(cb); row.appendChild(lb); box.appendChild(row);
+  });
+  updateProgress();
+})();
+function updateProgress(){
+  var s = LS.get("goals", []).length;
+  $("#progresstxt").textContent = s + " / " + GOALS.length + " Lernziele";
+  $("#progressbar").style.width = (s/GOALS.length*100) + "%";
+}
+
+/* ---------------- Zahlenrätsel ---------------- */
+var NUMBERS = [
+ {n:"2,5 Mio. km²", a:"Fläche des Mittelmeers."},
+ {n:"ca. 5267 m", a:"Grösste Tiefe (Calypso-Tief)."},
+ {n:"ca. 4000 km", a:"Länge von Gibraltar bis an die syrische Küste."},
+ {n:"14,4 km", a:"Schmalste Stelle bei Gibraltar — Nahtstelle Europa/Afrika."},
+ {n:"15–21 °C", a:"Durchschnittliche Wassertemperatur."},
+ {n:"20–30 %", a:"Anteil am weltweiten Tourismus bzw. Seeverkehr."},
+ {n:"26", a:"Anrainerstaaten und Gebiete — daher heterogen."}
+];
+(function(){
+  var g = $("#numgrid");
+  NUMBERS.forEach(function(o){
+    var b = el("button","numcard","<b>"+o.n+"</b><span>Antippen für die Auflösung</span>");
+    b.type="button";
+    b.addEventListener("click", function(){
+      b.classList.toggle("open");
+      b.querySelector("span").textContent = b.classList.contains("open") ? o.a : "Antippen für die Auflösung";
+    });
+    g.appendChild(b);
+  });
+})();
+
+/* ---------------- Timelines ---------------- */
+function buildTimeline(railSel, panelSel, data, startIdx){
+  var rail = $(railSel), panel = $(panelSel);
+  function show(i){
+    Array.prototype.forEach.call(rail.children, function(c,j){ c.classList.toggle("on", i===j); });
+    var d = data[i];
+    panel.innerHTML = "";
+    panel.appendChild(el("div","when", d.when));
+    panel.appendChild(el("h4","", d.title));
+    if(d.lead) panel.appendChild(el("p","", d.lead));
+    var ul = el("ul");
+    d.points.forEach(function(p){ ul.appendChild(el("li","",p)); });
+    panel.appendChild(ul);
+  }
+  data.forEach(function(d,i){
+    var b = el("button","","<b>"+d.year+"</b><span>"+d.label+"</span>");
+    b.type="button";
+    b.addEventListener("click", function(){ show(i); });
+    rail.appendChild(b);
+  });
+  show(startIdx||0);
+}
+
+buildTimeline("#tlHist","#tlHistPanel",[
+ {year:"1516", label:"Osmanen", when:"1516/17–1918", title:"Syrien wird osmanisch",
+  points:["Rund 400 Jahre Teil des Osmanischen Reiches","Keine syrische Nation, sondern Provinzen mit gemischter Bevölkerung"]},
+ {year:"1875/1908", label:"Niedergang", when:"1875 und 1908", title:"Staatsbankrott und Jungtürken",
+  points:["1875 Staatsbankrott → europäische Mächte gewinnen Einfluss","1908 Jungtürkische Revolution: Nationalisten wollen das Reich zentralisieren","Von Araber:innen als Unterdrückung erlebt → arabisches Nationalbewusstsein"]},
+ {year:"1916", label:"Sykes-Picot", when:"1916 geheim, ab 1920 Mandat", title:"Sykes-Picot — die Aufteilung",
+  points:["Grossbritannien und Frankreich teilen den Nahen Osten in Einflusszonen","Syrien wird französisch — keine Unabhängigkeit, Prinzip «Teile und herrsche»","Ab 1920 Mandatsgebiet: Unzufriedenheit, Revolten"]},
+ {year:"1946", label:"Unabhängig", when:"1946", title:"Unabhängige Republik",
+  points:["Frankreich zieht ab","Instabile Jahre mit zahlreichen Putschen"]},
+ {year:"1963", label:"Baath", when:"1963", title:"Machtübernahme der Baath-Partei",
+  points:["Staatsstreich der arabisch-sozialistischen Baath-Partei","Einparteienstaat, Geheimdienste, Aufstieg alawitischer Offiziere"]},
+ {year:"1970", label:"Hafiz", when:"1970–2000", title:"Diktatur unter Hafiz al-Assad",
+  points:["30 Jahre Herrschaft, Personenkult, Sicherheitsapparat","1982 brutale Niederschlagung des Aufstands in Hama"]},
+ {year:"2000", label:"Baschar", when:"seit 2000", title:"Baschar al-Assad",
+  points:["Kurze Hoffnung auf Öffnung, dann Fortsetzung der Repression","Dürre 2006–2010 treibt Landbevölkerung in die Städte","2011 erreicht der Arabische Frühling Syrien"]}
+],2);
+
+buildTimeline("#tlWar","#tlWarPanel",[
+ {year:"2011", label:"Der Aufstand", when:"2011", title:"Der Aufstand",
+  points:["In Deraa werden Schüler wegen regimekritischer Parolen verhaftet und gefoltert","Landesweite Proteste; das Regime schiesst, verhaftet, foltert","Soldaten laufen über → Gründung der Freien Syrischen Armee (FSA)"]},
+ {year:"2012", label:"Bürgerkrieg", when:"2012", title:"Der Bürgerkrieg",
+  points:["Kämpfe in Aleppo, Homs und Damaskus; viele konkurrierende Milizen","Iran und Hisbollah stützen Assad, Türkei und Golfstaaten die Rebellen","Erste grosse Fluchtbewegungen in die Nachbarländer"]},
+ {year:"2013", label:"Giftgas", when:"2013", title:"Das Giftgas",
+  points:["August 2013: Sarin-Angriff in Ost-Ghouta bei Damaskus, hunderte Tote","Obamas «rote Linie» — ein Militärschlag bleibt trotzdem aus","Russland vermittelt ein Chemiewaffenabkommen; Assad weiss: der Westen greift nicht ein"]},
+ {year:"2014", label:"Der IS", when:"2014", title:"Der Islamische Staat",
+  points:["Der IS erobert grosse Gebiete in Syrien und im Irak, Hauptstadt Ar-Raqqa","Finanzierung über Ölfelder, Zulauf auch aus Europa, Terror gegen Minderheiten","US-geführte Koalition beginnt den Luftkrieg"]},
+ {year:"2015", label:"Die Flucht", when:"2015", title:"Die Flucht",
+  points:["Mehrheit der Syrer:innen flieht in die Nachbarländer, dazu Millionen Binnenflüchtlinge","Über die Türkei und Griechenland entsteht die Balkanroute","September 2015: Russland greift mit der Luftwaffe ein und stabilisiert Assad"]},
+ {year:"2016", label:"Zerstörung", when:"2016", title:"Die Zerstörung",
+  points:["Ende 2016 fällt Ost-Aleppo nach Belagerung und schweren Luftangriffen","Aushungern und Belagerung als systematisches Kriegsmittel","Ganze Städte unbewohnbar"]},
+ {year:"2017–23", label:"Eingefroren", when:"2017–2023", title:"IS besiegt, Konflikt erstarrt",
+  points:["Bis 2019 IS-Gebiete zurückerobert — bleibt als Terrornetzwerk bestehen","Türkei marschiert in Nordsyrien ein, um eine kurdische Autonomieregion zu verhindern","Land faktisch geteilt: Regime, Kurden/SDF, türkische Zone, Idlib (HTS)"]},
+ {year:"2024", label:"Sturz Assads", when:"November/Dezember 2024", title:"Das Ende der Assad-Herrschaft",
+  points:["Eine von der islamistischen HTS geführte Koalition erobert das Land","Über 50 Jahre Assad-Herrschaft enden","Russland ist in der Ukraine gebunden, die Hisbollah durch den Krieg mit Israel geschwächt"]},
+ {year:"2025–26", label:"Übergang", when:"Stand September 2026", title:"Übergang mit offenem Ausgang",
+  points:["Übergangsregierung unter Ahmed al-Scharaa (HTS) mit Parlament","Sanktionen gelockert, hunderttausende Geflüchtete kehren zurück","Offen: Kurdenfrage, Minderheitenschutz, Wiederaufbau"]}
+],0);
+
+buildTimeline("#tlMig","#tlMigPanel",[
+ {year:"1990", label:"Verträge", when:"1990, ab 1997", title:"Schengen II und Dublin",
+  points:["Schengen II: keine Kontrollen an den Binnengrenzen","Dublin: der Ersteinreisestaat ist für das Asylverfahren zuständig","Ziel: Mehrfachanträge verhindern"]},
+ {year:"2003", label:"GEAS", when:"ab 2003", title:"Gemeinsames Asylsystem",
+  points:["Sollte die Asylstandards in der EU vereinheitlichen","Tatsächlich driften sie auseinander — Wettlauf nach unten","Ab 2005 erfasst EURODAC Fingerabdrücke → schnelle Rückschiebung"]},
+ {year:"2011", label:"Bruch", when:"ab 2011", title:"Der Arabische Frühling verändert alles",
+  points:["Die EU hatte den Grenzschutz an nordafrikanische Regime ausgelagert — die Revolutionen beenden das","Gerichte untersagen Zurückschiebungen und Dublin-Abschiebungen nach Griechenland"]},
+ {year:"2015", label:"Der Sommer", when:"2015/16", title:"«Sommer der Migration»",
+  points:["Hunderttausende, vor allem aus Syrien, kommen über die Balkanroute","1'322'845 Asylanträge in der EU — Höchstwert","Ab September 2015 wieder Grenzkontrollen; das Dublin-System kollabiert"]},
+ {year:"2016 ff.", label:"Festung", when:"ab 2016 bis heute", title:"Festung Europa",
+  points:["Februar 2016: Österreich erzwingt die Schliessung der Balkanroute","Kontrolle wird in die Türkei und nach Afrika vorverlagert; Hotspots mit Frontex und EASO","Streit bleibt: Ungarn und Polen verweigern die Aufnahme, Italien fordert Solidarität und behindert die Seenotrettung"]}
+],3);
+
+/* ---------------- Akteure ---------------- */
+var ACTORS = [
+ {id:"assad", n:"Syrischer Staat", s:"Assad-Regime", camp:"Regime-Lager · bis Dez. 2024",
+  ziele:["Machterhalt","Niederschlagung der Demokratiebewegung","Rückkehr zur internationalen Anerkennung"],
+  probleme:["Massenproteste 2011 → Bürgerkrieg","Ausschluss aus der Arabischen Liga","Über 350'000 zivile Tote (2011–2021)"],
+  a:["russland","iran"], f:["opp","is","kurden","hts","tuerkei","usa","eu"],
+  now:"Dezember 2024 gestürzt — Ende der Assad-Herrschaft nach über 50 Jahren."},
+ {id:"opp", n:"Opposition / FSA", s:"Freie Syrische Armee", camp:"Anti-Assad",
+  ziele:["Sturz Assads","Schutz der Bevölkerung, demokratischer Wandel"],
+  probleme:["Nie eine einheitliche Armee","Stark abhängig von Türkei und USA"],
+  a:["tuerkei","usa"], f:["assad","russland","iran","is","kurden"],
+  now:"2024 aufgelöst; Teile gingen in der Syrischen Nationalarmee (SNA) auf."},
+ {id:"is", n:"Islamischer Staat", s:"IS · Dschihadisten", camp:"Dschihadistisch · gegen alle",
+  ziele:["Kalifat über den ganzen arabischen Raum","Globaler Kampf gegen den Westen"],
+  probleme:["Terror gegen Zivilbevölkerung und Minderheiten","Keine staatlichen Verbündeten"],
+  a:[], f:["assad","opp","kurden","usa","russland","iran","tuerkei","hts","eu"],
+  now:"Seit 2019 kein Territorium mehr; dezentrales Terrornetzwerk mit Anschlägen und Online-Propaganda."},
+ {id:"kurden", n:"Kurden / SDF", s:"YPG · SDF", camp:"Eigene Agenda · Nordosten",
+  ziele:["Autonomie, langfristig ein eigener Staat","Eigene Sprache und Kultur bewahren"],
+  probleme:["Staatenlos, verteilt auf Türkei, Syrien, Irak, Iran","Werden fallen gelassen, wenn Verbündete die Interessen wechseln"],
+  a:["usa","eu"], f:["tuerkei","is","assad","opp"],
+  now:"Kontrollieren mit der SDF den Nordosten (ca. 2,5 Mio. Kurd:innen); trugen den Bodenkampf gegen den IS."},
+ {id:"usa", n:"USA", s:"und Koalition", camp:"Westliche Mächte",
+  ziele:["IS bekämpfen","Opposition stützen, zeitweise Regimewechsel","Einfluss von Iran und Russland begrenzen"],
+  probleme:["Nach Irak und Afghanistan keine Bodentruppen","Widerspruch: stützt die Kurden, ist mit der Türkei in der NATO"],
+  a:["kurden","opp","eu","tuerkei"], f:["is","assad","iran","russland"],
+  now:"Führte die Anti-IS-Koalition; Sanktionen nach 2024 gelockert."},
+ {id:"russland", n:"Russland", s:"Vetomacht", camp:"Regime-Lager",
+  ziele:["Militärbasen behalten (Tartus, Hmeimim)","Als Grossmacht gelten"],
+  probleme:["Assad weg = Einfluss verloren","Ukraine-Krieg bindet Geld und Soldaten"],
+  a:["assad","iran"], f:["is","tuerkei","opp","usa","kurden"],
+  now:"Militärisch raus, Stützpunkte stehen noch. Blockierte jahrelang den UN-Sicherheitsrat."},
+ {id:"iran", n:"Iran / Hisbollah", s:"schiitische Achse", camp:"Regime-Lager",
+  ziele:["Antiamerikanisch, antizionistisch, schiitisch ausgerichtet","Einfluss bis ans Mittelmeer"],
+  probleme:["Sanktionen und Krieg","Hisbollah durch den Krieg mit Israel geschwächt"],
+  a:["assad","russland"], f:["is","usa","opp","hts"],
+  now:"Hisbollah mit Parlamentssitzen und eigener Miliz im Libanon; Iran im Konflikt mit Israel und den USA."},
+ {id:"hts", n:"HTS", s:"Hayat Tahrir al-Sham", camp:"Islamistisch · heute an der Macht",
+  ziele:["Sturz Assads","Islamisch geprägte Ordnung, gemässigter auftretend als der IS"],
+  probleme:["Dschihadistische Herkunft belastet die Anerkennung","Muss Minderheiten einbinden und einen zerstörten Staat aufbauen"],
+  a:["tuerkei"], f:["assad","russland","iran","is"],
+  now:"Führte die Offensive 2024 an; regiert seither mit Übergangsregierung unter Ahmed al-Scharaa."},
+ {id:"tuerkei", n:"Türkei", s:"NATO-Mitglied", camp:"Regionalmacht",
+  ziele:["Kurdischen Staat verhindern, Grenze sichern","Geflüchtete zurückführen, Einfluss behalten"],
+  probleme:["Konflikt mit PKK, YPG und SDF","Spannungen mit den USA, Millionen Geflüchtete im Land"],
+  a:["opp","hts","usa"], f:["kurden","is","assad","russland"],
+  now:"Eng mit der neuen Regierung verbunden; 2019 in Nordsyrien einmarschiert."},
+ {id:"eu", n:"Europäische Staaten", s:"EU", camp:"Westliche Mächte",
+  ziele:["IS besiegen","Stabilität und Zukunft für die syrische Bevölkerung"],
+  probleme:["Steigende Flüchtlingszahlen ab 2015, Uneinigkeit in der Asylpolitik","Scheiterten am Widerstand Russlands"],
+  a:["usa","kurden"], f:["is","assad"],
+  now:"Unterstützen Kurden und Türkei je nach Situation; seit 2024 Rückkehr vieler Geflüchteter."}
+];
+(function(){
+  var grid = $("#actorGrid"), panel = $("#actorPanel"), cur = 0;
+  function render(i){
+    cur = i;
+    var a = ACTORS[i];
+    Array.prototype.forEach.call(grid.children, function(b,j){
+      b.className = "actorbtn";
+      if(j===i) b.classList.add("on");
+      else if(a.a.indexOf(ACTORS[j].id)>=0) b.classList.add("ally");
+      else if(a.f.indexOf(ACTORS[j].id)>=0) b.classList.add("foe");
+    });
+    var allies = a.a.length ? a.a.map(function(id){var o=ACTORS.filter(function(x){return x.id===id;})[0];return "<span class='chip a'>"+(o?o.n:id)+"</span>";}).join("") : "<span class='chip'>keine staatlichen Verbündeten</span>";
+    var foes = a.f.map(function(id){var o=ACTORS.filter(function(x){return x.id===id;})[0];return "<span class='chip f'>"+(o?o.n:id)+"</span>";}).join("");
+    panel.innerHTML =
+      "<h4>"+a.n+"</h4><div class='camp'>"+a.camp+"</div>"+
+      "<div class='grid g2'>"+
+        "<div><span class='klabel'>Ziele und Interessen</span><ul style='margin:0;padding-left:17px;font-size:14.5px;color:var(--ink-soft);display:flex;flex-direction:column;gap:4px'>"+a.ziele.map(function(z){return "<li>"+z+"</li>";}).join("")+"</ul></div>"+
+        "<div><span class='klabel'>Probleme</span><ul style='margin:0;padding-left:17px;font-size:14.5px;color:var(--ink-soft);display:flex;flex-direction:column;gap:4px'>"+a.probleme.map(function(z){return "<li>"+z+"</li>";}).join("")+"</ul></div>"+
+      "</div>"+
+      "<div style='margin-top:14px'><span class='klabel'>Verbündete</span><div class='relrow'>"+allies+"</div></div>"+
+      "<div style='margin-top:10px'><span class='klabel'>Gegner</span><div class='relrow'>"+foes+"</div></div>"+
+      "<div style='margin-top:14px'><span class='klabel'>Momentane Situation</span><p style='font-size:14.5px;color:var(--ink-soft)'>"+a.now+"</p></div>";
+  }
+  ACTORS.forEach(function(a,i){
+    var b = el("button","actorbtn", a.n + "<small>" + a.s + "</small>");
+    b.type="button";
+    b.addEventListener("click", function(){ render(i); });
+    grid.appendChild(b);
+  });
+  render(0);
+})();
+
+/* ---------------- Lückentext ---------------- */
+var CLOZE = [
+  {t:"Am 17. Dezember 2010 verbrannte sich der Gemüsehändler "},
+  {g:["Mohamed Bouazizi","Ahmed al-Scharaa","Hafiz al-Assad"], k:0},
+  {t:" in Tunesien selbst. Diese Tat war jedoch nur der "},
+  {g:["Auslöser","Grund","Zufall"], k:0},
+  {t:": Die eigentlichen Ursachen lagen in Korruption und Willkür, in der hohen "},
+  {g:["Jugendarbeitslosigkeit","Kindersterblichkeit","Analphabetenrate"], k:0},
+  {t:" und in den seit 2008 stark gestiegenen "},
+  {g:["Nahrungsmittelpreisen","Ölpreisen","Mietpreisen"], k:0},
+  {t:". Weil dank "},
+  {g:["Internet und Handy","Zeitungen","Flugblättern"], k:0},
+  {t:" jede Person Machtmissbrauch sofort dokumentieren und verbreiten konnte, breiteten sich die Proteste in wenigen Wochen über die ganze arabische Welt aus. In Syrien antwortete das Regime mit "},
+  {g:["Repression","Zugeständnissen","Neuwahlen"], k:0},
+  {t:" — daraufhin bewaffnete sich die Opposition, und Teile der Sicherheitskräfte "},
+  {g:["wechselten die Seite","flohen ins Ausland","legten die Waffen nieder"], k:0},
+  {t:". Aus dem Protest wurde ein Bürgerkrieg, in dem sich die Menschen wieder stark entlang "},
+  {g:["ethnischer, regionaler und religiöser","wirtschaftlicher und sprachlicher","sportlicher und kultureller"], k:0},
+  {t:" Zugehörigkeiten organisierten."}
+];
+(function(){
+  var box = $("#cloze"), sels = [];
+  CLOZE.forEach(function(part){
+    if(part.t){ box.appendChild(document.createTextNode(part.t)); return; }
+    var s = el("select");
+    s.appendChild(new Option("– wählen –",""));
+    var opts = part.g.slice();
+    // stabile, aber gemischte Reihenfolge
+    var order = opts.map(function(o,i){return i;}).sort(function(){return Math.random()-0.5;});
+    order.forEach(function(i){ s.appendChild(new Option(opts[i], String(i))); });
+    s.dataset.k = String(part.k);
+    sels.push(s); box.appendChild(s);
+  });
+  $("#clozeCheck").addEventListener("click", function(){
+    var ok = 0;
+    sels.forEach(function(s){
+      s.classList.remove("ok","no");
+      if(s.value === s.dataset.k){ s.classList.add("ok"); ok++; }
+      else if(s.value !== "") s.classList.add("no");
+    });
+    $("#clozeScore").textContent = ok + " von " + sels.length + " richtig";
+  });
+  $("#clozeReset").addEventListener("click", function(){
+    sels.forEach(function(s){ s.value=""; s.classList.remove("ok","no"); });
+    $("#clozeScore").textContent = "";
+  });
+})();
+
+/* ---------------- Sortier-Übungen ---------------- */
+function buildSorter(cfg){
+  var pool = $(cfg.pool), bins = $(cfg.bins), picked = null;
+  var placed = {};
+  cfg.bins_def.forEach(function(b){ placed[b.id] = []; });
+
+  function draw(){
+    pool.innerHTML = "";
+    cfg.items.forEach(function(it){
+      var used = Object.keys(placed).some(function(k){ return placed[k].indexOf(it.id)>=0; });
+      if(used) return;
+      var t = el("button","token", it.n); t.type="button";
+      if(picked===it.id) t.classList.add("picked");
+      t.addEventListener("click", function(){ picked = (picked===it.id? null : it.id); draw(); });
+      pool.appendChild(t);
+    });
+    if(!pool.children.length) pool.appendChild(el("span","counter","Alle zugeordnet — jetzt prüfen."));
+    bins.innerHTML = "";
+    cfg.bins_def.forEach(function(b){
+      var d = el("div","bin");
+      if(picked) d.classList.add("active");
+      d.innerHTML = "<h5>"+b.n+"</h5>" + (b.d?"<p>"+b.d+"</p>":"");
+      var drop = el("div","drop");
+      placed[b.id].forEach(function(id){
+        var it = cfg.items.filter(function(x){return x.id===id;})[0];
+        var t = el("button","token", it.n); t.type="button";
+        if(it.checked==="ok") t.classList.add("ok");
+        if(it.checked==="no") t.classList.add("no");
+        t.addEventListener("click", function(ev){
+          ev.stopPropagation();
+          placed[b.id] = placed[b.id].filter(function(x){return x!==id;});
+          it.checked = null; draw();
+        });
+        drop.appendChild(t);
+      });
+      d.appendChild(drop);
+      d.addEventListener("click", function(){
+        if(!picked) return;
+        Object.keys(placed).forEach(function(k){ placed[k] = placed[k].filter(function(x){return x!==picked;}); });
+        placed[b.id].push(picked); picked = null; draw();
+      });
+      bins.appendChild(d);
+    });
+  }
+  $(cfg.check).addEventListener("click", function(){
+    var right=0, total=cfg.items.length;
+    cfg.items.forEach(function(it){ it.checked = null; });
+    Object.keys(placed).forEach(function(binId){
+      placed[binId].forEach(function(id){
+        var it = cfg.items.filter(function(x){return x.id===id;})[0];
+        if(it.bin === binId){ it.checked="ok"; right++; } else { it.checked="no"; }
+      });
+    });
+    draw();
+    $(cfg.score).textContent = right + " von " + total + " richtig zugeordnet";
+  });
+  $(cfg.reset).addEventListener("click", function(){
+    Object.keys(placed).forEach(function(k){ placed[k]=[]; });
+    cfg.items.forEach(function(it){ it.checked=null; });
+    picked=null; $(cfg.score).textContent=""; draw();
+  });
+  draw();
+}
+
+buildSorter({
+  pool:"#sortPool", bins:"#sortBins", check:"#sortCheck", reset:"#sortReset", score:"#sortScore",
+  bins_def:[
+    {id:"sturz", n:"A · Sturz & neue Ordnung", d:"Machthaber floh oder wurde gestürzt"},
+    {id:"zug", n:"B · Zugeständnisse", d:"Regime kam den Forderungen entgegen und blieb an der Macht"},
+    {id:"rep", n:"C · Repression erfolgreich", d:"Proteste gewaltsam unterdrückt, kein Bürgerkrieg"},
+    {id:"krieg", n:"D · Bürgerkrieg", d:"Eskalation zum bewaffneten Konflikt"}
+  ],
+  items:[
+    {id:"tun", n:"Tunesien", bin:"sturz"},
+    {id:"aeg", n:"Ägypten", bin:"sturz"},
+    {id:"jor", n:"Jordanien", bin:"zug"},
+    {id:"mar", n:"Marokko", bin:"zug"},
+    {id:"oma", n:"Oman", bin:"zug"},
+    {id:"alg", n:"Algerien", bin:"zug"},
+    {id:"bah", n:"Bahrain", bin:"rep"},
+    {id:"sau", n:"Saudi-Arabien", bin:"rep"},
+    {id:"lib", n:"Libyen", bin:"krieg"},
+    {id:"syr", n:"Syrien", bin:"krieg"},
+    {id:"jem", n:"Jemen", bin:"krieg"}
+  ]
+});
+
+buildSorter({
+  pool:"#phasePool", bins:"#phaseBins", check:"#phaseCheck", reset:"#phaseReset", score:"#phaseScore",
+  bins_def:[
+    {id:"y2011", n:"2011", d:""},{id:"y2012", n:"2012", d:""},{id:"y2013", n:"2013", d:""},
+    {id:"y2014", n:"2014", d:""},{id:"y2015", n:"2015", d:""},{id:"y2016", n:"2016", d:""},{id:"y2024", n:"2024", d:""}
+  ],
+  items:[
+    {id:"p1", n:"Der Aufstand", bin:"y2011"},
+    {id:"p2", n:"Der Bürgerkrieg", bin:"y2012"},
+    {id:"p3", n:"Das Giftgas", bin:"y2013"},
+    {id:"p4", n:"Der IS", bin:"y2014"},
+    {id:"p5", n:"Die Flucht", bin:"y2015"},
+    {id:"p6", n:"Die Zerstörung", bin:"y2016"},
+    {id:"p7", n:"Sturz Assads", bin:"y2024"}
+  ]
+});
+
+/* ---------------- Argumente-Waage ---------------- */
+var ARG_PRO = [
+ "Syrien, Libyen und Jemen: aus Protesten wurden Bürgerkriege mit hunderttausenden Toten.",
+ "Millionen Flüchtlinge und Binnenflüchtlinge; ganze Länder zerstört.",
+ "Das Machtvakuum ermöglichte dem IS ab 2014 sein «Kalifat».",
+ "Gross- und Regionalmächte führten Stellvertreterkriege in der Region.",
+ "Ägypten: 2013 Militärputsch, Ende der Demokratie, Folter und willkürliche Haft.",
+ "Bahrain und Saudi-Arabien: Repression nahm nach den Protesten eher zu."
+];
+var ARG_CON = [
+ "Tunesien erhielt eine demokratische Verfassung und freie Wahlen.",
+ "Langjährige Diktatoren (Ben Ali 1987, Mubarak 1981) wurden gestürzt — vorher undenkbar.",
+ "Jordanien, Marokko, Oman und Algerien mussten Zugeständnisse machen.",
+ "Handy und Internet machten die Herrschaft der Autokraten dauerhaft fragil.",
+ "Würde und Gerechtigkeit wurden öffentlich sagbar — die Angst war gebrochen.",
+ "Korruption, Willkür und Arbeitslosigkeit gab es schon vorher — Instabilität ist nicht erst deren Folge."
+];
+(function(){
+  var sel = {pro:0, con:0};
+  function mk(list, host, key){
+    list.forEach(function(t){
+      var b = el("button","argbtn", t); b.type="button";
+      b.addEventListener("click", function(){
+        b.classList.toggle("sel");
+        sel[key] += b.classList.contains("sel") ? 1 : -1;
+        var tot = sel.pro + sel.con;
+        var p = tot ? sel.pro/tot*100 : 50;
+        $("#beamPro").style.width = p + "%";
+        $("#beamCon").style.width = (100-p) + "%";
+        $("#beamTxt").textContent = sel.pro + " Pro · " + sel.con + " Kontra ausgewählt" +
+          (tot>=4 ? " — genug Material für einen vollständigen Text." : "");
+      });
+      $(host).appendChild(b);
+    });
+  }
+  mk(ARG_PRO, "#argPro", "pro");
+  mk(ARG_CON, "#argCon", "con");
+})();
+
+/* ---------------- Glossar & Karteikarten ---------------- */
+var GLOSS = [
+ {t:"Islam", d:"Monotheistische Weltreligion; wörtlich «sich (Gott) unterwerfen». Fünf Säulen: Glaubensbekenntnis, Gebet, Almosen, Fasten, Pilgerfahrt."},
+ {t:"Sunniten", d:"Hauptrichtung im Islam; Richtschnur sind Koran, Sunna und Hadith. Bei ihnen bildete sich das Kalifat (Abu Bakr ab 632). In Syrien die Mehrheit."},
+ {t:"Schiiten", d:"Ab 656 «Partei Alis»; erkennen nur Nachkommen Mohammeds und Alis als Imam an. Iran und Hisbollah sind schiitisch."},
+ {t:"Alawiten", d:"Schiitisch geprägte Minderheit (~10 %) in Syrien — Machtbasis des Assad-Clans: eine Minderheit herrschte über die sunnitische Mehrheit."},
+ {t:"Islamismus", d:"Islamisten wollen den Staat nach ihrer Auffassung vom Islam organisieren, säkulare Verhältnisse überwinden, oft die Scharia einführen. Sie lehnen Pluralismus und Menschenrechte ab."},
+ {t:"Dschihad", d:"«Anstrengung auf dem Wege Gottes» — mal moralisches Sich-Abmühen, mal gewaltsamer Kampf. Defensiv (Verteidigung muslimischen Landes) oder aggressiv (alle sollen Muslime werden)."},
+ {t:"Dschihadismus", d:"Islamisten, die Gewalt einsetzen, um ihre Ideologie durchzusetzen. Bekannt: al-Qaida, Islamischer Staat."},
+ {t:"Arabischer Frühling", d:"«Arabellion»: Protestwelle ab Dez. 2010 gegen die Regierungen der arabischen Welt. Slogans: Würde, Gerechtigkeit, Freiheit — und «Irhal!» (Hau ab!)."},
+ {t:"Autokratie", d:"Herrschaft einer Person oder kleinen Gruppe ohne wirksame Kontrolle durch Wahlen, Parlament oder Gerichte."},
+ {t:"Repression", d:"Unterdrückung von Widerstand mit staatlicher Gewalt: Polizeigewalt, willkürliche Haft, Folter, Zensur."},
+ {t:"Mandatsgebiet", d:"Nach dem Ersten Weltkrieg einer europäischen Macht zur Verwaltung übertragenes Gebiet — faktisch koloniale Herrschaft. Syrien war französisch."},
+ {t:"Sykes-Picot", d:"Geheimabkommen 1916: Grossbritannien und Frankreich teilen den Nahen Osten in Einflusszonen. «Teile und herrsche»; die Grenzen wirken bis heute nach."},
+ {t:"Baath-Partei", d:"Arabisch-sozialistische Partei, kam 1963 durch einen Putsch an die Macht und trug den Einparteienstaat der Assads."},
+ {t:"Kalifat", d:"Islamisches Herrschaftsgebiet unter einem Kalifen. Der IS rief 2014 ein «Kalifat» aus."},
+ {t:"IS", d:"Islamischer Staat: dschihadistische Organisation, eroberte ab 2014 Gebiete in Syrien und im Irak, finanziert über Öl. Bis 2019 territorial besiegt."},
+ {t:"HTS", d:"Hayat Tahrir al-Sham: islamistische Miliz aus Idlib. Stürzte Ende 2024 Assad; ihr Anführer Ahmed al-Scharaa (früher al-Dscholani) führt die Übergangsregierung."},
+ {t:"SDF / YPG / PKK", d:"SDF: kurdisch geführtes Bündnis im Nordosten Syriens. YPG: kurdische Volksschutzeinheiten. PKK: kurdische Arbeiterpartei in der Türkei — Grund für das türkische Vorgehen."},
+ {t:"Stellvertreterkrieg", d:"Grossmächte kämpfen nicht selbst, sondern unterstützen lokale Parteien. Jemen: Iran hinter den Huthi, Saudi-Arabien hinter deren Gegnern."},
+ {t:"Vetomacht", d:"Die fünf ständigen Mitglieder des UN-Sicherheitsrats können jeden Beschluss blockieren — deshalb scheiterte die UNO in Syrien."},
+ {t:"Flüchtling", d:"Musste das Herkunftsland verlassen aus Furcht vor Verfolgung oder vor Krieg und Gewalt (Genfer Konvention Art. 1a)."},
+ {t:"Asylbewerber:in", d:"Sucht in einem anderen Staat Schutz; der Antrag wird noch geprüft — eine Aussage über das Verfahren, nicht über die Fluchtgründe."},
+ {t:"Migrant:in", d:"Verlegt den Lebenssitz längerfristig in einen anderen Staat. Oberbegriff: jeder Flüchtling ist ein Migrant, aber nicht umgekehrt."},
+ {t:"Binnenflüchtling", d:"Flucht innerhalb des eigenen Landes; kein Grenzübertritt, deshalb kein Asylrecht. In Syrien Millionen."},
+ {t:"Genfer Flüchtlingskonvention", d:"1951/54: definiert den Flüchtlingsbegriff (Verfolgung wegen Rasse, Religion, Nationalität, sozialer Gruppe, politischer Überzeugung) und verbietet die Rückschiebung (Non-Refoulement)."},
+ {t:"Non-Refoulement", d:"Verbot, Menschen dorthin zurückzuschicken, wo ihnen Verfolgung, Folter oder Tod drohen."},
+ {t:"Dublin / EURODAC", d:"Dublin regelt die Zuständigkeit fürs Asylverfahren — meist der Ersteinreisestaat; EURODAC speichert dazu ab 2005 Fingerabdrücke. Belastet den Süden, kollabierte 2015."},
+ {t:"GEAS", d:"Gemeinsames Europäisches Asylsystem (ab 2003): sollte die Standards vereinheitlichen, führte faktisch zum Wettlauf nach unten."},
+ {t:"Schengen / Frontex", d:"Schengen: keine Binnengrenzkontrollen, gemeinsame Aussengrenze. Frontex: europäische Grenz- und Küstenwache, sortiert in Hotspots die Ankommenden."},
+ {t:"Heterogener Raum", d:"Ein in sich uneinheitlicher Raum: das Mittelmeer als Ferienparadies und Kriegsschauplatz, Brücke und Grenze zugleich."}
+];
+(function(){
+  var list = $("#glossList"), search = $("#glossSearch");
+  function draw(q){
+    list.innerHTML = "";
+    var n = 0;
+    GLOSS.forEach(function(g){
+      if(q && (g.t+" "+g.d).toLowerCase().indexOf(q.toLowerCase())<0) return;
+      n++;
+      list.appendChild(el("div","gloss","<b>"+g.t+"</b><p>"+g.d+"</p>"));
+    });
+    if(!n) list.appendChild(el("div","gloss","<b>Nichts gefunden</b><p>Versuch es mit einem anderen Stichwort.</p>"));
+  }
+  search.addEventListener("input", function(){ draw(search.value.trim()); });
+  draw("");
+})();
+
+(function(){
+  var order = GLOSS.map(function(_,i){return i;}), pos = 0, flipped = false;
+  var card = $("#flashcard");
+  function draw(){
+    var g = GLOSS[order[pos]];
+    $("#fcQ").textContent = g.t;
+    $("#fcA").textContent = g.d;
+    $("#fcA").style.display = flipped ? "block" : "none";
+    $("#fcHint").textContent = flipped ? "Antwort · weiter mit «Gewusst» oder «Nochmal»" : "Frage · zum Umdrehen klicken";
+    $("#fcCount").textContent = (pos+1) + " von " + order.length;
+  }
+  function next(){ pos = (pos+1) % order.length; flipped = false; draw(); }
+  card.addEventListener("click", function(){ flipped = !flipped; draw(); });
+  $("#fcKnew").addEventListener("click", next);
+  $("#fcAgain").addEventListener("click", function(){
+    var cur = order.splice(pos,1)[0];
+    var at = Math.min(order.length, pos + 4);
+    order.splice(at, 0, cur);
+    flipped = false; if(pos>=order.length) pos=0; draw();
+  });
+  $("#fcShuffle").addEventListener("click", function(){
+    order.sort(function(){return Math.random()-0.5;}); pos=0; flipped=false; draw();
+  });
+  draw();
+})();
+
+/* ---------------- Quiz ---------------- */
+var QUIZ = [
+ {q:"Was bedeutet «heterogener Raum» beim Mittelmeer?",
+  o:["Ferienparadies und Kriegsschauplatz, Wohlstand und Armut liegen direkt nebeneinander.","Es besteht aus Teilmeeren mit unterschiedlichem Salzgehalt.","Es gehört keinem Staat.","Die Anrainer sprechen verschiedene Sprachen."], k:0,
+  w:"Heterogen = uneinheitlich: gemeint sind die gegensätzlichen Wirklichkeiten an einem Meer."},
+ {q:"Was war der Auslöser des Arabischen Frühlings?",
+  o:["Die Selbstverbrennung Mohamed Bouazizis am 17.12.2010 in Tunesien.","Der Sturz Mubaraks.","Der Giftgasangriff in Ost-Ghouta.","Die Gründung der FSA."], k:0,
+  w:"Auslöser ≠ Ursache: Die Ursachen (Korruption, Arbeitslosigkeit, Preise) bestanden längst."},
+ {q:"Welche Rolle spielten Internet und Handy 2011?",
+  o:["Machtmissbrauch wurde sofort dokumentierbar — neue Massendynamiken.","Sie wurden abgeschaltet und spielten kaum eine Rolle.","Sie dienten den Sicherheitskräften.","Sie verbreiteten vor allem Regierungspropaganda."], k:0,
+  w:"Genau deshalb breiteten sich die Proteste so schnell aus — die Herrschaft der Diktatoren wurde fragil."},
+ {q:"Welches Land gilt als demokratischer Erfolg des Arabischen Frühlings?",
+  o:["Tunesien","Ägypten","Libyen","Bahrain"], k:0,
+  w:"Ben Ali floh, es folgten neue Verfassung und Wahlen; die Siegerpartei war zur Zusammenarbeit bereit."},
+ {q:"Wie reagierten Jordanien, Marokko und Oman?",
+  o:["Mit Zugeständnissen — so blieben sie an der Macht.","Mit Rücktritt.","Mit Bürgerkrieg.","Mit ausländischen Truppen."], k:0,
+  w:"Drei Muster: Sturz, Zugeständnisse, Repression."},
+ {q:"Warum wurde aus dem syrischen Protest ein Bürgerkrieg?",
+  o:["Die Gewalt gegen Demonstrierende führte zur Bewaffnung der Opposition und zu Überläufern.","Die Opposition war von Anfang an bewaffnet.","Die NATO marschierte ein.","Assad trat zurück."], k:0,
+  w:"Gleiches Muster in Syrien, Libyen und im Jemen: Repression → Bewaffnung → Bürgerkrieg."},
+ {q:"Was ermöglichte dem IS ab 2014 den Aufstieg?",
+  o:["Machtvakuen: Bürgerkrieg in Syrien, fehlende Staatsmacht im Irak seit 2003.","Offene Unterstützung durch Saudi-Arabien.","Rückendeckung Russlands in der UNO.","Zustimmung der Kurden."], k:0,
+  w:"Dazu Öleinnahmen, Sogwirkung und Ex-Saddam-Kader im Westirak."},
+ {q:"Wer unterstützte Assad im Bürgerkrieg?",
+  o:["Russland, Iran und die Hisbollah.","Türkei und Saudi-Arabien.","USA und Frankreich.","Katar und Israel."], k:0,
+  w:"Russland mit Waffen und ab 2015 der Luftwaffe, Iran mit Geld, die Hisbollah mit Kämpfern."},
+ {q:"Welcher Staat ist nach Dublin für das Asylverfahren zuständig?",
+  o:["Der Ersteinreisestaat.","Der Staat, in dem Verwandte leben.","Der gewählte Staat.","Der wirtschaftlich stärkste EU-Staat."], k:0,
+  w:"Deshalb tragen Griechenland und Italien die Hauptlast — und deshalb kollabierte das System 2015."},
+ {q:"Wohin floh die Mehrheit der Syrer:innen?",
+  o:["In die Nachbarländer Libanon, Jordanien, Irak, Türkei und Ägypten.","Nach Deutschland und Schweden.","In die Golfstaaten.","Nach Nordafrika."], k:0,
+  w:"Dazu Millionen Binnenflüchtlinge. Europas «Krise» war nur ein Ausschnitt."}
+];
+function buildQuiz(host, data, onScore){
+  var answered = {}, box = $(host);
+  box.innerHTML = "";
+  data.forEach(function(item, i){
+    var q = el("div","qcard");
+    q.appendChild(el("div","qtext","<i>"+(i+1)+"</i><span>"+item.q+"</span>"));
+    var opts = el("div","opts");
+    item.o.forEach(function(o, j){
+      var b = el("button","opt", o); b.type="button";
+      b.addEventListener("click", function(){
+        if(answered[i]!==undefined) return;
+        answered[i] = j;
+        Array.prototype.forEach.call(opts.children, function(c,k){
+          if(k===item.k) c.classList.add("right");
+          else if(k===j) c.classList.add("wrong");
+          else c.classList.add("muted");
+        });
+        q.querySelector(".why").classList.add("show");
+        if(onScore) onScore(answered, data);
+      });
+      opts.appendChild(b);
+    });
+    q.appendChild(opts);
+    q.appendChild(el("div","why","<b>"+(item.o[item.k])+"</b> — "+item.w));
+    box.appendChild(q);
+  });
+  return function(){ return answered; };
+}
+(function(){
+  function score(answered, data){
+    var right = 0;
+    Object.keys(answered).forEach(function(i){ if(answered[i]===data[i].k) right++; });
+    $("#quizScore").textContent = right + " von " + data.length + " richtig (" + Object.keys(answered).length + " beantwortet)";
+  }
+  buildQuiz("#quizBox", QUIZ, score);
+  $("#quizReset").addEventListener("click", function(){
+    buildQuiz("#quizBox", QUIZ, score);
+    $("#quizScore").textContent = "0 von " + QUIZ.length + " richtig";
+  });
+  $("#quizScore").textContent = "0 von " + QUIZ.length + " richtig";
+})();
+
+/* ---------------- Prüfung ---------------- */
+var EXAM_MC = [
+ {q:"Das heutige Syrien gehörte ab 1516/17 zu …",
+  o:["dem Osmanischen Reich","dem Persischen Reich","Frankreich","dem Kalifat von Bagdad"], k:0,
+  w:"Rund 400 Jahre osmanisch; 1875 Staatsbankrott, 1908 Jungtürkische Revolution."},
+ {q:"Folge der Jungtürkischen Revolution 1908 für die Araber:innen?",
+  o:["Zentralisierung als Unterdrückung erlebt → arabisches Nationalbewusstsein","Volle Unabhängigkeit","Umsiedlung nach Europa","Eigene Provinzparlamente"], k:0,
+  w:"Daraus erwuchs der arabische Aufstand im Ersten Weltkrieg."},
+ {q:"Sykes-Picot 1916 bedeutete für Syrien …",
+  o:["französisches Einflussgebiet — keine Unabhängigkeit","sofortige Unabhängigkeit","Aufteilung zwischen Türkei und Irak","ein US-Mandat"], k:0,
+  w:"«Teile und herrsche»; ab 1920 französisches Mandatsgebiet mit Revolten."},
+ {q:"Welche drei Länder rutschten nach 2011 in einen Bürgerkrieg?",
+  o:["Syrien, Libyen, Jemen","Tunesien, Ägypten, Marokko","Bahrain, Saudi-Arabien, Oman","Algerien, Jordanien, Libanon"], k:0,
+  w:"Überall dort, wo die Machthaber auf Repression statt Zugeständnisse setzten."},
+ {q:"Was markiert 2013 im Syrienkrieg?",
+  o:["Den Giftgasangriff (Sarin) in Ost-Ghouta","Die Ausrufung des Kalifats","Den Fall Aleppos","Den russischen Kriegseintritt"], k:0,
+  w:"Trotz «roter Linie» kein westlicher Militärschlag; Russland vermittelte ein Chemiewaffenabkommen."},
+ {q:"Wer kämpfte am Boden hauptsächlich gegen den IS?",
+  o:["Kurdische Milizen und irakische Streitkräfte","Russische Bodentruppen","Die FSA allein","NATO-Bodentruppen"], k:0,
+  w:"Der Westen beschränkte sich weitgehend auf Luftschläge; bis 2019 war der IS territorial besiegt."},
+ {q:"Welche Aussage zur Genfer Flüchtlingskonvention stimmt?",
+  o:["Sie schützt vor Verfolgung wegen Rasse, Religion, Nationalität, sozialer Gruppe oder politischer Überzeugung.","Jeder Staat muss alle Asylsuchenden aufnehmen.","Sie gilt auch für Binnenflüchtlinge.","Sie entstand nach 2015."], k:0,
+  w:"Art. 1a Nr. 2, 1951/54. Binnenflüchtlinge fallen nicht darunter — kein Grenzübertritt."},
+ {q:"Warum kollabierte das Dublin-System 2015?",
+  o:["Südstaaten überfordert, Abschiebungen dorthin untersagt, keine Fingerabdrücke mehr","Die EU schaffte es offiziell ab","Alle einigten sich auf Quoten","Die Türkei trat der EU bei"], k:0,
+  w:"Dazu der «Sommer der Migration» über die Balkanroute und neue Grenzkontrollen ab September 2015."}
+];
+var EXAM_TERMS = [
+ {t:"Islamismus", m:"Islamisten wollen den Staat nach ihrer Auffassung vom Islam organisieren, säkulare Verhältnisse überwinden und oft die Scharia einführen; Pluralismus und Menschenrechte lehnen sie ab. Bezug: In Syrien, Libyen und im Jemen spielten islamistische Formationen eine wesentliche Rolle; die HTS regiert heute in Syrien."},
+ {t:"Stellvertreterkrieg", m:"Grossmächte kämpfen nicht direkt, sondern unterstützen lokale Konfliktparteien mit Geld, Waffen und Know-how. Bezug: Jemen — Iran hinter den Huthi, Saudi-Arabien hinter deren Gegnern; Syrien — Russland und Iran für Assad, Türkei und Golfstaaten für die Rebellen."},
+ {t:"Binnenflüchtling", m:"Flucht innerhalb des eigenen Landes, ohne Grenzübertritt — deshalb greift das Asylrecht nicht. Bezug: In Syrien mussten neben den Flüchtlingen im Ausland Millionen Menschen innerhalb des Landes ihre Heimat verlassen."},
+ {t:"Heterogener Raum", m:"Ein in sich sehr uneinheitlicher Raum. Bezug: Das Mittelmeer ist Ferien- und Wirtschaftsraum und zugleich Kriegs- und Fluchtraum, Brücke zwischen drei Kontinenten und tödliche Aussengrenze."}
+];
+var EXAM_ORDER = [
+ {e:"Sykes-Picot-Abkommen: Aufteilung des Nahen Ostens", y:"1916"},
+ {e:"Syrien wird unabhängige Republik", y:"1946"},
+ {e:"Machtübernahme der Baath-Partei durch Staatsstreich", y:"1963"},
+ {e:"Selbstverbrennung von Mohamed Bouazizi in Tunesien", y:"2010"},
+ {e:"Giftgasangriff in Ost-Ghouta bei Damaskus", y:"2013"},
+ {e:"Sturz Assads durch die HTS-geführte Koalition", y:"2024"}
+];
+var examState = {mc:{}, order:0, self:{}};
+
+(function(){
+  /* MC */
+  var box = $("#examMC");
+  EXAM_MC.forEach(function(item,i){
+    var q = el("div","qcard");
+    q.appendChild(el("div","qtext","<i>"+(i+1)+"</i><span>"+item.q+"</span>"));
+    var opts = el("div","opts");
+    item.o.forEach(function(o,j){
+      var b = el("button","opt", o); b.type="button";
+      b.addEventListener("click", function(){
+        if(examState.mc[i]!==undefined) return;
+        examState.mc[i]=j;
+        Array.prototype.forEach.call(opts.children, function(c,k){
+          if(k===item.k) c.classList.add("right");
+          else if(k===j) c.classList.add("wrong");
+          else c.classList.add("muted");
+        });
+        q.querySelector(".why").classList.add("show");
+      });
+      opts.appendChild(b);
+    });
+    q.appendChild(opts);
+    q.appendChild(el("div","why", item.w));
+    box.appendChild(q);
+  });
+
+  /* Begriffe */
+  var tbox = $("#examTerms");
+  EXAM_TERMS.forEach(function(t,i){
+    var d = el("div","", "");
+    d.style.marginBottom = "16px";
+    d.innerHTML = "<div style='font-size:15px;margin-bottom:6px'><b>"+(i+1)+".</b> Erklären Sie den Begriff <b>«"+t.t+"»</b> und stellen Sie einen Bezug zum Thema her.</div>";
+    var ta = el("textarea"); ta.id = "term"+i; ta.placeholder="Definition + Bezug …";
+    d.appendChild(ta);
+    var det = el("details","rev","<summary>Erwartungshorizont</summary><div class='body'><p>"+t.m+"</p></div>");
+    d.appendChild(det);
+    var ss = el("div","selfscore","Selbsteinschätzung:");
+    ss.dataset.max="2"; ss.dataset.id="term"+i;
+    d.appendChild(ss);
+    tbox.appendChild(d);
+  });
+
+  /* Reihenfolge */
+  var obox = $("#examOrder");
+  var shuffled = EXAM_ORDER.slice().sort(function(){return Math.random()-0.5;});
+  shuffled.forEach(function(o,i){
+    var row = el("div","");
+    row.style.cssText = "display:flex;gap:10px;align-items:center;padding:7px 0;border-bottom:1px solid var(--line-soft)";
+    var inp = el("input"); inp.type="text"; inp.maxLength=4; inp.placeholder="Jahr";
+    inp.style.cssText="font:inherit;font-family:var(--fmono);font-size:14px;width:72px;padding:6px 8px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);border-radius:2px";
+    inp.dataset.y = o.y;
+    row.appendChild(inp);
+    row.appendChild(el("span","", o.e));
+    obox.appendChild(row);
+  });
+  $("#orderCheck").addEventListener("click", function(){
+    var right = 0;
+    obox.querySelectorAll("input").forEach(function(inp){
+      if(inp.value.trim() === inp.dataset.y){ inp.style.borderColor="var(--good)"; inp.style.color="var(--good)"; right++; }
+      else { inp.style.borderColor="var(--ember)"; inp.style.color="var(--ember)"; }
+    });
+    examState.order = right;
+    $("#orderScore").textContent = right + " von " + EXAM_ORDER.length + " Jahreszahlen richtig";
+  });
+
+  /* Selbsteinschätzung */
+  function wireSelf(node){
+    var max = parseInt(node.dataset.max,10), id = node.dataset.id;
+    for(var p=0; p<=max; p++){
+      (function(p){
+        var b = el("button","", String(p)); b.type="button";
+        b.addEventListener("click", function(){
+          examState.self[id] = p;
+          Array.prototype.forEach.call(node.querySelectorAll("button"), function(x){ x.classList.remove("on"); });
+          b.classList.add("on");
+        });
+        node.appendChild(b);
+      })(p);
+    }
+    node.appendChild(el("span","counter"," von "+max+" Punkten"));
+  }
+  document.querySelectorAll(".selfscore").forEach(wireSelf);
+
+  /* Wortzähler */
+  var ex5 = $("#ex5");
+  ex5.addEventListener("input", function(){
+    var w = ex5.value.trim() ? ex5.value.trim().split(/\s+/).length : 0;
+    var s = ex5.value.split(/[.!?]+/).filter(function(x){return x.trim().length>3;}).length;
+    $("#ex5count").textContent = w + " Wörter · " + s + " Sätze" + (s>=8 ? " ✓" : " (mind. 8)");
+  });
+
+  /* Uhr */
+  var total = 30*60, left = total, timer = null;
+  function paint(){
+    var m = Math.floor(left/60), s = left%60;
+    var c = $("#clock");
+    c.textContent = (m<10?"0":"")+m + ":" + (s<10?"0":"")+s;
+    c.classList.toggle("warn", left<=300);
+  }
+  $("#startExam").addEventListener("click", function(){
+    if(timer){ clearInterval(timer); timer=null; $("#startExam").textContent="Weiter"; return; }
+    $("#startExam").textContent = "Pause";
+    timer = setInterval(function(){
+      left--; paint();
+      if(left<=0){ clearInterval(timer); timer=null; $("#startExam").textContent="Zeit um"; }
+    }, 1000);
+  });
+  $("#resetExam").addEventListener("click", function(){
+    if(timer) clearInterval(timer);
+    timer=null; left=total; paint(); $("#startExam").textContent="Uhr starten";
+  });
+  paint();
+
+  /* Auswertung */
+  $("#evalExam").addEventListener("click", function(){
+    var mcRight = 0;
+    Object.keys(examState.mc).forEach(function(i){ if(examState.mc[i]===EXAM_MC[i].k) mcRight++; });
+    var selfSum = 0;
+    Object.keys(examState.self).forEach(function(k){ selfSum += examState.self[k]; });
+    var pts = mcRight + examState.order + selfSum;
+    var max = 40;
+    var note = Math.round((5*(pts/max)+1)*10)/10;
+    var box = $("#examResult");
+    var msg = note>=5.5 ? "Sitzt. Geh die Karteikarten noch einmal durch und gut ist."
+            : note>=4.5 ? "Solide. Schau dir die Aufgaben an, bei denen du Punkte verloren hast."
+            : note>=4   ? "Knapp bestanden — die Phasen des Kriegs und die Akteure nochmals durchgehen."
+            : "Noch nicht. Nimm dir LZ 4 bis LZ 6 nochmals vor, dann diese Prüfung neu.";
+    box.innerHTML =
+      "<span class='klabel'>Ergebnis</span>"+
+      "<div style='display:flex;gap:26px;align-items:baseline;flex-wrap:wrap'>"+
+        "<div><div class='big'>"+pts+"<span style='font-size:18px;color:var(--ink-faint)'>/"+max+"</span></div><span class='counter'>Punkte</span></div>"+
+        "<div><div class='big' style='color:var(--sea)'>"+note.toFixed(1)+"</div><span class='counter'>Note (Punkte/Maximum × 5 + 1)</span></div>"+
+      "</div>"+
+      "<div class='gradebar'><i style='width:"+Math.min(100, pts/max*100)+"%'></i></div>"+
+      "<p style='margin-top:14px;font-size:14.5px'>"+msg+"</p>"+
+      "<p class='counter' style='margin-top:10px'>Aufgabe 1: "+mcRight+"/8 · Aufgabe 3: "+examState.order+"/6 · Selbsteinschätzung offene Aufgaben: "+selfSum+"/26</p>";
+    box.classList.add("show");
+    box.scrollIntoView({behavior:"smooth", block:"nearest"});
+  });
+})();
+
+/* ---------------- Scrollspy ---------------- */
+(function(){
+  var links = Array.prototype.slice.call(document.querySelectorAll("#rail a"));
+  var secs = links.map(function(a){ return document.querySelector(a.getAttribute("href")); });
+  function spy(){
+    var y = window.scrollY + 120, best = 0;
+    secs.forEach(function(s,i){ if(s && s.offsetTop <= y) best = i; });
+    links.forEach(function(a,i){ a.classList.toggle("on", i===best); });
+  }
+  window.addEventListener("scroll", spy, {passive:true});
+  spy();
+})();
+})();
+</script>
+
+</body></html>
