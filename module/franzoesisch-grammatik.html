@@ -1,0 +1,671 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style></head><body>
+<title>Grammaire Répétition</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Newsreader:opsz,wght@6..72,500;6..72,700&display=swap">
+<style>
+/* Layout: Schulheft auf Häuschenpapier. Tinte blau, Korrekturen rot. Drei Tabs: Theorie, Üben, Test. */
+:root{
+  --paper:#f6f7fa; --sheet:#ffffff; --grid:#dfe6f3; --ink:#1c2230; --muted:#5d6678;
+  --blue:#2c4aa0; --blue-soft:#e8edfb; --red:#c4302a; --red-soft:#fbe9e7; --green:#25764a; --green-soft:#e4f4ea;
+  --line:#d6dbe6;
+  --f-display:"Newsreader", Georgia, "Times New Roman", serif;
+  --f-body:"Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#10131a; --sheet:#171b24; --grid:#1d2330; --ink:#e5e8ef; --muted:#9aa3b5;
+  --blue:#8ea8ff; --blue-soft:#1e2742; --red:#ff7d72; --red-soft:#3a1d1c; --green:#6fd59c; --green-soft:#16301f;
+  --line:#2a3140; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --paper:#10131a; --sheet:#171b24; --grid:#1d2330; --ink:#e5e8ef; --muted:#9aa3b5;
+  --blue:#8ea8ff; --blue-soft:#1e2742; --red:#ff7d72; --red-soft:#3a1d1c; --green:#6fd59c; --green-soft:#16301f;
+  --line:#2a3140; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:22px 22px;}
+.wrap{max-width:860px;margin:0 auto;padding-inline:16px;padding-block:24px 64px}
+header h1{font-family:var(--f-display);font-weight:700;font-size:clamp(28px,6vw,40px);line-height:1.1;margin:0;text-wrap:balance}
+header p{margin:6px 0 0;color:var(--muted)}
+nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;gap:6px;margin:20px 0;padding:6px;background:var(--sheet);border:1px solid var(--line);border-radius:10px}
+nav.tabs button{flex:1;font:inherit;font-weight:700;padding:10px 8px;border:0;border-radius:7px;background:transparent;color:var(--muted);cursor:pointer}
+nav.tabs button[aria-selected="true"]{background:var(--blue);color:var(--sheet)}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.sheet{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:20px}
+details.ch{background:var(--sheet);border:1px solid var(--line);border-radius:10px;margin-bottom:10px}
+details.ch summary{cursor:pointer;padding:14px 18px;font-family:var(--f-display);font-size:21px;font-weight:700;list-style:none;display:flex;gap:12px;align-items:baseline}
+details.ch summary::-webkit-details-marker{display:none}
+details.ch summary .n{color:var(--red);font-family:var(--f-body);font-size:15px;min-width:24px}
+details.ch summary .fr{color:var(--muted);font-family:var(--f-body);font-size:14px;font-weight:400;margin-left:auto;text-align:right}
+details.ch[open] summary{border-bottom:1px solid var(--line)}
+.body{padding:16px 18px 20px;display:flex;flex-direction:column;gap:12px}
+.body h3{font-size:16px;margin:10px 0 0;color:var(--blue)}
+.body p{margin:0;max-width:68ch}
+.ex{background:var(--blue-soft);border-radius:8px;padding:10px 14px}
+.ex p{margin:2px 0}
+.warn{background:var(--red-soft);border-radius:8px;padding:10px 14px}
+.warn b:first-child{color:var(--red)}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;font-size:15px;min-width:100%}
+th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;vertical-align:top}
+th{background:var(--blue-soft);font-weight:700}
+b.k,.k{color:var(--blue);font-weight:700}
+.r{color:var(--red);font-weight:700}
+ul{margin:0;padding-left:20px}
+li{margin:2px 0}
+.go{align-self:flex-start;font:inherit;font-weight:700;color:var(--blue);background:transparent;border:1px solid var(--blue);border-radius:7px;padding:7px 12px;cursor:pointer}
+/* Übungen */
+.sets{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.setcard{text-align:left;font:inherit;color:var(--ink);background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:14px;cursor:pointer;display:flex;flex-direction:column;gap:4px}
+.setcard:hover{border-color:var(--blue)}
+.setcard .t{font-weight:700}
+.setcard .m{font-size:13px;color:var(--muted)}
+.setcard .best{font-size:13px;font-weight:700;color:var(--green)}
+.exhead{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:6px}
+.exhead h2{font-family:var(--f-display);font-size:24px;margin:0}
+.back{font:inherit;background:none;border:0;color:var(--blue);cursor:pointer;padding:0;font-weight:700}
+.rule{font-size:14px;color:var(--muted);margin:0 0 14px}
+ol.items{list-style:none;padding:0;margin:0;display:flex;flex-direction:column}
+ol.items li{display:grid;grid-template-columns:28px 1fr;gap:8px;padding:12px 0;border-top:1px dashed var(--line)}
+ol.items li .num{color:var(--muted);font-variant-numeric:tabular-nums}
+.q{min-width:0}
+.q input{font:inherit;font-weight:700;color:var(--blue);background:transparent;border:0;border-bottom:2px solid var(--muted);padding:0 4px;width:9em;max-width:100%}
+.q input.wide{width:13em}
+.q input:disabled{color:var(--ink)}
+.opts{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.opt{font:inherit;padding:5px 12px;border:1px solid var(--line);border-radius:999px;background:var(--sheet);color:var(--ink);cursor:pointer}
+.opt[aria-pressed="true"]{border-color:var(--blue);background:var(--blue-soft);color:var(--blue);font-weight:700}
+li.ok .num{color:var(--green);font-weight:700}
+li.bad .num{color:var(--red);font-weight:700}
+li.ok input{border-color:var(--green);color:var(--green)}
+li.bad input{border-color:var(--red);color:var(--red);text-decoration:line-through}
+.fb{font-size:14px;margin-top:4px}
+.fb .sol{color:var(--red);font-weight:700}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:16px}
+.btn{font:inherit;font-weight:700;padding:10px 18px;border-radius:8px;border:0;background:var(--blue);color:var(--sheet);cursor:pointer}
+.btn.alt{background:transparent;color:var(--blue);border:1px solid var(--blue)}
+.score{font-weight:700;font-size:18px}
+.score.good{color:var(--green)} .score.mid{color:var(--blue)} .score.low{color:var(--red)}
+.tag{font-size:12px;color:var(--muted);display:block}
+@media (max-width:520px){details.ch summary{flex-wrap:wrap}details.ch summary .fr{margin-left:36px;text-align:left;flex-basis:100%}}
+@media (prefers-reduced-motion:no-preference){.btn,.opt,.setcard{transition:background .15s,border-color .15s}}
+</style>
+
+<div class="wrap">
+<header>
+  <h1>Grammaire Répétition</h1>
+  <p>Französisch 1. Klasse · Dossier S. 4–13 + Zusatztheorie (Artikel, Possessiv, tout, Passé composé reflexiv)</p>
+</header>
+
+<nav class="tabs" role="tablist">
+  <button role="tab" id="tab-theorie" aria-selected="true" data-p="theorie">Theorie</button>
+  <button role="tab" id="tab-ueben" aria-selected="false" data-p="ueben">Üben</button>
+  <button role="tab" id="tab-test" aria-selected="false" data-p="test">Test</button>
+</nav>
+
+<!-- ================= THEORIE ================= -->
+<section id="p-theorie">
+
+<details class="ch" open><summary><span class="n">1</span>Singular – Plural<span class="fr">Le nom et l'adjectif</span></summary><div class="body">
+<p>Grundregel: Nomen und Adjektive bekommen im Plural ein <b class="k">-s</b>, das man <b>nicht</b> ausspricht.</p>
+<div class="ex"><p>le petit chat → les petit<b class="k">s</b> chat<b class="k">s</b></p><p>la grande maison → les grande<b class="k">s</b> maison<b class="k">s</b></p></div>
+<p>Endet das Wort schon auf <b class="k">-s, -x, -z</b>, bleibt es gleich: le bras → les bras · le faux nez → les faux nez.</p>
+<h3>Ausnahmen</h3>
+<div class="tbl"><table>
+<tr><th>Endung</th><th>Plural</th><th>Beispiele</th></tr>
+<tr><td>-al</td><td>-aux</td><td>le journal → les journ<b class="k">aux</b>, l'hôpital → les hôpit<b class="k">aux</b>, génial → géni<b class="k">aux</b> (fem. bleibt: géniales)<br><span class="r">aber:</span> le festival → les festival<b>s</b></td></tr>
+<tr><td>-eau, -eu</td><td>+x</td><td>le bateau → les bateau<b class="k">x</b> (Schiff), le bureau → bureau<b class="k">x</b>, le feu → feu<b class="k">x</b> (Feuer), le cheveu → cheveu<b class="k">x</b></td></tr>
+<tr><td>-ou (einige)</td><td>+x</td><td>bijou<b class="k">x</b> (Schmuck), caillou<b class="k">x</b> (Kieselstein), chou<b class="k">x</b> (Kohl), genou<b class="k">x</b> (Knie)<br><span class="r">aber:</span> le cou → les cou<b>s</b> (Hals), le bisou → les bisou<b>s</b> (Küsschen)</td></tr>
+<tr><td>unregelmässig</td><td></td><td>l'œil → les <b class="k">yeux</b> · le travail → les trav<b class="k">aux</b></td></tr>
+</table></div>
+<button class="go" data-set="pluriel">Üben: Plural →</button>
+</div></details>
+
+<details class="ch"><summary><span class="n">2</span>Maskulin – Feminin<span class="fr">L'adjectif</span></summary><div class="body">
+<p>Feminin = Maskulin + <b class="k">-e</b>. Oft hört man dann den Endkonsonanten: vert → ver<b class="k">te</b>, gris → gri<b class="k">se</b>, noir → noir<b class="k">e</b>, bleu → bleu<b class="k">e</b>.</p>
+<p>Endet das Adjektiv schon auf <b>-e</b>, bleibt es gleich: un jeune dentiste → une jeune dentiste.</p>
+<h3>beau, nouveau, vieux vor dem Nomen</h3>
+<div class="tbl"><table>
+<tr><th></th><th>Singular</th><th>Plural</th></tr>
+<tr><td>m. vor Konsonant</td><td>un beau / nouveau / vieux tapis</td><td>de beaux / nouveaux / vieux tapis</td></tr>
+<tr><td>m. vor <b>Vokal</b></td><td>un <b class="r">bel</b> / <b class="r">nouvel</b> / <b class="r">vieil</b> ordinateur</td><td>de beaux / nouveaux / vieux ordinateurs</td></tr>
+<tr><td>feminin</td><td>une belle / nouvelle / vieille chaise</td><td>de belles / nouvelles / vieilles chaises</td></tr>
+</table></div>
+<p>Gleich funktionieren fou/<b>fol</b>/folle (verrückt) und mou/<b>mol</b>/molle (weich).</p>
+<h3>Abweichende Formen</h3>
+<div class="tbl"><table>
+<tr><th>Maskulin</th><th>Feminin</th><th>Beispiele</th></tr>
+<tr><td>-eux</td><td>-euse</td><td>dangereux → dangereuse, délicieux → délicieuse, heureux → heureuse</td></tr>
+<tr><td>-er</td><td>-ère</td><td>cher → chère, fier → fière (stolz), dernier → dernière, premier → première</td></tr>
+<tr><td>-f</td><td>-ve</td><td>neuf → neuve (fabrikneu), sportif → sportive, vif → vive (lebhaft), bref → brève (kurz)</td></tr>
+<tr><td>Konsonant doppelt</td><td></td><td>ancien → ancienne, bon → bonne, quotidien → quotidienne, émotionnel → émotionnelle, essentiel → essentielle, réel → réelle, bas → basse (tief), gros → grosse (dick), pareil → pareille (gleich), muet → muette (stumm), violet → violette<br><span class="r">aber:</span> inquiet → inqui<b>è</b>te</td></tr>
+<tr><td>unregelmässig</td><td></td><td>blanc → blanche, franc → franche (ehrlich), frais → fraîche, sec → sèche, doux → douce (süss, sanft), faux → fausse, long → longue, rigolo → rigolote (lustig)</td></tr>
+</table></div>
+<p>Aussprache bei <b>-n</b>: bon [nasal] – bonne [n hörbar], brun – brune, prochain – prochaine.</p>
+<button class="go" data-set="feminin">Üben: Feminin →</button> <button class="go" data-set="beau">Üben: beau/nouveau/vieux →</button>
+</div></details>
+
+<details class="ch"><summary><span class="n">3</span>Komparativ und Superlativ<span class="fr">Comparatif et superlatif</span></summary><div class="body">
+<h3>Komparativ</h3>
+<div class="ex"><p>Suzanne est <b class="k">plus</b> grande <b class="k">que</b> Sylvie. (grösser als)</p><p>Suzanne est <b class="k">moins</b> grande <b class="k">que</b> Sylvie. (weniger gross als)</p><p>Suzanne est <b class="k">aussi</b> grande <b class="k">que</b> Sylvie. (so gross wie)</p></div>
+<p>Das Adjektiv passt sich weiterhin an (grand<b>e</b>, grand<b>s</b> …).</p>
+<h3>Superlativ</h3>
+<div class="ex"><p>Ce sont les élèves <b class="k">les plus</b> grandes / <b class="k">les moins</b> grandes de leur classe.</p></div>
+<div class="warn"><b>bon ist speziell:</b> plus bon gibt es nicht!<br>Komparativ: <b>meilleur(e)(s)</b> que · moins bon · aussi bon<br>Superlativ: <b>le / la / les meilleur(e)(s)</b> · le moins bon</div>
+<div class="ex"><p>Ces gâteaux sont <b class="k">meilleurs</b> que ceux de ma mère.</p><p>Les gâteaux de ma mère sont <b class="k">les meilleurs</b>.</p></div>
+<button class="go" data-set="compar">Üben →</button>
+</div></details>
+
+<details class="ch"><summary><span class="n">4</span>Das Adverb<span class="fr">L'adverbe</span></summary><div class="body">
+<p><b>Adjektiv</b> beschreibt ein Nomen und passt sich an: Georges a des idées <b class="k">claires</b>.<br><b>Adverb</b> beschreibt meistens ein Verb (oder ein Adjektiv, einen ganzen Satz) und ist <b>unveränderlich</b>: Georges parle <b class="k">clairement</b>.</p>
+<h3>Bildung: Feminin + -ment</h3>
+<div class="ex"><p>heureux → heureuse → heureuse<b class="k">ment</b></p><p>clair → claire → claire<b class="k">ment</b></p><p>lent → lente → lente<b class="k">ment</b></p></div>
+<div class="tbl"><table>
+<tr><th>Adjektiv</th><th>Adverb</th><th>Komparativ</th><th>Superlativ</th></tr>
+<tr><td>bon</td><td><b class="k">bien</b></td><td><b class="k">mieux</b></td><td><b class="k">le mieux</b></td></tr>
+<tr><td>mauvais</td><td><b class="k">mal</b></td><td></td><td></td></tr>
+</table></div>
+<div class="ex"><p>Ce sont de <b>bons</b> amis. Je les aime <b class="k">bien</b>.</p><p>Alfred joue bien, mais Madeleine joue <b class="k">mieux</b>. C'est Yvonne qui joue <b class="k">le mieux</b>.</p></div>
+<h3>très / si ↔ beaucoup / tant</h3>
+<p><b>très</b> und <b>si</b> nur vor Adjektiven. Beim Verb nimmt man <b>beaucoup</b> und <b>tant</b>.</p>
+<div class="ex"><p>Il est <b class="k">très</b> fort. – Il s'entraîne <b class="k">beaucoup</b>.</p><p>Elle est <b class="k">si</b> charmante. – Je l'aime <b class="k">tant</b>.</p></div>
+<button class="go" data-set="adverbe">Üben →</button>
+</div></details>
+
+<details class="ch"><summary><span class="n">5</span>Der Artikel<span class="fr">L'article</span></summary><div class="body">
+<p>Französisch hat drei Artikel: unbestimmt (un, une, des), bestimmt (le, la, l', les) und den Teilungsartikel (du, de la, de l', des).</p>
+<h3>Unbestimmt vs. bestimmt</h3>
+<div class="tbl"><table>
+<tr><th></th><th>unbestimmt = irgendeine(r)</th><th>bestimmt = genau diese(r)</th></tr>
+<tr><td>m. Sg.</td><td>un copain, un ami</td><td>le copain, l'ami</td></tr>
+<tr><td>f. Sg.</td><td>une copine, une amie</td><td>la copine, l'amie</td></tr>
+<tr><td>Plural</td><td>des copains, des‿amis</td><td>les copains, les‿amis</td></tr>
+</table></div>
+<p>Vor Vokal wird <b>le/la → l'</b>. Bei des/les vor Vokal hört man ein [z]: des‿amandes.</p>
+<h3>à und de + bestimmter Artikel</h3>
+<div class="tbl"><table>
+<tr><th></th><th>+ le</th><th>+ la</th><th>+ l'</th><th>+ les</th></tr>
+<tr><td>à</td><td><b class="r">au</b> père</td><td>à la mère</td><td>à l'enfant</td><td><b class="r">aux</b> parents</td></tr>
+<tr><td>de</td><td><b class="r">du</b> père</td><td>de la mère</td><td>de l'enfant</td><td><b class="r">des</b> parents</td></tr>
+</table></div>
+<p>Nur <b>le</b> und <b>les</b> verschmelzen. la und l' bleiben getrennt.</p>
+
+<h3>Sonderfälle: Französisch braucht le/la/les, Deutsch nicht</h3>
+<div class="tbl"><table>
+<tr><th>Fall</th><th>Beispiel</th><th>Deutsch</th></tr>
+<tr><td>aimer, adorer, détester</td><td>J'aime <b class="k">la</b> raclette. Il aime <b class="k">les</b> pâtes. Elle déteste <b class="k">les</b> enfants.</td><td>Ich habe Raclette gern.</td></tr>
+<tr><td>Körpermerkmale</td><td>Il a <b class="k">les</b> cheveux blonds, <b class="k">les</b> yeux bleus.</td><td>Er hat blonde Haare.</td></tr>
+<tr><td>Tageszeit</td><td><b class="k">le</b> matin, <b class="k">l'</b>après-midi, <b class="k">le</b> soir, <b class="k">la</b> nuit</td><td>am Morgen, morgens</td></tr>
+<tr><td>Wochentag (immer)</td><td><b class="k">Le</b> lundi, j'ai classe.</td><td>jeden Montag</td></tr>
+<tr><td>Wochentag (einmal)</td><td>Lundi, j'ai été au cinéma. (<span class="r">ohne</span> Artikel)</td><td>letzten / nächsten Montag</td></tr>
+<tr><td>Woche, Monat, Jahr</td><td><b class="k">la</b> semaine dernière, <b class="k">le</b> mois prochain, <b class="k">l'</b>année dernière</td><td>letzte Woche</td></tr>
+<tr><td>Datum</td><td><b class="k">le</b> 13 novembre</td><td>am 13. November</td></tr>
+<tr><td>Titel</td><td><b class="k">le</b> docteur Schweitzer, <b class="k">le</b> professeur Einstein</td><td>Professor Einstein</td></tr>
+<tr><td>Anrede</td><td>Bonjour Monsieur <b class="k">le</b> Président, Madame <b class="k">la</b> Directrice<br><span class="r">aber:</span> Bonjour docteur</td><td>Guten Tag, Herr Präsident</td></tr>
+</table></div>
+
+<h3>Der Teilungsartikel (article partitif)</h3>
+<p>Er besteht aus <b>de + bestimmter Artikel</b> und steht für eine <b>unbestimmte Menge</b>, die man nicht zählt.</p>
+<div class="tbl"><table>
+<tr><th>m.</th><th>f.</th><th>vor Vokal</th><th>Plural</th></tr>
+<tr><td><b class="k">du</b> sel</td><td><b class="k">de la</b> farine</td><td><b class="k">de l'</b>huile</td><td><b class="k">des</b> olives</td></tr>
+</table></div>
+<div class="warn"><b>D → F aufpassen:</b> Im Deutschen steht oft gar kein Artikel, im Französischen der Teilungsartikel.<br>Er isst Brot. → Il mange <b>du</b> pain. · Er trinkt Wasser. → Il boit <b>de l'</b>eau.</div>
+<p><b>Bestimmt oder Teilung?</b> Mon frère me passe <b>le</b> riz (der ganze Reis auf dem Tisch). Je prends <b>du</b> riz (ein Teil davon, so viel ich nehme).</p>
+<p>Man braucht den Teilungsartikel bei:</p>
+<ul>
+<li><b>Lebensmitteln:</b> du riz, de la viande, des légumes, de l'eau minérale</li>
+<li><b>Stoffen / Materialien:</b> Je ramasse du bois. C'est du coton.</li>
+<li><b>Tätigkeiten:</b> Il fait du sport, de la musique, du théâtre.</li>
+<li><b>Abstraktem:</b> Tu as du courage. Il faut de la patience. Elle a du talent.</li>
+<li><b>Plural</b> (wie unbestimmter Artikel): Je prends des renseignements.</li>
+</ul>
+<p>Nach Präpositionen geht der Teilungsartikel, nach <b class="r">sans</b> aber <b>nie</b>: le café <b>sans sucre</b>, aber le café <b>avec du sucre</b>, écrire <b>sur du</b> papier.</p>
+
+<h3>Vom Teilungsartikel zum «de partitif»</h3>
+<p>Sobald eine <b>Mengenangabe</b> davorsteht, wird du / de la / de l' / des zu blossem <b class="k">de / d'</b>.</p>
+<div class="tbl"><table>
+<tr><th>keine Mengenangabe</th><th>mit Mengenangabe</th></tr>
+<tr><td>J'achète du pain.</td><td>J'achète un kilo <b class="k">de</b> pain.</td></tr>
+<tr><td>J'achète de la confiture.</td><td>J'achète un pot <b class="k">de</b> confiture.</td></tr>
+<tr><td>J'achète de l'eau minérale.</td><td>J'achète une bouteille <b class="k">d'</b>eau minérale.</td></tr>
+<tr><td>J'achète des pommes.</td><td>J'achète un sac <b class="k">de</b> pommes de terre.</td></tr>
+</table></div>
+<p>Mengenangaben: un peu de, beaucoup de, trop de, plus de, un verre de, une tasse de, une tablette de, un tonneau de …</p>
+<div class="warn"><b>Verneinung = Null-Menge.</b> Auch dort steht nur de / d':<br>Je ne prends <b>pas de</b> vin. Il ne boit <b>plus de</b> vin. Elle ne boit <b>jamais de</b> vin.<br>Est-ce que tu as une moto? – Non, je n'ai pas <b>de</b> moto. · Je ne veux pas <b>d'</b>eau.</div>
+
+<h3>Wegfall des Artikels</h3>
+<p>In festen Wendungen ist das Nomen fast ein Teil des Verbs, darum steht <b>kein Artikel</b>.</p>
+<div class="tbl"><table>
+<tr><th>avoir …</th><th>prendre / perdre …</th><th>faire … à qn</th></tr>
+<tr><td>avoir faim (Hunger haben), soif (Durst), besoin (brauchen), peur (Angst), honte (sich schämen), raison (recht haben), tort (unrecht haben), envie (Lust haben)</td><td>prendre place (Platz nehmen), prendre feu (Feuer fangen), perdre courage (den Mut verlieren), perdre patience (die Geduld verlieren)</td><td>faire peur à qn (Angst machen), faire plaisir à qn (Freude machen), faire signe à qn (winken), faire confiance à qn (vertrauen)</td></tr>
+</table></div>
+<button class="go" data-set="article">Üben: au/du/un →</button> <button class="go" data-set="defini">Üben: Sonderfälle →</button> <button class="go" data-set="partitif">Üben: Teilungsartikel →</button> <button class="go" data-set="wegfall">Üben: ohne Artikel →</button>
+</div></details>
+
+<details class="ch"><summary><span class="n">6</span>Das Demonstrativum<span class="fr">Le démonstratif</span></summary><div class="body">
+<h3>Demonstrativbegleiter (dieser, diese, dieses)</h3>
+<div class="tbl"><table>
+<tr><th></th><th>Singular</th><th>Plural</th></tr>
+<tr><td>m. vor Konsonant</td><td><b class="k">ce</b> lac</td><td><b class="k">ces</b> lacs</td></tr>
+<tr><td>m. vor Vokal / stummem h</td><td><b class="r">cet</b> arbre, cet hôtel</td><td><b class="k">ces</b>‿arbres</td></tr>
+<tr><td>feminin</td><td><b class="k">cette</b> forêt</td><td><b class="k">ces</b> forêts</td></tr>
+</table></div>
+<h3>Demonstrativpronomen (ersetzt das Nomen)</h3>
+<div class="tbl"><table>
+<tr><th></th><th>Singular</th><th>Plural</th></tr>
+<tr><td>maskulin</td><td><b class="k">celui</b>-ci / celui-là</td><td><b class="k">ceux</b>-ci / ceux-là</td></tr>
+<tr><td>feminin</td><td><b class="k">celle</b>-ci / celle-là</td><td><b class="k">celles</b>-ci / celles-là</td></tr>
+</table></div>
+<p><b>-ci</b> = näher (dieser hier), <b>-là</b> = weiter weg (jener dort).</p>
+<div class="ex"><p>Je prends ce gâteau. Non, pas celui-là, <b class="k">celui-ci</b>!</p></div>
+<p>Folgt eine Ergänzung (que, de …), fällt -ci / -là weg:</p>
+<div class="ex"><p>Cette jupe est plus courte que <b class="k">celle</b> que je porte et que <b class="k">celle</b> de mon amie.</p></div>
+<button class="go" data-set="demo">Üben →</button>
+</div></details>
+
+<details class="ch"><summary><span class="n">7</span>Der Possessivbegleiter<span class="fr">L'adjectif possessif</span></summary><div class="body">
+<div class="tbl"><table>
+<tr><th>Besitzer</th><th>m. Sg.</th><th>f. Sg. vor Vokal</th><th>f. Sg. vor Konsonant</th><th>Plural</th></tr>
+<tr><td>je</td><td>mon chien</td><td>mon‿auto</td><td>ma chienne</td><td>mes chats</td></tr>
+<tr><td>tu</td><td>ton chien</td><td>ton‿auto</td><td>ta chienne</td><td>tes chats</td></tr>
+<tr><td>il / elle</td><td>son chien</td><td>son‿auto</td><td>sa chienne</td><td>ses chats</td></tr>
+<tr><td>nous</td><td colspan="3">notre chien / auto / chienne</td><td>nos chats</td></tr>
+<tr><td>vous</td><td colspan="3">votre chien / auto / chienne</td><td>vos chats</td></tr>
+<tr><td>ils / elles</td><td colspan="3">leur chien / auto / chienne</td><td>leurs chats</td></tr>
+</table></div>
+<h3>So denkst du</h3>
+<ul>
+<li><b>1 Besitzer, 1 Sache:</b> mon / ma, ton / ta, son / sa</li>
+<li><b>1 Besitzer, mehrere Sachen:</b> mes, tes, ses gâteaux</li>
+<li><b>mehrere Besitzer, 1 Sache:</b> notre, votre, leur gâteau</li>
+<li><b>mehrere Besitzer, mehrere Sachen:</b> nos, vos, leurs gâteaux</li>
+</ul>
+<div class="warn"><b>Wann mon statt ma?</b> ma/ta/sa entspricht dem Artikel la. Vor einem weiblichen Wort mit <b>l'</b> (also Vokal) nimmt man mon/ton/son: <b>mon</b> amie, <b>son</b> école, <b>ton</b> histoire.</div>
+<p><b>leur oder leurs?</b> Nur mit -s, wenn das Nomen danach im Plural steht: leur fils (ein Sohn), leurs fils (mehrere Söhne).</p>
+<p><b>son / sa / ses</b> zeigt nicht, ob der Besitzer männlich oder weiblich ist. Es richtet sich nur nach der Sache:</p>
+<div class="ex"><p>Jean joue avec <b class="k">son</b> copain et <b class="k">sa</b> copine. (seinem / seiner)</p><p>Marie sort avec <b class="k">son</b> copain et <b class="k">sa</b> copine. (ihrem / ihrer)</p></div>
+<button class="go" data-set="poss">Üben →</button>
+</div></details>
+
+<details class="ch"><summary><span class="n">8</span>Der Begleiter tout<span class="fr">L'adjectif tout</span></summary><div class="body">
+<div class="tbl"><table>
+<tr><th></th><th>Singular = ganz</th><th>Plural = alle</th></tr>
+<tr><td>maskulin</td><td><b class="k">tout</b> le livre, tout le temps</td><td><b class="k">tous</b> les livres, tous les jours</td></tr>
+<tr><td>feminin</td><td><b class="k">toute</b> la revue, toute la journée</td><td><b class="k">toutes</b> les revues, toutes les nuits</td></tr>
+</table></div>
+<ul>
+<li>tout passt sich wie ein Adjektiv an das Nomen an (Genus und Numerus).</li>
+<li>Nach tout kommt immer ein <b>zweiter Begleiter</b>: le, la, les, mes, leurs, ces …<br>Clara a aimé <b>tout le</b> voyage. Les profs ont discuté avec <b>tous leurs</b> élèves. Ils leur ont expliqué <b>toutes ces</b> activités.</li>
+<li>«jeder, jede, jedes» heisst meistens <b class="k">chaque</b>.</li>
+<li>Vergleich: <b>tous les</b> garçons = all the boys = alle Jungen.</li>
+</ul>
+<div class="warn"><b>Aussprache und Schreibung:</b> tout und tous klingen gleich [tu], toute und toutes klingen gleich [tut]. Man schreibt <b>tous ohne -t</b>, obwohl es der Plural von tout ist. Schau beim Schreiben also aufs Nomen danach.</div>
+<p><b>Nicht verwechseln:</b> Allein stehendes <b>tout</b> = «alles», unveränderlich.<br>J'ai lu <b>toute la</b> nuit (die ganze Nacht). – J'ai lu <b>tout</b> (alles).</p>
+<button class="go" data-set="tout">Üben →</button>
+</div></details>
+
+<details class="ch"><summary><span class="n">9</span>Das Personalpronomen<span class="fr">Le pronom personnel</span></summary><div class="body">
+<h3>9.1 Subjektpronomen</h3>
+<p>je, tu, il / elle / on, nous, vous, ils / elles. Vor Vokal: <b>j'</b>aime. Bindung: nous‿aimons, ils‿aiment.</p>
+<h3>9.2 Betonte Pronomen (pronom tonique)</h3>
+<div class="tbl"><table>
+<tr><th>je</th><th>tu</th><th>il</th><th>elle</th><th>nous</th><th>vous</th><th>ils</th><th>elles</th></tr>
+<tr><td><b class="k">moi</b></td><td><b class="k">toi</b></td><td><b class="k">lui</b></td><td><b class="k">elle</b></td><td><b class="k">nous</b></td><td><b class="k">vous</b></td><td><b class="k">eux</b></td><td><b class="k">elles</b></td></tr>
+</table></div>
+<p>Gebraucht wird es:</p>
+<ul>
+<li>zur Verstärkung: <b>Moi</b>, je ne connais pas cette chanteuse. Tu ne la connais pas, <b>toi</b>?</li>
+<li>nach Präposition: Ils étaient à l'école avec <b>nous</b>.</li>
+<li>nach c'est: C'est <b>toi</b>? – C'est <b>moi</b>.</li>
+<li>ohne Verb: Qui est là? – <b>Moi</b>.</li>
+<li>mit même (selbst): Fais-le <b>toi-même</b>!</li>
+</ul>
+<h3>9.3 Direktes Objektpronomen (COD) = wen / was?</h3>
+<p>Ersetzt ein Objekt <b>ohne Präposition</b>. Steht <b>vor</b> dem Verb.</p>
+<div class="ex"><p>Pierre voit la Tour Eiffel. → Pierre <b class="k">la</b> voit.</p><p>Marie aime les enfants. → Marie <b class="k">les</b> aime.</p></div>
+<p>Formen: me (m'), te (t'), <b>le / la (l')</b>, nous, vous, <b>les</b></p>
+<h3>9.4 Indirektes Objektpronomen (COI) = wem?</h3>
+<p>Ersetzt <b>à + Person</b>.</p>
+<div class="ex"><p>Pierre donne le livre à Marie. → Pierre <b class="k">lui</b> donne le livre.</p><p>L'épicier offre un cadeau au client. → L'épicier <b class="k">lui</b> offre un cadeau.</p></div>
+<p>Formen: me (m'), te (t'), <b>lui</b>, nous, vous, <b>leur</b></p>
+<div class="warn"><b>Merke:</b> Nur in der 3. Person gibt es einen Unterschied: le / la / les (wen?) gegen lui / leur (wem?). <b>leur</b> als Pronomen hat nie ein -s.</div>
+<h3>9.5 Reflexivpronomen</h3>
+<div class="tbl"><table>
+<tr><th>Indikativ</th><th></th><th>affirmativer Imperativ</th></tr>
+<tr><td>je <b class="k">me</b> prépare</td><td>je <b class="k">m'</b>entraîne</td><td></td></tr>
+<tr><td>tu <b class="k">te</b> prépares</td><td>tu <b class="k">t'</b>entraînes</td><td>prépare-<b class="r">toi</b></td></tr>
+<tr><td>il / elle / on <b class="k">se</b> prépare</td><td>il <b class="k">s'</b>entraîne</td><td></td></tr>
+<tr><td>nous <b class="k">nous</b> préparons</td><td>nous <b class="k">nous</b> entraînons</td><td>préparons-<b class="r">nous</b></td></tr>
+<tr><td>vous <b class="k">vous</b> préparez</td><td>vous <b class="k">vous</b> entraînez</td><td>préparez-<b class="r">vous</b></td></tr>
+<tr><td>ils / elles <b class="k">se</b> préparent</td><td>ils <b class="k">s'</b>entraînent</td><td></td></tr>
+</table></div>
+<p>Beim <b>verneinten</b> Imperativ bleibt das Pronomen vor dem Verb: <b>Ne vous</b> préparez pas. <b>Ne te</b> lève pas.</p>
+<h3>9.6 Die Pronomen y und en</h3>
+<p><b class="k">y</b> ersetzt <b>à + Ort</b> oder <b>à + Sache</b>:</p>
+<div class="ex"><p>Mes parents sont à Paris. Ils <b class="k">y</b> sont allés en avion.</p><p>Tu as répondu à sa lettre? – Oui, j'<b class="k">y</b> ai répondu.</p></div>
+<div class="warn"><b>Bei Personen kein y:</b> Tu as répondu à Julie? – Non, je ne <b>lui</b> ai pas répondu.<br>Ausnahme penser à: Tu as pensé à tes copines? – Non, je n'ai pas pensé <b>à elles</b>.</div>
+<p><b class="k">en</b> ersetzt <b>de + Sache</b>:</p>
+<div class="ex"><p>Tu te souviens de cette histoire? – Je m'<b class="k">en</b> souviens très bien.</p><p>Il est entré dans le magasin quand j'<b class="k">en</b> sortais (du magasin).</p></div>
+<p>Bei Personen: Tu te souviens de Jean-Claude? – Non, je ne me souviens pas <b>de lui</b>.</p>
+<p><b>en</b> ersetzt auch ein Nomen mit <b>Teilungsartikel</b> oder <b>Mengenangabe</b>. Die Zahl bleibt am Satzende:</p>
+<div class="ex"><p>Tu as acheté de l'eau minérale? – Oui, j'<b class="k">en</b> ai acheté.</p><p>Et combien de bouteilles? – J'<b class="k">en</b> ai acheté <b>six</b>.</p></div>
+<h3>9.7 Reihenfolge der Pronomen</h3>
+<p>Vor dem Verb:</p>
+<div class="ex"><p style="font-weight:700">ne · me/te/nous/vous · le/la/les · lui/leur · y · en · Verb · pas</p></div>
+<div class="ex"><p>Il donne le livre à Marie. → Il <b class="k">le lui</b> donne.</p><p>Elle me montre les photos. → Elle <b class="k">me les</b> montre.</p><p>Il y a du pain? → Oui, il <b class="k">y en</b> a.</p><p>Je <b class="k">ne le lui</b> ai <b class="k">pas</b> dit.</p></div>
+<p>Beim <b>affirmativen Imperativ</b> hängen die Pronomen mit Bindestrich hinten an, in dieser Reihenfolge:</p>
+<div class="ex"><p style="font-weight:700">Verb – le/la/les – moi/lui/nous/leur – y – en</p><p>Donne-<b class="k">le-moi</b>. Montre-<b class="k">les-lui</b>. Donne-<b class="k">m'en</b>.</p></div>
+<button class="go" data-set="tonique">Üben: betonte Pronomen →</button> <button class="go" data-set="objet">Üben: le/la/lui/leur →</button> <button class="go" data-set="reflechi">Üben: me/te/se + Imperativ →</button> <button class="go" data-set="yen">Üben: y / en →</button> <button class="go" data-set="ordre">Üben: Reihenfolge →</button>
+</div></details>
+
+<details class="ch"><summary><span class="n">10</span>Das Relativpronomen qui / que<span class="fr">Le pronom relatif</span></summary><div class="body">
+<p>Im Relativsatz ersetzt <b class="k">qui</b> das <b>Subjekt</b>, <b class="k">que</b> das <b>direkte Objekt</b>.</p>
+<div class="ex"><p>Un homme se trouve sur cette photo. → L'homme <b class="k">qui</b> se trouve sur cette photo est un physicien célèbre.</p><p>Tu vois un homme sur cette photo. → L'homme <b class="k">que</b> tu vois sur cette photo est un physicien célèbre.</p></div>
+<div class="warn"><b>Trick:</b> Folgt direkt ein <b>Verb</b>, ist es meistens <b>qui</b> (qui chante, qui est). Folgt ein <b>Subjekt</b> (je, tu, il, Marie …), ist es <b>que</b>. Vor Vokal wird que zu <b>qu'</b>, qui wird nie apostrophiert.</div>
+<button class="go" data-set="relatif">Üben →</button>
+</div></details>
+
+<details class="ch"><summary><span class="n">11</span>Passé composé der reflexiven Verben<span class="fr">Les verbes pronominaux</span></summary><div class="body">
+<p><b>Regel ohne Ausnahme:</b> Alle reflexiven Verben bilden das Passé composé mit <b class="k">être</b>.</p>
+<p>Aufbau: Subjekt + Reflexivpronomen + être + Participe passé</p>
+<p>Das Participe passé richtet sich (wie bei allen être-Verben) nach dem <b>Subjekt</b>: weiblich +e, Plural +s.</p>
+<div class="tbl"><table>
+<tr><th>männlich</th><th>weiblich</th></tr>
+<tr><td>je <b class="k">me suis</b> levé</td><td>je <b class="k">me suis</b> levé<b class="r">e</b></td></tr>
+<tr><td>tu <b class="k">t'es</b> levé</td><td>tu <b class="k">t'es</b> levé<b class="r">e</b></td></tr>
+<tr><td>il <b class="k">s'est</b> levé</td><td>elle <b class="k">s'est</b> levé<b class="r">e</b></td></tr>
+<tr><td>nous <b class="k">nous sommes</b> levé<b class="r">s</b></td><td>nous <b class="k">nous sommes</b> levé<b class="r">es</b></td></tr>
+<tr><td>vous <b class="k">vous êtes</b> levé<b class="r">s</b></td><td>vous <b class="k">vous êtes</b> levé<b class="r">es</b></td></tr>
+<tr><td>ils <b class="k">se sont</b> levé<b class="r">s</b></td><td>elles <b class="k">se sont</b> levé<b class="r">es</b></td></tr>
+</table></div>
+<div class="ex"><p>Jacqueline <b class="k">s'est</b> beaucoup entraîné<b class="r">e</b>. Elle ne <b class="k">s'est</b> jamais reposé<b class="r">e</b>.</p></div>
+<p>Gemischte Gruppe (Männer + Frauen) = männlicher Plural: mon mari et moi, nous nous sommes réveillé<b>s</b>.</p>
+<p>Verneinung umschliesst Pronomen + être: Je <b>ne</b> me suis <b>pas</b> levé.</p>
+<button class="go" data-set="pcpron">Üben →</button> <button class="go" data-set="sylvie">Üben: Text Sylvie →</button>
+</div></details>
+
+<details class="ch"><summary><span class="n">12</span>Die Verneinung<span class="fr">La négation</span></summary><div class="body">
+<p>Die Verneinung ist ein «Sandwich»: <b>ne</b> und das zweite Wort umschliessen das <b>konjugierte Verb</b>.</p>
+<div class="tbl"><table>
+<tr><th>Form</th><th>Beispiel</th><th>Deutsch</th></tr>
+<tr><td>ne … pas</td><td>Il <b class="k">ne</b> chante <b class="k">pas</b>.</td><td>nicht</td></tr>
+<tr><td>ne … plus</td><td>Il <b class="k">ne</b> va <b class="k">plus</b> chanter.</td><td>nicht mehr</td></tr>
+<tr><td>ne … jamais</td><td>Il <b class="k">n'</b>a <b class="k">jamais</b> chanté.</td><td>nie(mals)</td></tr>
+<tr><td>ne … pas encore</td><td>Il <b class="k">n'</b>a <b class="k">pas encore</b> fini ses devoirs.</td><td>noch nicht</td></tr>
+<tr><td>ne … pas du tout</td><td>Cela <b class="k">ne</b> me plaît <b class="k">pas du tout</b>.</td><td>überhaupt nicht</td></tr>
+<tr><td>ne … pas non plus</td><td>Cela <b class="k">ne</b> me plaît <b class="k">pas non plus</b>.</td><td>auch nicht</td></tr>
+<tr><td>ne … rien</td><td>Je <b class="k">ne</b> dis <b class="k">rien</b>.</td><td>nichts (Objekt)</td></tr>
+<tr><td>rien ne</td><td><b class="k">Rien ne</b> me plaît dans ce magasin.</td><td>nichts (Subjekt)</td></tr>
+<tr><td>ne … personne</td><td>Je <b class="k">n'</b>invite <b class="k">personne</b>.</td><td>niemand (Objekt)</td></tr>
+<tr><td>personne ne</td><td><b class="k">Personne ne</b> m'écoute.</td><td>niemand (Subjekt)</td></tr>
+</table></div>
+<p><b>ne</b> steht vor Objektpronomen, y und en: Je <b>ne le</b> vois pas. Il <b>n'y</b> a personne. Elle <b>n'en</b> a rien dit.</p>
+<h3>rien und personne: Stellung</h3>
+<div class="tbl"><table>
+<tr><th></th><th>rien (nichts)</th><th>personne (niemand)</th></tr>
+<tr><td>Präsens</td><td>Je ne vois <b class="k">rien</b>.</td><td>Je ne vois <b class="k">personne</b>.</td></tr>
+<tr><td>Passé composé</td><td>Je n'ai <b class="k">rien</b> vu. (<b>vor</b> dem Partizip)</td><td>Je n'ai vu <b class="k">personne</b>. (<b>nach</b> dem Partizip)</td></tr>
+<tr><td>mit Infinitiv</td><td>Je ne peux <b class="k">rien</b> voir. (<b>vor</b> dem Infinitiv)</td><td>Je ne peux voir <b class="k">personne</b>. (<b>nach</b> dem Infinitiv)</td></tr>
+</table></div>
+<div class="warn"><b>Als Subjekt</b> stehen <b>Personne ne</b> und <b>Rien ne</b> zusammen am Satzanfang, und es gibt <b>kein pas</b>:<br>Personne n'est venu. (Niemand ist gekommen.) · Rien ne l'intéresse. (Nichts interessiert ihn.)</div>
+<p>In kurzen Antworten <b>ohne Verb</b> steht kein ne: Tu as vu quelqu'un? – <b>Personne!</b> Qu'est-ce qui s'est passé? – <b>Rien.</b></p>
+<p>Und wie in Kapitel 5: Nach der Verneinung wird der Teilungsartikel zu <b>de</b>: Je ne fais <b>pas de</b> fautes. Je ne fais <b>plus de</b> fautes. Je ne fais <b>jamais de</b> fautes.</p>
+<button class="go" data-set="negation">Üben →</button>
+</div></details>
+
+</section>
+
+<!-- ================= ÜBEN ================= -->
+<section id="p-ueben" hidden>
+  <div id="setlist"></div>
+  <div id="exview" hidden></div>
+</section>
+
+<!-- ================= TEST ================= -->
+<section id="p-test" hidden>
+  <div id="testintro" class="sheet">
+    <h2 style="font-family:var(--f-display);margin:0 0 6px">Mischtest</h2>
+    <p style="margin:0 0 14px;color:var(--muted)">20 zufällige Aufgaben aus allen Kapiteln. Jedes Mal neu gemischt.</p>
+    <button class="btn" id="starttest">Test starten</button>
+  </div>
+  <div id="testview" hidden></div>
+</section>
+</div>
+
+<script>
+// I = Eingabe, M = Auswahl. Mehrere richtige Antworten mit | trennen.
+const I=(q,a,w)=>({t:"i",q,a:a.split("|"),w});
+const M=(q,o,c)=>({t:"m",q,o,c});
+
+const SETS=[
+{id:"pluriel",t:"Plural",ch:"1",rule:"Grundregel +s. -al → -aux (ausser festival), -eau/-eu → +x, bijou/caillou/chou/genou → +x, œil → yeux, travail → travaux. -s/-x/-z bleibt.",items:[
+I("le journal → les ___","journaux"),I("le bateau → les ___","bateaux"),I("le feu → les ___","feux"),I("le bijou → les ___","bijoux"),
+I("le cou → les ___","cous"),I("le festival → les ___","festivals"),I("l'œil → les ___","yeux"),I("le travail → les ___","travaux"),
+I("le bras → les ___","bras"),I("le nez → les ___","nez"),I("l'hôpital → les ___","hôpitaux"),I("le cheveu → les ___","cheveux"),
+I("le genou → les ___","genoux"),I("le bisou → les ___","bisous"),I("un ami génial → des amis ___","géniaux"),I("une amie géniale → des amies ___","géniales"),
+I("le chou → les ___","choux"),I("le bureau → les ___","bureaux"),I("le caillou → les ___","cailloux"),I("un prix égal → des prix ___","égaux")]},
+
+{id:"feminin",t:"Feminin der Adjektive",ch:"2",rule:"+e. -eux → -euse, -er → -ère, -f → -ve, oft Konsonant doppelt (bonne, grosse, ancienne). Unregelmässig: blanche, fraîche, sèche, douce, fausse, longue, rigolote.",items:[
+I("heureux → ___","heureuse"),I("cher → ___","chère"),I("sportif → ___","sportive"),I("ancien → ___","ancienne"),I("bon → ___","bonne"),
+I("gros → ___","grosse"),I("blanc → ___","blanche"),I("frais → ___","fraîche"),I("long → ___","longue"),I("sec → ___","sèche"),
+I("doux → ___","douce"),I("faux → ___","fausse"),I("inquiet → ___","inquiète"),I("muet → ___","muette"),I("réel → ___","réelle"),
+I("pareil → ___","pareille"),I("premier → ___","première"),I("neuf → ___","neuve"),I("bref → ___","brève"),I("jeune → ___","jeune"),
+I("gris → ___","grise"),I("rigolo → ___","rigolote"),I("franc → ___","franche"),I("délicieux → ___","délicieuse"),I("bas → ___","basse"),I("fier → ___","fière")]},
+
+{id:"beau",t:"beau, nouveau, vieux",ch:"2",rule:"Vor männlichem Nomen mit Vokal: bel, nouvel, vieil. Plural männlich: beaux, nouveaux, vieux. Feminin: belle, nouvelle, vieille.",items:[
+I("un ___ ordinateur (beau)","bel"),I("un ___ tapis (vieux)","vieux"),I("une ___ armoire (vieux)","vieille"),I("un ___ homme (vieux)","vieil"),
+I("de ___ chaises (nouveau)","nouvelles"),I("de ___ arbres (beau)","beaux"),I("un ___ appartement (nouveau)","nouvel"),I("un ___ livre (nouveau)","nouveau"),
+I("une ___ maison (beau)","belle"),I("de ___ amis (vieux)","vieux"),I("un ___ hôtel (beau)","bel"),I("une ___ voiture (nouveau)","nouvelle")]},
+
+{id:"compar",t:"Komparativ und Superlativ",ch:"3",rule:"plus / moins / aussi + Adjektiv + que. Superlativ le/la/les plus. bon → meilleur, le meilleur. bien → mieux, le mieux.",items:[
+I("Paul est ___ Marie. (+ grand)","plus grand que"),I("Anna est ___ Luc. (= sportif)","aussi sportive que"),I("Ce film est ___ le livre. (− intéressant)","moins intéressant que"),
+I("Ces pommes sont ___ celles-là. (+ bon)","meilleures que"),I("C'est ___ gâteau du monde. (le + bon)","le meilleur"),I("Ce sont les élèves ___ de la classe. (les + petit)","les plus petits"),
+I("Ma sœur est ___ moi. (+ jeune)","plus jeune que"),I("Cette pizza est ___ l'autre. (+ bon)","meilleure que"),
+M("Alfred joue bien, mais Madeleine joue ___ que lui.",["meilleur","mieux","plus bien"],1),M("C'est Yvonne qui joue ___.",["le mieux","le meilleur","la meilleure"],0),
+M("Ta soupe est ___ que la mienne.",["plus bonne","meilleure","mieux"],1),I("Les filles sont ___ les garçons. (= rapide)","aussi rapides que")]},
+
+{id:"adverbe",t:"Adverb",ch:"4",rule:"Adverb = Feminin + -ment, unveränderlich. bon → bien, mauvais → mal. très/si vor Adjektiv, beaucoup/tant beim Verb.",items:[
+I("heureux → ___","heureusement"),I("clair → ___","clairement"),I("lent → ___","lentement"),I("doux → ___","doucement"),I("sérieux → ___","sérieusement"),
+I("dangereux → ___","dangereusement"),I("attentif → ___","attentivement"),I("complet → ___","complètement"),I("bon → ___","bien"),I("mauvais → ___","mal"),
+M("Il est ___ fort.",["très","beaucoup"],0),M("Il s'entraîne ___.",["très","beaucoup"],1),M("Elle est ___ charmante.",["si","tant"],0),M("Je l'aime ___.",["si","tant"],1),
+M("Elle chante ___.",["bon","bien"],1),M("C'est un ___ conseil.",["bon","bien"],0),M("Georges parle ___.",["clair","clairement","claires"],1),M("Ses idées sont ___.",["clair","claires","clairement"],1),
+M("On m'a ___ conseillé.",["mauvais","mal"],1)]},
+
+{id:"article",t:"Artikel, au / du",ch:"5",rule:"à + le = au, à + les = aux, de + le = du, de + les = des. la und l' verschmelzen nie.",items:[
+I("Je pense ___ père. (à + le)","au"),I("Je parle ___ enfants. (à + les)","aux"),I("le nom ___ père (de + le)","du"),I("le nom ___ grands-parents (de + les)","des"),
+I("la voiture ___ mère (de + la)","de la"),I("Je vais ___ école. (à + l')","à l'"),I("Je viens ___ hôpital. (de + l')","de l'"),I("Je téléphone ___ copine. (à + la)","à la"),
+I("C'est ___ ami. (unbestimmt)","un"),I("J'ai ___ amies. (unbestimmt)","des"),I("___ enfant joue. (bestimmt)","l'"),I("Je vais ___ cinéma. (à + le)","au"),
+I("Il parle ___ professeurs. (de + les)","des"),I("le livre ___ élève (de + l')","de l'")]},
+
+{id:"defini",t:"Sonderfälle bestimmter Artikel",ch:"5",rule:"Nach aimer/adorer/détester, bei Körpermerkmalen, Tageszeit, regelmässigem Wochentag, Datum, Titel steht le/la/les. Einmaliger Wochentag und «Bonjour docteur» ohne Artikel.",items:[
+M("J'aime ___ raclette.",["la","de la","—"],0),M("Elle déteste ___ enfants.",["des","les","—"],1),M("Mon frère a ___ yeux bleus.",["des","les","—"],1),
+M("___ lundi, j'ai classe. (jeden Montag)",["Le","—"],0),M("___, je ne pourrai pas venir. (nächsten Dienstag)",["Le mardi","Mardi"],1),M("Je suis né ___ 13 novembre.",["le","au","—"],0),
+M("Bonjour ___ docteur!",["le","—"],1),M("Bonjour Monsieur ___ Président!",["le","—"],0),M("___ semaine prochaine, on part.",["La","—"],0),
+M("___ professeur Einstein était un génie.",["Le","—"],0),M("___ soir, je lis. (abends)",["Le","Au","—"],0),M("Il adore ___ chats.",["des","les"],1),M("Il a toujours ___ mains sales.",["des","les"],1)]},
+
+{id:"partitif",t:"Teilungsartikel und de partitif",ch:"5",rule:"du / de la / de l' / des für unbestimmte Mengen. Nach Mengenangaben und Verneinung nur de / d'. Nach sans kein Artikel.",items:[
+I("Je prends ___ riz.","du"),I("Il boit ___ eau.","de l'"),I("Elle mange ___ viande.","de la"),I("J'achète ___ pommes.","des"),
+I("Je ne prends pas ___ vin.","de"),I("Non, je n'ai pas ___ moto.","de"),I("Je ne veux pas ___ eau.","d'"),I("un kilo ___ pain","de"),
+I("une bouteille ___ eau minérale","d'"),I("beaucoup ___ biscuits","de"),I("un peu ___ sucre","de"),I("Il fait ___ sport.","du"),
+I("Elle fait ___ musique.","de la"),I("Tu as ___ courage.","du"),I("Il faut ___ patience.","de la"),I("Er isst Brot. → Il mange ___ pain.","du"),
+I("Il ne boit plus ___ vin.","de"),I("trop ___ vin","de"),I("Elle a ___ talent.","du"),I("Je ramasse ___ bois.","du"),I("une tasse ___ ovomaltine","d'"),
+I("une tablette ___ chocolat","de"),I("Moi, je prends le café avec ___ sucre.","du"),
+M("Il prend le café sans ___ sucre.",["du","de","— (kein Artikel)"],2),M("Mon frère me passe ___ riz. (den ganzen Reis)",["le","du"],0),M("Elle ne boit jamais ___ vin.",["du","de","le"],1)]},
+
+{id:"wegfall",t:"Ausdrücke ohne Artikel",ch:"5",rule:"avoir faim/soif/besoin/peur/honte/raison/tort/envie, prendre place/feu, perdre courage/patience, faire peur/plaisir/signe/confiance à qn: kein Artikel.",items:[
+I("Ich habe Hunger. → J'ai ___.","faim"),I("Ich habe Durst. → J'ai ___.","soif"),I("Er hat Angst. → Il a ___.","peur"),I("Du hast recht. → Tu as ___.","raison"),
+I("Ihr habt unrecht. → Vous avez ___.","tort"),I("Ich habe Lust. → J'ai ___.","envie"),I("Er schämt sich. → Il a ___.","honte"),I("Ich brauche dich. → J'ai ___ de toi.","besoin"),
+I("Nehmen Sie Platz! → Prenez ___!","place"),I("Das Haus fängt Feuer. → La maison prend ___.","feu"),I("Er verliert den Mut. → Il perd ___.","courage"),
+I("Du machst mir Angst. → Tu me fais ___.","peur"),I("Ich vertraue dir. → Je te fais ___.","confiance"),I("Sie winkt mir. → Elle me fait ___.","signe"),
+I("Das freut mich. → Ça me fait ___.","plaisir"),M("J'ai ___ besoin d'aide.",["le","du","—"],2),M("Elle perd ___ patience.",["la","de la","—"],2)]},
+
+{id:"demo",t:"ce, cet, cette, celui",ch:"6",rule:"ce + m. Konsonant, cet + m. Vokal / stummes h, cette + f., ces Plural. Pronomen: celui, celle, ceux, celles (+ -ci / -là).",items:[
+I("___ lac","ce"),I("___ arbre","cet"),I("___ forêt","cette"),I("___ hôtel","cet"),I("___ garçon","ce"),I("___ voitures","ces"),I("___ ami","cet"),I("___ amie","cette"),I("___ enfants","ces"),I("___ homme","cet"),
+I("Je prends ce gâteau. Non, pas ___-là. (le gâteau)","celui"),I("Cette jupe est plus courte que ___ de mon amie.","celle"),I("Ces livres-ci ou ___-là?","ceux"),I("Ces chaises-ci ou ___-là?","celles"),
+I("Quel pull? ___-ci ou celui-là?","celui"),I("Ma maison est plus petite que ___ de Paul.","celle")]},
+
+{id:"poss",t:"Possessivbegleiter",ch:"7",rule:"Nach der Sache, nicht nach dem Besitzer. Weibliches Wort mit Vokal: mon/ton/son. leur → leurs nur bei Nomen im Plural.",items:[
+I("(je) ___ frère","mon"),I("(je) ___ sœur","ma"),I("(je) ___ amie","mon"),I("(je) ___ parents","mes"),I("(tu) ___ école","ton"),I("(tu) ___ chambre","ta"),
+I("(il) ___ voiture (seine)","sa"),I("(elle) ___ père (ihr)","son"),I("(nous) ___ maison","notre"),I("(nous) ___ enfants","nos"),I("(vous) ___ chien","votre"),
+I("(vous) ___ chats","vos"),I("(ils) ___ fils (ein Sohn)","leur"),I("(ils) ___ enfants","leurs"),I("Marie sort avec ___ copain.","son"),I("Jean joue avec ___ copine.","sa"),
+I("(elle) ___ histoire","son"),I("(elles) ___ valise","leur"),I("(il) ___ cousines","ses")]},
+
+{id:"tout",t:"tout, toute, tous, toutes",ch:"8",rule:"Singular = ganz (tout, toute), Plural = alle (tous, toutes). Richtet sich nach dem Nomen. Allein stehendes tout = alles.",items:[
+I("___ le temps","tout"),I("___ la journée","toute"),I("___ les jours","tous"),I("___ les nuits","toutes"),I("Ils ont expliqué ___ ces activités.","toutes"),
+I("Ils ont discuté avec ___ leurs élèves.","tous"),I("J'ai lu ___. (alles)","tout"),I("J'ai lu ___ la nuit.","toute"),I("___ le monde","tout"),I("___ les filles","toutes"),
+I("___ mes amis","tous"),I("Elle connaissait presque ___ la ville.","toute"),I("Clara a aimé ___ le voyage.","tout"),I("___ ses chaussures","toutes"),
+M("Wie spricht man «tous les garçons» aus?",["[tus]","[tu]","[tut]"],1),M("«jeder Schüler» heisst …",["tout élève","chaque élève","tous élève"],1)]},
+
+{id:"tonique",t:"Betonte Pronomen",ch:"9",rule:"moi, toi, lui, elle, nous, vous, eux, elles. Nach Präpositionen, nach c'est, zur Verstärkung, ohne Verb.",items:[
+I("___, je ne connais pas cette chanteuse. (ich)","moi"),I("Tu ne la connais pas, ___?","toi"),I("Mais ___, il la connaît.","lui"),I("___, ils ne connaissent personne.","eux"),
+I("Mais ___, elles connaissent tout le monde.","elles"),I("Ils étaient à l'école avec ___. (wir)","nous"),I("C'est ___? (du)","toi"),I("Fais-le ___-même!","toi"),
+I("Qui est là? – ___. (ich)","moi"),I("Je ne les connais pas, ___. (sie, m.)","eux"),I("Je pars avec ___. (er)","lui"),I("C'est pour ___. (ihr)","vous")]},
+
+{id:"objet",t:"le, la, les, lui, leur",ch:"9",rule:"Wen? (ohne à) → le, la, l', les. Wem? (à + Person) → lui, leur. Pronomen steht vor dem konjugierten Verb.",items:[
+I("Pierre voit la Tour Eiffel. → Pierre ___ voit.","la"),I("Marie aime les enfants. → Marie ___ aime.","les"),I("Je regarde le film. → Je ___ regarde.","le"),
+I("J'aime Paul. → Je ___ aime.","l'"),I("Pierre donne le livre à Marie. → Pierre ___ donne le livre.","lui"),I("L'épicier offre un cadeau aux clients. → Il ___ offre un cadeau.","leur"),
+I("Je téléphone à mes parents. → Je ___ téléphone.","leur"),I("Tu parles à ton prof. → Tu ___ parles.","lui"),I("Elle invite Julie et moi. → Elle ___ invite.","nous"),
+I("Je ne vois pas Pierre. → Je ne ___ vois pas.","le"),I("J'ai vu le lac Léman. → Je ___ ai vu.","l'"),I("J'ai montré le lac à ma sœur. → Je ___ ai montré le lac.","lui"),
+I("Je vais montrer la plage à ces touristes. → Je vais ___ montrer la plage.","leur"),I("On peut voir la mer. → On peut ___ voir.","la"),
+M("Je ___ écris une lettre. (à Marie)",["la","lui","leur"],1),M("Je ___ cherche. (die Schlüssel)",["les","leur","leurs"],0)]},
+
+{id:"reflechi",t:"Reflexivpronomen + Imperativ",ch:"9",rule:"me, te, se, nous, vous, se (vor Vokal m', t', s'). Imperativ bejaht: Verb-toi / -nous / -vous. Verneint: ne te … pas.",items:[
+I("je ___ prépare","me"),I("tu ___ entraînes","t'"),I("il ___ lave","se"),I("nous ___ levons","nous"),I("vous ___ couchez","vous"),I("elles ___ habillent","s'"),I("je ___ appelle","m'"),
+I("Impératif tu: se lever → ___","lève-toi"),I("Impératif nous: se dépêcher → ___","dépêchons-nous"),I("Impératif vous: se préparer → ___","préparez-vous"),
+I("Impératif tu: se réveiller → ___","réveille-toi"),I("Impératif tu, verneint: se lever → ___","ne te lève pas"),I("Impératif vous, verneint: se préparer → ___","ne vous préparez pas"),
+I("Impératif tu: se doucher → ___","douche-toi"),I("Impératif nous: se raser → ___","rasons-nous"),I("Impératif vous, verneint: se maquiller → ___","ne vous maquillez pas"),
+I("Impératif tu, verneint: se maquiller → ___","ne te maquille pas")]},
+
+{id:"yen",t:"y und en",ch:"9",rule:"y = à + Ort / Sache. en = de + Sache, Teilungsartikel, Mengenangabe. Bei Personen: lui / leur, à elles, de lui.",items:[
+I("Mes parents sont à Paris. Ils ___ sont allés en avion.","y"),I("Tu as répondu à sa lettre? – Oui, j'___ ai répondu.","y"),I("Tu as répondu à Julie? – Non, je ne ___ ai pas répondu.","lui"),
+I("Tu as pensé à tes devoirs? – Oui, j'___ ai pensé.","y"),I("Tu as pensé à tes copines? – Non, je n'ai pas pensé à ___.","elles"),I("Tu te souviens de cette histoire? – Je m'___ souviens.","en"),
+I("Tu te souviens de Jean-Claude? – Non, je ne me souviens pas de ___.","lui"),I("Tu as acheté de l'eau? – Oui, j'___ ai acheté.","en"),I("Combien de bouteilles? – J'___ ai acheté six.","en"),
+I("Tu vas à la piscine? – Oui, j'___ vais.","y"),I("Tu veux du gâteau? – Oui, j'___ veux bien.","en"),I("Il a des frères? – Oui, il ___ a deux.","en"),
+I("Tu habites à Zurich? – Oui, j'___ habite.","y"),I("Nous devons acheter des sandwichs. → Nous devons ___ acheter.","en"),I("On a nagé dans le lac. → On ___ a nagé.","y")]},
+
+{id:"ordre",t:"Reihenfolge der Pronomen",ch:"9",rule:"Vor dem Verb: me/te/nous/vous → le/la/les → lui/leur → y → en. Imperativ bejaht: Verb-le/la/les-moi/lui/nous/leur-y-en.",items:[
+M("Il donne le livre à Marie. →",["Il lui le donne.","Il le lui donne."],1),M("Elle me montre les photos. →",["Elle me les montre.","Elle les me montre."],0),
+M("Je donne les clés à mes parents. →",["Je leur les donne.","Je les leur donne."],1),M("Il y a du pain? – Oui, …",["il y en a.","il en y a."],0),
+M("Donne-moi le livre! →",["Donne-moi-le!","Donne-le-moi!"],1),M("Montre les photos à Paul! →",["Montre-les-lui!","Montre-lui-les!"],0),
+M("Ne me dis pas ça (le)! →",["Ne le me dis pas!","Ne me le dis pas!"],1),M("Il nous donne les billets. →",["Il nous les donne.","Il les nous donne."],0),
+M("Je n'ai pas parlé de ça à Paul. →",["Je ne lui en ai pas parlé.","Je ne en lui ai pas parlé."],0),M("Donne-moi du gâteau! →",["Donne-m'en!","Donne-en-moi!"],0),
+M("Tu as dit la vérité à tes parents? – Non, …",["je ne la leur ai pas dite.","je ne leur la ai pas dite."],0)]},
+
+{id:"relatif",t:"qui oder que",ch:"10",rule:"qui = Subjekt (danach meist ein Verb). que / qu' = direktes Objekt (danach ein Subjekt).",items:[
+I("L'homme ___ se trouve sur la photo est célèbre.","qui"),I("L'homme ___ tu vois est célèbre.","que"),I("Le livre ___ je lis est génial.","que"),I("La fille ___ chante est ma sœur.","qui"),
+I("Le film ___ est sorti hier est nul.","qui"),I("Les amis ___ j'ai invités arrivent.","que"),I("C'est le prof ___ m'aide.","qui"),I("La voiture ___ il a achetée est rouge.","qu'"),
+I("C'est une ville ___ j'aime.","que"),I("Le chat ___ dort est à moi.","qui"),I("Le gâteau ___ Marie a fait est bon.","que"),I("Les élèves ___ parlent trop sont punis.","qui"),I("La chanson ___ elle chante est belle.","qu'")]},
+
+{id:"pcpron",t:"Passé composé reflexiv",ch:"11",rule:"Immer être. Participe passé nach dem Subjekt angleichen: +e weiblich, +s Plural, gemischte Gruppe männlich.",items:[
+I("Je (f.) ___. (se lever)","me suis levée"),I("Il ___. (se laver)","s'est lavé"),I("Elle ___. (s'habiller)","s'est habillée"),I("Nous (m.) ___. (s'arrêter)","nous sommes arrêtés"),
+I("Vous (m. pl.) ___. (s'amuser)","vous êtes amusés"),I("Ils ___. (se dépêcher)","se sont dépêchés"),I("Elles ___. (se coucher)","se sont couchées"),I("Tu (m.) ___. (se réveiller)","t'es réveillé"),
+I("Marie ___. (se reposer)","s'est reposée"),I("Jacqueline ___ beaucoup. (s'entraîner)","s'est entraînée"),I("Les filles ___. (se maquiller)","se sont maquillées"),
+I("Paul et Anne ___ à Paris. (se rencontrer)","se sont rencontrés"),I("Je (m.) ___. (se doucher)","me suis douché"),I("Tu (f.) ___. (se coiffer)","t'es coiffée"),
+M("Hier, Lucie ___.",["s'a levée","s'est levée","s'est levé"],1),M("Nous (Anna et moi) ___ tard.",["nous sommes couchées","nous avons couché","nous sommes couchés"],0),
+M("Il ne ___ pas rasé.",["s'est","est s'","se a"],0)]},
+
+{id:"sylvie",t:"Text: Sylvie raconte",ch:"11",rule:"Sylvie ist eine Frau → je me suis …ée. «mon mari et moi» und die Kinder → gemischt → …és.",items:[
+I("Hier matin, mon mari et moi, nous ___ à 7 h 30. (se réveiller)","nous sommes réveillés"),I("Nous ___. (se lever)","nous sommes levés"),I("Moi, je ___ (se coiffer)","me suis coiffée"),
+I("et je ___. (se maquiller)","me suis maquillée"),I("Marc ___ (se doucher)","s'est douché"),I("et il ___ (se raser)","s'est rasé"),I("Ils ___ et nous sommes sortis. (s'habiller)","se sont habillés"),
+I("Nous ___ avant de nous quitter (s'embrasser)","nous sommes embrassés"),I("et nous ___ pour attraper le bus. (se dépêcher)","nous sommes dépêchés")]},
+
+{id:"negation",t:"Verneinung",ch:"12",rule:"ne + Verb + pas/plus/jamais/rien/personne. Im Passé composé: rien vor dem Partizip, personne danach. Als Subjekt: Personne ne / Rien ne, ohne pas.",items:[
+I("Florent ne chante ___. (nicht)","pas"),I("Lucas ___ dit rien.","ne"),
+I("Ich habe nichts gesehen. → Je n'ai ___ vu.","rien"),I("Ich habe niemanden gesehen. → Je n'ai vu ___.","personne"),
+I("Niemand ist gekommen. → ___ n'est venu.","personne"),I("Nichts interessiert ihn. → ___ ne l'intéresse.","rien"),
+I("Ich kann nichts sehen. → Je ne peux ___ voir.","rien"),I("Er singt nicht mehr. → Il ne chante ___.","plus"),I("Sie antwortet nie. → Elle ne répond ___.","jamais"),
+I("Er hat noch nicht fertig. → Il n'a ___ fini.","pas encore"),I("Das gefällt mir überhaupt nicht. → Cela ne me plaît ___.","pas du tout"),
+I("Mir auch nicht. → Cela ne me plaît ___.","pas non plus"),I("Je ne fais pas ___ fautes.","de"),I("Il ne boit jamais ___ café.","de"),
+M("Ich habe niemanden getroffen.",["Je n'ai personne rencontré.","Je n'ai rencontré personne.","Je n'ai pas rencontré personne."],1),
+M("Ich habe nichts gesagt.",["Je n'ai rien dit.","Je n'ai dit rien.","Je n'ai pas rien dit."],0),
+M("Niemand hört mir zu.",["Personne ne m'écoute pas.","Personne ne m'écoute.","Ne personne m'écoute."],1),
+M("Tu as vu quelqu'un? – …",["Ne personne!","Personne!","Personne ne!"],1),
+M("Ich sehe ihn nicht.",["Je ne vois le pas.","Je ne le vois pas.","Je le ne vois pas."],1),
+M("Il y a quelqu'un? – Non, …",["il n'y a personne.","il y n'a personne.","il n'a y personne."],0),
+M("Je ne vais rencontrer ___.",["personne","rien personne","pas personne"],0)]}
+];
+const BYID=Object.fromEntries(SETS.map(s=>[s.id,s]));
+
+// ---------- Hilfen ----------
+const norm=s=>s.toLowerCase().replace(/[’`´‘]/g,"'").replace(/œ/g,"oe").replace(/\s*'\s*/g,"'").replace(/[–—-]/g,"-").replace(/\s*-\s*/g,"-").replace(/\s+/g," ").replace(/[.!?,;:]+$/,"").trim();
+const strip=s=>s.normalize("NFD").replace(/[̀-ͯ]/g,"");
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+
+// ---------- Tabs ----------
+const tabs=[...document.querySelectorAll("nav.tabs button")];
+function show(p){tabs.forEach(b=>b.setAttribute("aria-selected",b.dataset.p===p));["theorie","ueben","test"].forEach(x=>document.getElementById("p-"+x).hidden=x!==p);window.scrollTo({top:0});}
+tabs.forEach(b=>b.onclick=()=>{show(b.dataset.p);if(b.dataset.p==="ueben")renderList();});
+document.querySelectorAll(".go").forEach(b=>b.onclick=()=>{show("ueben");openSet(b.dataset.set);});
+
+// ---------- Übungs-Renderer ----------
+function renderItems(container,items,opts){
+  const sel=new Array(items.length).fill(null);
+  container.innerHTML=`<ol class="items">${items.map((it,i)=>{
+    const tag=opts.tag?`<span class="tag">${esc(opts.tag(it,i))}</span>`:"";
+    if(it.t==="i"){
+      const wide=Math.max(...it.a.map(a=>a.length))>9?" wide":"";
+      const parts=it.q.split("___");
+      const q=parts.length>1?esc(parts[0])+`<input id="in-${opts.key}-${i}" class="${wide.trim()}" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Antwort ${i+1}">`+esc(parts.slice(1).join("___")):esc(it.q)+` <input id="in-${opts.key}-${i}" class="${wide.trim()}" autocomplete="off" autocapitalize="off" spellcheck="false">`;
+      return `<li data-i="${i}"><span class="num">${i+1}</span><div class="q">${tag}${q}<div class="fb"></div></div></li>`;
+    }
+    return `<li data-i="${i}"><span class="num">${i+1}</span><div class="q">${tag}${esc(it.q).replace("___","<b>___</b>")}<div class="opts">${it.o.map((o,j)=>`<button class="opt" data-j="${j}" aria-pressed="false">${esc(o)}</button>`).join("")}</div><div class="fb"></div></div></li>`;
+  }).join("")}</ol>
+  <div class="bar"><button class="btn" data-act="check">Prüfen</button><button class="btn alt" data-act="again">Nochmal (neu gemischt)</button><span class="score" aria-live="polite"></span></div>`;
+  const lis=[...container.querySelectorAll("ol.items>li")];
+  const inputs=[...container.querySelectorAll("input")];
+  inputs.forEach((inp,k)=>inp.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();(inputs[k+1]||container.querySelector('[data-act="check"]')).focus();}}));
+  container.querySelectorAll(".opts").forEach((g,i)=>{const li=g.closest("li");const idx=+li.dataset.i;g.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{if(li.dataset.done)return;g.querySelectorAll(".opt").forEach(x=>x.setAttribute("aria-pressed","false"));b.setAttribute("aria-pressed","true");sel[idx]=+b.dataset.j;});});
+  container.querySelector('[data-act="check"]').onclick=()=>{
+    let ok=0;
+    lis.forEach(li=>{const i=+li.dataset.i,it=items[i],fb=li.querySelector(".fb");li.classList.remove("ok","bad");let right=false,msg="";
+      if(it.t==="i"){const inp=li.querySelector("input");const v=norm(inp.value);const sols=it.a.map(norm);right=sols.includes(v);
+        if(!right){const accentOnly=v&&sols.map(strip).includes(strip(v));msg=(accentOnly?"Fast! Akzent prüfen. ":"")+`Richtig: <span class="sol">${esc(it.a[0])}</span>`;}
+        inp.disabled=true;}
+      else{right=sel[i]===it.c;if(!right)msg=`Richtig: <span class="sol">${esc(it.o[it.c])}</span>`;}
+      if(!right&&opts.rule){const r=opts.rule(it);if(r)msg+=`<br><span style="color:var(--muted)">${esc(r)}</span>`;}
+      li.dataset.done="1";li.classList.add(right?"ok":"bad");fb.innerHTML=msg;if(right)ok++;});
+    const pct=Math.round(ok/items.length*100);const sc=container.querySelector(".score");
+    sc.textContent=`${ok} / ${items.length} richtig (${pct} %)`;sc.className="score "+(pct>=85?"good":pct>=60?"mid":"low");
+    container.querySelector('[data-act="check"]').disabled=true;
+    if(opts.onDone)opts.onDone(ok,items.length);
+  };
+  container.querySelector('[data-act="again"]').onclick=opts.again;
+}
+
+// ---------- Übersicht ----------
+const list=document.getElementById("setlist"),view=document.getElementById("exview");
+function renderList(){
+  view.hidden=true;list.hidden=false;
+  list.innerHTML=`<div class="sets">${SETS.map(s=>{const b=store.get("fg_best_"+s.id);return `<button class="setcard" data-id="${s.id}"><span class="m">Kapitel ${s.ch}</span><span class="t">${esc(s.t)}</span><span class="m">${s.items.length} Aufgaben</span>${b?`<span class="best">Bestes Resultat: ${b} %</span>`:""}</button>`}).join("")}</div>`;
+  list.querySelectorAll(".setcard").forEach(c=>c.onclick=()=>openSet(c.dataset.id));
+}
+function openSet(id){
+  const s=BYID[id];list.hidden=true;view.hidden=false;
+  view.innerHTML=`<div class="sheet"><div class="exhead"><button class="back">← Alle Übungen</button><span class="m" style="color:var(--muted);font-size:14px">Kapitel ${s.ch}</span></div><h2 style="font-family:var(--f-display);font-size:24px;margin:4px 0 4px">${esc(s.t)}</h2><p class="rule">${esc(s.rule)}</p><div class="box"></div></div>`;
+  view.querySelector(".back").onclick=renderList;
+  renderItems(view.querySelector(".box"),shuffle(s.items),{key:id,again:()=>openSet(id),
+    onDone:(ok,n)=>{const p=Math.round(ok/n*100),old=+(store.get("fg_best_"+id)||0);if(p>old)store.set("fg_best_"+id,p);}});
+  window.scrollTo({top:0});
+}
+
+// ---------- Test ----------
+function startTest(){
+  const pool=[];SETS.forEach(s=>s.items.forEach(it=>pool.push({...it,_s:s})));
+  const items=shuffle(pool).slice(0,20);
+  document.getElementById("testintro").hidden=true;const tv=document.getElementById("testview");tv.hidden=false;
+  tv.innerHTML=`<div class="sheet"><h2 style="font-family:var(--f-display);font-size:24px;margin:0 0 12px">Mischtest · 20 Aufgaben</h2><div class="box"></div></div>`;
+  renderItems(tv.querySelector(".box"),items,{key:"test",tag:it=>it._s.t,rule:it=>it._s.rule,again:startTest,onDone:(ok,n)=>{const p=Math.round(ok/n*100);window.Lernregal&&Lernregal.fortschritt(p,"Mischtest "+p+" %");}});
+  window.scrollTo({top:0});
+}
+document.getElementById("starttest").onclick=startTest;
+
+// Deep-Link per #ueben oder #test
+if(location.hash==="#ueben"){show("ueben");renderList();}else if(location.hash==="#test")show("test");
+</script>
+
+<script src="../regal.js" defer></script>
+</body></html>
