@@ -91,8 +91,8 @@ section{display:flex;flex-direction:column;gap:20px}
 <header>
   <div class="eyebrow">Deutsch · Grammatik · Rechtschreibung</div>
   <h1>Kommasetzung<span class="c">,</span> komplett</h1>
-  <p class="lead">Alle Regeln mit Beispielen, die wichtigsten Tricks und 100 Übungssätze. Im Trainer tippst du zwischen die Wörter, wo ein Komma hingehört.</p>
-  <nav class="jump"><a href="#regeln">Regeln</a><a href="#tricks">Tricks</a><a href="#training">100 Übungen</a></nav>
+  <p class="lead">Alle Regeln mit Beispielen, die wichtigsten Tricks und 128 Übungssätze. Im Trainer tippst du zwischen die Wörter, wo ein Komma hingehört.</p>
+  <nav class="jump"><a href="#regeln">Regeln</a><a href="#tricks">Tricks</a><a href="#training">128 Übungen</a></nav>
 </header>
 
 <section id="regeln">
@@ -101,12 +101,18 @@ section{display:flex;flex-direction:column;gap:20px}
     <div class="rule"><div class="head"><span class="num">R1</span><h3>Aufzählungen</h3></div>
       <p>Gleichrangige Wörter oder Wortgruppen werden mit Komma getrennt. Vor <i>und, oder, sowie</i> steht kein Komma.</p>
       <div class="ex">Ich kaufe Brot<b>,</b> Milch<b>,</b> Käse und Eier.</div>
-      <div class="ex">Ein langer<b>,</b> kalter Winter.</div></div>
+      <div class="ex">Wir fuhren<b>,</b> fuhren und fuhren.</div></div>
+    <div class="rule"><div class="head"><span class="num">R1a</span><h3>Adjektive: und-Probe</h3></div>
+      <p>Zwischen Adjektiven steht nur ein Komma, wenn <i>und</i> dazwischen passen würde (gleichrangig). Passt <i>und</i> nicht, kein Komma.</p>
+      <div class="ex">ein altes<b>,</b> verfallenes Haus <span class="sig">(altes und verfallenes ✓)</span></div>
+      <div class="ex">ein interessantes physikalisches Problem <span class="sig">(<s>und</s> ✗)</span></div>
+      <div class="ex">ein grosser deutscher Dichter <span class="sig">(<s>und</s> ✗)</span></div></div>
     <div class="rule"><div class="head"><span class="num">R2</span><h3>Gegensätze</h3></div>
       <p>Vor entgegensetzenden Konjunktionen steht immer ein Komma.</p>
       <div class="ex">Er ist klein<b>,</b> aber stark.</div>
       <div class="ex">Nicht meins<b>,</b> sondern deins.</div>
-      <div class="sig">aber · sondern · doch · jedoch</div></div>
+      <div class="ex">Bald behaupten sie dies<b>,</b> bald jenes.</div>
+      <div class="sig">aber · sondern · [je]doch · bald – bald · teils – teils · halb – halb · einerseits – andererseits · je – desto (umso) · ob – ob</div></div>
     <div class="rule"><div class="head"><span class="num">R3</span><h3>Hauptsatz + Hauptsatz</h3></div>
       <p>Zwei Hauptsätze ohne Konjunktion werden mit Komma getrennt. Mit <i>und / oder</i> ist das Komma freiwillig.</p>
       <div class="ex">Es regnet<b>,</b> wir bleiben drinnen.</div>
@@ -126,10 +132,12 @@ section{display:flex;flex-direction:column;gap:20px}
       <div class="ex">Ich freue mich darauf<b>,</b> dich zu sehen.</div>
       <div class="ex">Ich versuche<b>(,)</b> pünktlich zu kommen.</div></div>
     <div class="rule"><div class="head"><span class="num">R7</span><h3>Zusätze &amp; Nachträge</h3></div>
-      <p>Appositionen und nachgestellte Erklärungen werden abgetrennt, eingeschoben auf beiden Seiten.</p>
+      <p>Appositionen und Nachträge werden abgetrennt. Stehen sie mitten im Satz: <b>das 2. Komma nicht vergessen!</b></p>
       <div class="ex">Herr Meier<b>,</b> unser Lehrer<b>,</b> ist krank.</div>
-      <div class="ex">Ich mag Obst<b>,</b> besonders Äpfel.</div>
-      <div class="sig">z. B. · besonders · vor allem · und zwar · das heisst · nämlich</div></div>
+      <div class="ex">Die Sitzung findet am Montag<b>,</b> dem 1. März<b>,</b> statt.</div>
+      <div class="ex">Sie beherrscht mehrere Fremdsprachen<b>,</b> nämlich Französisch, Italienisch und Englisch<b>,</b> sowie Deutsch.</div>
+      <div class="ex">Das Schiff fährt zweimal wöchentlich<b>,</b> und zwar am Mittwoch und am Samstag.</div>
+      <div class="sig">nämlich · und zwar · und das · also · vor allem · namentlich · zum Beispiel · nicht zuletzt · wenn auch/nicht · das heisst (d. h.) · insbesondere · wie (Komma freiwillig)</div></div>
     <div class="rule"><div class="head"><span class="num">R8</span><h3>Anrede &amp; Ausrufe</h3></div>
       <p>Anreden, Ausrufe sowie <i>ja, nein, ach, oh</i> werden vom Satz abgetrennt.</p>
       <div class="ex">Lisa<b>,</b> kommst du mit?</div>
@@ -144,10 +152,16 @@ section{display:flex;flex-direction:column;gap:20px}
       <p>Orts-, Datums- und Zeitangaben werden mit Komma gegliedert.</p>
       <div class="ex">Zürich<b>,</b> 15. Oktober 2026</div>
       <div class="ex">am Freitag<b>,</b> dem 20. Oktober</div></div>
-    <div class="rule no"><div class="head"><span class="num">✗</span><h3>Hier kein Komma</h3></div>
-      <p>Vor <i>und, oder, sowie, weder … noch, sowohl … als auch</i> in Aufzählungen. Bei Vergleichen ohne Verb (<i>grösser als ich, so alt wie du</i>). Zwischen Subjekt und Verb.</p>
-      <div class="ex">Er ist grösser als sein Bruder.</div>
-      <div class="ex">Weder Tom noch Lisa war da.</div></div>
+    <div class="rule no"><div class="head"><span class="num">✗</span><h3>Konjunktionen ohne Komma</h3></div>
+      <p>Anreihende Konjunktionen ersetzen das Komma. Auch bei Vergleichen ohne Verb kein Komma.</p>
+      <div class="ex">Sie beherrscht viele Fremdsprachen sowie Englisch.</div>
+      <div class="ex">Sowohl die Anwohner als auch die Behörden halten die Lärmbelastung für zu hoch.</div>
+      <div class="sig">und · oder · sowie · als · bis · wie (Vergleich) · respektive · beziehungsweise · sowohl – als auch · entweder – oder · weder – noch</div></div>
+    <div class="rule no"><div class="head"><span class="num">✗</span><h3>Keine Gefühlskommas</h3></div>
+      <p>Ein langer Satz braucht nicht automatisch ein Komma. Nie trennen:</p>
+      <p>(1) das erste Satzglied vom Verb · (2) Satzglieder voneinander · (3) Attribute von ihrem Nomen · (4) Begleiter von ihrem Nomen</p>
+      <div class="ex">Auf der nassen Fahrbahn verlor der Fahrer eines Sportwagens in der Nacht auf Samstag in einer Rechtskurve die Herrschaft über sein Fahrzeug.</div>
+      <div class="ex">Die genaue Abklärung des von der Klägerin erhobenen Vorwurfes wird Wochen dauern.</div></div>
   </div>
 </section>
 
@@ -161,12 +175,14 @@ section{display:flex;flex-direction:column;gap:20px}
     <div class="trick"><strong>um · ohne · statt</strong><p>Siehst du diese Wörter vor einer zu-Gruppe, setzt du immer ein Komma. Merksatz: «Um ohne statt, Komma hat's.»</p></div>
     <div class="trick"><strong>und ersetzt das Komma</strong><p>In Aufzählungen ersetzt <i>und / oder</i> das Komma. Nur vor <i>aber, sondern, doch</i> bleibt es.</p></div>
     <div class="trick"><strong>Die und-Probe bei Adjektiven</strong><p>Passt «und» dazwischen (langer und kalter Winter), setzt du ein Komma. Passt es nicht, keins.</p></div>
+    <div class="trick"><strong>sowie ist wie und</strong><p>Vor <i>sowie</i> steht kein Komma. Steht trotzdem eins davor, schliesst es einen Nachtrag ab: «…, nämlich A, B und C<b>,</b> sowie Deutsch.»</p></div>
+    <div class="trick"><strong>Paare mit Komma</strong><p>Wörter, die doppelt vorkommen (bald – bald, teils – teils, je – desto), bekommen ein Komma vor dem zweiten Teil. Ausnahme: sowohl – als auch, entweder – oder, weder – noch.</p></div>
     <div class="trick"><strong>Laut lesen</strong><p>Wo du beim Vorlesen eine Pause machst, steht oft ein Komma. Das ist ein Hinweis, aber keine Regel. Prüf es mit den Regeln.</p></div>
   </div>
 </section>
 
 <section id="training">
-  <div><div class="eyebrow">Teil 3</div><h2>100 Übungen</h2>
+  <div><div class="eyebrow">Teil 3</div><h2>128 Übungen</h2>
     <p class="lead">Tippe auf die Lücke zwischen zwei Wörtern, um ein Komma zu setzen oder wegzunehmen. Dann auf «Prüfen».</p></div>
   <div class="trainer">
     <div class="chips" id="chips"></div>
@@ -190,15 +206,17 @@ section{display:flex;flex-direction:column;gap:20px}
 <script>
 const RULES={
  A:["Aufzählung","Gleichrangige Wörter oder Wortgruppen werden durch Komma getrennt. Vor und / oder steht keins."],
- G:["Gegensatz","Vor aber, sondern, doch, jedoch steht immer ein Komma."],
+ G:["Gegensatz","Vor entgegenstellenden Konjunktionen steht ein Komma: aber, sondern, [je]doch, bald – bald, teils – teils, halb – halb, einerseits – andererseits, je – desto, ob – ob."],
  HS:["Hauptsätze","Zwei Hauptsätze ohne Konjunktion: Komma. Mit und / oder ist das Komma freiwillig."],
  NS:["Nebensatz","Nebensätze (Verb am Ende) werden immer vom Hauptsatz abgetrennt."],
  R:["Relativsatz","Relativsätze werden abgetrennt. In der Mitte: Komma vorne und hinten."],
  I:["Infinitiv","Komma Pflicht bei um / ohne / statt / anstatt oder wenn die Gruppe von einem Nomen oder Verweiswort (es, daran, darauf) abhängt. Sonst freiwillig."],
- Z:["Zusatz","Zusätze und Nachträge (Apposition, besonders, z. B., und zwar, das heisst) werden abgetrennt, eingeschoben auf beiden Seiten."],
+ Z:["Zusatz","Zusätze und Nachträge (Apposition, nämlich, und zwar, und das, vor allem, insbesondere, zum Beispiel, wenn auch, d. h.) werden abgetrennt. In der Mitte: das 2. Komma nicht vergessen! Bei wie ist das Komma freiwillig."],
  AN:["Anrede/Ausruf","Anreden, Ausrufe und ja / nein / ach / oh werden mit Komma abgetrennt."],
  DR:["Direkte Rede","Nach der wörtlichen Rede folgt vor dem Begleitsatz ein Komma. Steht der Begleitsatz vorne, kommt ein Doppelpunkt."],
- K:["Kein Komma","Kein Komma vor und / oder / weder … noch / sowohl … als auch und bei Vergleichen ohne Verb."],
+ K:["Kein Komma","Kein Komma vor anreihenden Konjunktionen: und, oder, sowie, als, bis, wie (Vergleich), respektive, beziehungsweise, sowohl – als auch, entweder – oder, weder – noch."],
+ AD:["Adjektive","Komma zwischen Adjektiven nur, wenn und dazwischen passen würde (altes, verfallenes Haus). Sonst keins (grosser deutscher Dichter)."],
+ GF:["Gefühlskomma","Kein Komma, nur weil der Satz lang ist: erstes Satzglied nicht vom Verb trennen, Satzglieder, Attribute und Begleiter nicht abtrennen."],
  D:["Ort/Datum","Orts- und Datumsangaben werden mit Komma gegliedert."],
  M:["Gemischt","Mehrere Regeln kombiniert. Zähle die Verben und such die Einschübe."]
 };
@@ -301,7 +319,35 @@ D|Zürich, 15. Oktober 2026
 M|Ich glaube, dass er kommt, aber ich weiss es nicht sicher.
 M|Als Mia ins Auto stieg, drehte sie sich nicht um, obwohl sie traurig war.
 M|Mein Bruder, der in Bern wohnt, kommt am Wochenende, um uns zu besuchen.
-M|Ja, ich weiss, dass das Buch, das du mir geliehen hast, sehr spannend ist.`;
+M|Ja, ich weiss, dass das Buch, das du mir geliehen hast, sehr spannend ist.
+AD|Sie wohnen in einem alten, verfallenen Haus.
+AD|Er kaufte einen teuren italienischen Sportwagen.
+AD|Das ist ein interessantes physikalisches Problem.
+AD|Goethe war ein grosser deutscher Dichter.
+AD|Sie trug ein langes, weisses Kleid.
+A|Wir fuhren, fuhren und fuhren.
+A|Vater, Mutter, Tochter und Sohn waren anwesend.
+GF|Auf der nassen Strasse verlor der Fahrer die Kontrolle über sein Auto.
+GF|Die genaue Abklärung des Unfalls wird mehrere Wochen dauern.
+GF|Der Schüler mit der roten Jacke hat sein Heft zu Hause vergessen.
+GF|Am letzten Samstag im Oktober findet auf dem Dorfplatz ein grosser Markt statt.
+GF|Diese von vielen erwarteten und nun bestätigten Zahlen sind vielversprechend.
+G|Bald lacht sie, bald weint sie.
+G|Teils war es lustig, teils langweilig.
+G|Einerseits will ich gehen, andererseits bleibe ich gern hier.
+G|Je mehr ich lerne, desto besser werden meine Noten.
+G|Ob arm, ob reich, alle sind willkommen.
+G|Halb lachend, halb weinend erzählte er die Geschichte.
+Z|Sie beherrscht mehrere Fremdsprachen, nämlich Französisch, Italienisch und Englisch, sowie Deutsch.
+Z|Viele Leute kamen, insbesondere Jugendliche.
+Z|Er verlor das Spiel, und das gegen den Letzten.
+Z|Der Ausflug war schön, wenn auch anstrengend.
+Z|Viele Haustiere(,) wie Hunde und Katzen(,) brauchen tägliche Pflege.
+Z|Die Sitzung findet am Montag, dem 1. März, statt.
+K|Sie beherrscht viele Fremdsprachen sowie Englisch.
+K|Er ist entweder krank oder faul.
+K|Ich arbeite von Montag bis Freitag.
+K|Wir treffen uns heute beziehungsweise morgen.`;
 
 const EX=RAW.trim().split("\n").map(l=>{
   const [tag,s]=l.split("|"); const words=[],gaps=[];
@@ -335,7 +381,7 @@ function chips(){
 
 function render(){
   const e=EX[st.i];user=e.gaps.map(()=>false);checked=false;
-  const l=list();$("pos").textContent=`Übung ${st.i+1} / 100  ·  ${l.indexOf(st.i)+1} von ${l.length} in dieser Auswahl`;
+  const l=list();$("pos").textContent=`Übung ${st.i+1} / ${EX.length}  ·  ${l.indexOf(st.i)+1} von ${l.length} in dieser Auswahl`;
   $("tag").textContent=RULES[e.tag][0];
   const s=$("sentence");s.innerHTML="";
   e.words.forEach((w,j)=>{
@@ -378,8 +424,8 @@ function grid(){
     g.appendChild(b);
   });
   const done=ok+bad;
-  if(done&&window.Lernregal)Lernregal.fortschritt(Math.round(ok/100*100),`Kommas: ${ok}/100 richtig`);
-  $("score").innerHTML=`<span><b>${ok}</b> richtig</span><span><b>${bad}</b> falsch</span><span><b>${100-done}</b> offen</span><span><b>${done?Math.round(ok/done*100):0}%</b> Quote</span>`;
+  if(done&&window.Lernregal)Lernregal.fortschritt(Math.round(ok/EX.length*100),`Kommas: ${ok}/${EX.length} richtig`);
+  $("score").innerHTML=`<span><b>${ok}</b> richtig</span><span><b>${bad}</b> falsch</span><span><b>${EX.length-done}</b> offen</span><span><b>${done?Math.round(ok/done*100):0}%</b> Quote</span>`;
 }
 
 $("check").onclick=check;$("prev").onclick=()=>go(-1);$("next").onclick=()=>go(1);
