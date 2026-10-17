@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rechtschreibung BFK</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: Korrekturheft – schmale Lesespalte, Kapitel-Chips oben, Aufgaben als Karteikarten mit Rotstift-Akzent */
+:root{
+  --paper:#f5f6f9; --card:#ffffff; --ink:#1d2433; --muted:#5d6577; --line:#dfe3ec;
+  --red:#c2381f; --red-soft:#fbe9e5; --ok:#1e7a4a; --ok-soft:#e3f3ea; --bad:#b4261c; --bad-soft:#fbe4e1;
+  --chip:#eceff5;
+  --f-display:"Young Serif", Georgia, serif;
+  --f-body:"Atkinson Hyperlegible", system-ui, sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#141821; --card:#1c212d; --ink:#e7eaf1; --muted:#9aa2b4; --line:#2c3342;
+  --red:#ef7a62; --red-soft:#3a221e; --ok:#5fcf92; --ok-soft:#173326; --bad:#f2857a; --bad-soft:#3a1d1b; --chip:#252b38; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#141821; --card:#1c212d; --ink:#e7eaf1; --muted:#9aa2b4; --line:#2c3342;
+  --red:#ef7a62; --red-soft:#3a221e; --ok:#5fcf92; --ok-soft:#173326; --bad:#f2857a; --bad-soft:#3a1d1b; --chip:#252b38; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 64px}
+.wrap{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+header h1{font-family:var(--f-display);font-weight:400;font-size:clamp(28px,6vw,40px);line-height:1.15;margin:0;text-wrap:balance}
+header h1 .del{text-decoration:line-through;text-decoration-color:var(--red);text-decoration-thickness:3px;color:var(--muted)}
+header h1 .ins{color:var(--red)}
+header p{margin:8px 0 0;color:var(--muted);max-width:60ch}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--red);margin-bottom:6px}
+nav{display:flex;flex-wrap:wrap;gap:8px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--paper);padding-block:10px;z-index:5;border-bottom:1px solid var(--line)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
+nav button,nav a{font:inherit;font-size:14px;border:1px solid transparent;background:var(--chip);color:var(--ink);padding:6px 12px;border-radius:999px;cursor:pointer;text-decoration:none;display:inline-flex;gap:6px;align-items:center}
+nav button[aria-current="true"]{background:var(--ink);color:var(--paper)}
+nav a{border-color:var(--red);background:transparent;color:var(--red)}
+nav button:focus-visible,nav a:focus-visible,button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+.count{font-family:var(--f-mono);font-size:11px;opacity:.7}
+section h2{font-family:var(--f-display);font-weight:400;font-size:26px;margin:0 0 4px}
+.meta{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;color:var(--muted);font-size:14px}
+.score{font-family:var(--f-mono);font-variant-numeric:tabular-nums;color:var(--ink)}
+details.rule{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+details.rule summary{cursor:pointer;font-weight:700}
+details.rule ul{margin:10px 0 0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+details.rule em{color:var(--muted)}
+.rule u{text-decoration-color:var(--red)}
+.qs{display:flex;flex-direction:column;gap:12px;margin-top:14px}
+.q{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.q.right{border-color:var(--ok)} .q.wrong{border-color:var(--bad)}
+.qhead{display:flex;gap:10px;align-items:baseline}
+.num{font-family:var(--f-mono);font-size:12px;color:var(--muted);min-width:24px;font-variant-numeric:tabular-nums}
+.prompt{min-width:0}
+.gap{display:inline-block;min-width:3.2em;border-bottom:2px solid var(--red);text-align:center;font-weight:700}
+.opts{display:flex;flex-wrap:wrap;gap:8px;padding-left:34px}
+.opts button{font:inherit;font-size:16px;padding:7px 14px;border-radius:8px;border:1px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer}
+.opts button:hover:not(:disabled){border-color:var(--ink)}
+.opts button:disabled{cursor:default}
+.opts button.ok{background:var(--ok-soft);border-color:var(--ok);color:var(--ok);font-weight:700}
+.opts button.no{background:var(--bad-soft);border-color:var(--bad);color:var(--bad);text-decoration:line-through}
+.expl{padding-left:34px;font-size:14px;color:var(--muted)}
+.tools{display:flex;gap:8px;flex-wrap:wrap}
+.btn{font:inherit;font-size:14px;padding:8px 14px;border-radius:8px;border:1px solid var(--ink);background:var(--ink);color:var(--paper);cursor:pointer}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.hunt{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:12px}
+.hunt button{font:inherit;text-align:left;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;display:flex;flex-direction:column;gap:2px}
+.hunt button.marked{border-color:var(--red);background:var(--red-soft);color:var(--red);text-decoration:line-through}
+.hunt button.hit{border-color:var(--ok);background:var(--ok-soft);color:var(--ok);text-decoration:line-through}
+.hunt button.miss{border-color:var(--bad);background:var(--bad-soft);color:var(--bad)}
+.hunt button.false{border-color:var(--bad);background:var(--bad-soft);color:var(--bad)}
+.hunt small{font-size:13px;text-decoration:none;display:block;color:var(--ink);font-weight:700}
+.result{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 16px;font-weight:700}
+.link-card{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:var(--card);border:1px dashed var(--red);border-radius:10px;padding:14px 16px;color:var(--ink);text-decoration:none}
+.link-card strong{font-family:var(--f-display);font-weight:400;font-size:20px}
+.link-card span{color:var(--red);font-weight:700}
+@media (prefers-reduced-motion:no-preference){.q{transition:border-color .2s}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Deutsch · BFK-Prüfung</div>
+    <h1>Rechtschreibung <span class="del">trainiren</span> <span class="ins">trainieren</span></h1>
+    <p>Regeln 8–12 aus dem Sprachtrainer und die 100 Dauerbrenner. Jede Rubrik hat die Theorie zum Aufklappen und mindestens 20 Übungen mit Lösung.</p>
+  </header>
+  <nav id="nav" aria-label="Kapitel"></nav>
+  <main id="main"></main>
+  <a class="link-card" href="deutsch-kommasetzung.html">
+    <div><div class="eyebrow">Weiter üben</div><strong>Kommasetzung</strong></div><span>Modul öffnen →</span>
+  </a>
+</div>
+
+<script>
+const M=(a,w,e,q)=>({q:q||"Welche Schreibweise ist richtig?",a,w:Array.isArray(w)?w:[w],e});
+const G=(q,a,w,e)=>({q,a,w:Array.isArray(w)?w:[w],e,gap:true});
+
+const T={
+lang:{nav:"Lange Silben",title:"8 · Lange Silben (Dehnung)",rule:`<ul>
+<li><b>Ohne Kennzeichnung:</b> baden, spülen, spüren, grölen, Brot, dir, mir, nämlich, selig</li>
+<li><b>Dehnungs-h:</b> sehen, lehren, Rahm, Zahn, Bahn, ihr, zahm</li>
+<li><b>Doppelvokal:</b> Aal, Saal, See, Seele, Meer, leer, Moos, Boot</li>
+<li><b>Umlaute werden nie verdoppelt:</b> Boot → Bötchen, Haar → Härchen, Saal → Säle</li>
+<li><b>ie:</b> lieben, Sieg, viel, hier · <b>wieder</b> (= nochmals): wiederholen, Wiedersehen</li>
+<li><b>wider</b> (= gegen): widersprechen, widerspiegeln, Widerhall, widerwillig</li>
+<li><b>Fremdwörter: kein ie</b> (ausser Endung <i>-ieren</i>): Lokomotive, Tarif, Lawine, perfid, intim</li></ul>`,items:[
+M("Widerhall","Wiederhall","wider = gegen: Der Schall kommt zurück."),
+M("widerspiegeln","wiederspiegeln","wider = gegen (das Bild wird zurückgeworfen)."),
+M("widersprechen","wiedersprechen","wider = gegen."),
+M("widerwillig","wiederwillig","wider = gegen den Willen."),
+M("wiederholen","widerholen","wieder = nochmals."),
+M("Auf Wiedersehen","Auf Widersehen","wieder = nochmals sehen."),
+M("Widerstand","Wiederstand","wider = gegen etwas stehen."),
+M("Lawine","Lawiene","Fremdwort: kein ie."),
+M("Tarif","Tarief","Fremdwort: kein ie."),
+M("perfid","perfied","Fremdwort: kein ie."),
+M("Lokomotive","Lokomotieve","Fremdwort: kein ie."),
+M("intim","intiem","Fremdwort: kein ie."),
+M("spazieren","spaziren","Endung -ieren bekommt ie."),
+M("infizieren","infiziren","Endung -ieren bekommt ie."),
+M("Härchen","Häärchen","Umlaute werden nicht verdoppelt (Haar → Härchen)."),
+M("Bötchen","Böötchen","Umlaute werden nicht verdoppelt."),
+M("Säle","Sääle","Saal → Säle, kein Doppel-ä."),
+M("grölen","gröhlen","Dehnung ohne Kennzeichnung."),
+M("nämlich","nähmlich","Dehnung ohne Kennzeichnung (von Name)."),
+M("selig","seelig","selig hat nichts mit Seele zu tun."),
+M("seelisch","selisch","von Seele → Doppelvokal."),
+M("Wohlfahrt","Wolfahrt","wohl mit Dehnungs-h."),
+M("belehren","beleeren","lehren (unterrichten) mit h; leeren = leer machen."),
+M("Leerlauf","Lehrlauf","leer = nichts drin."),
+M("Paar","Par","Doppelvokal."),
+M("Fährte","Färte","Fährte mit Dehnungs-h."),
+M("Moos","Mos","Doppelvokal.")]},
+
+kurz:{nav:"Kurze Silben",title:"9 · Kurze Silben",rule:`<ul>
+<li>Nach <b>kurzem betontem Vokal</b> folgen zwei Konsonanten: Ratte, messen, rasten, tanzen</li>
+<li>statt zz steht <b>tz</b> (Katze), statt kk steht <b>ck</b> (meckern)</li>
+<li><b>Fremdwörter:</b> kein ck, kein tz: Dialekt, Lektion, perfekt, speziell, spezifisch</li>
+<li>Nach <b>l, n, r</b> nie ck oder tz: merken, tanken, Salz, Warze</li>
+<li><b>-nis:</b> Ereignis → Ereignisse (aber Kompromiss) · <b>-us:</b> Globus → Globusse · <b>-in:</b> Kundin → Kundinnen</li>
+<li><b>-y im Plural:</b> Lady → Ladys, Hobby → Hobbys, Spray → Sprays (nie -ies, nie Apostroph)</li></ul>`,items:[
+M("Lektion","Lecktion","Fremdwort: kein ck."),
+M("perfekt","perfeckt","Fremdwort: kein ck."),
+M("korrekt","korreckt","Fremdwort: kein ck."),
+M("Dialekt","Dialeckt","Fremdwort: kein ck."),
+M("Lektor","Lecktor","Fremdwort: kein ck."),
+M("speziell","speziel","Fremdwort, Doppel-l am Ende (Endung -ell)."),
+M("merken","mercken","Nach r nie ck."),
+M("tanzen","tantzen","Nach n nie tz."),
+M("Salz","Saltz","Nach l nie tz."),
+M("Lanze","Lantze","Nach n nie tz."),
+M("schmelzen","schmeltzen","Nach l nie tz."),
+M("versalzen","versaltzen","Nach l nie tz."),
+M("Katze","Kazze","statt zz steht tz."),
+M("meckern","mekkern","statt kk steht ck."),
+M("Kompromiss","Kompromis","Ausnahme: Kompromiss mit ss."),
+M("Kenntnisse","Kenntnise","-nis → Plural -nisse."),
+M("Ergebnisse","Ergebnise","-nis → Plural -nisse."),
+M("Geheimnis","Geheimniss","Singular -nis mit einem s."),
+M("Versäumnis","Versäumniss","Singular -nis mit einem s."),
+M("Diskusse","Disküsse","-us → Plural -usse."),
+M("Zirkus","Zirkuss","Singular -us mit einem s."),
+M("Autobusse","Autobuse","-us → Plural -usse."),
+M("Kundinnen","Kundinen","-in → Plural -innen."),
+M("Hobbys",["Hobbies","Hobby's"],"-y → Plural -ys."),
+M("Ladys",["Ladies","Lady's"],"-y → Plural -ys."),
+M("Handys",["Handies","Handy's"],"-y → Plural -ys, kein Apostroph."),
+M("Teddys","Teddies","-y → Plural -ys."),
+M("Misstrauen","Mistrauen","Vorsilbe miss- mit ss.")]},
+
+stamm:{nav:"Stammprinzip",title:"10.1 · Das Stammprinzip",rule:`<ul>
+<li>Wörter aus derselben <b>Wortfamilie</b> schreibt man gleich: Name → namentlich, nämlich · Nummer → nummerieren · Ende → endlich, endgültig</li>
+<li>blau → einbläuen · Schnauz → schnäuzen · Stange → Stängel · Tipp → tippen · Stopp → stoppen</li>
+<li><b>Tod</b> (meist Adjektive): todmüde, todsicher · <b>tot</b> (meist Verben): totlachen, sich totstellen</li>
+<li>vergelten → unentgeltlich · wahr → wahrscheinlich</li>
+<li><b>Wortbausteine bleiben erhalten:</b> Brennnessel, Fussstapfen, schnelllebig, Rohheit, bedeutendste</li></ul>`,items:[
+M("nummerieren","numerieren","von Nummer."),
+M("namentlich","nahmentlich","von Name (ohne h)."),
+M("nämlich","nemlich","von Name → ä."),
+M("endlich","entlich","von Ende."),
+M("endgültig","entgültig","von Ende."),
+M("einbläuen","einbleuen","von blau."),
+M("schnäuzen","schneuzen","von Schnauz."),
+M("Stängel","Stengel","von Stange."),
+M("Tipp","Tip","Tipp wie tippen (aber: Trip!)."),
+M("Stopp","Stop","Stopp wie stoppen."),
+M("todmüde","totmüde","Tod + Adjektiv."),
+M("todlangweilig","totlangweilig","Tod + Adjektiv."),
+M("sich totlachen","sich todlachen","tot + Verb."),
+M("unentgeltlich","unentgeldlich","von vergelten → t."),
+M("wahrscheinlich","warscheinlich","von wahr."),
+M("Gespür","Gespühr","von spüren (ohne h)."),
+M("Spülmittel","Spühlmittel","von spülen (ohne h)."),
+M("Rohheit","Roheit","roh + heit."),
+M("schnelllebig","schnellebig","schnell + leben: drei l."),
+M("Brennnessel","Brennessel","Brenn + Nessel: drei n."),
+M("Fussstapfen","Fusstapfen","Fuss + stapfen: drei s."),
+M("Massstab","Masstab","Mass + Stab: drei s."),
+M("bedeutendste","bedeutenste","bedeutend + ste."),
+M("herzzerreissendste","herzzerreissenste","herzzerreissend + ste."),
+M("zusehends","zusehens","von zusehend."),
+M("Lernplattform","Lernplatform","platt + Form."),
+M("Tipps","Tips","Plural von Tipp.")]},
+
+klang:{nav:"Gleich klingend",title:"10.2 · Gleich klingende Wörter",rule:`<ul>
+<li><b>Laib</b> (Brot) / <b>Leib</b> (Körper) · <b>Lärche</b> (Baum) / <b>Lerche</b> (Vogel)</li>
+<li><b>Leere</b> (nichts) / <b>Lehre</b> (Ausbildung, Erkenntnis) · <b>Lied</b> (Gesang) / <b>Lid</b> (Auge)</li>
+<li><b>Mal</b> (Zeitpunkt, Zeichen) / <b>Mahl</b> (Essen) · <b>malen</b> (Bild) / <b>mahlen</b> (Mühle)</li>
+<li><b>Mine</b> (Bergwerk, Bleistift) / <b>Miene</b> (Gesichtsausdruck) · <b>Saite</b> (Instrument) / <b>Seite</b> (Buch, Richtung)</li>
+<li><b>seid</b> (ihr seid) / <b>seit</b> (zeitlich) · <b>Stil</b> (Art) / <b>Stiel</b> (Griff, Pflanze)</li>
+<li><b>Ton</b> (Klang, Erde) / <b>Thon</b> (Thunfisch) · <b>Waise</b> (ohne Eltern) / <b>Weise</b> (Art, klug)</li></ul>`,items:[
+G("Ein ___ Brot, bitte.","Laib","Leib","Laib = Brotlaib."),
+G("Sie war mit ___ und Seele dabei.","Leib","Laib","Leib = Körper."),
+G("Die ___ verliert im Herbst ihre Nadeln.","Lärche","Lerche","Lärche = Baum."),
+G("Morgenmenschen nennt man auch ___n.","Lerche","Lärche","Lerche = Vogel, der früh singt."),
+G("Er starrte ins ___.","Leere","Lehre","Leere = nichts."),
+G("Sie macht eine ___ als Informatikerin.","Lehre","Leere","Lehre = Ausbildung."),
+G("Wir sangen ein ___.","Lied","Lid","Lied = Gesang."),
+G("Sie schminkt die Augen___er.","lid","lied","Lid = Augendeckel."),
+G("Zum ersten ___ war ich in Genf.","Mal","Mahl","Mal = Zeitpunkt."),
+G("Nach dem Gottesdienst gab es ein festliches ___.","Mahl","Mal","Mahl = Essen."),
+G("Rembrandt ___t Landschaften.","mal","mahl","malen = Bild."),
+G("Die Mühle ___t den Kaffee.","mahl","mal","mahlen = zerkleinern."),
+G("Er machte gute ___ zum bösen Spiel.","Miene","Mine","Miene = Gesichtsausdruck."),
+G("Die ___narbeiter streiken.","Mine","Miene","Mine = Bergwerk."),
+G("Die Bleistift___ ist abgebrochen.","mine","miene","Mine = Stift-Einlage."),
+G("Bei der Gitarre ist eine ___ gerissen.","Saite","Seite","Saite = Instrument."),
+G("Lies bitte ___ 25.","Seite","Saite","Seite = Buchseite."),
+G("Ihr ___ zu spät!","seid","seit","seid = Verb (ihr seid)."),
+G("Die Arbeiter streiken ___ Wochen.","seit","seid","seit = zeitlich."),
+G("Ihr Auftritt war ___los.","stil","stiel","Stil = Art und Weise."),
+G("Der Besen___ ist kaputt.","stiel","stil","Stiel = Griff."),
+G("Sie vergriff sich im ___.","Ton","Thon","Ton = Klang/Tonfall."),
+G("Ein ___-Sandwich mit Mayonnaise.","Thon","Ton","Thon = Thunfisch."),
+G("Die Spende war für ___nkinder bestimmt.","Waise","Weise","Waise = Kind ohne Eltern."),
+G("Auf diese ___ geht es schneller.","Weise","Waise","Weise = Art.")]},
+
+dass:{nav:"das / dass",title:"11 · das oder dass?",rule:`<ul>
+<li><b>das</b> ist ein Pronomen und lässt sich durch <u>dies, dieses</u> oder <u>welches</u> ersetzen:
+<br>Artikel: <i>Kennst du das Mädchen?</i> (= dieses) · Demonstrativ: <i>Hast du das gewusst?</i> (= dies) · Relativ: <i>Das Mädchen, das da steht</i> (= welches)</li>
+<li><b>dass</b> ist eine Konjunktion und lässt sich <u>nicht</u> ersetzen: <i>Ich hoffe, dass wir uns bald sehen.</i></li>
+<li>Trick: Passt <i>dieses / dies / welches</i>? → das. Sonst → dass.</li></ul>`,items:[
+G("Ich hoffe, ___ du morgen kommst.","dass","das","Konjunktion, nicht ersetzbar."),
+G("___ Buch liegt auf dem Tisch.","Das","Dass","Artikel (= dieses Buch)."),
+G("Das Auto, ___ dort parkt, gehört mir.","das","dass","Relativpronomen (= welches)."),
+G("Hast du ___ gewusst?","das","dass","Demonstrativpronomen (= dies)."),
+G("___ es heute regnet, ist schade.","Dass","Das","Konjunktion am Satzanfang."),
+G("Er sagt, ___ er müde ist.","dass","das","Konjunktion nach «sagen»."),
+G("Das Kind, ___ weint, hat Hunger.","das","dass","Relativpronomen (= welches)."),
+G("Es ist wichtig, ___ man pünktlich ist.","dass","das","Konjunktion."),
+G("___ ist eine gute Idee!","Das","Dass","Demonstrativpronomen (= dies)."),
+G("Sie freut sich, ___ die Prüfung vorbei ist.","dass","das","Konjunktion."),
+G("Ich kenne ___ Mädchen nicht.","das","dass","Artikel (= dieses)."),
+G("Das Haus, ___ wir gekauft haben, ist alt.","das","dass","Relativpronomen (= welches)."),
+G("Er war so müde, ___ er sofort einschlief.","dass","das","Konjunktion (so …, dass)."),
+G("___ du das weisst, überrascht mich.","Dass","Das","Konjunktion am Satzanfang."),
+G("Weisst du, ___ morgen schulfrei ist?","dass","das","Konjunktion."),
+G("Das Heft, ___ so sauber geführt ist, gehört mir.","das","dass","Relativpronomen (= welches)."),
+G("Ich habe ___ nie behauptet.","das","dass","Demonstrativpronomen (= dies)."),
+G("Es goss so stark, ___ das Spiel abgebrochen wurde.","dass","das","Konjunktion (so …, dass)."),
+G("Das Handy, ___ ich verloren habe, war neu.","das","dass","Relativpronomen (= welches)."),
+G("Er erklärte, ___ «dass» eine Konjunktion ist.","dass","das","Konjunktion."),
+G("___ Wetter wird am Wochenende besser.","Das","Dass","Artikel (= dieses Wetter)."),
+G("Es ist klar, ___ wir gewinnen wollen.","dass","das","Konjunktion."),
+G("Ich bin froh, ___ alles geklappt hat.","dass","das","Konjunktion."),
+G("Was ist ___ für ein Geräusch?","das","dass","Demonstrativpronomen (= dies)."),
+G("Das Problem, ___ uns beschäftigt, ist gelöst.","das","dass","Relativpronomen (= welches)."),
+G("Ob ___ Kabel das Problem löst, ist fraglich.","das","dass","Artikel (= dieses Kabel)."),
+G("Schau! ___ ist das neue Handy.","Das","Dass","Demonstrativpronomen (= dies).")]},
+
+binde:{nav:"Bindestrich",title:"12 · Bindestrich",rule:`<ul>
+<li><b>12.1</b> Buchstaben, Ziffern, Abkürzungen: A-Dur, T-Shirt, 1:0-Sieg, 18-jährig, EU-Parlament, x-beliebig. Mehrteilig: <b>durchkoppeln</b> (A-Dur-Sinfonie, 3-Liter-Auto, 400-m-Lauf)</li>
+<li><b>12.1.1</b> Kein Bindestrich vor <i>-er</i> und <i>-stel</i>: 80er-Jahre, ein 20stel</li>
+<li><b>12.2</b> Mehrteilige Namen durchkoppeln: Rudolf-Steiner-Schule, Albert-Einstein-Jahr</li>
+<li><b>12.3</b> Mehrteilige Ausdrücke als Nomen: das Katz-und-Maus-Spiel, das In-den-Tag-hinein-Leben</li>
+<li><b>12.4</b> Kann gliedern (Lesbarkeit): Kaffee-Ersatz, dass-Satz, Druck-Erzeugnis, Midlife-Crisis</li>
+<li><b>12.5</b> Ergänzungsstrich für weggelassene Teile: Haus- und Gartenarbeit, Weinproduzenten und -händler</li></ul>`,items:[
+M("Sinfonie in b-Moll",["Sinfonie in b Moll","Sinfonie in bMoll"],"12.1 Buchstabe + Wort."),
+M("Vor- und Nachteile",["Vor und Nachteile","Vor-und Nachteile"],"12.5 Ergänzungsstrich."),
+M("die Friedrich-Ebert-Strasse",["die Friedrich Ebert Strasse","die Friedrich-Ebert Strasse"],"12.2 Namen durchkoppeln."),
+M("ein 17-jähriges Mädchen",["ein 17 jähriges Mädchen","ein 17jähriges Mädchen"],"12.1 Ziffer + Wort."),
+M("100-prozentig",["100 prozentig","100prozentig"],"12.1 Ziffer + Wort."),
+M("die VIP-Lounge",["die VIP Lounge","die VIPLounge"],"12.1 Abkürzung + Wort."),
+M("das 3-Liter-Auto",["das 3 Liter-Auto","das 3-Liter Auto"],"12.1 durchkoppeln."),
+M("Balkon- und Topfpflanzen",["Balkon und Topfpflanzen","Balkon-und Topfpflanzen"],"12.5 Ergänzungsstrich."),
+M("ein US-amerikanischer Konzern",["ein US amerikanischer Konzern","ein USamerikanischer Konzern"],"12.1 Abkürzung + Wort."),
+M("die Fussball-WM",["die Fussball WM","die FussballWM"],"12.1 Abkürzung."),
+M("am Escher-Wyss-Platz",["am Escher Wyss Platz","am Escher-Wyss Platz"],"12.2 Namen durchkoppeln."),
+M("IV-berechtigt",["IV berechtigt","IVberechtigt"],"12.1 Abkürzung + Wort."),
+M("ein klarer 2:0-Sieg",["ein klarer 2:0 Sieg","ein klarer 2-0-Sieg"],"12.1 Ziffer + Wort."),
+M("ein x-beliebiger Kandidat",["ein x beliebiger Kandidat","ein xbeliebiger Kandidat"],"12.1 Buchstabe + Wort."),
+M("Haltestelle Rudolf-Brun-Brücke",["Haltestelle Rudolf Brun Brücke","Haltestelle Rudolf-Brun Brücke"],"12.2 Namen durchkoppeln."),
+M("das In-den-Tag-hinein-Leben",["das in den Tag hinein leben","das In den Tag hinein Leben"],"12.3 Ausdruck als Nomen, erstes Wort gross."),
+M("inner- und ausserhalb",["inner und ausserhalb","inner-und ausserhalb"],"12.5 Ergänzungsstrich."),
+M("das Albert-Einstein-Gedenkjahr",["das Albert Einstein Gedenkjahr","das Albert-Einstein Gedenkjahr"],"12.2 Namen durchkoppeln."),
+M("das Katz-und-Maus-Spiel",["das Katzundmausspiel","das Katz und Maus Spiel"],"12.3 Ausdruck als Nomen."),
+M("Vitamin-C-angereichert",["Vitamin C-angereichert","Vitamin C angereichert"],"12.1 durchkoppeln: auch zwischen Vitamin und C."),
+M("ein A4-Blatt",["ein A4 Blatt","ein A-4-Blatt"],"12.1 Buchstabe/Ziffer + Wort."),
+M("Industriearbeiter und -angestellte",["Industriearbeiter und Angestellte","Industriearbeiter- und angestellte"],"12.5 Ergänzungsstrich beim zweiten Wort (Industrieangestellte)."),
+M("der dass-Satz",["der Dass Satz","der das-Satz"],"12.4 Hervorhebung (auch: Dasssatz)."),
+M("die Rad-Artisten",["die Radartisten","die Rad Artisten"],"12.4 Zweideutigkeit vermeiden (Radar?)."),
+M("ein- und aussteigen",["ein und aussteigen","ein-und aussteigen"],"12.5 Ergänzungsstrich."),
+M("Mehrzweck-Küchenmaschine",["Mehrzweckküchen-Maschine","Mehr-Zweck-Küchenmaschine"],"12.4 Lange Zusammensetzung sinnvoll gliedern."),
+M("ein All-inclusive-Angebot",["ein All inclusive Angebot","ein All-Inclusive Angebot"],"12.3 durchkoppeln."),
+M("Magen-Darm-Grippe",["Magendarm-Grippe","Magen Darm Grippe"],"12.4 lesbar gliedern."),
+M("das Streik-Ende",["das Streikende","das Streik Ende"],"12.4 «Streikende» könnte auch Personen meinen."),
+M("Ein-/Ausgang",["Ein/Ausgang","Ein- / Ausgang"],"12.5 Ergänzungsstrich."),
+M("röm.-kath.",["röm. kath.","röm-kath."],"12.1 Abkürzungen verbinden."),
+M("ein französisch-deutsches Wörterbuch",["ein französischdeutsches Wörterbuch","ein Französisch-Deutsches Wörterbuch"],"12.4 lesbar gliedern."),
+M("das Links-rechts-Schema",["das Linksrechtsschema","das Links-Rechts Schema"],"12.3 Ausdruck als Nomen."),
+M("der TV-Sender",["der TV Sender","der TVSender"],"12.1 Abkürzung + Wort."),
+M("das Schwarz-Weiss-Denken",["das Schwarzweiss Denken","das Schwarz Weiss Denken"],"12.3 Ausdruck als Nomen."),
+M("die 80er-Jahre",["die 80-er-Jahre","die 80-er Jahre"],"12.1.1 kein Bindestrich vor -er."),
+M("ein 20stel",["ein 20-stel","ein 20 stel"],"12.1.1 kein Bindestrich vor -stel."),
+M("beides ist korrekt",["nur Shoppingcenter","nur Shopping-Center"],"12.4 «kann» gliedern: Shoppingcenter und Shopping-Center sind beide richtig.","Shoppingcenter oder Shopping-Center?")]},
+};
+
+/* Dauerbrenner-Pool: [richtig, falsch, falsch] */
+const DB=[["Adresse","Addresse","Adrese"],["aggressiv","agressiv","aggresiv"],["akustisch","akkustisch","akustich"],["annullieren","anullieren","annulieren"],["Aperitif","Aperitiv","Apperitif"],["Apparat","Aparat","Apparrat"],["Appell","Apell","Appel"],["Atmosphäre","Atmospähre","Athmosphäre"],["Attrappe","Atrappe","Attrape"],["Ballett","Balett","Ballet"],["Bataillon","Batallion","Bataillion"],["Billard","Billiard","Bilard"],["Billett","Billet","Bilett"],["Biskuit","Bisquit","Biskwit"],["brillant","brilliant","brilant"],["Cappuccino","Capuccino","Cappucino"],["detailliert","detailiert","detalliert"],["diffizil","diffiziel","difizil"],["dilettantisch","dilletantisch","dilettanttisch"],["E-Mail","e-Mail","E-mail"],["Ellipse","Elipse","Ellypse"],["Etymologie","Ethymologie","Etimologie"],["galoppieren","gallopieren","galopieren"],["Galerie","Gallerie","Galerrie"],["Gedächtnis","Gedächnis","Gedächtniss"],["grölen","gröhlen","gröllen"],["Hobbys","Hobbies","Hobby's"],["idyllisch","idylisch","idüllisch"],["Joghurt","Joghurth","Jooghurt"],["Kannibale","Kanibale","Kanniballe"],["Karosserie","Karoserie","Karrosserie"],["Karussell","Karussel","Karrusell"],["Kenntnis","Kentnis","Kenntniss"],["kolossal","kollosal","kolosal"],["Komitee","Kommitee","Komittee"],["Kommissar","Komissar","Kommisar"],["Kommission","Komission","Kommision"],["Konkurrenz","Konkurenz","Konkurrens"],["Krawatte","Kravatte","Krawate"],["kumulieren","kummulieren","kumullieren"],["Lappalie","Lapalie","Lappallie"],["Loser","Looser","Luser"],["Medaille","Medallie","Medaile"],["morgendlich","morgentlich","morgenlich"],["nummerieren","numerieren","nummerrieren"],["paddeln","padeln","paddlen"],["Papst","Pabst","Bapst"],["parallel","parallell","paralel"],["Phänomen","Phänomän","Phenomen"],["projizieren","projezieren","projzieren"],["prophezeien","prophezeihen","profezeien"],["Renommee","Renomee","Rennommee"],["Reparatur","Reperatur","Reparatuhr"],["Rhabarber","Rabarber","Rhabarbar"],["Rhetorik","Retorik","Rhethorik"],["Rhythmus","Rythmus","Rhytmus"],["Satellit","Satelit","Sattelit"],["Schokolade","Schokkolade","Schockolade"],["seelisch","selisch","seehlisch"],["selig","seelig","sehlig"],["separat","seperat","separrat"],["Silhouette","Silouette","Silhouete"],["Silvester","Sylvester","Silwester"],["Skelett","Skelet","Skellett"],["skurril","skuril","skurill"],["Spaghetti","Spagghetti","Spaghettie"],["Standard","Standart","Standahrt"],["stets","stehts","steets"],["symmetrisch","symetrisch","symmetrich"],["Temperatur","Themperatur","Temparatur"],["Terrasse","Terasse","Terrase"],["Thron","Tron","Throhn"],["triumphieren","triumfieren","triumpfieren"],["Turnier","Tournier","Turnir"],["übersät","übersäht","übersäät"],["verheerend","verhehrend","verherend"],["Verlies","Verliess","Verlis"],["verpönt","verpöhnt","verpönnt"],["Widerhall","Wiederhall","Wiederhal"],["widerspiegeln","wiederspiegeln","widerspigeln"],["ziemlich","zimlich","ziehmlich"],["Föhn","Fön","Föön"],["explizit","explitzit","expliziet"],["duzen","dutzen","duzzen"],["Mobbing","Mobing","Moobing"],["Pinnwand","Pinwand","Pinnwandt"],["Stopp","Stop","Stoop"],["Tipp","Tip","Tiep"]];
+
+const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const pick=(a,n)=>shuf(a).slice(0,n);
+
+const order=["lang","kurz","stamm","klang","dass","binde","dauer","mix"];
+const NAV={dauer:"Dauerbrenner",mix:"Mix-Test"};
+const nav=document.getElementById("nav"),main=document.getElementById("main");
+let cur="lang";
+
+function navBuild(){
+  nav.innerHTML="";
+  order.forEach(k=>{
+    const b=document.createElement("button");b.type="button";b.id="nav-"+k;
+    const n=T[k]?T[k].items.length:(k==="dauer"?DB.length:20);
+    b.innerHTML=esc(T[k]?T[k].nav:NAV[k])+` <span class="count">${n}</span>`;
+    b.setAttribute("aria-current",k===cur);
+    b.onclick=()=>{cur=k;navBuild();render();window.scrollTo({top:0})};
+    nav.appendChild(b);
+  });
+  const a=document.createElement("a");a.href="deutsch-kommasetzung.html";a.textContent="Kommasetzung ↗";nav.appendChild(a);
+}
+
+function quiz(container,items,onScore){
+  const box=document.createElement("div");box.className="qs";
+  let done=0,right=0;
+  items.forEach((it,i)=>{
+    const q=document.createElement("div");q.className="q";
+    const head=document.createElement("div");head.className="qhead";
+    const prompt=it.gap?esc(it.q).replace("___",'<span class="gap">&nbsp;</span>'):esc(it.q);
+    head.innerHTML=`<span class="num">${String(i+1).padStart(2,"0")}</span><span class="prompt">${prompt}</span>`;
+    const opts=document.createElement("div");opts.className="opts";
+    const ex=document.createElement("div");ex.className="expl";ex.hidden=true;
+    shuf([it.a,...it.w]).forEach(o=>{
+      const b=document.createElement("button");b.type="button";b.textContent=o;
+      b.onclick=()=>{
+        const ok=o===it.a;done++;if(ok)right++;
+        q.classList.add(ok?"right":"wrong");
+        opts.querySelectorAll("button").forEach(x=>{x.disabled=true;if(x.textContent===it.a)x.classList.add("ok")});
+        if(!ok)b.classList.add("no");
+        const g=q.querySelector(".gap");if(g)g.textContent=it.a;
+        ex.innerHTML=(ok?"✓ Richtig. ":"✗ Richtig ist <b>"+esc(it.a)+"</b>. ")+esc(it.e||"");ex.hidden=false;
+        onScore(right,done,items.length);
+      };
+      opts.appendChild(b);
+    });
+    q.append(head,opts,ex);box.appendChild(q);
+  });
+  container.appendChild(box);
+}
+
+function header(sec,title,sub){
+  const h=document.createElement("h2");h.textContent=title;
+  const m=document.createElement("div");m.className="meta";
+  const s=document.createElement("span");s.className="score";
+  m.innerHTML=`<span>${esc(sub)}</span>`;m.appendChild(s);
+  sec.append(h,m);return s;
+}
+const scoreFn=s=>(r,d,n)=>{s.textContent=`${r} / ${d} richtig · ${n-d} offen`};
+
+function render(){
+  main.innerHTML="";const sec=document.createElement("section");main.appendChild(sec);
+  if(T[cur]){
+    const t=T[cur];const s=header(sec,t.title,`${t.items.length} Übungen`);s.textContent=`0 / 0 richtig · ${t.items.length} offen`;
+    const d=document.createElement("details");d.className="rule";d.open=true;d.innerHTML="<summary>Theorie</summary>"+t.rule;sec.appendChild(d);
+    const tools=document.createElement("div");tools.className="tools";tools.style.marginTop="12px";
+    const r=document.createElement("button");r.className="btn ghost";r.type="button";r.textContent="Neu mischen";r.onclick=render;tools.appendChild(r);sec.appendChild(tools);
+    quiz(sec,shuf(t.items),scoreFn(s));
+  } else if(cur==="dauer"){
+    header(sec,"Dauerbrenner","100 Wörter, die oft falsch geschrieben werden");
+    const d=document.createElement("details");d.className="rule";
+    d.innerHTML="<summary>So lernst du sie</summary><ul><li>Fehlerjagd wie Übung A29: Tippe alle falsch geschriebenen Wörter an, dann «Prüfen».</li><li>Danach 20 Auswahlfragen. Mit «Neue Runde» kommen andere Wörter aus dem Pool ("+DB.length+" Wörter).</li><li>Spaghetti/Spagetti, Joghurt/Jogurt und Albtraum/Alptraum sind beide korrekt.</li></ul>";
+    sec.appendChild(d);
+    const h3=document.createElement("h2");h3.textContent="Fehlerjagd";h3.style.fontSize="20px";h3.style.marginTop="20px";sec.appendChild(h3);
+    hunt(sec);
+    const h4=document.createElement("h2");h4.textContent="Auswahl";h4.style.fontSize="20px";h4.style.marginTop="28px";
+    const s=document.createElement("div");s.className="meta";const sc=document.createElement("span");sc.className="score";sc.textContent="0 / 0 richtig · 20 offen";s.innerHTML="<span>20 Wörter</span>";s.appendChild(sc);
+    const tools=document.createElement("div");tools.className="tools";tools.style.marginTop="10px";
+    const b=document.createElement("button");b.className="btn ghost";b.type="button";b.textContent="Neue Runde";b.onclick=render;tools.appendChild(b);
+    sec.append(h4,s,tools);
+    quiz(sec,pick(DB,20).map(([a,...w])=>M(a,w,"")),scoreFn(sc));
+  } else {
+    const all=[];Object.values(T).forEach(t=>all.push(...t.items));
+    DB.forEach(([a,...w])=>all.push(M(a,w,"Dauerbrenner")));
+    const items=pick(all,20);
+    const s=header(sec,"Mix-Test","20 zufällige Aufgaben aus allen Kapiteln");s.textContent="0 / 0 richtig · 20 offen";
+    const res=document.createElement("div");res.className="result";res.hidden=true;
+    const tools=document.createElement("div");tools.className="tools";tools.style.marginTop="12px";
+    const b=document.createElement("button");b.className="btn";b.type="button";b.textContent="Neuer Test";b.onclick=render;tools.appendChild(b);
+    sec.append(tools);
+    quiz(sec,items,(r,d,n)=>{s.textContent=`${r} / ${d} richtig · ${n-d} offen`;
+      if(d===n){const p=Math.round(r/n*100);res.hidden=false;window.Lernregal&&Lernregal.fortschritt(p,"Mix-Test "+p+" %");res.textContent=`Resultat: ${r} von ${n} (${p} %). `+(p>=90?"Prüfungsreif.":p>=70?"Gut, die Fehler nochmals anschauen.":"Nochmals die Theorie der Kapitel mit Fehlern lesen.");}});
+    sec.appendChild(res);
+  }
+}
+
+function hunt(sec){
+  const box=document.createElement("div");sec.appendChild(box);huntFill(box);
+}
+function huntFill(box){
+  box.innerHTML="";
+  const words=pick(DB,20),wrongIdx=new Set(pick([...Array(20).keys()],7));
+  const grid=document.createElement("div");grid.className="hunt";
+  const cells=words.map((w,i)=>{
+    const shown=wrongIdx.has(i)?w[1+Math.floor(Math.random()*2)]:w[0];
+    const b=document.createElement("button");b.type="button";b.textContent=shown;b.dataset.marked="0";
+    b.onclick=()=>{if(grid.dataset.done)return;const m=b.dataset.marked==="1";b.dataset.marked=m?"0":"1";b.classList.toggle("marked",!m)};
+    grid.appendChild(b);return {b,wrong:wrongIdx.has(i),right:w[0]};
+  });
+  const meta=document.createElement("div");meta.className="meta";meta.innerHTML="<span>7 von 20 Wörtern sind falsch geschrieben.</span>";
+  const tools=document.createElement("div");tools.className="tools";tools.style.marginTop="12px";
+  const chk=document.createElement("button");chk.className="btn";chk.type="button";chk.textContent="Prüfen";
+  const nw=document.createElement("button");nw.className="btn ghost";nw.type="button";nw.textContent="Neue Wörter";
+  const res=document.createElement("div");res.className="result";res.hidden=true;res.style.marginTop="12px";
+  chk.onclick=()=>{
+    if(grid.dataset.done)return;grid.dataset.done="1";let hit=0,fp=0;
+    cells.forEach(c=>{const m=c.b.dataset.marked==="1";c.b.classList.remove("marked");
+      if(c.wrong){c.b.classList.add(m?"hit":"miss");const s=document.createElement("small");s.textContent="→ "+c.right;c.b.appendChild(s);if(m)hit++}
+      else if(m){c.b.classList.add("false");const s=document.createElement("small");s.textContent="war richtig";c.b.appendChild(s);fp++}});
+    res.hidden=false;res.textContent=`${hit} von 7 Fehlern gefunden`+(fp?`, ${fp} richtige Wörter fälschlich markiert.`:".");
+  };
+  nw.onclick=()=>huntFill(box);
+  tools.append(chk,nw);
+  box.append(meta,grid,tools,res);
+}
+
+navBuild();render();
+</script>
+
+<script src="../regal.js" defer></script>
+</body>
+</html>
