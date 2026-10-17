@@ -170,6 +170,54 @@ td.grp{font:700 .8rem var(--f-mono);color:var(--muted);background:var(--bg);text
 .q .ex{font-size:.92rem;color:var(--muted)}
 .score{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:18px}
 .score b{font:800 1.6rem var(--f-display);color:var(--accent);font-variant-numeric:tabular-nums}
+/* Lernziele */
+.lz{display:block;width:fit-content;font:600 .72rem/1.5 var(--f-mono);background:var(--accent);color:var(--accent-ink);border-radius:999px;padding:1px 9px;margin-bottom:6px;letter-spacing:.02em}
+.intro{max-width:44em;margin:-12px 0 20px;color:var(--muted)}
+.goals{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.goals li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:14px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:10px 14px}
+.goals li.done{border-color:var(--accent);background:var(--soft)}
+.goals input{width:20px;height:20px;accent-color:var(--accent);margin:0}
+.goals a{color:var(--ink);text-decoration:none;display:flex;gap:12px;align-items:baseline;min-width:0}
+.goals a:hover span:last-child{text-decoration:underline;text-underline-offset:3px}
+.goals .n{font:600 .78rem var(--f-mono);color:var(--accent);flex:0 0 auto}
+.goals .res{font:600 .75rem var(--f-mono);color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.goals .res.good{color:var(--ok)}
+.goals .res.weak{color:var(--err)}
+.forms{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.forms .panel p{font-size:.92rem;color:var(--muted)}
+.timeline{list-style:none;margin:0 0 0 6px;padding:0;border-left:2px solid var(--line)}
+.timeline li{position:relative;display:grid;grid-template-columns:4.6rem minmax(0,1fr);gap:12px;padding:8px 0 8px 18px;font-size:.95rem}
+.timeline li::before{content:"";position:absolute;left:-8px;top:14px;width:14px;height:14px;border-radius:50%;background:var(--surface);border:3px solid var(--era)}
+.timeline .yr{font:600 .9rem/1.6 var(--f-mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.timeline .era{font:600 .66rem var(--f-mono);text-transform:uppercase;letter-spacing:.06em;color:var(--era);margin-left:8px}
+.timeline li[data-era="hand"]{--era:var(--com)}
+.timeline li[data-era="mech"]{--era:var(--str)}
+.timeline li[data-era="elmech"]{--era:var(--kw)}
+.timeline li[data-era="elek"]{--era:var(--num)}
+.timeline li[data-era="chip"]{--era:var(--accent)}
+.sort{display:grid;gap:6px}
+.sort .it{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 12px}
+.sort .it.right{border-color:var(--ok);background:var(--ok-soft)}
+.sort .it.wrong{border-color:var(--err);background:var(--err-soft)}
+.sort .bt{display:flex;gap:6px;flex-wrap:wrap}
+.sort .bt button{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:6px;padding:4px 10px;font-size:.85rem;font-weight:700}
+.sort .bt button:hover:not(:disabled){border-color:var(--accent)}
+.sort .bt button:disabled{cursor:default}
+.sort .it small{grid-column:1/-1;color:var(--muted);font-size:.88rem}
+.shell{border:1px solid var(--line);border-radius:var(--r);background:var(--ed-bg);font:400 .9rem/1.55 var(--f-mono);overflow:hidden}
+.shell .h{display:flex;justify-content:space-between;align-items:center;padding:5px 10px;border-bottom:1px solid var(--line);font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;background:var(--ed-gutter)}
+.shell .h button{text-transform:none;letter-spacing:0;font-size:.8rem}
+.shell .log{padding:8px 12px;max-height:240px;overflow:auto;white-space:pre-wrap;word-break:break-word}
+.shell .log .in::before{content:">>> ";color:var(--accent);font-weight:600}
+.shell .log .err{color:var(--err)}
+.shell .log .hint{font-family:var(--f-body);color:var(--muted);font-size:.9rem}
+.shell .row{display:flex;gap:8px;align-items:center;padding:6px 12px 10px;border-top:1px dashed var(--line)}
+.shell .row span{color:var(--accent);font-weight:600}
+.shell .row input{flex:1;min-width:0;border:0;background:transparent;color:var(--ink);font:inherit;outline:none}
+table.narrow{min-width:440px}
+.qfilter{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.qfilter button{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:5px 12px;font-size:.88rem;font-weight:700}
+.qfilter button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
 footer{padding-block:40px;color:var(--muted);font-size:.85rem}
 
 @media (max-width:900px){
@@ -192,10 +240,11 @@ footer{padding-block:40px;color:var(--muted);font-size:.85rem}
     <div>
       <p class="eyebrow">Informatik G1G · Skript Kapitel 1 + 2</p>
       <h1>Python &amp; <em>Turtle</em>-Grafik</h1>
-      <p class="lead">Zuerst die Theorie aus beiden Kapiteln, dann selber programmieren. Das Turtle-Labor versteht die Befehle aus dem Skript und zeichnet direkt hier im Browser, ganz ohne Thonny.</p>
+      <p class="lead">Alles zu den acht Lernzielen von Kapitel 1 und 2: zuerst die Theorie, dann selber programmieren. Das Turtle-Labor versteht die Befehle aus dem Skript und zeichnet direkt hier im Browser, ganz ohne Thonny.</p>
       <nav class="toc" aria-label="Inhalt">
-        <a href="#python"><span>01</span>Python</a>
-        <a href="#turtle"><span>02</span>Turtle</a>
+        <a href="#ziele"><span>LZ</span>Lernziele</a>
+        <a href="#python"><span>01</span>Computer &amp; Python</a>
+        <a href="#turtle"><span>02</span>Turtle &amp; Variablen</a>
         <a href="#spick"><span>Spick</span>Befehle</a>
         <a href="#labor"><span>Lab</span>Selber zeichnen</a>
         <a href="#quiz"><span>Test</span>Quiz</a>
@@ -209,18 +258,24 @@ footer{padding-block:40px;color:var(--muted);font-size:.85rem}
 </header>
 
 <main>
+<!-- ================= LERNZIELE ================= -->
+<section class="chapter wrap" id="ziele">
+  <div class="chap-head"><span class="chap-num" style="font-size:2rem">Ziele</span><h2>Das musst du können</h2></div>
+  <p class="intro">Das sind die acht Kompetenzen aus Moodle. Klick auf ein Ziel, dann springst du zur Erklärung. Hake es ab, wenn du es sicher kannst. Rechts siehst du, wie du im Quiz dazu abschneidest.</p>
+  <ul class="goals" id="goals"></ul>
+</section>
+
 <!-- ================= KAPITEL 1 ================= -->
 <section class="chapter wrap" id="python">
-  <div class="chap-head"><span class="chap-num">1</span><h2>Python</h2></div>
+  <div class="chap-head"><span class="chap-num">1</span><h2>Computer &amp; Python</h2></div>
   <div class="blocks">
 
-    <div class="block">
-      <div class="sec">1.1<b>Der Computer ist dumm</b></div>
+    <div class="block" id="lz1">
+      <div class="sec"><span class="lz">LZ 1</span><b>Universal&shy;werkzeug Computer</b></div>
       <div class="body">
-        <p>Ein Computer macht nur, was man ihm sagt. Der <b>Prozessor</b> braucht Befehle. Eine Folge von Befehlen, die der Computer der Reihe nach ausführt, heisst <b>Programm</b>. Die Zahlen, mit denen gearbeitet wird, sind die <b>Daten</b>.</p>
-        <p>Frühe Rechenmaschinen hatten ein fest eingebautes Programm. Nur die Daten konnte man ändern, das war sehr unflexibel.</p>
-        <div class="key"><b>Von-Neumann-Architektur (1945)</b>John von Neumann schlug vor, das Programm genau wie die Daten im <b>Speicher</b> abzulegen. Darum kann man heute beliebige Programme laden. Fast alle Computer sind bis heute so aufgebaut.</div>
-        <p>Alles im Speicher, also Programme und Daten, ist als Zahl gespeichert, und zwar im <b>Binärsystem</b> mit nur zwei Symbolen: 0 und 1. Zwei Zustände lassen sich technisch viel einfacher unterscheiden als zehn.</p>
+        <p>Ein Hammer kann nur hämmern, ein Taschenrechner nur rechnen. Ein Computer erledigt dagegen jede Aufgabe, für die es ein <b>Programm</b> gibt: Texte schreiben, Musik abspielen, ein Auto bremsen, ein Spiel laufen lassen. Darum heisst er <b>Universalwerkzeug</b>.</p>
+        <div class="key"><b>Warum kann er das?</b>Das Programm liegt genau wie die Daten im <b>Speicher</b> (Von-Neumann-Architektur, 1945). Wer ein neues Programm lädt, hat ein neues Werkzeug. Frühe Rechenmaschinen waren fest verdrahtet und konnten nur eine einzige Sache.</div>
+        <p>Dazu kommt das <b>Binärsystem</b>: Zahlen, Texte, Bilder und Befehle werden alle als 0 und 1 gespeichert. Was eine Bitfolge bedeutet, hängt davon ab, wie man sie liest.</p>
         <div class="bits">
           <span class="b">0100 0110</span>
           <ul>
@@ -229,78 +284,142 @@ footer{padding-block:40px;color:var(--muted);font-size:.85rem}
             <li>oder ein Befehl an den Prozessor</li>
           </ul>
         </div>
-        <p>Dieselbe Bitfolge kann also ganz verschiedene Bedeutungen haben. Es kommt darauf an, wie man sie interpretiert.</p>
-      </div>
-    </div>
-
-    <div class="block">
-      <div class="sec">1.1<b>Maschinencode und Programmier&shy;sprachen</b></div>
-      <div class="body">
-        <p>Der Prozessor versteht direkt nur <b>Maschinencode</b> (auch Binärcode oder Maschinensprache). Für Menschen ist das viel zu unpraktisch. Darum gibt es <b>Programmiersprachen</b> wie Python, Java, C oder C++. Sie benutzen meist englische Wörter.</p>
-        <div class="two">
-          <div class="panel"><h4>Python</h4><pre class="code">print("Hallo Welt")</pre></div>
-          <div class="panel"><h4>Java</h4><pre class="code">System.out.println("Hallo Welt");</pre></div>
+        <h3>Ein Computer, viele Formen</h3>
+        <div class="forms">
+          <div class="panel"><h4>PC und Laptop</h4><p>Schule, Arbeit, Programmieren</p></div>
+          <div class="panel"><h4>Smartphone und Tablet</h4><p>Ein vollwertiger Computer für die Hosentasche</p></div>
+          <div class="panel"><h4>Smartwatch</h4><p>Winziger Computer am Handgelenk</p></div>
+          <div class="panel"><h4>Spielkonsole</h4><p>Spezialisiert auf Grafik und Spiele</p></div>
+          <div class="panel"><h4>Server</h4><p>Stehen in Rechenzentren und liefern Websites, Videos und Cloud-Speicher</p></div>
+          <div class="panel"><h4>Eingebettete Systeme</h4><p>Versteckt im Auto, in der Waschmaschine, im Billettautomaten, in der Ampel</p></div>
         </div>
-        <p>Das für uns lesbare Programm heisst <b>Quellcode</b>. Ein Übersetzungsprogramm macht daraus Maschinencode. Eine einzige falsche 0 oder 1 könnte das Programm kaputt machen, darum erledigt das ein Computer und nicht ein Mensch.</p>
+        <p>Sie sehen verschieden aus, sind aber gleich aufgebaut: <b>Prozessor</b>, <b>Speicher</b>, <b>Eingabe</b> (Tastatur, Touchscreen, Sensor) und <b>Ausgabe</b> (Bildschirm, Lautsprecher, Motor).</p>
       </div>
     </div>
 
-    <div class="block">
-      <div class="sec">Exkurs 1.1.1<b>Compiler vs. Interpreter</b></div>
+    <div class="block" id="lz2">
+      <div class="sec"><span class="lz">LZ 2</span><b>Anwendungs&shy;wissen vs. Informatik</b></div>
       <div class="body">
+        <div class="two">
+          <div class="panel">
+            <h4>Anwendungswissen</h4>
+            <p>Ein bestimmtes Programm <b>bedienen</b> können, also wissen, wo man klickt.</p>
+            <p>Beispiele: Text in Word formatieren, eine Datei in OneDrive speichern, in Excel einen Filter setzen.</p>
+            <p>Veraltet, sobald sich das Programm ändert.</p>
+          </div>
+          <div class="panel">
+            <h4>Informatik</h4>
+            <p><b>Verstehen</b>, wie Computer und Programme funktionieren, und selber Lösungen <b>bauen</b>.</p>
+            <p>Beispiele: Wie wird ein Bild als Zahlen gespeichert? Was macht ein Interpreter? Ein eigenes Programm schreiben.</p>
+            <p>Bleibt gültig, egal welches Programm gerade aktuell ist.</p>
+          </div>
+        </div>
+        <div class="key"><b>Vergleich mit dem Auto</b>Autofahren können ist Anwendungswissen. Verstehen, wie der Motor funktioniert, und selber einen bauen können, entspricht der Informatik.</div>
+        <h3>Ordne zu</h3>
+        <div class="sort" id="sortList"></div>
+        <button class="linkbtn" id="sortAgain" type="button" style="justify-self:start">Nochmals ordnen</button>
+      </div>
+    </div>
+
+    <div class="block" id="lz3">
+      <div class="sec"><span class="lz">LZ 3</span><b>Geschichte der Rechen&shy;maschinen</b></div>
+      <div class="body">
+        <p>Rechenhilfen wurden über die Jahrhunderte immer schneller, kleiner und billiger. Man teilt sie in Stufen ein:</p>
+        <div class="flow" style="font-size:.9rem"><span>von Hand</span><i>→</i><span>mechanisch</span><i>→</i><span>elektromechanisch</span><i>→</i><span>elektronisch</span><i>→</i><span>Mikrochip</span></div>
+        <ol class="timeline">
+          <li data-era="hand"><span class="yr">Antike</span><div><b>Abakus</b><span class="era">von Hand</span><br>Rechenbrett mit Kugeln. Der Mensch rechnet, das Gerät hilft beim Merken.</div></li>
+          <li data-era="mech"><span class="yr">1623</span><div><b>Schickard: Rechenuhr</b><span class="era">mechanisch</span><br>Erste bekannte mechanische Rechenmaschine.</div></li>
+          <li data-era="mech"><span class="yr">1642</span><div><b>Pascal: Pascaline</b><span class="era">mechanisch</span><br>Addiert und subtrahiert mit Zahnrädern.</div></li>
+          <li data-era="mech"><span class="yr">1673</span><div><b>Leibniz: Rechenmaschine</b><span class="era">mechanisch</span><br>Kann alle vier Grundrechenarten. Leibniz beschreibt auch das Binärsystem mit 0 und 1.</div></li>
+          <li data-era="mech"><span class="yr">1805</span><div><b>Jacquard: Webstuhl</b><span class="era">mechanisch</span><br>Lochkarten steuern das Webmuster. Das ist eine Art erstes Programm für eine Maschine.</div></li>
+          <li data-era="mech"><span class="yr">1837</span><div><b>Babbage: Analytical Engine</b><span class="era">mechanisch</span><br>Plan für einen programmierbaren Rechner, nie fertig gebaut. Ada Lovelace schreibt dafür 1843 das erste Computerprogramm.</div></li>
+          <li data-era="elmech"><span class="yr">1890</span><div><b>Hollerith: Zählmaschine</b><span class="era">elektromechanisch</span><br>Wertet die US-Volkszählung mit Lochkarten aus. Aus seiner Firma wird später IBM.</div></li>
+          <li data-era="elmech"><span class="yr">1941</span><div><b>Zuse: Z3</b><span class="era">elektromechanisch</span><br>Erster funktionsfähiger programmgesteuerter Computer. Rechnet binär, mit Relais.</div></li>
+          <li data-era="elek"><span class="yr">1945</span><div><b>Von-Neumann-Architektur</b><span class="era">Idee</span><br>Programm und Daten liegen im selben Speicher. So sind fast alle Computer bis heute aufgebaut.</div></li>
+          <li data-era="elek"><span class="yr">1946</span><div><b>ENIAC</b><span class="era">elektronisch</span><br>Grossrechner mit rund 17'000 Elektronenröhren, füllt einen ganzen Saal. Programmiert wird noch durch Umstecken von Kabeln.</div></li>
+          <li data-era="elek"><span class="yr">1947</span><div><b>Transistor</b><span class="era">elektronisch</span><br>Ersetzt die Röhren: kleiner, schneller, braucht weniger Strom.</div></li>
+          <li data-era="chip"><span class="yr">1971</span><div><b>Intel 4004</b><span class="era">Mikrochip</span><br>Erster Mikroprozessor: ein ganzer Prozessor auf einem einzigen Chip.</div></li>
+          <li data-era="chip"><span class="yr">1981</span><div><b>IBM PC</b><span class="era">Mikrochip</span><br>Der Personal Computer kommt in Büros und Wohnungen.</div></li>
+          <li data-era="chip"><span class="yr">2007</span><div><b>Smartphone</b><span class="era">Mikrochip</span><br>Mit dem iPhone wird der Computer zum Alltagsgerät für die Hosentasche.</div></li>
+        </ol>
+        <div class="key"><b>Der grosse Schritt</b>Frühe Maschinen bekamen ihr Programm über Kabel oder Lochstreifen, oder es war fest eingebaut. Seit von Neumann liegt das Programm wie die Daten im Speicher und lässt sich jederzeit austauschen. Das macht den Computer zum Universalwerkzeug (LZ 1).</div>
+      </div>
+    </div>
+
+    <div class="block" id="lz4">
+      <div class="sec"><span class="lz">LZ 4</span><b>Quellcode, Maschinen&shy;code, Compiler, Interpreter</b></div>
+      <div class="body">
+        <p>Der Prozessor versteht nur <b>Maschinencode</b> (auch Binärcode oder Maschinensprache), also Befehle aus 0 und 1. Für Menschen ist das viel zu unpraktisch. Darum schreiben wir in einer <b>Programmiersprache</b> wie Python, Java oder C. Dieses für Menschen lesbare Programm heisst <b>Quellcode</b>.</p>
+        <div class="flow" style="font-size:.9rem"><span>print("Hallo")</span><i>Quellcode → Übersetzer →</i><span>10010100 0100 …</span><i>Maschinencode →</i><span>Prozessor</span></div>
+        <p>Das Übersetzen erledigt ein Programm, weil eine einzige falsche 0 oder 1 alles kaputt machen würde. Es gibt zwei Arten von Übersetzern:</p>
         <div class="two">
           <div class="panel">
             <h4>Compiler</h4>
             <div class="flow"><span>Quellcode</span><i>→ ganz übersetzen →</i><span>prog.exe</span><i>→</i><span>Prozessor</span></div>
-            <p>Übersetzt den <b>ganzen</b> Quellcode auf einmal und speichert den Maschinencode in einer <b>ausführbaren Datei</b> (Windows: Endung <code>.exe</code> = executable). Zum Ausführen braucht man den Compiler danach nicht mehr.</p>
+            <p>Übersetzt den <b>ganzen</b> Quellcode auf einmal und speichert den Maschinencode in einer <b>ausführbaren Datei</b> (unter Windows mit der Endung <code>.exe</code> für executable). Danach braucht man den Compiler zum Ausführen nicht mehr.</p>
           </div>
           <div class="panel">
             <h4>Interpreter</h4>
             <div class="flow"><span>Anweisung 1</span><i>→ übersetzen + ausführen</i><span>Anweisung 2</span><i>→ …</i></div>
-            <p>Liest den Quellcode <b>Anweisung für Anweisung</b>, übersetzt jede und lässt sie sofort ausführen (on-the-fly). Es entsteht <b>keine</b> zusätzliche Datei. Der Interpreter wird bei jedem Ausführen gebraucht.</p>
+            <p>Liest den Quellcode <b>Anweisung für Anweisung</b>, übersetzt jede und lässt sie sofort ausführen. Es entsteht <b>keine</b> zusätzliche Datei. Bei jedem Ausführen braucht es den Interpreter.</p>
           </div>
         </div>
+        <div class="key"><b>Merksatz</b>Der Compiler übersetzt zuerst alles und erzeugt eine .exe-Datei. Der Interpreter übersetzt Zeile für Zeile und führt jede sofort aus. Python ist eine <b>interpretierte</b> Sprache.</div>
       </div>
     </div>
 
-    <div class="block">
-      <div class="sec">1.2<b>Programmier&shy;sprache Python</b></div>
+    <div class="block" id="lz5">
+      <div class="sec"><span class="lz">LZ 5</span><b>Shell oder ganze Datei</b></div>
       <div class="body">
-        <ul>
-          <li>Der Name kommt von der Comedy-Gruppe <b>Monty Python</b>, nicht von der Schlange.</li>
-          <li>Python 1.0 erschien <b>1994</b>, Version 3 gibt es seit <b>2008</b>. Wir arbeiten mit Python 3.</li>
-          <li>Python ist eine <b>interpretierte</b> Sprache. Wir brauchen also einen Interpreter.</li>
-          <li>Dazu kommen eine <b>Shell</b> (Befehle einzeln eingeben und sofort ausführen) und ein <b>Editor</b> (mehrere Anweisungen in einer Datei speichern).</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="block">
-      <div class="sec">1.3<b>Thonny</b></div>
-      <div class="body">
-        <p>Editor und Interpreter in einem Paket nennt man <b>Entwicklungsumgebung</b> oder <b>IDE</b> (Integrated Development Environment). Wir benutzen <b>Thonny</b>. Thonny ist gratis und wird an der Universität Tartu in Estland entwickelt.</p>
+        <p>Wir benutzen <b>Thonny</b>, eine <b>IDE</b> (Integrated Development Environment). Darin sind Editor und Python-Interpreter in einem Programm. Es gibt zwei Wege, dem Interpreter Befehle zu geben:</p>
         <div class="two">
           <div class="panel">
-            <h4>Shell (unten)</h4>
-            <p>Der <b>Prompt</b> <code>&gt;&gt;&gt;</code> zeigt: Der Interpreter wartet auf einen Befehl. Mit <b>Pfeil hoch / runter</b> holst du frühere Befehle zurück.</p>
-            <p>Rechnen geht wie mit dem Taschenrechner: <code>+ - * /</code>, Klammern, <code>**</code> für Potenzen (<code>33**1000</code>). Es gilt <b>Punkt vor Strich</b>.</p>
+            <h4>Einzeln in der Shell</h4>
+            <p>Die Shell ist unten in Thonny. Der <b>Prompt</b> <code>&gt;&gt;&gt;</code> zeigt: Der Interpreter wartet. Befehl eintippen, Enter drücken, das Resultat kommt sofort.</p>
+            <p>Gut zum Ausprobieren. Mit <b>Pfeil hoch</b> holst du den letzten Befehl zurück.</p>
           </div>
           <div class="panel">
-            <h4>Editor (Mitte)</h4>
-            <p>Mehrere Anweisungen schreiben, als <b>Python-Skript</b> mit Endung <code>.py</code> speichern und mit dem <b>Play-Knopf</b> (Run current script) ausführen. Die Ausgabe erscheint in der Shell.</p>
-            <p>Ein <b>*</b> neben dem Dateinamen heisst: Es gibt ungespeicherte Änderungen.</p>
+            <h4>Ganze Datei im Editor</h4>
+            <p>Mehrere Anweisungen untereinander schreiben, als <b>Python-Skript</b> mit Endung <code>.py</code> speichern und mit <b>Run</b> (Play-Knopf) ausführen. Der Interpreter arbeitet die Datei von oben nach unten ab. Die Ausgabe erscheint in der Shell.</p>
+            <p>Gut für Programme, die man behalten und ändern will.</p>
           </div>
         </div>
+        <h3>Probier die Shell</h3>
+        <div class="shell">
+          <div class="h"><span>Python-Shell</span><button class="linkbtn" id="shellClear" type="button">Leeren</button></div>
+          <div class="log" id="shellLog" aria-live="polite"></div>
+          <div class="row"><span>&gt;&gt;&gt;</span><input id="shellIn" type="text" spellcheck="false" autocomplete="off" autocapitalize="off" aria-label="Python-Befehl eingeben" placeholder="z.B. 33**1000 oder print(&quot;Hallo&quot;)"></div>
+        </div>
+        <p>Den zweiten Weg, eine ganze Datei, übst du im <a href="#labor">Turtle-Labor</a> weiter unten. Dort schreibst du ein Skript und führst es mit «Ausführen» komplett aus.</p>
+        <div class="key"><b>Tipp für Dateinamen</b>Ohne Leerzeichen, Umlaute und Sonderzeichen, z.B. <code>hallo.py</code>.</div>
+      </div>
+    </div>
+
+    <div class="block" id="lz6">
+      <div class="sec"><span class="lz">LZ 6</span><b>Rechnen und print</b></div>
+      <div class="body">
+        <p>In Python rechnest du wie mit dem Taschenrechner. Es gilt <b>Punkt vor Strich</b>, Klammern werden zuerst ausgerechnet.</p>
+        <div class="tablewrap">
+          <table class="narrow">
+            <thead><tr><th>Zeichen</th><th>Bedeutung</th><th>Beispiel</th><th>Resultat</th></tr></thead>
+            <tbody>
+              <tr><td>+</td><td>plus</td><td><code>7 + 3</code></td><td>10</td></tr>
+              <tr><td>-</td><td>minus</td><td><code>7 - 3</code></td><td>4</td></tr>
+              <tr><td>*</td><td>mal</td><td><code>7 * 3</code></td><td>21</td></tr>
+              <tr><td>/</td><td>geteilt, ergibt immer eine Kommazahl</td><td><code>6 / 3</code></td><td>2.0</td></tr>
+              <tr><td>**</td><td>hoch (Potenz)</td><td><code>2 ** 10</code></td><td>1024</td></tr>
+              <tr><td>( )</td><td>Klammern zuerst</td><td><code>(5 + 6) * 3</code></td><td>33</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Mit <code>print()</code> gibst du etwas am Bildschirm aus. Text steht in <b>Anführungszeichen</b>, Zahlen und Rechnungen ohne:</p>
+        <div class="two">
+          <div class="panel"><pre class="code">print("5 + 3")</pre><p>Ausgabe: <code>5 + 3</code>. Text kommt genau so heraus, wie er dasteht.</p></div>
+          <div class="panel"><pre class="code">print(5 + 3)</pre><p>Ausgabe: <code>8</code>. Python rechnet zuerst.</p></div>
+        </div>
+        <p>Mehrere Werte trennst du mit einem Komma: <code>print("Resultat:", 7 * 3)</code> gibt <code>Resultat: 21</code> aus.</p>
         <pre class="code" id="pre-rechnen"></pre>
         <button class="try" data-snip="rechnen" type="button">Im Labor ausführen</button>
-        <div class="key"><b>Gute Gewohnheiten</b>
-          <ul>
-            <li>Dateinamen <b>ohne Leerzeichen, Umlaute und Sonderzeichen</b>, z.B. <code>hallo.py</code></li>
-            <li>Tastenkürzel statt Menü: <code>Ctrl+X</code>, <code>Ctrl+C</code>, <code>Ctrl+V</code></li>
-            <li>In Thonny unter <i>Tools → Options</i>: <b>Show line numbers</b> einschalten und die maximale Zeilenlänge auf <b>80</b> setzen</li>
-          </ul>
-        </div>
-        <p>Warum nicht Word? Word speichert auch Formatierungen wie Fettdruck oder Farben mit. Beim Programmieren zählt nur der reine Text. Ein Code-Editor bietet dafür Zeilennummern und färbt Texte in Anführungszeichen automatisch ein.</p>
       </div>
     </div>
   </div>
@@ -308,11 +427,11 @@ footer{padding-block:40px;color:var(--muted);font-size:.85rem}
 
 <!-- ================= KAPITEL 2 ================= -->
 <section class="chapter wrap" id="turtle">
-  <div class="chap-head"><span class="chap-num">2</span><h2>Turtle-Grafik</h2></div>
+  <div class="chap-head"><span class="chap-num">2</span><h2>Turtle-Grafik &amp; Variablen</h2></div>
   <div class="blocks">
 
     <div class="block">
-      <div class="sec">2.1<b>Die Idee</b></div>
+      <div class="sec"><span class="lz">LZ 7</span>2.1<b>Die Idee</b></div>
       <div class="body">
         <p>Eine Schildkröte (engl. <i>turtle</i>) läuft über eine weisse Zeichenfläche und zieht mit einem Stift eine Spur hinter sich her. Wir schauen von oben zu und geben ihr Befehle.</p>
         <p>Die Idee stammt aus der Sprache <b>LOGO</b> (1967), die in den 1980er-Jahren sehr verbreitet war. Der grosse Vorteil ist die <b>Visualisierung</b>: Du siehst sofort, was dein Programm tut.</p>
@@ -320,7 +439,7 @@ footer{padding-block:40px;color:var(--muted);font-size:.85rem}
     </div>
 
     <div class="block">
-      <div class="sec">2.2<b>Ein erstes Turtle-Bild</b></div>
+      <div class="sec"><span class="lz">LZ 7</span>2.2<b>Ein erstes Turtle-Bild</b></div>
       <div class="body">
         <p>Bereits fertige Python-Programme, die man im eigenen Programm benutzen kann, heissen <b>Module</b>. Die Turtle-Befehle stecken im Modul <code>turtle</code>. Darum steht ganz oben immer:</p>
         <pre class="code">from turtle import *</pre>
@@ -357,7 +476,7 @@ footer{padding-block:40px;color:var(--muted);font-size:.85rem}
     </div>
 
     <div class="block">
-      <div class="sec">2.3<b>Programm im Editor</b></div>
+      <div class="sec"><span class="lz">LZ 7</span>2.3<b>Programm im Editor</b></div>
       <div class="body">
         <p>In der Shell siehst du jede Anweisung sofort. Für ganze Bilder ist der Editor besser, weil man das Programm speichern und ändern kann.</p>
         <ul>
@@ -369,7 +488,7 @@ footer{padding-block:40px;color:var(--muted);font-size:.85rem}
     </div>
 
     <div class="block">
-      <div class="sec">2.4<b>Flächen füllen</b></div>
+      <div class="sec"><span class="lz">LZ 7</span>2.4<b>Flächen füllen</b></div>
       <div class="body">
         <p><code>speed(n)</code> stellt die Geschwindigkeit ein: Werte von 0 bis 10. Von <b>1 (langsam) bis 10 (schnell)</b> wird die Turtle schneller, aber <b>0 ist am schnellsten</b>. Am Anfang langsam testen, bei fehlerfreiem Programm schneller stellen.</p>
         <p>Um eine Fläche auszumalen, setzt du <code>begin_fill()</code> vor die erste Linie und <code>end_fill()</code> nach der letzten.</p>
@@ -383,8 +502,8 @@ footer{padding-block:40px;color:var(--muted);font-size:.85rem}
       </div>
     </div>
 
-    <div class="block">
-      <div class="sec">2.5<b>Variablen</b></div>
+    <div class="block" id="lz8">
+      <div class="sec"><span class="lz">LZ 8</span>2.5<b>Variablen</b></div>
       <div class="body">
         <p>Willst du die Grösse ändern, musst du sonst an vielen Stellen Zahlen anpassen. Besser: eine <b>Variable</b>. Stell sie dir als <b>Behälter</b> vor. Sie hat einen <b>Namen</b> und einen <b>Wert</b>.</p>
         <pre class="code">schritte = 100
@@ -395,14 +514,14 @@ forward(schritte)</pre>
     </div>
 
     <div class="block">
-      <div class="sec">Exkurs 2.5.2<b>Speicher</b></div>
+      <div class="sec"><span class="lz">LZ 8</span>2.5<b>Wo die Variable wohnt</b></div>
       <div class="body">
-        <p>Speicher sind Bauteile, auf denen man Informationen ablegt und später wieder abruft: optisch (CD, DVD), magnetisch (Harddisk) oder elektronisch (USB-Stick, RAM).</p>
+        <p>Eine Variable steckt im <b>Speicher</b> des Computers. Es gibt zwei Arten von Speicher:</p>
         <div class="two">
           <div class="panel"><h4>flüchtig (volatil)</h4><p>Daten bleiben nur, solange Strom fliesst. Beispiel: <b>RAM</b>, der Hauptspeicher. Sehr schnell, aber teuer.</p></div>
           <div class="panel"><h4>nicht flüchtig (permanent)</h4><p>Daten bleiben auch ohne Strom erhalten. Beispiel: <b>Harddisk</b>, USB-Stick.</p></div>
         </div>
-        <p>Weitere Eigenschaften: Geschwindigkeit (Lesen ist meist schneller als Schreiben), Grösse, Lebensdauer, Preis. Startest du ein Programm, wird es von der Harddisk ins <b>RAM</b> geladen, denn nur dort kann der Prozessor es ausführen.</p>
+        <p>Startest du ein Programm, wird es von der Harddisk ins <b>RAM</b> geladen, denn nur dort kann der Prozessor es ausführen. Auch deine Variablen liegen dort.</p>
         <p>Der Hauptspeicher ist eine lange Reihe nummerierter <b>Speicherzellen</b>. Die Nummer heisst <b>Adresse</b>. Statt mit Adressen zu arbeiten, geben wir einer Zelle einen Namen:</p>
         <div class="mem" aria-label="Speicherzellen 0001 bis 0005, Zelle 0003 heisst schritte und enthält 100">
           <div class="cell"><div class="n"></div><div class="v"></div><div class="a">0001</div></div>
@@ -416,7 +535,7 @@ forward(schritte)</pre>
     </div>
 
     <div class="block">
-      <div class="sec">2.5<b>Namensregeln</b></div>
+      <div class="sec"><span class="lz">LZ 8</span>2.5<b>Namensregeln</b></div>
       <div class="body">
         <ul>
           <li>Aussagekräftige Namen wählen: <code>schritte</code> ist besser als <code>s</code>.</li>
@@ -433,7 +552,7 @@ forward(schritte)</pre>
     </div>
 
     <div class="block">
-      <div class="sec">2.6<b>Der Zuweisungs&shy;operator</b></div>
+      <div class="sec"><span class="lz">LZ 8</span>2.6<b>Der Zuweisungs&shy;operator</b></div>
       <div class="body">
         <p>Das <code>=</code> ist beim Programmieren <b>kein</b> Gleichheitszeichen wie in Mathe, sondern der <b>Zuweisungsoperator</b>. Er arbeitet in zwei Schritten:</p>
         <div class="assign">
@@ -539,13 +658,14 @@ forward(schritte)</pre>
 
 <!-- ================= QUIZ ================= -->
 <section class="chapter wrap" id="quiz">
-  <div class="chap-head"><span class="chap-num" style="font-size:2rem">Test</span><h2>Quiz zu Kapitel 1 und 2</h2></div>
+  <div class="chap-head"><span class="chap-num" style="font-size:2rem">Test</span><h2>Quiz zu den Lernzielen</h2></div>
+  <div class="qfilter" id="qfilter" role="toolbar" aria-label="Fragen nach Lernziel filtern"></div>
   <div class="score"><span>Richtig: <b id="score">0</b> / <span id="qtotal"></span></span><span id="qprog" style="color:var(--muted)"></span><button class="btn" id="qreset" type="button">Neu starten</button></div>
   <div class="quiz" id="quizList"></div>
 </section>
 </main>
 
-<footer class="wrap">Lernmodul zum Skript «Kapitel 1 – Python» und «Kapitel 2 – Turtle Grafik», Informatik G1G, KSWO. Das Labor ist ein vereinfachter Python-Interpreter: Er kann alle Befehle aus den zwei Kapiteln, Schleifen kommen erst im nächsten Kapitel.</footer>
+<footer class="wrap">Lernmodul zu den Kompetenzen von «Python &amp; Turtle-Grafik», Informatik G1G, KSWO. Grundlage: Skripte Kapitel 1 (Python) und Kapitel 2 (Turtle Grafik). Das Labor ist ein vereinfachter Python-Interpreter: Er kann alle Befehle aus den zwei Kapiteln, Schleifen kommen erst im nächsten Kapitel.</footer>
 
 <script>
 (function(){
@@ -1221,6 +1341,7 @@ let CUR=null;
 function lev(a,b){const m=a.length,n=b.length;const d=Array.from({length:m+1},(_,i)=>[i]);for(let j=1;j<=n;j++)d[0][j]=j;
   for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));return d[m][n]}
 function nameHint(name,ctx){
+  if(ctx.shell&&TURTLE[name])return 'Turtle-Befehle probierst du im Turtle-Labor weiter unten aus. Die Shell hier ist zum Rechnen und für print.';
   if(TURTLE[name]&&!ctx.star&&!ctx.from.has(name))return 'Das ist ein Turtle-Befehl. Steht ganz oben <code>from turtle import *</code>?';
   const de=DE_COLORS[name.toLowerCase()];
   if(de)return `Farben sind Text auf Englisch und brauchen Anführungszeichen: <code>color("${de}")</code>.`;
@@ -1275,9 +1396,60 @@ function stripComment(s){
     else if(c==='#')return s.slice(0,i);
   }return s;
 }
-function runProgram(src){
+function newCtx(shell){
   const w={ops:[],st:defState(),out:[],warn:[]};
-  const ctx={vars:new Map(),star:false,mod:false,from:new Set(),mathStar:false,mathMod:false,w};
+  return {vars:new Map(),star:false,mod:false,from:new Set(),mathStar:false,mathMod:false,w,shell:!!shell};
+}
+const SHELL_NOTE='Gezeichnet wird im Turtle-Labor weiter unten. Hier in der Shell rechnest du und testest print.';
+function execLine(raw,ln,ctx){
+  const w=ctx.w;
+  if(/^\s/.test(raw))throw new PyErr('IndentationError','unexpected indent',ln,'Diese Zeile beginnt mit Leerzeichen. Ohne Schleife oder Funktion muss jede Zeile ganz links anfangen.');
+  const line=raw.trim();
+  const first=(/^[A-Za-z_]\w*/.exec(line)||[''])[0];
+  if(first==='from'){
+    let m=/^from\s+(\w+)\s+import\s+(.+)$/.exec(line);
+    if(!m)throw new PyErr('SyntaxError','invalid syntax',ln,'So importiert man: from turtle import *');
+    const mod=m[1],what=m[2].trim();
+    if(mod==='turtle'){
+      if(ctx.shell)return {note:SHELL_NOTE};
+      if(what==='*')ctx.star=true;else for(const n of what.split(',').map(x=>x.trim())){if(!TURTLE[n])throw new PyErr('ImportError',`cannot import name '${n}' from 'turtle'`,ln,'Diesen Befehl gibt es im Turtle-Modul nicht.');ctx.from.add(n)}
+    }
+    else if(mod==='math'){ctx.mathStar=true}
+    else if(mod==='Turtle'||mod==='turtel'||mod==='Turtel')throw new PyErr('ModuleNotFoundError',`No module named '${mod}'`,ln,'Das Modul heisst <code>turtle</code>, klein geschrieben.');
+    else throw new PyErr('ModuleNotFoundError',`No module named '${mod}'`,ln,'Dieser Editor kennt nur die Module turtle und math.');
+    return null;
+  }
+  if(first==='import'){
+    const m=/^import\s+(\w+)$/.exec(line);
+    if(m&&m[1]==='turtle'){if(ctx.shell)return {note:SHELL_NOTE};ctx.mod=true;return null}
+    if(m&&m[1]==='math'){ctx.mathMod=true;return null}
+    throw new PyErr('ModuleNotFoundError',`No module named '${m?m[1]:line.slice(7)}'`,ln,'Für die Turtle schreibst du: from turtle import *');
+  }
+  if(['for','while','def','if','elif','else','repeat'].includes(first)||line.endsWith(':')){
+    throw new PyErr('Hinweis',`«${first||line}» kann dieser Editor noch nicht`,ln,'Schleifen, Bedingungen und Funktionen kommen erst in den nächsten Kapiteln. Probier solche Programme in Thonny aus.');
+  }
+  const T=tokenize(line,ln);
+  let depth=0,ai=-1;
+  for(let k=0;k<T.length;k++){const t=T[k];if(t.t!=='op')continue;if(t.v==='(')depth++;else if(t.v===')')depth--;else if(depth===0&&['=','+=','-=','*=','/='].includes(t.v)){ai=k;break}}
+  if(ai>=0){
+    if(ai!==1||T[0].t!=='name')throw new PyErr('SyntaxError',"cannot assign to expression here. Maybe you meant '==' instead of '='?",ln,'Links vom = darf nur <b>ein Variablenname</b> stehen. Python rechnet zuerst die rechte Seite aus und speichert das Ergebnis dann in der Variablen links.');
+    const name=T[0].v;
+    if(KEYWORDS.has(name))throw new PyErr('SyntaxError','cannot assign to keyword',ln,`«${name}» ist ein reserviertes Wort und kein erlaubter Variablenname.`);
+    const rhs=T.slice(2);
+    if(!rhs.length)throw new PyErr('SyntaxError','invalid syntax',ln,'Rechts vom = fehlt der Wert.');
+    let v=evalExpr(rhs,ln,ctx);
+    const op=T[1].v;
+    if(op!=='='){const cur=lookup(name,ln,ctx);v=binop(op[0],cur,v,ln)}
+    if(v.t==='none'&&rhs.length>1&&rhs[0].t==='name'&&TURTLE[rhs[0].v])w.warn.push({ln,msg:`${rhs[0].v}() liefert keinen Wert. ${name} enthält jetzt None.`});
+    ctx.vars.set(name,v);
+    return null;
+  }
+  const v=evalExpr(T,ln,ctx);
+  if(!ctx.shell&&v.t==='fn'&&T.length===1)w.warn.push({ln,msg:`«${T[0].v}» ohne Klammern macht nichts. Meintest du ${T[0].v}()?`});
+  return v;
+}
+function runProgram(src){
+  const ctx=newCtx(false);const w=ctx.w;
   CUR={w,ln:0};
   const lines=src.replace(/\r/g,'').split('\n');
   let err=null;
@@ -1286,46 +1458,7 @@ function runProgram(src){
       const ln=i+1;CUR.ln=ln;
       const raw=stripComment(lines[i]);
       if(!raw.trim())continue;
-      if(/^\s/.test(raw))throw new PyErr('IndentationError','unexpected indent',ln,'Diese Zeile beginnt mit Leerzeichen. Ohne Schleife oder Funktion muss jede Zeile ganz links anfangen.');
-      const line=raw.trim();
-      const first=(/^[A-Za-z_]\w*/.exec(line)||[''])[0];
-      if(first==='from'){
-        let m=/^from\s+(\w+)\s+import\s+(.+)$/.exec(line);
-        if(!m)throw new PyErr('SyntaxError','invalid syntax',ln,'So importiert man: from turtle import *');
-        const mod=m[1],what=m[2].trim();
-        if(mod==='turtle'){if(what==='*')ctx.star=true;else for(const n of what.split(',').map(x=>x.trim())){if(!TURTLE[n])throw new PyErr('ImportError',`cannot import name '${n}' from 'turtle'`,ln,'Diesen Befehl gibt es im Turtle-Modul nicht.');ctx.from.add(n)}}
-        else if(mod==='math'){ctx.mathStar=true}
-        else if(mod==='Turtle'||mod==='turtel'||mod==='Turtel')throw new PyErr('ModuleNotFoundError',`No module named '${mod}'`,ln,'Das Modul heisst <code>turtle</code>, klein geschrieben.');
-        else throw new PyErr('ModuleNotFoundError',`No module named '${mod}'`,ln,'Dieser Editor kennt nur die Module turtle und math.');
-        continue;
-      }
-      if(first==='import'){
-        const m=/^import\s+(\w+)$/.exec(line);
-        if(m&&m[1]==='turtle'){ctx.mod=true;continue}
-        if(m&&m[1]==='math'){ctx.mathMod=true;continue}
-        throw new PyErr('ModuleNotFoundError',`No module named '${m?m[1]:line.slice(7)}'`,ln,'Für die Turtle schreibst du: from turtle import *');
-      }
-      if(['for','while','def','if','elif','else','repeat'].includes(first)||line.endsWith(':')){
-        throw new PyErr('Hinweis',`«${first||line}» kann dieser Editor noch nicht`,ln,'Schleifen, Bedingungen und Funktionen kommen erst in den nächsten Kapiteln. Probier solche Programme in Thonny aus.');
-      }
-      const T=tokenize(line,ln);
-      let depth=0,ai=-1;
-      for(let k=0;k<T.length;k++){const t=T[k];if(t.t!=='op')continue;if(t.v==='(')depth++;else if(t.v===')')depth--;else if(depth===0&&['=','+=','-=','*=','/='].includes(t.v)){ai=k;break}}
-      if(ai>=0){
-        if(ai!==1||T[0].t!=='name')throw new PyErr('SyntaxError',"cannot assign to expression here. Maybe you meant '==' instead of '='?",ln,'Links vom = darf nur <b>ein Variablenname</b> stehen. Python rechnet zuerst die rechte Seite aus und speichert das Ergebnis dann in der Variablen links.');
-        const name=T[0].v;
-        if(KEYWORDS.has(name))throw new PyErr('SyntaxError','cannot assign to keyword',ln,`«${name}» ist ein reserviertes Wort und kein erlaubter Variablenname.`);
-        const rhs=T.slice(2);
-        if(!rhs.length)throw new PyErr('SyntaxError','invalid syntax',ln,'Rechts vom = fehlt der Wert.');
-        let v=evalExpr(rhs,ln,ctx);
-        const op=T[1].v;
-        if(op!=='='){const cur=lookup(name,ln,ctx);v=binop(op[0],cur,v,ln)}
-        if(v.t==='none'&&rhs.length>1&&rhs[0].t==='name'&&TURTLE[rhs[0].v])w.warn.push({ln,msg:`${rhs[0].v}() liefert keinen Wert. ${name} enthält jetzt None.`});
-        ctx.vars.set(name,v);
-      }else{
-        const v=evalExpr(T,ln,ctx);
-        if(v.t==='fn'&&T.length===1)w.warn.push({ln,msg:`«${T[0].v}» ohne Klammern macht nichts. Meintest du ${T[0].v}()?`});
-      }
+      execLine(raw,ln,ctx);
     }
   }catch(e){
     err=e instanceof PyErr?e:new PyErr('RuntimeError',String(e&&e.message||e),CUR.ln,'');
@@ -1534,60 +1667,179 @@ $('heroAgain').addEventListener('click',playHero);
 
 let rz=0;window.addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{labAnim.redraw();heroAnim.redraw();if(task.sol){const r=runProgram(task.sol);render($('goalCanvas'),r.w.ops,r.w.ops.length,0,{})}},120)});
 
+/* ============ Shell (LZ 5) ============ */
+function initShell(){
+  const log=$('shellLog'),inp=$('shellIn');const ctx=newCtx(true);const hist=[];let hp=0;
+  function add(cls,txt,html){const d=document.createElement('div');d.className=cls;if(html)d.innerHTML=txt;else d.textContent=txt;log.appendChild(d)}
+  function run(line){
+    add('in',line);
+    const raw=stripComment(line);
+    if(raw.trim()){
+      ctx.w.out=[];CUR={w:ctx.w,ln:1};
+      try{
+        const r=execLine(raw,1,ctx);
+        for(const o of ctx.w.out)add('o',o);
+        if(r&&r.note)add('hint',r.note);
+        else if(r&&r.t&&r.t!=='none')add('o',repr(r));
+      }catch(e){
+        for(const o of ctx.w.out)add('o',o);
+        const err=e instanceof PyErr?e:new PyErr('RuntimeError',String(e&&e.message||e),1,'');
+        add('err',`${err.type}: ${err.message}`);
+        if(err.hint)add('hint','Tipp: '+err.hint,true);
+      }
+    }
+    log.scrollTop=log.scrollHeight;
+  }
+  inp.addEventListener('keydown',e=>{
+    if(e.key==='Enter'){e.preventDefault();const v=inp.value;if(v.trim())hist.push(v);hp=hist.length;inp.value='';run(v)}
+    else if(e.key==='ArrowUp'){if(hp>0){hp--;inp.value=hist[hp];e.preventDefault()}}
+    else if(e.key==='ArrowDown'){if(hp<hist.length){hp++;inp.value=hp<hist.length?hist[hp]:'';e.preventDefault()}}
+  });
+  $('shellClear').addEventListener('click',()=>{log.innerHTML='';inp.focus()});
+  run('(5+6)*3+8*3-37');run('print("Hallo Welt")');run('"Hallo" + " Welt"');
+}
+
+/* ============ Ordne zu (LZ 2) ============ */
+const SORT=[
+{t:'Eine Tabelle in Excel nach Namen sortieren',a:'A',why:'Du bedienst eine Funktion von Excel.'},
+{t:'Ein Programm schreiben, das eine Liste sortiert',a:'I',why:'Du baust die Lösung selber.'},
+{t:'Ein Foto mit Filter auf Instagram posten',a:'A',why:'Du benutzt eine App.'},
+{t:'Verstehen, wie ein Foto als Zahlen gespeichert wird',a:'I',why:'Es geht darum, wie der Computer funktioniert.'},
+{t:'In Thonny ein Turtle-Programm schreiben',a:'I',why:'Selber programmieren ist Informatik.'},
+{t:'In Word eine Überschrift fett machen',a:'A',why:'Reine Bedienung eines Programms.'},
+{t:'Erklären, was ein Interpreter macht',a:'I',why:'Du verstehst, wie Programme ausgeführt werden.'},
+{t:'Am Handy das WLAN-Passwort eingeben',a:'A',why:'Bedienung eines Geräts.'}
+];
+function renderSort(){
+  const box=$('sortList');box.innerHTML='';
+  for(const s of SORT){
+    const it=document.createElement('div');it.className='it';
+    const sp=document.createElement('span');sp.textContent=s.t;it.appendChild(sp);
+    const bt=document.createElement('div');bt.className='bt';
+    for(const [k,l] of [['A','Anwendung'],['I','Informatik']]){
+      const b=document.createElement('button');b.type='button';b.textContent=l;
+      b.addEventListener('click',()=>{
+        bt.querySelectorAll('button').forEach(x=>x.disabled=true);
+        const ok=k===s.a;it.classList.add(ok?'right':'wrong');
+        const sm=document.createElement('small');
+        sm.textContent=(ok?'Richtig. ':'Nein, das ist '+(s.a==='A'?'Anwendungswissen':'Informatik')+'. ')+s.why;
+        it.appendChild(sm);
+      });
+      bt.appendChild(b);
+    }
+    it.appendChild(bt);box.appendChild(it);
+  }
+}
+$('sortAgain').addEventListener('click',renderSort);
+
+/* ============ Lernziele ============ */
+const LZ=[
+{n:1,h:'lz1',t:'Du verstehst den Computer als Universalwerkzeug, das in verschiedenen Formen erscheinen kann.'},
+{n:2,h:'lz2',t:'Du kannst Anwendungswissen von Informatik unterscheiden.'},
+{n:3,h:'lz3',t:'Du kannst die historische Entwicklung der Rechenmaschinen einordnen.'},
+{n:4,h:'lz4',t:'Du kannst den Zusammenhang zwischen Quellcode und Maschinencode herstellen und kennst den Unterschied zwischen einem Compiler und einem Interpreter.'},
+{n:5,h:'lz5',t:'Du kannst Python-Befehle einzeln in der Shell des Interpreters ausführen, aber dem Interpreter auch eine ganze Quellcodedatei zur Ausführung übergeben.'},
+{n:6,h:'lz6',t:'Du kannst die Grundrechenarten in Python anwenden und mit dem print-Befehl Text oder Zahlenwerte am Bildschirm ausgeben.'},
+{n:7,h:'turtle',t:'Du kannst die Turtle-Grafik von Python verwenden, um Figuren zu zeichnen.'},
+{n:8,h:'lz8',t:'Du verstehst die Funktion von Variablen und kannst diese in deinen Programmen einsetzen.'}
+];
+let lzDone={};try{lzDone=JSON.parse(store.get('tg1g-lz')||'{}')||{}}catch(e){lzDone={}}
+function renderGoals(){
+  const box=$('goals');box.innerHTML='';
+  for(const z of LZ){
+    const li=document.createElement('li');li.className=lzDone[z.n]?'done':'';
+    li.innerHTML=`<input type="checkbox" id="lzc${z.n}" aria-label="LZ ${z.n}: kann ich"${lzDone[z.n]?' checked':''}><a href="#${z.h}"><span class="n">LZ ${z.n}</span><span>${esc(z.t)}</span></a><span class="res" id="lzr${z.n}"></span>`;
+    li.querySelector('input').addEventListener('change',e=>{lzDone[z.n]=e.target.checked;li.className=e.target.checked?'done':'';store.set('tg1g-lz',JSON.stringify(lzDone))});
+    box.appendChild(li);
+  }
+}
+
 /* ============ Quiz ============ */
 const QUIZ=[
-{q:'Was ist ein Programm?',o:['Eine Folge von Befehlen, die der Computer der Reihe nach ausführt','Die Zahlen, mit denen der Computer rechnet','Ein Bauteil im Computer','Eine Datei mit Bildern'],a:0,ex:'Die Zahlen, mit denen gerechnet wird, sind die Daten. Das Programm sind die Befehle.'},
-{q:'Was war die zentrale Idee von John von Neumann (1945)?',o:['Computer sollen im Dezimalsystem rechnen','Das Programm wird wie die Daten im Speicher abgelegt','Programme werden fest verdrahtet','Jeder Computer braucht eine Maus'],a:1,ex:'Darum kann man heute ganz verschiedene Programme laden, statt eines fest eingebauten.'},
-{q:'In welcher Form speichert der Computer Programme und Daten?',o:['Als Wörter','Als Dezimalzahlen','Als Binärzahlen aus 0 und 1','Als Bilder'],a:2,ex:'Zwei Symbole lassen sich technisch viel leichter unterscheiden als zehn.'},
-{q:'Was unterscheidet einen Interpreter von einem Compiler?',o:['Der Interpreter erzeugt eine .exe-Datei','Der Interpreter übersetzt Anweisung für Anweisung und führt sie sofort aus','Der Interpreter braucht man nur einmal','Es gibt keinen Unterschied'],a:1,ex:'Der Compiler übersetzt alles auf einmal in eine ausführbare Datei. Der Interpreter wird bei jedem Ausführen gebraucht.'},
-{q:'Was ist eine IDE wie Thonny?',o:['Ein Speicherbaustein','Ein Paket aus Editor und Interpreter','Eine Programmiersprache','Ein Betriebssystem'],a:1,ex:'IDE = Integrated Development Environment, eine Entwicklungsumgebung.'},
-{q:'Was gibt dieser Code aus?',code:'print((5+6)*3+8*3-37)',o:['10','20','92','57'],a:1,ex:'11·3 = 33, plus 8·3 = 24 gibt 57, minus 37 gibt 20. Punkt vor Strich!'},
-{q:'Woher hat Python seinen Namen?',o:['Von der Schlange','Vom Erfinder Guido Python','Von der Comedy-Gruppe Monty Python','Von einem griechischen Gott'],a:2,ex:'Monty Python’s Flying Circus.'},
-{q:'Wo steht die Turtle am Anfang und wohin schaut sie?',o:['Oben links, nach unten','In der Mitte, nach rechts','In der Mitte, nach oben','Unten in der Mitte, nach oben'],a:1,ex:'Das ist die Position home: Mitte, Blickrichtung 0° nach rechts.'},
-{q:'In welche Richtung dreht left(90)?',o:['Im Uhrzeigersinn','Gegen den Uhrzeigersinn','Immer nach oben','Immer zum linken Bildschirmrand'],a:1,ex:'Die Drehung zählt ab der aktuellen Blickrichtung, nicht ab dem Bildschirm.'},
-{q:'Um wie viel Grad muss die Turtle bei einem gleichseitigen Dreieck jeweils drehen?',o:['60','90','120','180'],a:2,ex:'Insgesamt 360° auf drei Ecken verteilt: 360 / 3 = 120 (Aussenwinkel).'},
-{q:'Welcher Aufruf macht die Turtle am schnellsten?',o:['speed(10)','speed(1)','speed(0)','speed(100)'],a:2,ex:'Von 1 bis 10 wird sie schneller, 0 ist die Ausnahme und bedeutet am schnellsten.'},
-{q:'Mit welcher Farbe wird zwischen begin_fill() und end_fill() gefüllt?',o:['Mit der Farbe beim begin_fill()','Mit der Farbe beim end_fill()','Immer schwarz','Mit der Farbe der ersten Linie'],a:1,ex:'Entscheidend ist die Farbe, die beim end_fill() aktuell ist.'},
-{q:'Warum darfst du dein Programm nicht turtle.py nennen?',o:['Der Name ist zu kurz','Python importiert dann deine Datei statt des echten Turtle-Moduls','Dateien dürfen keine Tiernamen haben','Thonny verbietet es'],a:1,ex:'Python sucht beim Import zuerst im eigenen Ordner.'},
-{q:'Was ist eine Variable?',o:['Ein benannter Speicherplatz im Arbeitsspeicher','Eine Datei auf der Harddisk','Ein Befehl der Turtle','Eine feste Zahl, die sich nie ändert'],a:0,ex:'Ihr Inhalt kann sich während des Programms ändern, daher «variabel».'},
-{q:'Was trifft auf den Arbeitsspeicher (RAM) zu?',o:['Langsam und nicht flüchtig','Schnell, aber flüchtig','Langsam und billig','Bleibt auch ohne Strom erhalten'],a:1,ex:'Ohne Strom gehen die Daten im RAM verloren. Dauerhaft speichert man auf der Harddisk.'},
-{q:'Welcher Variablenname ist gut und erlaubt?',o:['start-wert','startWert','seite*2','(a)'],a:1,ex:'Rechenzeichen und Klammern sind verboten. Empfohlen: klein beginnen, Wortanfänge gross.'},
-{q:'Welchen Wert hat b am Schluss?',code:'a = 50\nb = a + 30\na = a * 2\nb = b - a',o:['80','30','-20','20'],a:2,ex:'b = 80, dann a = 100, dann b = 80 - 100 = -20 (Aufgabe 2.10).'},
-{q:'Warum gibt b + 1 = 7 einen Fehler?',o:['Weil 7 zu gross ist','Weil links vom = nur eine Variable stehen darf','Weil b nicht existiert','Weil man + nicht benutzen darf'],a:1,ex:'Das = ist der Zuweisungsoperator: rechte Seite ausrechnen, dann links speichern.'},
-{q:'Was bedeutet diese Fehlermeldung?',code:"NameError: name 'schrite' is not defined",o:['Die Turtle ist kaputt','Die Variable schrite hat nie einen Wert bekommen, meist ein Tippfehler','Die Zahl ist zu gross','Das Modul turtle fehlt im Computer'],a:1,ex:'Die Variable hiess schritte. Python erkennt schrite als neuen, unbekannten Namen.'},
-{q:'Was liefert winkel = 360 / ecken mit ecken = 5?',o:['72','72.0','75','5'],a:1,ex:'Der Operator / ergibt in Python immer eine Kommazahl, also 72.0.'}
+{lz:1,q:'Warum nennt man den Computer ein Universalwerkzeug?',o:['Weil er sehr schnell rechnet','Weil er jede Aufgabe erledigen kann, für die es ein Programm gibt','Weil er in jedem Haushalt steht','Weil er nie kaputt geht'],a:1,ex:'Mit einem neuen Programm wird er zu einem neuen Werkzeug.'},
+{lz:1,q:'Welches Gerät enthält einen eingebetteten Computer?',o:['Eine Waschmaschine','Ein Hammer','Ein Velo ohne Elektronik','Ein Buch'],a:0,ex:'Eingebettete Systeme stecken versteckt in Geräten wie Waschmaschine, Auto oder Ampel.'},
+{lz:1,q:'In welcher Form speichert der Computer Programme und Daten?',o:['Als Wörter','Als Dezimalzahlen','Als Binärzahlen aus 0 und 1','Als Bilder'],a:2,ex:'Zwei Zustände lassen sich technisch viel leichter unterscheiden als zehn.'},
+{lz:1,q:'Was haben Smartphone, Laptop und Spielkonsole gemeinsam?',o:['Gleiche Grösse','Prozessor, Speicher, Eingabe und Ausgabe','Alle haben eine Tastatur','Nichts'],a:1,ex:'Die Form ist verschieden, der Aufbau ist gleich.'},
+{lz:2,q:'Was ist Informatik und nicht nur Anwendungswissen?',o:['In PowerPoint eine Folie gestalten','Ein Programm schreiben, das ein Quadrat zeichnet','Eine App installieren','Ein Dokument ausdrucken'],a:1,ex:'Wer selber programmiert, baut eine Lösung. Das ist Informatik.'},
+{lz:2,q:'Was beschreibt Anwendungswissen?',o:['Wissen, wie man ein bestimmtes Programm bedient','Wissen, wie ein Prozessor rechnet','Selber programmieren können','Verstehen, wie ein Interpreter arbeitet'],a:0,ex:'Anwendungswissen heisst bedienen können. Es veraltet, wenn das Programm sich ändert.'},
+{lz:3,q:'Welche Reihenfolge stimmt?',o:['Abakus → Pascaline → Zuse Z3 → Mikroprozessor','Pascaline → Abakus → Mikroprozessor → Zuse Z3','Zuse Z3 → Abakus → Pascaline → Mikroprozessor','Abakus → Zuse Z3 → Pascaline → Mikroprozessor'],a:0,ex:'Antike → 1642 → 1941 → 1971.'},
+{lz:3,q:'Was war neu an der Von-Neumann-Architektur (1945)?',o:['Computer rechnen im Dezimalsystem','Das Programm liegt wie die Daten im Speicher','Programme werden fest verdrahtet','Jeder Computer braucht eine Maus'],a:1,ex:'Darum kann man heute ganz verschiedene Programme laden.'},
+{lz:3,q:'Was war besonders an Konrad Zuses Z3 (1941)?',o:['Erster funktionsfähiger programmgesteuerter Computer','Erstes Smartphone','Erste Rechenmaschine mit Zahnrädern','Erster Mikroprozessor'],a:0,ex:'Die Z3 rechnete binär und arbeitete mit Relais.'},
+{lz:3,q:'Was ersetzte ab 1947 die Elektronenröhren?',o:['Relais','Der Transistor','Zahnräder','Lochkarten'],a:1,ex:'Transistoren sind kleiner, schneller und brauchen weniger Strom.'},
+{lz:4,q:'Was versteht der Prozessor direkt?',o:['Python-Quellcode','Maschinencode aus 0 und 1','Englische Sätze','Word-Dokumente'],a:1,ex:'Quellcode muss zuerst in Maschinencode übersetzt werden.'},
+{lz:4,q:'Was ist Quellcode?',o:['Das für Menschen lesbare Programm','Der Maschinencode','Eine .exe-Datei','Die Daten im RAM'],a:0,ex:'Zum Beispiel print("Hallo Welt") in Python.'},
+{lz:4,q:'Was unterscheidet einen Interpreter von einem Compiler?',o:['Der Interpreter erzeugt eine .exe-Datei','Der Interpreter übersetzt Anweisung für Anweisung und führt sie sofort aus','Den Interpreter braucht man nur einmal','Es gibt keinen Unterschied'],a:1,ex:'Der Compiler übersetzt alles auf einmal in eine ausführbare Datei. Den Interpreter braucht es bei jedem Ausführen.'},
+{lz:5,q:'Was bedeutet >>> in der Shell?',o:['Der Interpreter ist bereit für einen Befehl','Ein Fehler','Ein Kommentar','Grösser als'],a:0,ex:'Das ist der Prompt.'},
+{lz:5,q:'Du willst ein Programm mit 20 Zeilen speichern und später wieder ausführen. Wo schreibst du es?',o:['In der Shell','Im Editor als .py-Datei','In Word','Im Turtle-Fenster'],a:1,ex:'Die Datei übergibst du mit Run dem Interpreter, der sie von oben nach unten abarbeitet.'},
+{lz:5,q:'Was ist eine IDE wie Thonny?',o:['Ein Speicherbaustein','Ein Paket aus Editor und Interpreter','Eine Programmiersprache','Ein Betriebssystem'],a:1,ex:'IDE heisst Integrated Development Environment, also Entwicklungsumgebung.'},
+{lz:6,q:'Was gibt dieser Code aus?',code:'print((5+6)*3+8*3-37)',o:['10','20','92','57'],a:1,ex:'11·3 = 33, dazu 8·3 = 24 gibt 57, minus 37 gibt 20. Punkt vor Strich!'},
+{lz:6,q:'Was gibt dieser Code aus?',code:'print("5+3")',o:['8','5+3','"5+3"','Eine Fehlermeldung'],a:1,ex:'In Anführungszeichen ist es Text. Python gibt ihn ohne die Anführungszeichen aus.'},
+{lz:6,q:'Wie schreibt man 2 hoch 10 in Python?',o:['2^10','2**10','2xx10','pow 2 10'],a:1,ex:'Das ^ bedeutet in Python etwas anderes: 2^10 ergibt 8.'},
+{lz:6,q:'Was liefert 360 / 5?',o:['72','72.0','75','5'],a:1,ex:'Der Operator / ergibt in Python immer eine Kommazahl.'},
+{lz:7,q:'Wo steht die Turtle am Anfang und wohin schaut sie?',o:['Oben links, nach unten','In der Mitte, nach rechts','In der Mitte, nach oben','Unten in der Mitte, nach oben'],a:1,ex:'Das ist die Position home: Mitte, Blickrichtung 0° nach rechts.'},
+{lz:7,q:'In welche Richtung dreht left(90)?',o:['Im Uhrzeigersinn','Gegen den Uhrzeigersinn','Immer nach oben','Immer zum linken Bildschirmrand'],a:1,ex:'Die Drehung zählt ab der aktuellen Blickrichtung, nicht ab dem Bildschirm.'},
+{lz:7,q:'Um wie viel Grad muss die Turtle bei einem gleichseitigen Dreieck jeweils drehen?',o:['60','90','120','180'],a:2,ex:'Insgesamt 360° auf drei Ecken verteilt: 360 / 3 = 120 (Aussenwinkel).'},
+{lz:7,q:'Welcher Aufruf macht die Turtle am schnellsten?',o:['speed(10)','speed(1)','speed(0)','speed(100)'],a:2,ex:'Von 1 bis 10 wird sie schneller, aber 0 ist die Ausnahme und bedeutet am schnellsten.'},
+{lz:7,q:'Mit welcher Farbe wird zwischen begin_fill() und end_fill() gefüllt?',o:['Mit der Farbe beim begin_fill()','Mit der Farbe beim end_fill()','Immer schwarz','Mit der Farbe der ersten Linie'],a:1,ex:'Entscheidend ist die Farbe, die beim end_fill() gerade aktuell ist.'},
+{lz:7,q:'Warum darfst du dein Programm nicht turtle.py nennen?',o:['Der Name ist zu kurz','Python importiert dann deine Datei statt des echten Turtle-Moduls','Dateien dürfen keine Tiernamen haben','Thonny verbietet es'],a:1,ex:'Python sucht beim Import zuerst im eigenen Ordner.'},
+{lz:8,q:'Was ist eine Variable?',o:['Ein benannter Speicherplatz im Arbeitsspeicher','Eine Datei auf der Harddisk','Ein Befehl der Turtle','Eine feste Zahl, die sich nie ändert'],a:0,ex:'Ihr Inhalt kann sich während des Programms ändern, darum «variabel».'},
+{lz:8,q:'Was trifft auf den Arbeitsspeicher (RAM) zu?',o:['Langsam und nicht flüchtig','Schnell, aber flüchtig','Langsam und billig','Bleibt auch ohne Strom erhalten'],a:1,ex:'Ohne Strom gehen die Daten im RAM verloren, also auch deine Variablen.'},
+{lz:8,q:'Welcher Variablenname ist gut und erlaubt?',o:['start-wert','startWert','seite*2','(a)'],a:1,ex:'Rechenzeichen und Klammern sind verboten. Empfohlen: klein beginnen, Wortanfänge gross.'},
+{lz:8,q:'Welchen Wert hat b am Schluss?',code:'a = 50\nb = a + 30\na = a * 2\nb = b - a',o:['80','30','-20','20'],a:2,ex:'b = 80, dann a = 100, dann b = 80 - 100 = -20 (Aufgabe 2.10).'},
+{lz:8,q:'Warum gibt b + 1 = 7 einen Fehler?',o:['Weil 7 zu gross ist','Weil links vom = nur eine Variable stehen darf','Weil b nicht existiert','Weil man + nicht benutzen darf'],a:1,ex:'Das = ist der Zuweisungsoperator: rechte Seite ausrechnen, dann links speichern.'},
+{lz:8,q:'Was bedeutet diese Fehlermeldung?',code:"NameError: name 'schrite' is not defined",o:['Die Turtle ist kaputt','Die Variable schrite hat nie einen Wert bekommen, meist ein Tippfehler','Die Zahl ist zu gross','Das Modul turtle fehlt im Computer'],a:1,ex:'Die Variable hiess schritte. Python sieht schrite als neuen, unbekannten Namen.'}
 ];
-let answered=0,right=0;
+let res={},filt=0;
+const qIdx=()=>QUIZ.map((q,i)=>i).filter(i=>!filt||QUIZ[i].lz===filt);
+function renderFilter(){
+  const box=$('qfilter');box.innerHTML='';
+  for(const n of [0,1,2,3,4,5,6,7,8]){
+    const b=document.createElement('button');b.type='button';b.textContent=n?'LZ '+n:'Alle';
+    b.setAttribute('aria-pressed',n===filt?'true':'false');
+    b.addEventListener('click',()=>{filt=n;renderFilter();renderQuiz()});
+    box.appendChild(b);
+  }
+}
 function renderQuiz(){
-  answered=0;right=0;$('score').textContent='0';$('qtotal').textContent=QUIZ.length;$('qprog').textContent='';
   const box=$('quizList');box.innerHTML='';
-  QUIZ.forEach((q,qi)=>{
+  qIdx().forEach((qi,k)=>{
+    const q=QUIZ[qi];
     const card=document.createElement('div');card.className='q';
-    card.innerHTML=`<span class="qn">Frage ${qi+1}</span><p class="qq">${esc(q.q)}</p>`+(q.code?`<pre class="code">${highlight(q.code).replace(/\n$/,'')}</pre>`:'');
+    card.innerHTML=`<span class="qn">Frage ${k+1} · LZ ${q.lz}</span><p class="qq">${esc(q.q)}</p>`+(q.code?`<pre class="code">${highlight(q.code).replace(/\n$/,'')}</pre>`:'');
     const opts=document.createElement('div');opts.className='opts';
     const ex=document.createElement('p');ex.className='ex';ex.hidden=true;ex.textContent=q.ex;
+    const mark=pick=>{[...opts.children].forEach((c,ci)=>{c.disabled=true;if(ci===q.a)c.classList.add('right');if(ci===pick&&pick!==q.a)c.classList.add('wrong')});ex.hidden=false};
     q.o.forEach((o,oi)=>{
       const b=document.createElement('button');b.type='button';b.textContent=o;
-      b.addEventListener('click',()=>{
-        [...opts.children].forEach((c,ci)=>{c.disabled=true;if(ci===q.a)c.classList.add('right')});
-        if(oi!==q.a)b.classList.add('wrong');else right++;
-        answered++;ex.hidden=false;
-        $('score').textContent=right;
-        $('qprog').textContent=answered===QUIZ.length?(right>=QUIZ.length*0.8?'Stark, du bist bereit!':'Schau dir die falschen Fragen in der Theorie nochmals an.'):`${QUIZ.length-answered} offen`;
-      });
+      b.addEventListener('click',()=>{res[qi]=oi;mark(oi);updateScore()});
       opts.appendChild(b);
     });
     card.appendChild(opts);card.appendChild(ex);box.appendChild(card);
+    if(res[qi]!=null)mark(res[qi]);
   });
+  updateScore();
 }
-$('qreset').addEventListener('click',renderQuiz);
+function updateScore(){
+  const ids=qIdx();const ans=ids.filter(i=>res[i]!=null);const ok=ans.filter(i=>res[i]===QUIZ[i].a).length;
+  $('score').textContent=ok;$('qtotal').textContent=ids.length;
+  let msg;
+  if(ans.length<ids.length)msg=`${ids.length-ans.length} offen`;
+  else{const weak=[...new Set(ids.filter(i=>res[i]!==QUIZ[i].a).map(i=>QUIZ[i].lz))];msg=weak.length?'Nochmals anschauen: '+weak.map(n=>'LZ '+n).join(', '):'Alles richtig. Stark!'}
+  $('qprog').textContent=msg;
+  for(const z of LZ){
+    const el=$('lzr'+z.n);if(!el)continue;
+    const qs=QUIZ.map((q,i)=>i).filter(i=>QUIZ[i].lz===z.n);const a=qs.filter(i=>res[i]!=null);const r=a.filter(i=>res[i]===QUIZ[i].a).length;
+    el.textContent=a.length?`Quiz ${r}/${qs.length}`:`${qs.length} Fragen`;
+    el.className='res'+(a.length===qs.length?(r===qs.length?' good':' weak'):'');
+  }
+}
+$('qreset').addEventListener('click',()=>{qIdx().forEach(i=>delete res[i]);renderQuiz()});
 
 /* Start */
-renderTasks();selectTask(TASKS[0]);renderQuiz();
+renderTasks();selectTask(TASKS[0]);renderGoals();renderFilter();renderQuiz();renderSort();initShell();
 requestAnimationFrame(()=>{playHero();labAnim.redraw()});
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{labAnim.redraw()});
 })();
 </script>
-<script src="../regal.js" defer></script>
 </body>
 </html>
