@@ -1,0 +1,1845 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>EVA &amp; Kontrollstrukturen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: Lernheft wie Kapitel 1/2, Akzent Bernstein (Moodle-EVA-Banner); Theorie nach Lernzielen, darunter Labor mit Ein-/Ausgabe-Konsole */
+:root{
+  --bg:#F6F3EE; --surface:#FFFFFF; --ink:#1E1A16; --muted:#665C52; --line:#E1D9CF;
+  --accent:#A4500F; --accent-ink:#FFFFFF; --soft:#F5E8DA; --mark:#2B8A9A; --mark-soft:#E0F1F3;
+  --err:#B8352A; --err-soft:#FBE8E5; --ok:#1E7A3C; --ok-soft:#E3F3E7;
+  --ed-bg:#FCFBF9; --ed-gutter:#F1ECE6; --kw:#8A3FB8; --str:#2F7A4C; --num:#1D62B0; --com:#8A8178;
+  --e:#2B6CB0; --v:#A4500F; --a:#2F7A4C;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#14110E; --surface:#1E1A16; --ink:#EEE7DF; --muted:#A99E92; --line:#352E27;
+  --accent:#F0A35C; --accent-ink:#2A1504; --soft:#2E2318; --mark:#6CC5D3; --mark-soft:#16292C;
+  --err:#F08172; --err-soft:#3A1E1B; --ok:#6CCB86; --ok-soft:#18301F;
+  --ed-bg:#17130F; --ed-gutter:#211C17; --kw:#C99BEA; --str:#7FD19B; --num:#7DB4F2; --com:#8C8277;
+  --e:#7DB4F2; --v:#F0A35C; --a:#7FD19B;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#14110E; --surface:#1E1A16; --ink:#EEE7DF; --muted:#A99E92; --line:#352E27;
+  --accent:#F0A35C; --accent-ink:#2A1504; --soft:#2E2318; --mark:#6CC5D3; --mark-soft:#16292C;
+  --err:#F08172; --err-soft:#3A1E1B; --ok:#6CCB86; --ok-soft:#18301F;
+  --ed-bg:#17130F; --ed-gutter:#211C17; --kw:#C99BEA; --str:#7FD19B; --num:#7DB4F2; --com:#8C8277;
+  --e:#7DB4F2; --v:#F0A35C; --a:#7FD19B;
+  color-scheme:dark}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font:17px/1.6 var(--f-body);margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:20px}
+h1,h2,h3{font-family:var(--f-display);line-height:1.15;text-wrap:balance;margin:0}
+h2{font-size:clamp(1.7rem,3.4vw,2.4rem);font-weight:800;letter-spacing:-.01em}
+h3{font-size:1.2rem;font-weight:700;margin-top:6px}
+p{margin:0}
+code,.mono{font-family:var(--f-mono);font-size:.88em}
+:not(pre)>code{background:var(--soft);padding:.08em .35em;border-radius:5px;white-space:nowrap}
+a{color:var(--accent)}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--mark);outline-offset:2px}
+.eyebrow{font:600 .78rem/1.2 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+
+.top{padding-block:40px 28px;border-bottom:1px solid var(--line);
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:28px 28px;background-position:-1px -1px}
+.top .grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:32px;align-items:center}
+.top h1{font-size:clamp(2.3rem,5.6vw,4rem);font-weight:800;letter-spacing:-.02em;margin-top:10px}
+.top h1 em{font-style:normal;color:var(--accent)}
+.lead{font-size:1.12rem;max-width:34em;margin-top:14px;background:var(--bg);padding:4px 0}
+.toc{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.toc a{display:inline-flex;gap:8px;align-items:center;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-weight:700;font-size:.95rem}
+.toc a span{font:600 .75rem var(--f-mono);color:var(--muted)}
+.toc a:hover{border-color:var(--accent)}
+.hero-fig{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px;margin:0}
+.hero-fig canvas{width:100%;aspect-ratio:4/3;display:block;border-radius:8px;background:#fff}
+.hero-fig figcaption{font-size:.85rem;color:var(--muted);margin-top:8px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.linkbtn{background:none;border:0;padding:0;color:var(--accent);font-weight:700;text-decoration:underline;text-underline-offset:3px}
+
+section.chapter{padding-block:56px 20px}
+.chap-head{display:flex;gap:18px;align-items:baseline;flex-wrap:wrap;margin-bottom:26px}
+.chap-num{font:800 3.4rem/1 var(--f-display);color:var(--accent)}
+.intro{max-width:44em;margin:-12px 0 20px;color:var(--muted)}
+.blocks{display:grid;gap:22px}
+.block{display:grid;grid-template-columns:150px minmax(0,1fr);gap:24px;padding-top:22px;border-top:1px solid var(--line)}
+.block .sec{font:600 .82rem/1.4 var(--f-mono);color:var(--muted);padding-top:4px}
+.block .sec b{display:block;color:var(--ink);font-size:1rem}
+.lz{display:block;width:fit-content;font:600 .72rem/1.5 var(--f-mono);background:var(--accent);color:var(--accent-ink);border-radius:999px;padding:1px 9px;margin-bottom:6px;letter-spacing:.02em}
+.body{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;max-width:46rem;min-width:0}
+.body :not(pre)>code{white-space:normal;overflow-wrap:anywhere}
+.body ul,.body ol{margin:0;padding-left:1.2em;display:grid;gap:4px}
+.key{background:var(--mark-soft);border-left:4px solid var(--mark);padding:12px 16px;border-radius:0 var(--r) var(--r) 0}
+.key b:first-child{display:block;font-family:var(--f-display);margin-bottom:2px}
+.warn{background:var(--err-soft);border-left:4px solid var(--err);padding:12px 16px;border-radius:0 var(--r) var(--r) 0}
+pre.code{margin:0;background:var(--ed-bg);border:1px solid var(--line);border-radius:var(--r);padding:12px 16px;overflow-x:auto;font:400 .9rem/1.55 var(--f-mono)}
+.try{justify-self:start;display:inline-flex;align-items:center;gap:8px;background:var(--soft);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:6px 12px;font-weight:700;font-size:.92rem}
+.try::before{content:"";width:0;height:0;border-left:8px solid var(--accent);border-top:5px solid transparent;border-bottom:5px solid transparent}
+.try:hover{border-color:var(--accent)}
+.tryrow{display:flex;gap:8px;flex-wrap:wrap}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;display:grid;gap:6px;align-content:start;min-width:0}
+.panel h4{margin:0;font:700 1.02rem var(--f-display)}
+.panel pre.code{font-size:.82rem;padding:8px 12px}
+.figure{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px;overflow-x:auto}
+svg.diag text{font-family:var(--f-body);font-size:15px;fill:var(--ink)}
+svg.diag .sub{font-size:13px;font-style:italic;fill:var(--muted)}
+
+/* Lernziele */
+.goals{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.goals li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:14px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:10px 14px}
+.goals li.done{border-color:var(--accent);background:var(--soft)}
+.goals input{width:20px;height:20px;accent-color:var(--accent);margin:0}
+.goals a{color:var(--ink);text-decoration:none;display:flex;gap:12px;align-items:baseline;min-width:0}
+.goals a:hover span:last-child{text-decoration:underline;text-underline-offset:3px}
+.goals .n{font:600 .78rem var(--f-mono);color:var(--accent);flex:0 0 auto}
+.goals .res{font:600 .75rem var(--f-mono);color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.goals .res.good{color:var(--ok)}
+.goals .res.weak{color:var(--err)}
+
+/* EVA */
+.evatabs{display:flex;gap:6px;flex-wrap:wrap}
+.evatabs button{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:5px 12px;font-size:.9rem;font-weight:700}
+.evatabs button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.eva{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr);gap:8px;align-items:stretch}
+.eva .box{border:2px solid var(--c);border-radius:var(--r);background:var(--surface);padding:12px 14px;display:grid;gap:4px;align-content:start;min-width:0}
+.eva .box .t{font:800 1.05rem var(--f-display);color:var(--c)}
+.eva .box .t small{font:600 .7rem var(--f-mono);letter-spacing:.06em;text-transform:uppercase;margin-left:6px;color:var(--muted)}
+.eva .box p{font-size:.95rem}
+.eva .ar{align-self:center;font:700 1.4rem var(--f-mono);color:var(--muted)}
+.eva .e{--c:var(--e)} .eva .v{--c:var(--v)} .eva .a{--c:var(--a)}
+.eva .mem{grid-column:3;border:2px dashed var(--line);border-radius:var(--r);padding:8px 12px;font-size:.9rem;color:var(--muted);text-align:center}
+.eva .mem b{color:var(--ink)}
+.evacode{border:1px solid var(--line);border-radius:var(--r);background:var(--ed-bg);overflow-x:auto;font:400 .88rem/1.6 var(--f-mono)}
+.evacode div{display:grid;grid-template-columns:2.2rem auto;align-items:center;white-space:pre;min-width:max-content}
+.evacode span.tag{font:700 .78rem var(--f-mono);text-align:center;color:#fff;align-self:stretch;display:grid;place-items:center}
+.evacode .E span.tag{background:var(--e)} .evacode .V span.tag{background:var(--v)} .evacode .A span.tag{background:var(--a)}
+.evacode .x span.tag{background:var(--ed-gutter)}
+.evacode code{padding:2px 12px;background:none!important;white-space:pre!important;overflow-wrap:normal!important}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+.cards .panel dl{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:3px 10px;font-size:.92rem}
+.cards dt{font:700 .78rem/1.7 var(--f-mono)}
+.cards dt.e{color:var(--e)} .cards dt.v{color:var(--v)} .cards dt.a{color:var(--a)}
+.cards dd{margin:0}
+.cards .why{font-size:.88rem;color:var(--muted);border-top:1px dashed var(--line);padding-top:6px}
+
+/* Übungen: zuordnen, wahr/falsch */
+.sort{display:grid;gap:6px}
+.sort .it{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 12px}
+.sort .it.right{border-color:var(--ok);background:var(--ok-soft)}
+.sort .it.wrong{border-color:var(--err);background:var(--err-soft)}
+.sort .bt{display:flex;gap:6px;flex-wrap:wrap}
+.sort .bt button{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:6px;padding:4px 10px;font-size:.85rem;font-weight:700;min-width:2.4rem}
+.sort .bt button:hover:not(:disabled){border-color:var(--accent)}
+.sort .bt button:disabled{cursor:default}
+.sort .it small{grid-column:1/-1;color:var(--muted);font-size:.88rem}
+.sort .it code{white-space:pre-wrap}
+
+/* Tabellen */
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:.95rem}
+table.narrow{min-width:420px}
+th,td{text-align:left;padding:8px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:600 .75rem var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:var(--ed-gutter)}
+tr:last-child td{border-bottom:0}
+td:first-child{font-family:var(--f-mono);font-size:.88rem;white-space:nowrap;color:var(--accent);font-weight:600}
+td.grp{font:700 .8rem var(--f-mono);color:var(--muted);background:var(--bg);text-transform:uppercase;letter-spacing:.06em}
+td .t{color:var(--ok);font-family:var(--f-mono);font-weight:600} td .f{color:var(--err);font-family:var(--f-mono);font-weight:600}
+
+/* Ausgabe-Vergleich */
+.outbox{margin:0;background:var(--ed-gutter);border-radius:8px;padding:8px 12px;font:400 .85rem/1.5 var(--f-mono);white-space:pre-wrap;min-height:2.2em}
+
+/* Labor */
+#labor{background:var(--surface);border-block:1px solid var(--line);margin-top:40px}
+.tasks{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:16px}
+.tasks button{flex:0 0 auto;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:6px 13px;font-size:.9rem;font-weight:700}
+.tasks button small{font:600 .72rem var(--f-mono);color:var(--muted);margin-right:6px}
+.tasks button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.tasks button[aria-pressed="true"] small{color:inherit;opacity:.8}
+.taskcard{display:grid;grid-template-columns:minmax(0,1fr) 230px;gap:18px;background:var(--bg);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;margin-bottom:18px}
+.taskcard .t{display:grid;gap:8px;align-content:start;min-width:0}
+.taskcard .goal{display:grid;gap:4px;align-content:start;min-width:0}
+.taskcard .goal canvas{width:100%;aspect-ratio:4/3;background:#fff;border:1px solid var(--line);border-radius:8px}
+.taskcard .goal pre{margin:0;background:var(--ed-bg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font:400 .78rem/1.5 var(--f-mono);white-space:pre-wrap;max-height:180px;overflow:auto}
+.taskcard .goal small{color:var(--muted);font-size:.78rem}
+.taskcard .btns{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;padding:7px 14px;font-weight:700;font-size:.92rem}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.lab{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:18px;align-items:start}
+.edbox{border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--ed-bg);display:grid;grid-template-rows:auto 1fr}
+.edbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:8px 10px;border-bottom:1px solid var(--line);background:var(--ed-gutter)}
+.edbar .file{font:600 .8rem var(--f-mono);color:var(--muted);margin-right:auto}
+.edbar label{font-size:.85rem;display:inline-flex;gap:6px;align-items:center;color:var(--muted)}
+.ed{display:grid;grid-template-columns:auto minmax(0,1fr);height:460px;position:relative}
+.gutter{font:400 .9rem/1.6 var(--f-mono);color:var(--com);text-align:right;padding:10px 8px 10px 12px;background:var(--ed-gutter);overflow:hidden;user-select:none;white-space:pre}
+.gutter .bad{color:#fff;background:var(--err);border-radius:3px;padding:0 3px}
+.edlayer{position:relative;min-width:0;overflow:hidden}
+.edlayer pre,.edlayer textarea{position:absolute;inset:0;margin:0;padding:10px 12px;font:400 .9rem/1.6 var(--f-mono);white-space:pre;tab-size:4;border:0;overflow:auto}
+.edlayer pre{pointer-events:none;color:var(--ink);overflow:hidden;background-image:repeating-linear-gradient(90deg,transparent 0,transparent calc(4ch - 1px),var(--line) calc(4ch - 1px),var(--line) 4ch);background-size:16ch 100%;background-repeat:no-repeat;background-position:12px 0;background-clip:content-box}
+.edlayer textarea{background:transparent;color:transparent;caret-color:var(--ink);resize:none;outline:none}
+.edlayer textarea::selection{background:color-mix(in srgb,var(--accent) 30%,transparent)}
+.tk-kw{color:var(--kw);font-weight:600}.tk-str{color:var(--str)}.tk-num{color:var(--num)}.tk-com{color:var(--com);font-style:italic}.tk-fn{color:var(--accent);font-weight:600}
+.stage{display:grid;gap:10px;min-width:0}
+.canvasbox{position:relative;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:#fff}
+.canvasbox canvas{display:block;width:100%;aspect-ratio:4/3;cursor:crosshair}
+.coords{position:absolute;right:8px;bottom:8px;font:600 .75rem var(--f-mono);color:#5d544b;background:rgba(255,255,255,.85);padding:2px 7px;border-radius:5px}
+.console{border:1px solid var(--line);border-radius:var(--r);background:var(--ed-bg);font:400 .85rem/1.55 var(--f-mono);min-height:110px;max-height:300px;overflow:auto}
+.console .h{display:flex;justify-content:space-between;align-items:center;padding:5px 10px;border-bottom:1px solid var(--line);font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;background:var(--ed-gutter);position:sticky;top:0}
+#out{padding:6px 0}
+.console .o{padding:1px 12px;white-space:pre-wrap;word-break:break-word}
+.console .uin{color:var(--e);font-weight:600}
+.console .err{color:var(--err);padding:4px 12px;white-space:pre-wrap}
+.console .hint{margin:8px 12px;font-family:var(--f-body);font-size:.92rem;background:var(--mark-soft);border-left:3px solid var(--mark);padding:8px 12px;border-radius:0 6px 6px 0;white-space:normal}
+.console .note{color:var(--muted)}
+.console .done{color:var(--ok)}
+.ask{margin:6px 12px 8px;padding:10px 12px;border:2px solid var(--e);border-radius:8px;background:var(--surface);display:grid;gap:6px;font-family:var(--f-body)}
+.ask label{font-size:.95rem}
+.ask .askrow{display:flex;gap:8px}
+.ask input{flex:1;min-width:0;border:1px solid var(--line);border-radius:6px;padding:6px 10px;font:inherit;font-family:var(--f-mono);background:var(--bg);color:var(--ink)}
+.ask small{color:var(--err)}
+
+/* Quiz */
+.qfilter{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.qfilter button{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:5px 12px;font-size:.88rem;font-weight:700}
+.qfilter button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.quiz{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;display:grid;gap:10px;align-content:start;min-width:0}
+.q .qn{font:600 .75rem var(--f-mono);color:var(--muted)}
+.q p.qq{font-weight:700}
+.q pre.code{font-size:.82rem;padding:8px 12px}
+.opts{display:grid;gap:6px}
+.opts button{text-align:left;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:8px;padding:8px 12px;font-size:.95rem;line-height:1.4}
+.opts button:hover:not(:disabled){border-color:var(--accent)}
+.opts button:disabled{cursor:default}
+.opts button.right{background:var(--ok-soft);border-color:var(--ok)}
+.opts button.wrong{background:var(--err-soft);border-color:var(--err)}
+.q .ex{font-size:.92rem;color:var(--muted)}
+.score{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:18px}
+.score b{font:800 1.6rem var(--f-display);color:var(--accent);font-variant-numeric:tabular-nums}
+footer{padding-block:40px;color:var(--muted);font-size:.85rem}
+
+@media (max-width:900px){
+  .top .grid,.lab,.taskcard{grid-template-columns:minmax(0,1fr)}
+  .taskcard .goal{max-width:300px}
+  .quiz,.two{grid-template-columns:minmax(0,1fr)}
+  .three{grid-template-columns:minmax(0,1fr)}
+  .eva{grid-template-columns:minmax(0,1fr)}
+  .eva .ar{transform:rotate(90deg);justify-self:center}
+  .eva .mem{grid-column:1}
+}
+@media (max-width:640px){
+  .block{grid-template-columns:minmax(0,1fr);gap:8px}
+  .ed{height:360px}
+  body{font-size:16px}
+}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap grid">
+    <div>
+      <p class="eyebrow">Informatik G1G · EVA (2) · Skript Kapitel 3</p>
+      <h1><em>EVA</em> &amp; Kontroll&shy;strukturen</h1>
+      <p class="lead">Alles zu den sieben Lernzielen: Eingabe, Verarbeitung, Ausgabe, dazu Schleifen, Bedingungen und Einrückung. Das Turtle-Labor kann jetzt auch <code>for</code>, <code>while</code>, <code>if</code> und <code>input()</code>.</p>
+      <nav class="toc" aria-label="Inhalt">
+        <a href="#ziele"><span>LZ</span>Lernziele</a>
+        <a href="#eva"><span>A</span>EVA-Prinzip</a>
+        <a href="#kontroll"><span>B</span>Kontrollstrukturen</a>
+        <a href="#spick"><span>Spick</span>Befehle</a>
+        <a href="#labor"><span>Lab</span>Selber programmieren</a>
+        <a href="#quiz"><span>Test</span>Quiz</a>
+      </nav>
+    </div>
+    <figure class="hero-fig">
+      <canvas id="heroCanvas" aria-label="Die Turtle zeichnet 20 gegeneinander verdrehte Quadrate mit zwei verschachtelten for-Schleifen"></canvas>
+      <figcaption><span>Aufgabe 3.5: zwei for-Schleifen, 20 Quadrate</span><button class="linkbtn" id="heroAgain" type="button">Nochmals</button></figcaption>
+    </figure>
+  </div>
+</header>
+
+<main>
+<!-- ================= LERNZIELE ================= -->
+<section class="chapter wrap" id="ziele">
+  <div class="chap-head"><span class="chap-num" style="font-size:2rem">Ziele</span><h2>Das musst du können</h2></div>
+  <p class="intro">Die sieben Kompetenzen aus Moodle. Klick auf ein Ziel, dann springst du zur Erklärung. Hake es ab, wenn du es sicher kannst. Rechts siehst du dein Quiz-Resultat dazu.</p>
+  <ul class="goals" id="goals"></ul>
+</section>
+
+<!-- ================= TEIL A: EVA ================= -->
+<section class="chapter wrap" id="eva">
+  <div class="chap-head"><span class="chap-num">A</span><h2>Das EVA-Prinzip</h2></div>
+  <div class="blocks">
+
+    <div class="block" id="lz1">
+      <div class="sec"><span class="lz">LZ 1</span><b>Eingabe, Verarbeitung, Ausgabe</b></div>
+      <div class="body">
+        <p>Jede Informationsverarbeitung läuft in drei Schritten ab: Zuerst kommen Daten <b>herein</b> (Eingabe), dann werden sie <b>bearbeitet</b> (Verarbeitung), am Schluss kommt ein Ergebnis <b>heraus</b> (Ausgabe). Dazwischen braucht es einen <b>Speicher</b>, der sich Daten und Zwischenresultate merkt.</p>
+        <div class="evatabs" id="evaTabs" role="toolbar" aria-label="Beispiel wählen"></div>
+        <div class="eva" id="evaBox" aria-live="polite"></div>
+        <div class="key"><b>Parallele zu Lebewesen</b>Auch Lebewesen verarbeiten Informationen nach EVA. Die <b>Sinnesorgane</b> sind die Eingabe, <b>Nervensystem und Gehirn</b> die Verarbeitung, <b>Muskeln und Stimme</b> die Ausgabe. Das <b>Gedächtnis</b> ist der Speicher. Ein Computer funktioniert nach demselben Schema, nur mit Tastatur, Prozessor und Bildschirm.</div>
+        <h3>Ordne zu: E, V oder A?</h3>
+        <div class="sort" id="evaSort"></div>
+        <button class="linkbtn" data-reset="evaSort" type="button" style="justify-self:start">Nochmals ordnen</button>
+      </div>
+    </div>
+
+    <div class="block" id="lz2">
+      <div class="sec"><span class="lz">LZ 2</span><b>Programm = Weg von der Eingabe zur Ausgabe</b></div>
+      <div class="body">
+        <p>Ein Programm beschreibt Schritt für Schritt, <b>wie aus einer Eingabe die passende Ausgabe entsteht</b>. Wie ein Rezept: Die Zutaten sind die Eingabe, die Arbeitsschritte die Verarbeitung, das fertige Gericht die Ausgabe.</p>
+        <div class="evacode" aria-label="Programm mit EVA-Markierung">
+          <div class="E"><span class="tag">E</span><code id="ec1"></code></div>
+          <div class="V"><span class="tag">V</span><code id="ec2"></code></div>
+          <div class="A"><span class="tag">A</span><code id="ec3"></code></div>
+        </div>
+        <ul>
+          <li><b>Eingabe</b> über die Shell: <code>input("Frage")</code> wartet, bis etwas eingetippt und mit Enter bestätigt wird.</li>
+          <li><code>input()</code> gibt die Eingabe <b>immer als Text</b> zurück, auch wenn eine Zahl eingetippt wird. Zum Rechnen umwandeln: <code>int(input(...))</code>.</li>
+          <li><b>Ausgabe</b> in der Shell mit <code>print()</code>.</li>
+        </ul>
+        <p>Mit der Turtle geht das genauso. <code>numinput(Titel, Frage)</code> öffnet ein kleines Fenster und fragt nach einer Zahl. Die Zeichnung ist die Ausgabe:</p>
+        <div class="evacode" aria-label="Turtle-Programm mit EVA-Markierung">
+          <div class="x"><span class="tag"></span><code id="et0"></code></div>
+          <div class="E"><span class="tag">E</span><code id="et1"></code></div>
+          <div class="V"><span class="tag">V</span><code id="et2"></code></div>
+          <div class="A"><span class="tag">A</span><code id="et3"></code></div>
+          <div class="A"><span class="tag">A</span><code id="et4"></code></div>
+        </div>
+        <div class="key"><b>numinput() und range()</b><code>numinput()</code> liefert eine Kommazahl, z.B. <code>17.0</code>. <code>range()</code> braucht aber eine ganze Zahl. Darum: <code>ecken = int(numinput("Ecken", "Wie viele Ecken?"))</code></div>
+        <div class="tryrow">
+          <button class="try" data-snip="alter" type="button">Alter-Programm ausführen</button>
+          <button class="try" data-snip="numquadrat" type="button">Quadrat mit numinput</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="block" id="lz3">
+      <div class="sec"><span class="lz">LZ 3</span><b>Was der Computer beim Verarbeiten macht</b></div>
+      <div class="body">
+        <p>Während der Verarbeitung arbeitet der <b>Prozessor</b> das Programm ab, das im <b>Arbeitsspeicher (RAM)</b> liegt:</p>
+        <ol>
+          <li>Er <b>holt</b> die nächste Anweisung aus dem Speicher.</li>
+          <li>Er <b>führt sie aus</b>: rechnen (<code>alter + 1</code>), Text umwandeln (<code>int()</code>), vergleichen (<code>alter &lt; 13</code>).</li>
+          <li>Er <b>speichert</b> Ergebnisse in Variablen im RAM, z.B. <code>naechstes_jahr</code>.</li>
+          <li>Er geht zur <b>nächsten Anweisung</b>. Bei einer Verzweigung springt er je nach Bedingung in einen anderen Block, bei einer Schleife zurück an den Anfang.</li>
+        </ol>
+        <p>Welche Anweisung als Nächstes drankommt, bestimmen die <b>Kontrollstrukturen</b>. Es gibt drei:</p>
+        <div class="figure">
+          <svg class="diag" viewBox="0 0 620 240" width="100%" role="img" aria-label="Drei Kontrollstrukturen: lineare Folge als gerader Pfeil, Verzweigung als Gabel in zwei Wege, Wiederholung als Schlaufe">
+            <defs><marker id="arr" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--muted)"/></marker></defs>
+            <g fill="none" stroke="var(--muted)" stroke-width="6" stroke-linecap="round">
+              <path d="M100 20 V170" marker-end="url(#arr)"/>
+              <path d="M310 20 V50 Q310 62 296 62 H246 Q232 62 232 76 V124 Q232 138 246 138 H296 Q310 138 310 150 V170" marker-end="url(#arr)"/>
+              <path d="M310 50 Q310 62 324 62 H374 Q388 62 388 76 V124 Q388 138 374 138 H324 Q310 138 310 150"/>
+              <path d="M520 20 V170" marker-end="url(#arr)"/>
+              <path d="M520 100 A36 36 0 1 1 520 99"/>
+            </g>
+            <path d="M440 108 l8 -14 l8 14 z" fill="var(--muted)"/>
+            <text x="100" y="205" text-anchor="middle">Lineare Folge</text>
+            <text x="310" y="205" text-anchor="middle">Verzweigung</text>
+            <text x="310" y="225" text-anchor="middle" class="sub">auch: Fallunterscheidung</text>
+            <text x="520" y="205" text-anchor="middle">Wiederholung</text>
+            <text x="520" y="225" text-anchor="middle" class="sub">auch: Schleife</text>
+            <text x="250" y="52" class="sub">wahr</text>
+            <text x="338" y="52" class="sub">falsch</text>
+          </svg>
+        </div>
+        <div class="key"><b>Merksatz</b>Der Computer denkt nicht selber. Er führt die Anweisungen stur der Reihe nach aus, merkt sich Werte in Variablen und entscheidet nur so, wie es Bedingungen im Programm vorgeben.</div>
+      </div>
+    </div>
+
+    <div class="block" id="lz4">
+      <div class="sec"><span class="lz">LZ 4</span><b>EVA im Alltag, und warum die Ausgabe variiert</b></div>
+      <div class="body">
+        <p>EVA steckt auch dort, wo man es nicht sofort sieht. Oft ist die Eingabe kein Tippen, sondern ein <b>Sensor</b>, die <b>Uhrzeit</b>, der <b>Standort</b> oder <b>gespeicherte Daten</b>.</p>
+        <div class="cards">
+          <div class="panel"><h4>Navi</h4><dl><dt class="e">E</dt><dd>Ziel, GPS-Standort, aktuelle Verkehrsdaten</dd><dt class="v">V</dt><dd>berechnet die schnellste Route</dd><dt class="a">A</dt><dd>Karte, Ansage «in 200 m links»</dd></dl><p class="why">Gleiches Ziel, andere Route: weil sich der Verkehr ändert.</p></div>
+          <div class="panel"><h4>Chatbot einer Bank</h4><dl><dt class="e">E</dt><dd>deine getippte Frage</dd><dt class="v">V</dt><dd>sucht Stichwörter wie «Konto» oder «Karte»</dd><dt class="a">A</dt><dd>passende Antwort</dd></dl><p class="why">Andere Wörter in der Frage, andere Antwort.</p></div>
+          <div class="panel"><h4>Social-Media-Feed</h4><dl><dt class="e">E</dt><dd>Likes, Verlauf, wie lange du ein Video schaust</dd><dt class="v">V</dt><dd>wählt Beiträge aus, die dich interessieren könnten</dd><dt class="a">A</dt><dd>dein persönlicher Feed</dd></dl><p class="why">Jede Person hat andere gespeicherte Daten, darum sieht jeder etwas anderes.</p></div>
+          <div class="panel"><h4>Automatische Schiebetüre</h4><dl><dt class="e">E</dt><dd>Bewegungssensor meldet eine Person</dd><dt class="v">V</dt><dd>Steuerung entscheidet: öffnen</dd><dt class="a">A</dt><dd>Motor öffnet die Türe</dd></dl><p class="why">Niemand da, keine Ausgabe.</p></div>
+          <div class="panel"><h4>Schrittzähler (Smartwatch)</h4><dl><dt class="e">E</dt><dd>Bewegungssensor misst Erschütterungen</dd><dt class="v">V</dt><dd>erkennt Schritte und zählt sie</dd><dt class="a">A</dt><dd>«8'432 Schritte» auf dem Display</dd></dl><p class="why">Jeder Tag gibt andere Bewegungen, also eine andere Zahl.</p></div>
+        </div>
+        <h3>Warum ist die Ausgabe nicht immer gleich?</h3>
+        <ul>
+          <li><b>Andere Eingabe:</b> Das Programm bleibt gleich, aber die Eingabe ändert sich. Beim Kino-Programm kostet das Ticket 14 oder 19 CHF, je nach eingegebenem Alter.</li>
+          <li><b>Versteckte Eingaben:</b> Uhrzeit, Standort, Sensoren oder gespeicherte Daten wie dein Verlauf fliessen mit ein, ohne dass du sie eintippst.</li>
+          <li><b>Andere Verarbeitung:</b> Nach einem Update rechnet das Programm anders.</li>
+          <li><b>Zufall:</b> Spiele würfeln zum Beispiel eine Zufallszahl.</li>
+        </ul>
+        <pre class="code" id="pre-kino"></pre>
+        <button class="try" data-snip="kino" type="button">Kino-Programm mit verschiedenen Altern testen</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TEIL B: KONTROLLSTRUKTUREN ================= -->
+<section class="chapter wrap" id="kontroll">
+  <div class="chap-head"><span class="chap-num">B</span><h2>Kontrollstrukturen</h2></div>
+  <div class="blocks">
+
+    <div class="block" id="lz5">
+      <div class="sec"><span class="lz">LZ 5</span>3.1<b>for-Schleife (Zählschleife)</b></div>
+      <div class="body">
+        <p>Ein Siebzehneck braucht 17 Mal <code>forward</code> und <code>left</code>. Statt alles 17 Mal abzutippen, sagt man dem Computer: «Wiederhole das 17 Mal.» Das ist eine <b>Schleife</b>.</p>
+        <pre class="code" id="pre-siebzehn"></pre>
+        <ul>
+          <li><code>range(17)</code> zählt von <b>0 bis 16</b>, das sind 17 Durchläufe.</li>
+          <li><code>i</code> ist die <b>Zählervariable</b>: in der 1. Runde 0, in der 2. Runde 1 … in der 17. Runde 16.</li>
+          <li><code>range(1, 11)</code> zählt von 1 bis 10. Die obere Grenze ist nie dabei.</li>
+          <li><code>circle(50)</code> zeichnet einen Kreis mit Radius 50. Das Zentrum liegt 50 Pixel links der Blickrichtung.</li>
+        </ul>
+        <div class="key"><b>Merke</b>Die for-Schleife nimmst du, wenn du <b>vorher weisst, wie oft</b> etwas passieren soll.</div>
+        <button class="try" data-snip="siebzehn" type="button">Siebzehneck mit print(i)</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="sec"><span class="lz">LZ 5</span>3.5<b>while-Schleife (bedingte Wiederholung)</b></div>
+      <div class="body">
+        <p>Bei der while-Schleife entscheidet keine Zahl, sondern eine <b>Bedingung</b>. «while» heisst «solange». Die Bedingung wird vor jedem Durchlauf geprüft. Ist sie <code>True</code>, läuft der Block nochmals. Ist sie <code>False</code>, ist die Schleife fertig.</p>
+        <div class="two">
+          <div class="panel"><h4>Zählen mit while</h4><pre class="code" id="pre-count"></pre><button class="try" data-snip="count" type="button">Ausführen</button></div>
+          <div class="panel"><h4>Bis jemand «Bye» sagt</h4><pre class="code" id="pre-bye"></pre><button class="try" data-snip="bye" type="button">Ausführen</button></div>
+        </div>
+        <p>Beim Chat im rechten Beispiel weiss niemand vorher, wie viele Fragen kommen. Genau dafür ist while da.</p>
+        <div class="key"><b>Merke</b>Die while-Schleife nimmst du, wenn du <b>vorher nicht weisst, wie oft</b> etwas passiert. Sie endet, sobald die Bedingung nicht mehr erfüllt ist.</div>
+        <div class="warn"><b>Endlosschleife:</b> Ändert sich in der Schleife nichts an der Bedingung (z.B. <code>count += 1</code> vergessen), läuft sie ewig. Das Labor bricht nach vielen Schritten ab und zeigt einen Hinweis.</div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="sec"><span class="lz">LZ 5</span><b>for oder while?</b></div>
+      <div class="body">
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>Schleife</th><th>Wann?</th><th>Beispiel</th></tr></thead>
+            <tbody>
+              <tr><td>for</td><td>Anzahl Wiederholungen ist <b>bekannt</b></td><td>Quadrat mit 4 Seiten, Treppe mit 7 Stufen, Zahlen 1 bis 10</td></tr>
+              <tr><td>while</td><td>Anzahl ist <b>nicht bekannt</b>, eine Bedingung entscheidet</td><td>Turtle läuft bis zum Rand, Passwort so lange fragen bis es stimmt</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>break und continue</h3>
+        <div class="two">
+          <div class="panel"><h4>break</h4><p>Bricht die Schleife <b>sofort ab</b>. Weiter geht es mit der ersten Zeile nach der Schleife. Oft zusammen mit <code>while True:</code> (Endlosschleife mit Notausgang).</p></div>
+          <div class="panel"><h4>continue</h4><p>Beendet nur den <b>aktuellen Durchlauf</b> und springt zurück an den Anfang der Schleife.</p></div>
+        </div>
+        <pre class="code" id="pre-skip"></pre>
+        <button class="try" data-snip="skip" type="button">continue ausprobieren</button>
+      </div>
+    </div>
+
+    <div class="block" id="lz6">
+      <div class="sec"><span class="lz">LZ 6</span>3.3<b>Fallunter&shy;scheidung: if, else, elif</b></div>
+      <div class="body">
+        <p>Eine <b>Bedingung</b> ist eine Aussage, die <b>wahr</b> (<code>True</code>) oder <b>falsch</b> (<code>False</code>) sein kann. Ist sie wahr, sagt man: «Die Bedingung ist erfüllt.» Je nach Wahrheitswert nimmt das Programm einen anderen Weg.</p>
+        <div class="three">
+          <div class="panel"><h4>Einseitig</h4><pre class="code">if Bedingung:
+    Anweisungen</pre><p>Nur wenn wahr, sonst wird übersprungen.</p></div>
+          <div class="panel"><h4>Zweiseitig</h4><pre class="code">if Bedingung:
+    Anweisungen
+else:
+    Anweisungen</pre><p>Entweder der if- oder der else-Teil.</p></div>
+          <div class="panel"><h4>Mehrfach</h4><pre class="code">if Bedingung1:
+    Anweisungen
+elif Bedingung2:
+    Anweisungen
+else:
+    Anweisungen</pre><p>Die <b>erste</b> wahre Bedingung gewinnt.</p></div>
+        </div>
+        <pre class="code" id="pre-ifx"></pre>
+        <div class="tryrow">
+          <button class="try" data-snip="ifx" type="button">elif-Beispiel</button>
+          <button class="try" data-snip="passwort" type="button">Passwort (Beispiel 1)</button>
+          <button class="try" data-snip="chatbot" type="button">Chatbot (Beispiel 3)</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="sec"><span class="lz">LZ 6</span>3.4<b>Bedingungen formulieren</b></div>
+      <div class="body">
+        <p>Bedingungen baust du mit <b>Vergleichsoperatoren</b>. Sie vergleichen zwei Werte und liefern <code>True</code> oder <code>False</code>.</p>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>Operator</th><th>Bedeutung</th><th>Beispiel</th><th>Ergebnis</th></tr></thead>
+            <tbody>
+              <tr><td>&gt;</td><td>grösser</td><td><code>2 &gt; 1</code> · <code>1 &gt; 1</code></td><td><span class="t">True</span> · <span class="f">False</span></td></tr>
+              <tr><td>&gt;=</td><td>grösser oder gleich</td><td><code>1 &gt;= 1</code></td><td><span class="t">True</span></td></tr>
+              <tr><td>&lt;</td><td>kleiner</td><td><code>1 &lt; 2</code></td><td><span class="t">True</span></td></tr>
+              <tr><td>&lt;=</td><td>kleiner oder gleich</td><td><code>1 &lt;= 2</code></td><td><span class="t">True</span></td></tr>
+              <tr><td>==</td><td>gleich</td><td><code>1 == 1.0</code> · <code>'Mensch' == 'Mensch'</code></td><td><span class="t">True</span> · <span class="t">True</span></td></tr>
+              <tr><td>!=</td><td>ungleich</td><td><code>2 != 3</code> · <code>2 != 2</code></td><td><span class="t">True</span> · <span class="f">False</span></td></tr>
+              <tr><td>in</td><td>enthalten in</td><td><code>'a' in 'Banane'</code></td><td><span class="t">True</span></td></tr>
+              <tr><td>not in</td><td>nicht enthalten in</td><td><code>'I' not in 'Team'</code></td><td><span class="t">True</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="warn"><b>= oder ==?</b> Ein <code>=</code> ist eine Zuweisung (Wert speichern). Zum Vergleichen brauchst du <code>==</code>. <code>if alter = 13:</code> ist ein Fehler.</div>
+        <h3>Logische Operatoren</h3>
+        <div class="three">
+          <div class="panel"><h4>a and b</h4><p>Wahr, wenn <b>beide</b> wahr sind.</p></div>
+          <div class="panel"><h4>a or b</h4><p>Wahr, wenn <b>mindestens eine</b> wahr ist.</p></div>
+          <div class="panel"><h4>not a</h4><p>Kehrt um: wahr, wenn a <b>falsch</b> ist.</p></div>
+        </div>
+        <pre class="code" id="pre-plz"></pre>
+        <div class="key"><b>Text oder Zahl?</b><code>input()</code> liefert Text. <code>"15" &lt; 18</code> gibt einen Fehler. Zuerst umwandeln: <code>alter = int(input("Alter: "))</code></div>
+        <h3>Wahr oder nicht wahr?</h3>
+        <div class="sort" id="wfList"></div>
+        <button class="linkbtn" data-reset="wfList" type="button" style="justify-self:start">Nochmals</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="sec"><span class="lz">LZ 5 + 6</span>3.6<b>Fallbeispiel: Turtle im Nebel</b></div>
+      <div class="body">
+        <p>Die Turtle tastet sich in Schlangenlinien nach rechts, bis sie fast am Fensterrand ist. Dann kehrt sie um und läuft zurück. Wie viele Schlangenlinien das sind, weiss man vorher nicht. Also: <b>while-Schleife</b> mit einer Variable <code>lauf</code>, die <code>True</code> oder <code>False</code> ist.</p>
+        <ul>
+          <li><code>xcor()</code> und <code>ycor()</code> geben die Position der Turtle. Die Mitte ist (0, 0).</li>
+          <li><code>window_width()</code> ist die Fensterbreite. Der rechte Rand liegt bei <code>window_width() / 2</code>.</li>
+          <li>Bedingung zum Umkehren, mit 100 Pixel Abstand: <code>xcor() &gt;= window_width() / 2 - 100</code></li>
+        </ul>
+        <pre class="code" id="pre-nebel"></pre>
+        <p>Mit <code>while True:</code> und <code>break</code> geht es auch ohne die Variable <code>lauf</code>.</p>
+        <button class="try" data-task="nebel" type="button">Ganze Lösung im Labor</button>
+      </div>
+    </div>
+
+    <div class="block" id="lz7">
+      <div class="sec"><span class="lz">LZ 7</span><b>Einrückung</b></div>
+      <div class="body">
+        <p>In Python zeigt die <b>Einrückung</b> (engl. <i>indentation</i>), was zu einem Block gehört. Nach jeder Zeile mit <b>Doppelpunkt</b> (<code>for</code>, <code>while</code>, <code>if</code>, <code>elif</code>, <code>else</code>) folgt ein eingerückter Block.</p>
+        <ul>
+          <li>Nur was eingerückt ist, wird wiederholt oder bedingt ausgeführt.</li>
+          <li>Alle Zeilen eines Blocks brauchen <b>gleich viele</b> Leerzeichen. Üblich sind <b>4</b>. Thonny macht das nach dem Doppelpunkt automatisch.</li>
+          <li>Die erste Zeile, die <b>nicht mehr</b> eingerückt ist, beendet den Block.</li>
+          <li>Verschachtelte Blöcke werden doppelt eingerückt (8 Leerzeichen).</li>
+        </ul>
+        <h3>Gleicher Code, andere Einrückung</h3>
+        <div class="two">
+          <div class="panel"><h4>Version A</h4><pre class="code" id="pre-indA"></pre><button class="btn" data-out="indA" type="button">Ausgabe zeigen</button><pre class="outbox" id="out-indA" hidden></pre></div>
+          <div class="panel"><h4>Version B</h4><pre class="code" id="pre-indB"></pre><button class="btn" data-out="indB" type="button">Ausgabe zeigen</button><pre class="outbox" id="out-indB" hidden></pre></div>
+        </div>
+        <h3>Verschachtelt</h3>
+        <pre class="code" id="pre-nest"></pre>
+        <p>Die innere Schleife zeichnet ein Quadrat. Die äussere wiederholt das 20 Mal und dreht nach jedem Quadrat um 18°. Innere und äussere Schleife brauchen <b>verschiedene</b> Zählervariablen.</p>
+        <div class="warn"><b>Typische Fehler</b><br><code>IndentationError: expected an indented block</code>: Nach der Zeile mit Doppelpunkt fehlt der eingerückte Block.<br><code>IndentationError: unexpected indent</code>: Eine Zeile ist eingerückt, obwohl davor kein Doppelpunkt steht.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SPICKZETTEL ================= -->
+<section class="chapter wrap" id="spick">
+  <div class="chap-head"><span class="chap-num" style="font-size:2rem">Spick</span><h2>Neue Befehle in Kapitel 3</h2></div>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Befehl</th><th>Was passiert</th><th>Beispiel</th></tr></thead>
+      <tbody>
+        <tr><td class="grp" colspan="3">Schleifen</td></tr>
+        <tr><td>for i in range(n):</td><td>Block n Mal wiederholen, i zählt 0 … n-1</td><td><code>for i in range(4):</code></td></tr>
+        <tr><td>range(a, b)</td><td>zählt von a bis b-1</td><td><code>range(1, 11)</code></td></tr>
+        <tr><td>while Bedingung:</td><td>wiederholen, solange die Bedingung wahr ist</td><td><code>while zahl &lt;= 10:</code></td></tr>
+        <tr><td>break</td><td>Schleife sofort verlassen</td><td><code>break</code></td></tr>
+        <tr><td>continue</td><td>nächster Durchlauf</td><td><code>continue</code></td></tr>
+        <tr><td class="grp" colspan="3">Fallunterscheidung</td></tr>
+        <tr><td>if … elif … else</td><td>je nach Bedingung einen Block ausführen</td><td><code>if alter &lt; 18:</code></td></tr>
+        <tr><td>== != &lt; &gt; &lt;= &gt;=</td><td>vergleichen, ergibt True oder False</td><td><code>x != 0</code></td></tr>
+        <tr><td>in / not in</td><td>Text enthalten?</td><td><code>'Wann' in frage</code></td></tr>
+        <tr><td>and / or / not</td><td>Bedingungen verknüpfen oder umkehren</td><td><code>x &gt; 5 and y &lt; 15</code></td></tr>
+        <tr><td class="grp" colspan="3">Eingabe</td></tr>
+        <tr><td>input(frage)</td><td>Eingabe in der Shell, immer Text</td><td><code>name = input("Name? ")</code></td></tr>
+        <tr><td>int(x)</td><td>in ganze Zahl umwandeln</td><td><code>int(input("Alter? "))</code></td></tr>
+        <tr><td>numinput(titel, frage)</td><td>Turtle-Fenster fragt nach einer Zahl (Kommazahl)</td><td><code>numinput("Ecken", "Wie viele?")</code></td></tr>
+        <tr><td class="grp" colspan="3">Turtle</td></tr>
+        <tr><td>circle(r)</td><td>Kreis mit Radius r</td><td><code>circle(50)</code></td></tr>
+        <tr><td>xcor() / ycor()</td><td>aktuelle Position der Turtle</td><td><code>if xcor() &gt; 300:</code></td></tr>
+        <tr><td>window_width()</td><td>Fensterbreite (hier 800)</td><td><code>window_width() / 2</code></td></tr>
+        <tr><td>window_height()</td><td>Fensterhöhe (hier 600)</td><td><code>window_height()</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ================= LABOR ================= -->
+<section class="chapter" id="labor">
+  <div class="wrap">
+    <div class="chap-head"><span class="chap-num" style="font-size:2rem">Lab</span><h2>Labor: alle Aufgaben aus 3.9</h2></div>
+    <p class="intro">Wähle eine Aufgabe oder programmiere frei. <b>Ctrl+Enter</b> führt aus. Fragt das Programm nach einer Eingabe, erscheint unten ein Feld. Dein Code wird pro Aufgabe in diesem Browser gespeichert. Die feinen Linien im Editor zeigen dir die Einrückung.</p>
+    <div class="tasks" id="tasks" role="toolbar" aria-label="Aufgaben"></div>
+    <div class="taskcard">
+      <div class="t">
+        <p class="eyebrow" id="taskEyebrow"></p>
+        <h3 id="taskTitle"></h3>
+        <p id="taskText"></p>
+        <div class="btns">
+          <button class="btn" id="btnStart" type="button">Startcode laden</button>
+          <button class="btn" id="btnSol" type="button">Lösung zeigen</button>
+        </div>
+      </div>
+      <div class="goal" id="goalBox"><small id="goalLabel">Ziel</small><canvas id="goalCanvas" aria-label="Zielbild der Aufgabe"></canvas><pre id="goalText" hidden></pre></div>
+    </div>
+    <div class="sub">
+      <div class="edbox">
+        <div class="edbar">
+          <span class="file" id="fileName">programm.py</span>
+          <label><input type="checkbox" id="turbo"> sofort zeichnen</label>
+          <button class="btn primary" id="btnRun" type="button">Ausführen ▶</button>
+        </div>
+        <div class="ed">
+          <div class="gutter" id="gutter" aria-hidden="true">1</div>
+          <div class="edlayer">
+            <pre id="hl" aria-hidden="true"></pre>
+            <textarea id="code" spellcheck="false" autocapitalize="off" autocomplete="off" wrap="off" aria-label="Python-Code"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="stage">
+        <div class="canvasbox">
+          <canvas id="labCanvas" aria-label="Zeichenfläche der Turtle"></canvas>
+          <span class="coords" id="coords">x 0 · y 0</span>
+        </div>
+        <div class="console" id="consoleBox">
+          <div class="h"><span>Shell / Ein- und Ausgabe</span><label style="text-transform:none;letter-spacing:0;display:inline-flex;gap:6px;align-items:center"><input type="checkbox" id="gridToggle" checked> Raster</label></div>
+          <div id="out" aria-live="polite"><div class="o note">Noch nichts ausgeführt.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= QUIZ ================= -->
+<section class="chapter wrap" id="quiz">
+  <div class="chap-head"><span class="chap-num" style="font-size:2rem">Test</span><h2>Quiz zu den Lernzielen</h2></div>
+  <div class="qfilter" id="qfilter" role="toolbar" aria-label="Fragen nach Lernziel filtern"></div>
+  <div class="score"><span>Richtig: <b id="score">0</b> / <span id="qtotal"></span></span><span id="qprog" style="color:var(--muted)"></span><button class="btn" id="qreset" type="button">Neu starten</button></div>
+  <div class="quiz" id="quizList"></div>
+</section>
+</main>
+
+<footer class="wrap">Lernmodul zu den Kompetenzen von «EVA (2)», Informatik G1G, KSWO. Grundlage: Skript Kapitel 3 «Kontrollstrukturen» und die Folien dazu. Das Labor ist ein vereinfachter Python-Interpreter für die Befehle aus Kapitel 1 bis 3.</footer>
+
+<script>
+(function(){
+"use strict";
+/* ============ Beispiel-Code ============ */
+const SNIP={
+alter:`alter = int(input("Wie alt bist du? "))
+naechstes_jahr = alter + 1
+print("Naechstes Jahr bist du", naechstes_jahr, "Jahre alt.")`,
+numquadrat:`from turtle import *
+shape("turtle")
+
+schritte = numinput("Seitenlaenge", "Wie lang soll eine Seite sein?")
+
+for i in range(4):
+    forward(schritte)
+    left(90)
+
+exitonclick()`,
+kino:`print("Willkommen im Kino!")
+alter = int(input("Alter in Jahren: "))
+
+if alter < 13:
+    print("Das Ticket kostet 14 CHF.")
+else:
+    print("Das Ticket kostet 19 CHF.")
+
+print("Viel Spass!")`,
+siebzehn:`from turtle import *
+shape("turtle")
+
+for i in range(17):
+    forward(40)
+    left(360/17)
+    print(i)`,
+count:`count = 1
+while count <= 5:
+    print("Durchlauf", count)
+    count += 1`,
+bye:`print("Willkommen, wie lautet deine Frage?")
+
+frage = input("Frage: ")
+while frage != "Bye":
+    frage = input("Frage: ")
+
+print("Auf Wiedersehen!")`,
+skip:`for zahl in range(1, 11):
+    if zahl == 5:
+        continue
+    print(zahl)`,
+ifx:`x = 7
+if x > 10:
+    print("x ist groesser als 10")
+elif x > 5:
+    print("x ist groesser als 5, aber kleiner oder gleich 10")
+else:
+    print("x ist kleiner oder gleich 5")`,
+passwort:`print("Bitte gib dein Passwort ein!")
+eingabe = input("Passwort: ")
+
+if eingabe == '1234':
+    print("Passwort wurde erkannt.")
+    print("Willkommen")`,
+chatbot:`print("Willkommen, wie lautet deine Frage?")
+frage = input("Frage: ")
+
+if 'Wann' in frage:
+    thema = 'Liefertermin'
+    person = 'Carla'
+elif 'Rechnung' in frage:
+    thema = 'Bezahlung'
+    person = 'Tom'
+else:
+    thema = 'Diverses'
+    person = 'Kim'
+
+print("Vielen Dank für deine Frage zum Thema " + thema + ".")
+print(person + " hilft dir gerne weiter.")`,
+plz:`plz = int(input("Postleitzahl: "))
+if plz >= 1000 and plz <= 9999:
+    print("gültig")
+else:
+    print("ungültig")`,
+nebelKurz:`lauf = True
+while lauf:
+    # erster Halbkreis
+    # zweiter Halbkreis
+    # pruefe, ob der Rand erreicht ist
+    if xcor() >= window_width() / 2 - 100:
+        print("habe den Rand erreicht, muss umkehren")
+        lauf = False
+    else:
+        print("noch nicht am Rand, ich laufe weiter")`,
+indA:`for i in range(3):
+    print("Hallo")
+    print("Tschüss")`,
+indB:`for i in range(3):
+    print("Hallo")
+print("Tschüss")`,
+nest:`for k in range(20):
+    for i in range(4):
+        forward(100)
+        left(90)
+    left(18)`
+};
+const HEAD='from turtle import *\nshape("turtle")\n\n';
+const NEBEL=HEAD+`speed(8)
+left(90)
+
+# Hinweg
+lauf = True
+while lauf:
+    for i in range(18):
+        forward(5)
+        right(10)
+    for i in range(18):
+        forward(5)
+        left(10)
+    if xcor() >= window_width() / 2 - 100:
+        print("habe den Rand erreicht, muss umkehren")
+        lauf = False
+    else:
+        print("noch nicht am Rand, ich laufe weiter")
+
+# Rueckweg
+left(180)
+lauf = True
+while lauf:
+    for i in range(18):
+        forward(5)
+        right(10)
+    for i in range(18):
+        forward(5)
+        left(10)
+    if xcor() <= 20:
+        print("zu Hause!")
+        lauf = False`;
+const TASKS=[
+{id:'frei',nr:'',label:'Frei',title:'Freies Programmieren',kind:'draw',
+ text:'Programmiere, was du willst: Turtle-Zeichnungen, Rechnungen, Programme mit input(). Tipp: Für viele Schleifendurchläufe speed(0) setzen.',
+ start:HEAD+'for i in range(5):\n    forward(100)\n    left(144)\n',sol:null},
+{id:'kreis',nr:'3.1',label:'Vom Vieleck zum Kreis',title:'Vom Vieleck zum Kreis',kind:'draw',demo:['36'],
+ text:'(a) Frage die Anzahl Ecken mit numinput() ab und zeichne das Vieleck mit einer for-Schleife. Erhöhe die Ecken, bis es ein schöner Kreis ist. (b) Mach die Linienlänge von der Anzahl Ecken abhängig, damit der Kreis immer etwa gleich gross bleibt.',
+ start:HEAD+'ecken = int(numinput("Ecken", "Wie viele Ecken?"))\n\nfor i in range(17):\n    forward(40)\n    left(360/17)\n',
+ sol:HEAD+'ecken = int(numinput("Ecken", "Wie viele Ecken?"))\n\nfor i in range(ecken):\n    forward(500 / ecken)\n    left(360 / ecken)\n'},
+{id:'treppe',nr:'3.2',label:'Treppe',title:'Treppe mit 7 Stufen',kind:'draw',
+ text:'Zeichne eine Treppe mit 7 Stufen, selbstverständlich mit einer for-Schleife.',
+ start:HEAD+'penup()\ngoto(-150, -150)\npendown()\nleft(90)\n\n',
+ sol:HEAD+'penup()\ngoto(-150, -150)\npendown()\nleft(90)\n\nfor i in range(7):\n    forward(40)\n    right(90)\n    forward(40)\n    left(90)\n'},
+{id:'stern1',nr:'3.3',label:'Stern mit backward',title:'Stern mit backward()',kind:'draw',
+ text:'Zeichne einen Stern mit einer for-Schleife. Die Turtle läuft vorwärts und mit backward() wieder zurück in die Mitte.',
+ start:HEAD+'for i in range(6):\n',
+ sol:HEAD+'for i in range(6):\n    forward(150)\n    backward(150)\n    left(60)\n'},
+{id:'stern2',nr:'3.4',label:'Richtiger Stern',title:'Ein «richtiger» Stern',kind:'draw',
+ text:'Zeichne einen ausgefüllten Stern mit einer for-Schleife und den Drehwinkeln 140 Grad und 80 Grad.',
+ start:HEAD+'color("blue", "red")\nbegin_fill()\n\n\nend_fill()\n',
+ sol:HEAD+'color("blue", "red")\nbegin_fill()\nfor i in range(6):\n    forward(120)\n    right(140)\n    forward(120)\n    left(80)\nend_fill()\n'},
+{id:'quadrate20',nr:'3.5',label:'20 Quadrate',title:'20 verdrehte Quadrate',kind:'draw',
+ text:'Zwei verschachtelte for-Schleifen: Die innere zeichnet ein Quadrat und dreht danach um 18° nach links. Die äussere wiederholt das 20 Mal. Nimm für die beiden Zähler verschiedene Namen.',
+ start:HEAD+'color("blue")\nspeed(0)\n\nfor i in range(4):\n    forward(100)\n    left(90)\n',
+ sol:HEAD+'color("blue")\nspeed(0)\n\nfor k in range(20):\n    for i in range(4):\n        forward(100)\n        left(90)\n    left(18)\n'},
+{id:'reihe',nr:'3.6',label:'Quadrat-Reihe',title:'Quadrate in einer Reihe',kind:'draw',
+ text:'Zeichne 7 Quadrate nebeneinander mit zwei verschachtelten for-Schleifen. In der inneren Schleife wird ein Quadrat gezeichnet.',
+ start:HEAD+'color("blue")\npenup()\ngoto(-175, 0)\npendown()\n\n',
+ sol:HEAD+'color("blue")\npenup()\ngoto(-175, 0)\npendown()\n\nfor k in range(7):\n    for i in range(4):\n        forward(50)\n        left(90)\n    forward(50)\n'},
+{id:'schlange',nr:'3.7',label:'Schlangenlinie',title:'Im Nebel nach Hause',kind:'draw',
+ text:'Die Turtle tastet sich in einer Schlangenlinie voran: ein Halbkreis nach rechts, einer nach links. Verwende zwei for-Schleifen.',
+ start:HEAD+'left(90)\n\n',
+ sol:HEAD+'left(90)\n\nfor i in range(18):\n    forward(10)\n    right(10)\nfor i in range(18):\n    forward(10)\n    left(10)\n'},
+{id:'nebel',nr:'3.6',label:'Turtle im Nebel',title:'Fallbeispiel: Turtle im Nebel',kind:'draw',
+ text:'Schlangenlinien nach rechts mit einer while-Schleife, bis xcor() >= window_width()/2 - 100. Dann umkehren mit left(180) und zurücklaufen, bis xcor() zwischen 0 und 20 liegt.',
+ start:HEAD+'left(90)\n\nlauf = True\nwhile lauf:\n    # erster Halbkreis\n\n    # zweiter Halbkreis\n\n    # pruefe, ob der Rand erreicht ist\n    if xcor() >= window_width() / 2 - 100:\n        print("habe den Rand erreicht, muss umkehren")\n        lauf = False\n    else:\n        print("noch nicht am Rand, ich laufe weiter")\n',
+ sol:NEBEL},
+{id:'alter',nr:'3.8',label:'Alterskategorie',title:'Alterskategorie bestimmen',kind:'text',demo:['15'],
+ text:'Frage das Alter mit input() ab und wandle es mit int() um. Unter 18: «Du bist ein Teenager». 18 bis 64: «Du bist ein Erwachsener». Ab 65: «Du bist ein Senior».',
+ start:'alter = int(input("Wie alt bist du? "))\n\n',
+ sol:'alter = int(input("Wie alt bist du? "))\n\nif alter < 18:\n    print("Du bist ein Teenager")\nelif alter < 65:\n    print("Du bist ein Erwachsener")\nelse:\n    print("Du bist ein Senior")\n'},
+{id:'dreieck',nr:'3.9',label:'Dreieck gültig?',title:'Dreieck gültig oder ungültig',kind:'text',demo:['3','4','5'],
+ text:'Frage drei Seitenlängen ab. Gültig ist das Dreieck nur, wenn a+b > c, a+c > b und b+c > a. Gib «Das Dreieck ist gültig» oder «Das Dreieck ist ungültig» aus.',
+ start:'a = int(input("Laenge der ersten Seite: "))\nb = int(input("Laenge der zweiten Seite: "))\nc = int(input("Laenge der dritten Seite: "))\n\n',
+ sol:'a = int(input("Laenge der ersten Seite: "))\nb = int(input("Laenge der zweiten Seite: "))\nc = int(input("Laenge der dritten Seite: "))\n\nif a + b > c and a + c > b and b + c > a:\n    print("Das Dreieck ist gültig")\nelse:\n    print("Das Dreieck ist ungültig")\n'},
+{id:'plz',nr:'3.10',label:'Postleitzahl',title:'Postleitzahl und Wochenende',kind:'text',demo:['5610','Samstag'],
+ text:'(a) Prüfe mit and, ob die Postleitzahl zwischen 1000 und 9999 liegt. (b) Prüfe mit or, ob der Wochentag «Samstag» oder «Sonntag» ist. (c) Schreibe die Bedingung aus (a) mit not so um, dass sie das Gegenteil prüft.',
+ start:'plz = int(input("Postleitzahl: "))\n\n',
+ sol:'# (a)\nplz = int(input("Postleitzahl: "))\nif plz >= 1000 and plz <= 9999:\n    print("gültig")\nelse:\n    print("ungültig")\n\n# (b)\ntag = input("Wochentag: ")\nif tag == "Samstag" or tag == "Sonntag":\n    print("Wochenende")\nelse:\n    print("kein Wochenende")\n\n# (c)\nif not (plz >= 1000 and plz <= 9999):\n    print("ungültig")\nelse:\n    print("gültig")\n'},
+{id:'summe',nr:'3.11',label:'Zahlen summieren',title:'Zahlen 1 bis 10 summieren',kind:'text',
+ text:'Summiere mit einer while-Schleife die Zahlen von 1 bis 10 und gib am Ende die Gesamtsumme aus.',
+ start:'zahl = 1\nsumme = 0\n\n',
+ sol:'zahl = 1\nsumme = 0\nwhile zahl <= 10:\n    summe = summe + zahl\n    zahl = zahl + 1\nprint("Summe:", summe)\n'},
+{id:'countdown',nr:'3.12',label:'Countdown',title:'Rückwärts zählen',kind:'text',demo:['5'],
+ text:'Frage nach einer Startzahl, zähle mit while rückwärts bis 0 und gib jede Zahl aus. Danach «Start!».',
+ start:'zahl = int(input("Startzahl: "))\n\n',
+ sol:'zahl = int(input("Startzahl: "))\nwhile zahl >= 0:\n    print(zahl)\n    zahl = zahl - 1\nprint("Start!")\n'},
+{id:'wachsend',nr:'3.13',label:'Wachsende Quadrate',title:'Wachsende Quadrate',kind:'draw',
+ text:'Das erste Quadrat hat Seitenlänge 10, jedes weitere 10 mehr. Zeichne mit einer while-Schleife, bis die Seitenlänge 200 überschreitet.',
+ start:HEAD+'speed(0)\nseite = 10\n\n',
+ sol:HEAD+'speed(0)\nseite = 10\nwhile seite <= 200:\n    for i in range(4):\n        forward(seite)\n        left(90)\n    seite = seite + 10\n'},
+{id:'passwort',nr:'3.14',label:'Passwortabfrage',title:'Passwortabfrage mit while True',kind:'text',demo:['hallo','geheim123'],
+ text:'Frage mit einer Endlosschleife immer wieder nach dem Passwort. Bei «geheim123» mit break raus und «Zugriff gewaehrt!» ausgeben. Sonst «Falsches Passwort, versuch es nochmal.».',
+ start:'while True:\n    passwort = input("Passwort: ")\n\n',
+ sol:'while True:\n    passwort = input("Passwort: ")\n    if passwort == "geheim123":\n        break\n    print("Falsches Passwort, versuch es nochmal.")\nprint("Zugriff gewaehrt!")\n'},
+{id:'skip',nr:'3.15',label:'Zahl überspringen',title:'Eine Zahl überspringen',kind:'text',
+ text:'Gib mit einer for-Schleife die Zahlen 1 bis 10 aus, aber überspringe die 5 mit continue.',
+ start:'for zahl in range(1, 11):\n',
+ sol:SNIP.skip+'\n'}
+];
+
+/* ============ Interpreter ============ */
+class PyErr extends Error{constructor(type,msg,line,hint){super(msg);this.type=type;this.line=line;this.hint=hint||''}}
+class NeedInput{constructor(kind,title,prompt){this.kind=kind;this.title=title;this.prompt=prompt}}
+const BRK={brk:1},CNT={cnt:1};
+const NONE={t:'none'};
+const I=v=>({t:'int',v:BigInt(v)}), F=v=>({t:'float',v:v}), S=v=>({t:'str',v:v}), B=v=>({t:'bool',v:!!v});
+const TRUE=B(true),FALSE=B(false);
+const tname=v=>({int:'int',float:'float',str:'str',bool:'bool',none:'NoneType',fn:'builtin_function_or_method',mod:'module',range:'range'})[v.t]||v.t;
+const isNum=v=>v.t==='int'||v.t==='float'||v.t==='bool';
+const toN=v=>v.t==='int'?Number(v.v):v.t==='bool'?(v.v?1:0):v.v;
+const asInt=v=>v.t==='bool'?I(v.v?1:0):v;
+function fmtFloat(x){
+  if(Number.isNaN(x))return 'nan';
+  if(!Number.isFinite(x))return x>0?'inf':'-inf';
+  if(Number.isInteger(x)&&Math.abs(x)<1e16)return x.toFixed(1);
+  return String(x);
+}
+function str(v){
+  switch(v.t){
+    case 'int':return v.v.toString();
+    case 'float':return fmtFloat(v.v);
+    case 'str':return v.v;
+    case 'bool':return v.v?'True':'False';
+    case 'none':return 'None';
+    case 'fn':return '<built-in function '+v.name+'>';
+    case 'mod':return "<module '"+v.name+"'>";
+    case 'range':return `range(${v.a}, ${v.b}${v.s!==1?', '+v.s:''})`;
+  }
+  return '?';
+}
+function repr(v){return v.t==='str'?"'"+v.v.replace(/\\/g,'\\\\').replace(/'/g,"\\'")+"'":str(v)}
+function truthy(v){
+  switch(v.t){case 'bool':return v.v;case 'int':return v.v!==0n;case 'float':return v.v!==0;case 'str':return v.v.length>0;case 'none':return false;case 'range':return rangeLen(v)>0;default:return true}
+}
+function rangeLen(r){return r.s>0?Math.max(0,Math.ceil((r.b-r.a)/r.s)):Math.max(0,Math.ceil((r.a-r.b)/-r.s))}
+const INPUT_HINT=' Kommt der Wert von input()? input() liefert immer Text. Mit int(...) wird daraus eine Zahl.';
+function floorDivBig(a,b){let q=a/b;if((a%b!==0n)&&((a<0n)!==(b<0n)))q-=1n;return q}
+function binop(op,a,b,ln){
+  a=asInt(a);b=asInt(b);
+  if(op==='+'){
+    if(a.t==='str'&&b.t==='str')return S(a.v+b.v);
+    if(a.t==='str'||b.t==='str')throw new PyErr('TypeError',a.t==='str'?`can only concatenate str (not "${tname(b)}") to str`:`unsupported operand type(s) for +: '${tname(a)}' and '${tname(b)}'`,ln,'Text und Zahl lassen sich nicht mit + verbinden. Mit str(zahl) wird aus einer Zahl Text, mit int(text) aus Text eine Zahl. Bei print() kannst du auch Kommas nehmen: print("Summe:", summe).');
+  }
+  if(op==='*'){
+    if(a.t==='str'&&b.t==='int')return S(a.v.repeat(Math.max(0,Number(b.v))));
+    if(a.t==='int'&&b.t==='str')return S(b.v.repeat(Math.max(0,Number(a.v))));
+  }
+  if(!isNum(a)||!isNum(b))throw new PyErr('TypeError',`unsupported operand type(s) for ${op}: '${tname(a)}' and '${tname(b)}'`,ln,
+    (a.t==='str'||b.t==='str')?'Hier wird mit Text gerechnet.'+INPUT_HINT:'');
+  const bothInt=a.t==='int'&&b.t==='int';
+  switch(op){
+    case '+':return bothInt?{t:'int',v:a.v+b.v}:F(toN(a)+toN(b));
+    case '-':return bothInt?{t:'int',v:a.v-b.v}:F(toN(a)-toN(b));
+    case '*':return bothInt?{t:'int',v:a.v*b.v}:F(toN(a)*toN(b));
+    case '/':if(toN(b)===0)throw new PyErr('ZeroDivisionError','division by zero',ln,'Durch 0 kann man nicht teilen.');
+      return F(toN(a)/toN(b));
+    case '//':if(toN(b)===0)throw new PyErr('ZeroDivisionError','integer division or modulo by zero',ln,'Durch 0 kann man nicht teilen.');
+      return bothInt?{t:'int',v:floorDivBig(a.v,b.v)}:F(Math.floor(toN(a)/toN(b)));
+    case '%':if(toN(b)===0)throw new PyErr('ZeroDivisionError','integer modulo by zero',ln,'Durch 0 kann man nicht teilen.');
+      if(bothInt){let r=a.v%b.v;if(r!==0n&&((r<0n)!==(b.v<0n)))r+=b.v;return {t:'int',v:r}}
+      {const x=toN(a),y=toN(b);return F(x-y*Math.floor(x/y))}
+    case '**':
+      if(bothInt&&b.v>=0n){if(b.v>20000n)throw new PyErr('OverflowError','exponent too large for this editor',ln,'');return {t:'int',v:a.v**b.v}}
+      return F(Math.pow(toN(a),toN(b)));
+  }
+  throw new PyErr('SyntaxError','invalid syntax',ln);
+}
+function neg(a,ln){
+  a=asInt(a);
+  if(a.t==='int')return {t:'int',v:-a.v};
+  if(a.t==='float')return F(-a.v);
+  throw new PyErr('TypeError',`bad operand type for unary -: '${tname(a)}'`,ln);
+}
+function cmpNum(a,b){
+  a=asInt(a);b=asInt(b);
+  if(a.t==='int'&&b.t==='int')return a.v<b.v?-1:a.v>b.v?1:0;
+  const x=toN(a),y=toN(b);return x<y?-1:x>y?1:0;
+}
+function compare(op,a,b,ln){
+  if(op==='in'||op==='notin'){
+    if(b.t!=='str')throw new PyErr('TypeError',`argument of type '${tname(b)}' is not iterable`,ln,'in prüft, ob ein Text in einem anderen Text vorkommt, z.B. "a" in "Banane".');
+    if(a.t!=='str')throw new PyErr('TypeError',`'in <string>' requires string as left operand, not ${tname(a)}`,ln,'Links von in muss auch ein Text stehen.');
+    const r=b.v.includes(a.v);return op==='in'?r:!r;
+  }
+  if(op==='=='||op==='!='){
+    let eq;
+    if(isNum(a)&&isNum(b))eq=cmpNum(a,b)===0;
+    else if(a.t==='str'&&b.t==='str')eq=a.v===b.v;
+    else if(a.t==='none'&&b.t==='none')eq=true;
+    else eq=false;
+    return op==='=='?eq:!eq;
+  }
+  let c;
+  if(isNum(a)&&isNum(b))c=cmpNum(a,b);
+  else if(a.t==='str'&&b.t==='str')c=a.v<b.v?-1:a.v>b.v?1:0;
+  else throw new PyErr('TypeError',`'${op}' not supported between instances of '${tname(a)}' and '${tname(b)}'`,ln,
+    (a.t==='str'||b.t==='str')?'Hier wird Text mit einer Zahl verglichen.'+INPUT_HINT:'');
+  return op==='<'?c<0:op==='>'?c>0:op==='<='?c<=0:c>=0;
+}
+
+function tokenize(s,ln){
+  const T=[];let i=0;
+  while(i<s.length){
+    const c=s[i];
+    if(c===' '||c==='\t'){i++;continue}
+    const r=s.slice(i);let m;
+    if((m=/^(\d+\.\d*|\.\d+|\d+)([eE][+-]?\d+)?/.exec(r))){const x=m[0];T.push(/[.eE]/.test(x)?{t:'float',v:parseFloat(x)}:{t:'int',v:BigInt(x)});i+=x.length;continue}
+    if((m=/^[A-Za-z_\u00C0-\u024F][\w\u00C0-\u024F]*/.exec(r))){T.push({t:'name',v:m[0]});i+=m[0].length;continue}
+    if(c==='"'||c==="'"){
+      let j=i+1,out='';
+      while(j<s.length&&s[j]!==c){if(s[j]==='\\'&&j+1<s.length){const n=s[j+1];out+=n==='n'?'\n':n==='t'?'\t':n;j+=2;continue}out+=s[j];j++}
+      if(j>=s.length)throw new PyErr('SyntaxError',`unterminated string literal (detected at line ${ln})`,ln,'Ein Text braucht Anführungszeichen am Anfang und am Ende, z.B. print("Hallo").');
+      T.push({t:'str',v:out});i=j+1;continue;
+    }
+    if((m=/^(\*\*|\/\/|==|!=|<=|>=|\+=|-=|\*=|\/=|[+\-*\/%(),=<>.:\[\]{}])/.exec(r))){T.push({t:'op',v:m[0]});i+=m[0].length;continue}
+    const code='U+'+c.codePointAt(0).toString(16).toUpperCase().padStart(4,'0');
+    throw new PyErr('SyntaxError',`invalid character '${c}' (${code})`,ln,
+      '“”„«»‘’'.includes(c)?'Das sind schräge Anführungszeichen (z.B. aus Word). Python braucht die geraden " von der Tastatur.':c==='!'?'Für «ungleich» schreibst du != (ohne Leerzeichen).':'Dieses Zeichen kennt Python nicht.');
+  }
+  return T;
+}
+const RESERVED=new Set(['and','or','not','in','if','elif','else','for','while','break','continue','pass','def','return','import','from','class','is','lambda','try','except','with','global']);
+
+function parseExpr(T,ln){
+  let p=0;
+  const isOp=v=>T[p]&&T[p].t==='op'&&T[p].v===v;
+  const isKw=v=>T[p]&&T[p].t==='name'&&T[p].v===v;
+  const syn=h=>new PyErr('SyntaxError','invalid syntax',ln,h||'');
+  function orE(){let l=andE();while(isKw('or')){p++;l={k:'or',l,r:andE()}}return l}
+  function andE(){let l=notE();while(isKw('and')){p++;l={k:'and',l,r:notE()}}return l}
+  function notE(){if(isKw('not')){p++;return {k:'not',e:notE()}}return cmpE()}
+  function cmpE(){
+    const items=[arith()],ops=[];
+    for(;;){
+      let op=null;
+      if(T[p]&&T[p].t==='op'&&['<','>','<=','>=','==','!='].includes(T[p].v)){op=T[p].v;p++}
+      else if(isKw('in')){op='in';p++}
+      else if(isKw('not')&&T[p+1]&&T[p+1].t==='name'&&T[p+1].v==='in'){op='notin';p+=2}
+      else break;
+      ops.push(op);items.push(arith());
+    }
+    return ops.length?{k:'cmp',ops,items}:items[0];
+  }
+  function arith(){let a=term();while(isOp('+')||isOp('-')){const o=T[p++].v;a={k:'bin',op:o,l:a,r:term()}}return a}
+  function term(){let a=unary();while(isOp('*')||isOp('/')||isOp('//')||isOp('%')){const o=T[p++].v;a={k:'bin',op:o,l:a,r:unary()}}return a}
+  function unary(){if(isOp('-')){p++;return {k:'neg',e:unary()}}if(isOp('+')){p++;return unary()}return power()}
+  function power(){let a=postfix();if(isOp('**')){p++;a={k:'bin',op:'**',l:a,r:unary()}}return a}
+  function postfix(){
+    let a=atom();
+    for(;;){
+      if(isOp('(')){
+        p++;const args=[];
+        if(!isOp(')')){args.push(orE());while(isOp(',')){p++;if(isOp(')'))break;args.push(orE())}}
+        if(!isOp(')')){
+          if(isOp('='))throw syn('Benannte Argumente wie end="" kann dieser Editor nicht. Gib die Werte einfach der Reihe nach an.');
+          if(!T[p])throw new PyErr('SyntaxError',"'(' was never closed",ln,'Da fehlt eine schliessende Klammer ).');
+          throw syn('Zwischen zwei Werten fehlt ein Komma, oder eine Klammer ) fehlt.');
+        }
+        p++;a={k:'call',f:a,args};
+      }else if(isOp('.')){
+        p++;const nm=T[p];if(!nm||nm.t!=='name')throw syn('Nach dem Punkt muss ein Name kommen.');p++;
+        a={k:'attr',e:a,name:nm.v};
+      }else break;
+    }
+    return a;
+  }
+  function atom(){
+    const t=T[p];
+    if(!t)throw syn('Die Zeile ist unvollständig. Fehlt hinten noch ein Wert?');
+    if(t.t==='int'||t.t==='float'||t.t==='str'){p++;return {k:'lit',v:{t:t.t,v:t.v}}}
+    if(t.t==='name'){
+      if(t.v==='True'){p++;return {k:'lit',v:TRUE}}
+      if(t.v==='False'){p++;return {k:'lit',v:FALSE}}
+      if(t.v==='None'){p++;return {k:'lit',v:NONE}}
+      if(RESERVED.has(t.v))throw syn(`«${t.v}» ist ein reserviertes Wort und kann hier nicht stehen.`);
+      p++;return {k:'name',v:t.v};
+    }
+    if(isOp('(')){p++;const v=orE();if(!isOp(')'))throw new PyErr('SyntaxError',"'(' was never closed",ln,'Da fehlt eine schliessende Klammer ).');p++;return v}
+    if(isOp(')'))throw new PyErr('SyntaxError',"unmatched ')'",ln,'Hier ist eine Klammer ) zu viel.');
+    if(isOp('='))throw new PyErr('SyntaxError',"invalid syntax. Maybe you meant '==' or ':=' instead of '='?",ln,'Für einen Vergleich brauchst du == (zwei Gleichheitszeichen).');
+    if(isOp(':'))throw syn('Hier steht ein Doppelpunkt, wo er nicht hingehört.');
+    throw syn('');
+  }
+  if(!T.length)throw syn('Hier fehlt ein Ausdruck.');
+  const e=orE();
+  if(p<T.length){
+    const t=T[p],prev=T[p-1];
+    if(t.t==='op'&&t.v===')')throw new PyErr('SyntaxError',"unmatched ')'",ln,'Hier ist eine Klammer ) zu viel.');
+    if(t.t==='op'&&t.v==='=')throw new PyErr('SyntaxError',"invalid syntax. Maybe you meant '==' or ':=' instead of '='?",ln,'Für einen Vergleich brauchst du == (zwei Gleichheitszeichen). Ein einzelnes = speichert einen Wert.');
+    if(t.t==='op'&&t.v===':')throw new PyErr('SyntaxError','invalid syntax',ln,'Ein Doppelpunkt steht nur am Ende von for-, while-, if-, elif- und else-Zeilen.');
+    if(prev&&prev.t==='name'&&(t.t==='int'||t.t==='float'||t.t==='name'||t.t==='str'))throw syn(`Befehle brauchen Klammern: ${prev.v}(${t.t==='name'?t.v:t.t==='str'?'"'+t.v+'"':str(t)}). Oder fehlt ein Rechen- oder Vergleichszeichen?`);
+    throw syn('Hier stimmt etwas mit der Schreibweise nicht. Prüfe Klammern, Kommas und Anführungszeichen.');
+  }
+  return e;
+}
+
+function stripComment(s){
+  let q=null;for(let i=0;i<s.length;i++){const c=s[i];
+    if(q){if(c==='\\'){i++;continue}if(c===q)q=null}
+    else if(c==='"'||c==="'")q=c;
+    else if(c==='#')return s.slice(0,i);
+  }return s;
+}
+function compile(src){
+  const L=[];
+  src.replace(/\r/g,'').split('\n').forEach((s,i)=>{
+    const c=stripComment(s);if(!c.trim())return;
+    const ind=/^[ \t]*/.exec(c)[0].replace(/\t/g,'    ').length;
+    L.push({ln:i+1,ind,text:c.trim()});
+  });
+  let i=0,loops=0;
+  const firstWord=t=>(/^[A-Za-z_]\w*/.exec(t)||[''])[0];
+  function block(ind){
+    const out=[];
+    while(i<L.length){
+      const l=L[i];
+      if(l.ind<ind)break;
+      if(l.ind>ind)throw new PyErr('IndentationError','unexpected indent',l.ln,'Diese Zeile ist weiter eingerückt als die Zeile davor. Eingerückt wird nur nach einer Zeile mit Doppelpunkt (for, while, if, elif, else).');
+      out.push(stmt(ind));
+    }
+    return out;
+  }
+  function body(headLn,kw,ind){
+    if(i>=L.length||L[i].ind<=ind)throw new PyErr('IndentationError',`expected an indented block after '${kw}' statement on line ${headLn}`,i<L.length?L[i].ln:headLn,`Nach der ${kw}-Zeile muss mindestens eine Zeile eingerückt folgen (4 Leerzeichen).`);
+    const bi=L[i].ind;const b=block(bi);
+    if(i<L.length&&L[i].ind>ind&&L[i].ind<bi)throw new PyErr('IndentationError','unindent does not match any outer indentation level',L[i].ln,'Diese Zeile ist nicht gleich weit eingerückt wie die anderen. Alle Zeilen eines Blocks brauchen genau gleich viele Leerzeichen.');
+    return b;
+  }
+  function header(l,kw){
+    let text=l.text;
+    if(!text.endsWith(':'))throw new PyErr('SyntaxError',"expected ':'",l.ln,`Am Ende der ${kw}-Zeile fehlt der Doppelpunkt :`);
+    const T=tokenize(text.slice(kw.length,-1),l.ln);
+    return T;
+  }
+  function cond(T,ln,kw){
+    let d=0;for(const t of T){if(t.t!=='op')continue;if(t.v==='(')d++;else if(t.v===')')d--;else if(d===0&&t.v==='=')throw new PyErr('SyntaxError',"invalid syntax. Maybe you meant '==' or ':=' instead of '='?",ln,'Für einen Vergleich brauchst du == (zwei Gleichheitszeichen). Ein einzelnes = ist eine Zuweisung.')}
+    if(!T.length)throw new PyErr('SyntaxError','invalid syntax',ln,`Nach ${kw} fehlt die Bedingung, z.B. ${kw} x > 3:`);
+    return parseExpr(T,ln);
+  }
+  function stmt(ind){
+    const l=L[i];const ln=l.ln;const text=l.text;const first=firstWord(text);
+    if(first==='if'){
+      i++;const br=[{cond:cond(header(l,'if'),ln,'if'),ln,body:body(ln,'if',ind)}];let orelse=null;
+      while(i<L.length&&L[i].ind===ind){
+        const l2=L[i];const f2=firstWord(l2.text);
+        if(f2==='elif'){i++;br.push({cond:cond(header(l2,'elif'),l2.ln,'elif'),ln:l2.ln,body:body(l2.ln,'elif',ind)})}
+        else if(f2==='else'){
+          if(!/^else\s*:$/.test(l2.text))throw new PyErr('SyntaxError',l2.text.endsWith(':')?'invalid syntax':"expected ':'",l2.ln,l2.text.endsWith(':')?'Nach else kommt keine Bedingung. Für eine weitere Bedingung nimm elif.':'Nach else fehlt der Doppelpunkt :');
+          i++;orelse=body(l2.ln,'else',ind);break;
+        }else break;
+      }
+      return {k:'if',br,orelse,ln};
+    }
+    if(first==='elif'||first==='else')throw new PyErr('SyntaxError','invalid syntax',ln,`«${first}» braucht direkt davor einen if-Block, gleich weit eingerückt.`);
+    if(first==='while'){i++;const c=cond(header(l,'while'),ln,'while');loops++;const b=body(ln,'while',ind);loops--;return {k:'while',cond:c,body:b,ln}}
+    if(first==='for'){
+      i++;const T=header(l,'for');
+      if(!T[0]||T[0].t!=='name'||!T[1]||T[1].t!=='name'||T[1].v!=='in'||T.length<3)throw new PyErr('SyntaxError','invalid syntax',ln,'So sieht eine for-Schleife aus: for i in range(4):');
+      const it=parseExpr(T.slice(2),ln);loops++;const b=body(ln,'for',ind);loops--;
+      return {k:'for',v:T[0].v,iter:it,body:b,ln};
+    }
+    if(first==='break'||first==='continue'||first==='pass'){
+      i++;if(text!==first)throw new PyErr('SyntaxError','invalid syntax',ln,`Nach ${first} kommt nichts mehr auf der Zeile.`);
+      if(first!=='pass'&&!loops)throw new PyErr('SyntaxError',`'${first}' outside loop`,ln,`${first} geht nur innerhalb einer for- oder while-Schleife.`);
+      return {k:first,ln};
+    }
+    if(first==='from'||first==='import'){
+      i++;
+      if(first==='from'){const m=/^from\s+(\w+)\s+import\s+(.+)$/.exec(text);if(!m)throw new PyErr('SyntaxError','invalid syntax',ln,'So importiert man: from turtle import *');return {k:'import',mod:m[1],what:m[2].trim(),ln}}
+      const m=/^import\s+(\w+)$/.exec(text);return {k:'import',mod:m?m[1]:text.slice(7),what:null,ln};
+    }
+    if(['def','class','return','try','except','with','lambda','repeat'].includes(first))throw new PyErr('Hinweis',`«${first}» kann dieser Editor noch nicht`,ln,'Funktionen und ähnliches kommen erst in späteren Kapiteln. Probier das in Thonny aus.');
+    if(text.endsWith(':'))throw new PyErr('SyntaxError','invalid syntax',ln,'Ein Doppelpunkt am Zeilenende gehört nur zu for, while, if, elif oder else. Prüfe die Schreibweise des ersten Worts.');
+    i++;
+    const T=tokenize(text,ln);
+    let d=0,ai=-1;
+    for(let k=0;k<T.length;k++){const t=T[k];if(t.t!=='op')continue;if(t.v==='(')d++;else if(t.v===')')d--;else if(d===0&&['=','+=','-=','*=','/='].includes(t.v)){ai=k;break}}
+    if(ai>=0){
+      if(ai!==1||T[0].t!=='name')throw new PyErr('SyntaxError',"cannot assign to expression here. Maybe you meant '==' instead of '='?",ln,'Links vom = darf nur <b>ein Variablenname</b> stehen. Zum Vergleichen nimmst du == in einer if-Zeile.');
+      const name=T[0].v;
+      if(RESERVED.has(name)||['True','False','None'].includes(name))throw new PyErr('SyntaxError','cannot assign to keyword',ln,`«${name}» ist ein reserviertes Wort und kein erlaubter Variablenname.`);
+      const rhs=T.slice(2);if(!rhs.length)throw new PyErr('SyntaxError','invalid syntax',ln,'Rechts vom = fehlt der Wert.');
+      return {k:'assign',name,op:T[1].v,e:parseExpr(rhs,ln),ln};
+    }
+    return {k:'expr',e:parseExpr(T,ln),ln,bare:T.length===1&&T[0].t==='name'?T[0].v:null};
+  }
+  return block(0);
+}
+
+/* ---- Turtle-Welt ---- */
+const VIEW_W=800,VIEW_H=600;
+const SHAPES={
+  classic:[[0,0],[-5,-9],[0,-7],[5,-9]],
+  arrow:[[-10,0],[10,0],[0,10]],
+  turtle:[[0,16],[-2,14],[-1,10],[-4,7],[-7,9],[-9,8],[-6,5],[-7,1],[-5,-3],[-8,-6],[-6,-8],[-4,-5],[0,-7],[4,-5],[6,-8],[8,-6],[5,-3],[7,1],[6,5],[9,8],[7,9],[4,7],[1,10],[2,14]],
+  square:[[10,-10],[10,10],[-10,10],[-10,-10]],
+  triangle:[[10,-5.77],[0,11.55],[-10,-5.77]],
+  circle:null
+};
+function defState(){return {x:0,y:0,h:0,pen:true,pc:'black',fc:'black',w:1,size:1,shape:'classic',vis:true,filling:false,fpts:null,fstart:0,speed:6}}
+function snap(st){return {x:st.x,y:st.y,h:st.h,pc:st.pc,fc:st.fc,size:st.size,shape:st.shape,vis:st.vis}}
+function cssColor(s){
+  if(typeof CSS!=='undefined'&&CSS.supports)return CSS.supports('color',s)&&!/^(inherit|initial|unset|revert|currentcolor|transparent)$/i.test(s.trim());
+  return true;
+}
+const DE_COLORS={rot:'red',blau:'blue',gruen:'green','grün':'green',gelb:'yellow',schwarz:'black',weiss:'white','weiß':'white',orange:'orange',grau:'gray',braun:'brown',rosa:'pink',violett:'purple',lila:'purple'};
+let CUR=null;
+function makeTurtleLib(){
+  const L={};
+  const W=()=>CUR.w;
+  function push(op){
+    const w=W();
+    if(w.ops.length>250000)throw new PyErr('RuntimeError','zu viele Zeichenschritte',CUR.ln,'Das Programm zeichnet extrem viel. Mach die Zahlen kleiner oder prüfe deine Schleifen.');
+    op.sp=w.st.speed;op.s=snap(w.st);w.ops.push(op);
+  }
+  function needNum(v,fn){
+    if(isNum(v))return toN(v);
+    throw new PyErr('TypeError',`${fn}() argument must be a number, not '${tname(v)}'`,CUR.ln,
+      v.t==='str'?`${fn}() braucht eine Zahl. Kommt der Wert von input()? Dann mit int(...) umwandeln. Oder lass die Anführungszeichen weg.`:`${fn}() braucht eine Zahl.`);
+  }
+  function needColor(v){
+    if(v.t!=='str')throw new PyErr('TurtleGraphicsError',`bad color arguments: ${str(v)}`,CUR.ln,'Farben sind Text und brauchen Anführungszeichen: color("red").');
+    const s=v.v.trim();
+    if(!cssColor(s.replace(/\s+/g,''))){
+      const de=DE_COLORS[s.toLowerCase()];
+      throw new PyErr('TurtleGraphicsError',`bad color string: ${s}`,CUR.ln,de?`Farbnamen sind englisch: "${de}" statt "${s}".`:'Diese Farbe kennt Python nicht. Probier englische Namen wie "red", "blue", "green", "orange".');
+    }
+    return s.replace(/\s+/g,'');
+  }
+  function rgb(args,fn){
+    const [r,g,b]=args.map(a=>needNum(a,fn));
+    if([r,g,b].some(x=>x<0||x>1))throw new PyErr('TurtleGraphicsError',`bad color sequence: (${r}, ${g}, ${b})`,CUR.ln,'Bei drei Zahlen muss jede zwischen 0 und 1 liegen, z.B. color(1, 0.5, 0).');
+    return `rgb(${Math.round(r*255)},${Math.round(g*255)},${Math.round(b*255)})`;
+  }
+  function moveTo(nx,ny){
+    const st=W().st;
+    push({k:'move',x1:st.x,y1:st.y,x2:nx,y2:ny,pen:st.pen,c:st.pc,w:st.w});
+    st.x=nx;st.y=ny;
+    W().ops[W().ops.length-1].s=snap(st);
+    if(st.filling)st.fpts.push([nx,ny]);
+  }
+  function fwd(d){const st=W().st;const r=st.h*Math.PI/180;moveTo(st.x+d*Math.cos(r),st.y+d*Math.sin(r))}
+  function turn(a){const st=W().st;const h0=st.h;st.h=st.h+a;push({k:'turn',h0:h0,h1:st.h})}
+  function setH(a){const st=W().st;let d=((a-st.h)%360+540)%360-180;turn(d)}
+  function def(names,params,req,fn){for(const n of names)L[n]={name:n,params,req,f:fn}}
+  def(['forward','fd'],['distance'],1,a=>{fwd(needNum(a[0],'forward'))});
+  def(['backward','back','bk'],['distance'],1,a=>{fwd(-needNum(a[0],'backward'))});
+  def(['left','lt'],['angle'],1,a=>{turn(needNum(a[0],'left'))});
+  def(['right','rt'],['angle'],1,a=>{turn(-needNum(a[0],'right'))});
+  def(['home'],[],0,()=>{moveTo(0,0);setH(0)});
+  def(['goto','setpos','setposition'],['x','y'],2,a=>{moveTo(needNum(a[0],'goto'),needNum(a[1],'goto'))});
+  def(['setx'],['x'],1,a=>{moveTo(needNum(a[0],'setx'),W().st.y)});
+  def(['sety'],['y'],1,a=>{moveTo(W().st.x,needNum(a[0],'sety'))});
+  def(['setheading','seth'],['to_angle'],1,a=>{setH(needNum(a[0],'setheading'))});
+  def(['circle'],['radius','extent'],1,a=>{
+    const radius=needNum(a[0],'circle');const extent=a.length>1?needNum(a[1],'circle'):360;
+    const frac=Math.abs(extent)/360;const steps=1+Math.floor(Math.min(11+Math.abs(radius)/6,59)*frac);
+    let w=extent/steps,w2=w/2,l=2*radius*Math.sin(w*Math.PI/360);
+    if(radius<0){l=-l;w=-w;w2=-w2}
+    turn(w2);for(let i=0;i<steps;i++){fwd(l);turn(w)}turn(-w2);
+  });
+  def(['dot'],['size','color'],0,a=>{
+    const st=W().st;const size=a.length?needNum(a[0],'dot'):Math.max(st.w+4,st.w*2);
+    const c=a.length>1?needColor(a[1]):st.pc;
+    push({k:'dot',x:st.x,y:st.y,r:size/2,c});
+  });
+  def(['color'],['color1','color2','color3'],0,a=>{
+    const st=W().st;
+    if(a.length===0)return S(st.pc);
+    if(a.length===3&&a.every(isNum)){const c=rgb(a,'color');st.pc=st.fc=c}
+    else if(a.length===1){const c=needColor(a[0]);st.pc=st.fc=c}
+    else if(a.length===2){st.pc=needColor(a[0]);st.fc=needColor(a[1])}
+    else throw new PyErr('TypeError','color() takes 1, 2 or 3 arguments',CUR.ln);
+    push({k:'state'});
+  });
+  def(['pencolor'],['color','g','b'],0,a=>{const st=W().st;if(!a.length)return S(st.pc);st.pc=a.length===3?rgb(a,'pencolor'):needColor(a[0]);push({k:'state'})});
+  def(['fillcolor'],['color','g','b'],0,a=>{const st=W().st;if(!a.length)return S(st.fc);st.fc=a.length===3?rgb(a,'fillcolor'):needColor(a[0]);push({k:'state'})});
+  def(['bgcolor'],['color','g','b'],1,a=>{const c=a.length===3?rgb(a,'bgcolor'):needColor(a[0]);push({k:'bg',c})});
+  def(['width','pensize'],['width'],0,a=>{const st=W().st;if(!a.length)return F(st.w);const w=needNum(a[0],'width');if(w<0)throw new PyErr('ValueError','width must be positive',CUR.ln);st.w=w;push({k:'state'})});
+  def(['turtlesize','shapesize'],['stretch'],0,a=>{const st=W().st;if(!a.length)return F(st.size);st.size=Math.max(0.1,needNum(a[0],'turtlesize'));push({k:'state'})});
+  def(['shape'],['name'],0,a=>{
+    const st=W().st;if(!a.length)return S(st.shape);
+    const v=a[0];if(v.t!=='str')throw new PyErr('TypeError','shape name must be a string',CUR.ln,'Der Formname braucht Anführungszeichen: shape("turtle").');
+    if(!(v.v in SHAPES))throw new PyErr('TurtleGraphicsError',`There is no shape named ${v.v}`,CUR.ln,'Erlaubt sind: "turtle", "arrow", "circle", "square", "triangle", "classic".');
+    st.shape=v.v;push({k:'state'});
+  });
+  def(['speed'],['speed'],0,a=>{const st=W().st;if(!a.length)return I(st.speed);let s=Math.round(needNum(a[0],'speed'));if(s>10||s<0.5)s=0;st.speed=s});
+  def(['begin_fill'],[],0,()=>{const st=W().st;st.filling=true;st.fpts=[[st.x,st.y]];st.fstart=W().ops.length});
+  def(['end_fill'],[],0,()=>{const st=W().st;if(st.filling&&st.fpts.length>2)push({k:'fill',pts:st.fpts.slice(),c:st.fc,from:st.fstart,to:W().ops.length});st.filling=false;st.fpts=null});
+  def(['penup','pu','up'],[],0,()=>{W().st.pen=false});
+  def(['pendown','pd','down'],[],0,()=>{W().st.pen=true});
+  def(['hideturtle','ht'],[],0,()=>{W().st.vis=false;push({k:'state'})});
+  def(['showturtle','st'],[],0,()=>{W().st.vis=true;push({k:'state'})});
+  def(['reset'],[],0,()=>{const w=W();const keep={shape:w.st.shape,speed:w.st.speed};w.st=defState();w.st.shape=keep.shape;w.st.speed=keep.speed;push({k:'reset'})});
+  def(['clear'],[],0,()=>{push({k:'clear'})});
+  def(['write'],['arg'],1,a=>{const st=W().st;push({k:'text',x:st.x,y:st.y,c:st.pc,txt:str(a[0])})});
+  def(['xcor'],[],0,()=>F(W().st.x));
+  def(['ycor'],[],0,()=>F(W().st.y));
+  def(['heading'],[],0,()=>F(((W().st.h%360)+360)%360));
+  def(['isdown'],[],0,()=>B(W().st.pen));
+  def(['window_width'],[],0,()=>I(VIEW_W));
+  def(['window_height'],[],0,()=>I(VIEW_H));
+  def(['numinput'],['title','prompt','default','minval','maxval'],2,a=>{
+    const w=W();
+    if(w.ip<w.inputs.length){const raw=w.inputs[w.ip++];w.out.push({t:'num',title:str(a[0]),p:str(a[1]),v:raw});return F(Number(raw))}
+    throw new NeedInput('num',str(a[0]),str(a[1]));
+  });
+  def(['textinput'],['title','prompt'],2,a=>{
+    const w=W();
+    if(w.ip<w.inputs.length){const raw=w.inputs[w.ip++];w.out.push({t:'txt',title:str(a[0]),p:str(a[1]),v:raw});return S(raw)}
+    throw new NeedInput('text',str(a[0]),str(a[1]));
+  });
+  for(const n of ['exitonclick','done','mainloop','bye','tracer','update','title','colormode','setup','delay','listen'])def([n],['a','b','c','d'],0,()=>{});
+  def(['addshape','register_shape'],['name'],1,()=>{throw new PyErr('TurtleGraphicsError','eigene Formen gehen nur in Thonny',CUR.ln,'GIF-Bilder kann dieser Browser-Editor nicht laden.')});
+  return L;
+}
+const TURTLE=makeTurtleLib();
+function rangeArg(v){
+  if(v.t==='int'||v.t==='bool')return toN(v);
+  throw new PyErr('TypeError',`'${tname(v)}' object cannot be interpreted as an integer`,CUR.ln,
+    v.t==='float'?'range() braucht eine ganze Zahl. numinput() und / liefern Kommazahlen. Pack den Wert in int(...), z.B. range(int(ecken)).':v.t==='str'?'range() braucht eine Zahl, keinen Text.'+INPUT_HINT:'range() braucht eine ganze Zahl.');
+}
+const BUILTIN={
+  print:{name:'print',params:null,req:0,f:a=>{CUR.w.out.push(a.map(str).join(' '));return NONE}},
+  input:{name:'input',params:['prompt'],req:0,f:a=>{
+    const w=CUR.w;const pr=a.length?str(a[0]):'';
+    if(w.ip<w.inputs.length){const v=w.inputs[w.ip++];w.out.push({t:'in',p:pr,v});return S(v)}
+    throw new NeedInput('in','',pr);
+  }},
+  range:{name:'range',params:['start','stop','step'],req:1,f:a=>{
+    const n=a.map(rangeArg);let r;
+    if(n.length===1)r={t:'range',a:0,b:n[0],s:1};else r={t:'range',a:n[0],b:n[1],s:n.length>2?n[2]:1};
+    if(r.s===0)throw new PyErr('ValueError','range() arg 3 must not be zero',CUR.ln);
+    return r;
+  }},
+  int:{name:'int',params:['x'],req:0,f:a=>{
+    if(!a.length)return I(0);const v=a[0];
+    if(v.t==='int')return v;if(v.t==='bool')return I(v.v?1:0);if(v.t==='float')return I(Math.trunc(v.v));
+    if(v.t==='str'&&/^\s*[+-]?\d+\s*$/.test(v.v))return I(v.v.trim());
+    throw new PyErr('ValueError',`invalid literal for int() with base 10: ${repr(v)}`,CUR.ln,'int() kann nur Text umwandeln, der eine ganze Zahl ist, z.B. "15". Wurde etwas anderes eingetippt?');
+  }},
+  float:{name:'float',params:['x'],req:0,f:a=>{
+    if(!a.length)return F(0);const v=a[0];if(isNum(v))return F(toN(v));
+    if(v.t==='str'&&v.v.trim()!==''&&!isNaN(Number(v.v)))return F(Number(v.v));
+    throw new PyErr('ValueError',`could not convert string to float: ${repr(v)}`,CUR.ln);
+  }},
+  str:{name:'str',params:['x'],req:0,f:a=>S(a.length?str(a[0]):'')},
+  bool:{name:'bool',params:['x'],req:0,f:a=>B(a.length?truthy(a[0]):false)},
+  abs:{name:'abs',params:['x'],req:1,f:a=>{const v=asInt(a[0]);if(v.t==='int')return {t:'int',v:v.v<0n?-v.v:v.v};if(v.t==='float')return F(Math.abs(v.v));throw new PyErr('TypeError',`bad operand type for abs(): '${tname(v)}'`,CUR.ln)}},
+  round:{name:'round',params:['number','ndigits'],req:1,f:a=>{const x=toN(a[0]);if(a.length<2){const r=Math.round(x);const half=Math.abs(x%1)===0.5;return I(half&&r%2!==0?r-1:r)}const k=Math.pow(10,toN(a[1]));return F(Math.round(x*k)/k)}},
+  min:{name:'min',params:null,req:1,f:a=>a.reduce((m,v)=>toN(v)<toN(m)?v:m)},
+  max:{name:'max',params:null,req:1,f:a=>a.reduce((m,v)=>toN(v)>toN(m)?v:m)},
+  len:{name:'len',params:['obj'],req:1,f:a=>{if(a[0].t==='str')return I([...a[0].v].length);if(a[0].t==='range')return I(rangeLen(a[0]));throw new PyErr('TypeError',`object of type '${tname(a[0])}' has no len()`,CUR.ln)}},
+  type:{name:'type',params:['obj'],req:1,f:a=>S("<class '"+tname(a[0])+"'>")}
+};
+function lev(a,b){const m=a.length,n=b.length;const d=Array.from({length:m+1},(_,i)=>[i]);for(let j=1;j<=n;j++)d[0][j]=j;
+  for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));return d[m][n]}
+function nameHint(name,ctx){
+  if(TURTLE[name]&&!ctx.star&&!ctx.from.has(name))return 'Das ist ein Turtle-Befehl. Steht ganz oben <code>from turtle import *</code>?';
+  const de=DE_COLORS[name.toLowerCase()];
+  if(de)return `Farben sind Text auf Englisch und brauchen Anführungszeichen: <code>color("${de}")</code>.`;
+  if(name==='true'||name==='false')return 'In Python schreibt man True und False gross.';
+  const cands=[...ctx.vars.keys(),...(ctx.star?Object.keys(TURTLE):[...ctx.from]),...Object.keys(BUILTIN)];
+  const low=cands.find(c=>c.toLowerCase()===name.toLowerCase());
+  if(low)return `Python unterscheidet Gross- und Kleinschreibung. Meintest du <code>${low}</code>?`;
+  let best=null,bd=3;for(const c of cands){const d=lev(name,c);if(d<bd){bd=d;best=c}}
+  if(best&&bd<=2)return `Tippfehler? Meintest du <code>${best}</code>?`;
+  if(cssColor(name))return `Ist das ein Text? Dann braucht er Anführungszeichen: <code>"${name}"</code>.`;
+  return 'Diese Variable gibt es (noch) nicht. Eine Variable muss zuerst mit = einen Wert bekommen. Ist es ein Text? Dann gehört er in Anführungszeichen.';
+}
+function lookup(name,ln,ctx){
+  if(ctx.vars.has(name))return ctx.vars.get(name);
+  if(BUILTIN[name])return {t:'fn',name,spec:BUILTIN[name]};
+  if((ctx.star||ctx.from.has(name))&&TURTLE[name])return {t:'fn',name,spec:TURTLE[name]};
+  if(name==='turtle'&&ctx.mod)return {t:'mod',name:'turtle'};
+  throw new PyErr('NameError',`name '${name}' is not defined`,ln,nameHint(name,ctx));
+}
+function attr(a,name,ln){
+  if(a.t==='mod'&&TURTLE[name])return {t:'fn',name,spec:TURTLE[name]};
+  if(a.t==='mod')throw new PyErr('AttributeError',`module '${a.name}' has no attribute '${name}'`,ln,'Diesen Befehl gibt es im Modul nicht.');
+  throw new PyErr('AttributeError',`'${tname(a)}' object has no attribute '${name}'`,ln);
+}
+function call(fv,args,ln){
+  if(fv.t!=='fn')throw new PyErr('TypeError',`'${tname(fv)}' object is not callable`,ln,
+    isNum(fv)?'Du rufst eine Zahl wie einen Befehl auf. Hast du eine Variable gleich benannt wie einen Befehl, oder fehlt ein Rechenzeichen vor der Klammer?':'');
+  const sp=fv.spec;
+  if(sp.params){
+    if(args.length<sp.req){const miss=sp.params.slice(args.length,sp.req);
+      throw new PyErr('TypeError',`${fv.name}() missing ${miss.length} required positional argument${miss.length>1?'s':''}: ${miss.map(m=>"'"+m+"'").join(' and ')}`,ln,
+        `In die Klammer gehört noch ${miss.length>1?'mehr':'ein Wert'}, z.B. ${fv.name}(${fv.name==='numinput'?'"Titel", "Frage"':fv.name==='goto'?'100, 50':fv.name==='range'?'4':'100'}).`)}
+    if(args.length>sp.params.length)throw new PyErr('TypeError',`${fv.name}() takes ${sp.params.length===0?'no arguments':sp.params.length+' positional argument'+(sp.params.length>1?'s':'')} but ${args.length} ${args.length>1?'were':'was'} given`,ln,
+      sp.params.length===0?`${fv.name}() braucht nichts in der Klammer: ${fv.name}()`:'Da sind zu viele Werte in der Klammer.');
+  }else if(args.length<sp.req)throw new PyErr('TypeError',`${fv.name}() expected at least ${sp.req} argument`,ln);
+  return sp.f(args,ln)||NONE;
+}
+function ev(n,ctx){
+  switch(n.k){
+    case 'lit':return n.v;
+    case 'name':return lookup(n.v,CUR.ln,ctx);
+    case 'bin':return binop(n.op,ev(n.l,ctx),ev(n.r,ctx),CUR.ln);
+    case 'neg':return neg(ev(n.e,ctx),CUR.ln);
+    case 'not':return B(!truthy(ev(n.e,ctx)));
+    case 'and':{const l=ev(n.l,ctx);return truthy(l)?ev(n.r,ctx):l}
+    case 'or':{const l=ev(n.l,ctx);return truthy(l)?l:ev(n.r,ctx)}
+    case 'cmp':{let a=ev(n.items[0],ctx);for(let i=0;i<n.ops.length;i++){const b=ev(n.items[i+1],ctx);if(!compare(n.ops[i],a,b,CUR.ln))return FALSE;a=b}return TRUE}
+    case 'call':{const f=ev(n.f,ctx);const args=n.args.map(x=>ev(x,ctx));return call(f,args,CUR.ln)}
+    case 'attr':return attr(ev(n.e,ctx),n.name,CUR.ln);
+  }
+  throw new PyErr('SyntaxError','invalid syntax',CUR.ln);
+}
+let STEPS=0;
+const MAX_STEPS=400000;
+function tick(ln){CUR.ln=ln;if(++STEPS>MAX_STEPS)throw new PyErr('Endlosschleife','das Programm hört nicht mehr auf',ln,'Die Schleife läuft ohne Ende. Ändert sich die Bedingung der while-Schleife überhaupt? Oft fehlt eine Zeile wie zahl = zahl + 1.')}
+function* iterOf(v,ln){
+  if(v.t==='range'){if(v.s>0){for(let x=v.a;x<v.b;x+=v.s)yield I(x)}else{for(let x=v.a;x>v.b;x+=v.s)yield I(x)}return}
+  if(v.t==='str'){for(const ch of v.v)yield S(ch);return}
+  throw new PyErr('TypeError',`'${tname(v)}' object is not iterable`,ln,'Für eine Zählschleife brauchst du range(), z.B. for i in range(5):');
+}
+function execBlock(st,ctx){for(const s of st)execStmt(s,ctx)}
+function execStmt(s,ctx){
+  tick(s.ln);
+  switch(s.k){
+    case 'expr':{const v=ev(s.e,ctx);if(s.bare&&v.t==='fn')ctx.w.warn.push({ln:s.ln,msg:`«${s.bare}» ohne Klammern macht nichts. Meintest du ${s.bare}()?`});return}
+    case 'assign':{let v=ev(s.e,ctx);if(s.op!=='='){const cur=lookup(s.name,s.ln,ctx);v=binop(s.op[0],cur,v,s.ln)}ctx.vars.set(s.name,v);return}
+    case 'import':{
+      if(s.mod==='turtle'){
+        if(s.what===null)ctx.mod=true;
+        else if(s.what==='*')ctx.star=true;
+        else for(const n of s.what.split(',').map(x=>x.trim())){if(!TURTLE[n])throw new PyErr('ImportError',`cannot import name '${n}' from 'turtle'`,s.ln,'Diesen Befehl gibt es im Turtle-Modul nicht.');ctx.from.add(n)}
+        return;
+      }
+      if(/^turt/i.test(s.mod))throw new PyErr('ModuleNotFoundError',`No module named '${s.mod}'`,s.ln,'Das Modul heisst <code>turtle</code>, klein geschrieben.');
+      throw new PyErr('ModuleNotFoundError',`No module named '${s.mod}'`,s.ln,'Dieser Editor kennt nur das Modul turtle.');
+    }
+    case 'if':{for(const b of s.br){CUR.ln=b.ln;if(truthy(ev(b.cond,ctx))){execBlock(b.body,ctx);return}}if(s.orelse)execBlock(s.orelse,ctx);return}
+    case 'while':{
+      for(;;){
+        CUR.ln=s.ln;if(!truthy(ev(s.cond,ctx)))break;
+        try{execBlock(s.body,ctx)}catch(e){if(e===BRK)break;if(e!==CNT)throw e}
+        tick(s.ln);
+      }
+      return;
+    }
+    case 'for':{
+      CUR.ln=s.ln;const seq=iterOf(ev(s.iter,ctx),s.ln);
+      for(const v of seq){
+        ctx.vars.set(s.v,v);
+        try{execBlock(s.body,ctx)}catch(e){if(e===BRK)break;if(e!==CNT)throw e}
+        tick(s.ln);
+      }
+      return;
+    }
+    case 'break':throw BRK;
+    case 'continue':throw CNT;
+    case 'pass':return;
+  }
+}
+function newCtx(inputs){
+  const w={ops:[],st:defState(),out:[],warn:[],inputs:inputs||[],ip:0};
+  return {vars:new Map(),star:false,mod:false,from:new Set(),w};
+}
+function runProgram(src,inputs){
+  const ctx=newCtx(inputs);CUR={w:ctx.w,ln:0};STEPS=0;
+  const lines=src.replace(/\r/g,'').split('\n');
+  let err=null,need=null;
+  try{execBlock(compile(src),ctx)}
+  catch(e){
+    if(e instanceof NeedInput)need=e;
+    else err=e instanceof PyErr?e:new PyErr('RuntimeError',String(e&&e.message||e),CUR.ln,'');
+  }
+  return {w:ctx.w,err,need,lines};
+}
+function evalCond(src){
+  const ctx=newCtx([]);CUR={w:ctx.w,ln:1};
+  return truthy(ev(parseExpr(tokenize(src,1),1),ctx));
+}
+
+/* ============ Zeichnen ============ */
+function setupCanvas(cv){
+  const dpr=Math.min(window.devicePixelRatio||1,2);
+  const w=Math.max(200,Math.round(cv.clientWidth*dpr));
+  const h=Math.round(w*3/4);
+  if(cv.width!==w||cv.height!==h){cv.width=w;cv.height=h}
+  return {s:w/VIEW_W,w,h};
+}
+function drawGrid(ctx,s,w,h){
+  ctx.save();ctx.setTransform(1,0,0,1,0,0);ctx.lineWidth=1;
+  for(let x=-400;x<=400;x+=50){const px=Math.round(w/2+x*s)+.5;ctx.strokeStyle=x===0?'rgba(164,80,15,.35)':(x%100===0?'rgba(30,26,22,.10)':'rgba(30,26,22,.05)');ctx.beginPath();ctx.moveTo(px,0);ctx.lineTo(px,h);ctx.stroke()}
+  for(let y=-300;y<=300;y+=50){const py=Math.round(h/2-y*s)+.5;ctx.strokeStyle=y===0?'rgba(164,80,15,.35)':(y%100===0?'rgba(30,26,22,.10)':'rgba(30,26,22,.05)');ctx.beginPath();ctx.moveTo(0,py);ctx.lineTo(w,py);ctx.stroke()}
+  ctx.fillStyle='rgba(30,26,22,.4)';ctx.font=`${Math.max(9,Math.round(12*s))}px JetBrains Mono, monospace`;
+  for(let x=-300;x<=300;x+=100){if(x)ctx.fillText(String(x),w/2+x*s+3,h/2-3)}
+  for(let y=-200;y<=200;y+=100){if(y)ctx.fillText(String(y),w/2+3,h/2-y*s-3)}
+  ctx.restore();
+}
+function drawTurtle(ctx,st){
+  if(!st.vis)return;
+  const k=st.size*1.1;
+  ctx.save();ctx.translate(st.x,st.y);ctx.rotate((st.h-90)*Math.PI/180);ctx.scale(k,k);
+  ctx.fillStyle=st.fc;ctx.strokeStyle=st.pc;ctx.lineWidth=1/k*1.2;ctx.lineJoin='round';
+  ctx.beginPath();
+  if(st.shape==='circle')ctx.arc(0,0,10,0,Math.PI*2);
+  else{const pts=SHAPES[st.shape]||SHAPES.classic;pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.closePath()}
+  ctx.fill();ctx.stroke();ctx.restore();
+}
+function render(cv,ops,upto,frac,opts){
+  opts=opts||{};
+  const ctx=cv.getContext('2d');const {s,w,h}=setupCanvas(cv);
+  const last=Math.min(upto,ops.length-1);
+  let bg='#ffffff',start=0;
+  for(let i=0;i<=last;i++){const o=ops[i];if(o.k==='bg')bg=o.c;if(o.k==='reset'||o.k==='clear')start=i+1}
+  ctx.setTransform(1,0,0,1,0,0);ctx.fillStyle=bg;ctx.fillRect(0,0,w,h);
+  if(opts.grid)drawGrid(ctx,s,w,h);
+  ctx.setTransform(s,0,0,-s,w/2,h/2);
+  ctx.lineCap='round';ctx.lineJoin='round';
+  const line=(o,t)=>{if(!o.pen||o.w<=0)return;ctx.strokeStyle=o.c;ctx.lineWidth=Math.max(o.w,1/s);ctx.beginPath();ctx.moveTo(o.x1,o.y1);ctx.lineTo(o.x1+(o.x2-o.x1)*t,o.y1+(o.y2-o.y1)*t);ctx.stroke()};
+  for(let i=start;i<=last;i++){
+    const o=ops[i];const t=(i===upto)?frac:1;
+    if(o.k==='move')line(o,t);
+    else if(o.k==='fill'){
+      ctx.fillStyle=o.c;ctx.beginPath();o.pts.forEach((p,j)=>j?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.closePath();ctx.fill('evenodd');
+      for(let j=Math.max(o.from,start);j<o.to;j++)if(ops[j].k==='move')line(ops[j],1);
+    }
+    else if(o.k==='dot'){ctx.fillStyle=o.c;ctx.beginPath();ctx.arc(o.x,o.y,Math.max(o.r,.5),0,Math.PI*2);ctx.fill()}
+    else if(o.k==='text'){ctx.save();ctx.setTransform(1,0,0,1,0,0);ctx.fillStyle=o.c;ctx.font=`${Math.round(18*s)}px Atkinson Hyperlegible, sans-serif`;ctx.fillText(o.txt,w/2+o.x*s,h/2-o.y*s);ctx.restore()}
+  }
+  let st;
+  if(upto<ops.length){
+    const o=ops[upto];const prev=upto>0?ops[upto-1].s:defState();
+    if(o.k==='move')st=Object.assign({},o.s,{x:o.x1+(o.x2-o.x1)*frac,y:o.y1+(o.y2-o.y1)*frac});
+    else if(o.k==='turn')st=Object.assign({},o.s,{h:o.h0+(o.h1-o.h0)*frac});
+    else st=frac>=1?o.s:prev;
+  }else st=ops.length?ops[ops.length-1].s:defState();
+  if(!opts.noTurtle)drawTurtle(ctx,st);
+}
+const PXF=[Infinity,2.2,3.5,5,7,9,12,16,21,28,38];
+function cost(o){if(o.k==='move')return Math.hypot(o.x2-o.x1,o.y2-o.y1);if(o.k==='turn')return Math.abs(o.h1-o.h0)*0.5;return 0}
+function Animator(cv,opts){
+  let ops=[],i=0,f=0,raf=0,onDone=null,instant=false;
+  function frame(){
+    let time=1;
+    while(i<ops.length&&time>0){
+      const o=ops[i];const c=cost(o);const per=instant?Infinity:(PXF[o.sp]??12);
+      if(c===0||per===Infinity){i++;f=0;continue}
+      const need=(c*(1-f))/per;
+      if(need<=time){time-=need;i++;f=0}else{f+=time*per/c;time=0}
+    }
+    render(cv,ops,i,f,opts());
+    if(i<ops.length)raf=requestAnimationFrame(frame);else{raf=0;const d=onDone;onDone=null;d&&d()}
+  }
+  return {
+    play(o,inst,done,from){cancelAnimationFrame(raf);ops=o;i=Math.min(from||0,o.length);f=0;instant=inst;onDone=done;raf=requestAnimationFrame(frame)},
+    finish(){if(raf){cancelAnimationFrame(raf);raf=0;i=ops.length;f=0;render(cv,ops,i,0,opts());const d=onDone;onDone=null;d&&d()}},
+    redraw(){render(cv,ops,i,f,opts())}
+  };
+}
+
+/* ============ Syntax-Farben ============ */
+const KW=new Set(['for','while','if','elif','else','in','not','and','or','True','False','None','break','continue','pass','from','import','def','return']);
+const ALLNAMES=new Set([...Object.keys(TURTLE),...Object.keys(BUILTIN)]);
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function highlight(src){
+  return src.split('\n').map(line=>{
+    let out='',i=0;
+    while(i<line.length){
+      const r=line.slice(i);let m;
+      if(r[0]==='#'){out+=`<span class="tk-com">${esc(r)}</span>`;break}
+      if(r[0]==='"'||r[0]==="'"){const q=r[0];let j=1;while(j<r.length&&r[j]!==q){if(r[j]==='\\')j++;j++}const s=r.slice(0,j+1);out+=`<span class="tk-str">${esc(s)}</span>`;i+=s.length;continue}
+      if((m=/^\d+(\.\d*)?/.exec(r))){out+=`<span class="tk-num">${m[0]}</span>`;i+=m[0].length;continue}
+      if((m=/^[A-Za-z_]\w*/.exec(r))){const w=m[0];out+=KW.has(w)?`<span class="tk-kw">${w}</span>`:ALLNAMES.has(w)?`<span class="tk-fn">${w}</span>`:esc(w);i+=w.length;continue}
+      out+=esc(r[0]);i++;
+    }
+    return out;
+  }).join('\n')+'\n';
+}
+const hlInline=s=>highlight(s).replace(/\n$/,'');
+
+/* ============ Labor ============ */
+const $=id=>document.getElementById(id);
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+const ta=$('code'),hl=$('hl'),gut=$('gutter'),outEl=$('out'),labCv=$('labCanvas');
+let gridOn=true,errLine=null,task=TASKS[0],beforeSol=null,inputs=[],drawnUpTo=0;
+const labAnim=Animator(labCv,()=>({grid:gridOn}));
+function syncEditor(){
+  hl.innerHTML=highlight(ta.value);
+  const n=ta.value.split('\n').length;let g='';
+  for(let i=1;i<=n;i++)g+=(i===errLine?`<span class="bad">${i}</span>`:i)+'\n';
+  gut.innerHTML=g;
+  hl.scrollTop=ta.scrollTop;hl.scrollLeft=ta.scrollLeft;gut.scrollTop=ta.scrollTop;
+}
+ta.addEventListener('input',()=>{errLine=null;syncEditor();store.set('k3-'+task.id,ta.value)});
+ta.addEventListener('scroll',()=>{hl.scrollTop=ta.scrollTop;hl.scrollLeft=ta.scrollLeft;gut.scrollTop=ta.scrollTop});
+ta.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();runLab(true);return}
+  if(e.key==='Tab'&&!e.shiftKey){e.preventDefault();ta.setRangeText('    ',ta.selectionStart,ta.selectionEnd,'end');ta.dispatchEvent(new Event('input'));return}
+  if(e.key==='Enter'&&!e.shiftKey&&!e.altKey){
+    // Einrückung wie in Thonny übernehmen, nach Doppelpunkt 4 mehr
+    const s=ta.selectionStart;const before=ta.value.slice(0,s);const lineStart=before.lastIndexOf('\n')+1;const cur=before.slice(lineStart);
+    let ind=/^ */.exec(cur)[0];if(/:\s*(#.*)?$/.test(cur))ind+='    ';
+    e.preventDefault();ta.setRangeText('\n'+ind,s,ta.selectionEnd,'end');ta.dispatchEvent(new Event('input'));
+  }
+});
+function setCode(c){ta.value=c;errLine=null;ta.scrollTop=0;syncEditor()}
+function outHTML(o){
+  if(typeof o==='string')return `<div class="o">${esc(o)}</div>`;
+  if(o.t==='in')return `<div class="o">${esc(o.p)}<span class="uin">${esc(o.v)}</span></div>`;
+  return `<div class="o note">${o.t==='num'?'numinput':'textinput'} «${esc(o.title)}»: ${esc(o.p)} → <span class="uin">${esc(o.v)}</span></div>`;
+}
+function showOutput(res){
+  const {w,err,need,lines}=res;
+  let html=w.out.slice(0,3000).map(outHTML).join('');
+  if(w.out.length>3000)html+='<div class="o note">… (Ausgabe gekürzt)</div>';
+  for(const x of w.warn.slice(0,5))html+=`<div class="o note">Hinweis Zeile ${x.ln}: ${esc(x.msg)}</div>`;
+  if(err){
+    const code=err.line&&lines[err.line-1]?lines[err.line-1].trim():'';
+    let tb;
+    if(err.type==='Hinweis'||err.type==='Endlosschleife')tb=`Zeile ${err.line}: ${err.type==='Endlosschleife'?'Abgebrochen, '+err.message:err.message}`;
+    else if(err.type==='SyntaxError'||err.type==='IndentationError')tb=`  File "programm.py", line ${err.line}\n    ${code}\n${err.type}: ${err.message}`;
+    else tb=`Traceback (most recent call last):\n  File "programm.py", line ${err.line}, in <module>\n    ${code}\n${err.type}: ${err.message}`;
+    html+=`<div class="err">${esc(tb)}</div>`;
+    if(err.hint)html+=`<div class="hint"><b>Tipp:</b> ${err.hint}</div>`;
+    errLine=err.line;
+  }else{
+    errLine=null;
+    if(need){
+      const isNumQ=need.kind==='num';
+      html+=`<form class="ask" id="askForm"><label for="askIn">${isNumQ?`<b>numinput «${esc(need.title)}»</b><br>`:need.kind==='text'?`<b>textinput «${esc(need.title)}»</b><br>`:''}${esc(need.prompt)||'Eingabe:'}</label><div class="askrow"><input id="askIn" ${isNumQ?'inputmode="decimal"':''} autocomplete="off" spellcheck="false"><button class="btn primary" type="submit">OK</button></div><small id="askErr" hidden>Bitte eine Zahl eingeben.</small></form>`;
+    }else if(!w.out.length&&!w.ops.length)html+='<div class="o note">Programm lief durch, hat aber nichts gezeichnet oder ausgegeben.</div>';
+  }
+  outEl.innerHTML=html;
+  syncEditor();
+  const box=$('consoleBox');box.scrollTop=box.scrollHeight;
+  if(need){
+    const f=$('askForm'),inp=$('askIn');
+    try{inp.focus({preventScroll:true})}catch(e){}
+    f.addEventListener('submit',e=>{
+      e.preventDefault();let v=inp.value;
+      if(need.kind==='num'){const n=Number(v.trim().replace(',','.'));if(v.trim()===''||!Number.isFinite(n)){$('askErr').hidden=false;return}v=String(n)}
+      inputs.push(v);runLab(false);
+    });
+  }
+}
+function runLab(fresh){
+  if(fresh){inputs=[];drawnUpTo=0}
+  const res=runProgram(ta.value,inputs);
+  showOutput(res);
+  const from=fresh?0:drawnUpTo;
+  drawnUpTo=res.w.ops.length;
+  labAnim.play(res.w.ops,$('turbo').checked,()=>{
+    if(!res.err&&!res.need&&(res.w.ops.length||res.w.out.length)){const d=document.createElement('div');d.className='o done';d.textContent='✓ Programm beendet.';outEl.appendChild(d)}
+  },from);
+}
+$('btnRun').addEventListener('click',()=>runLab(true));
+$('turbo').addEventListener('change',()=>{if($('turbo').checked)labAnim.finish()});
+$('gridToggle').addEventListener('change',e=>{gridOn=e.target.checked;labAnim.redraw()});
+labCv.addEventListener('mousemove',e=>{const r=labCv.getBoundingClientRect();const x=(e.clientX-r.left)/r.width*VIEW_W-VIEW_W/2;const y=VIEW_H/2-(e.clientY-r.top)/r.height*VIEW_H;$('coords').textContent=`x ${Math.round(x)} · y ${Math.round(y)}`});
+
+function renderTasks(){
+  const box=$('tasks');box.innerHTML='';
+  for(const t of TASKS){
+    const b=document.createElement('button');b.type='button';
+    b.innerHTML=(t.nr?`<small>${t.nr}</small>`:'')+esc(t.label);
+    b.setAttribute('aria-pressed',t===task?'true':'false');
+    b.addEventListener('click',()=>selectTask(t));
+    box.appendChild(b);
+  }
+}
+function drawGoal(){
+  if(!task.sol)return;
+  const r=runProgram(task.sol,task.demo||[]);
+  if(task.kind==='text'){
+    $('goalText').textContent=r.w.out.map(o=>typeof o==='string'?o:o.p+o.v).join('\n');
+  }else render($('goalCanvas'),r.w.ops,r.w.ops.length,0,{});
+}
+function selectTask(t,code){
+  task=t;beforeSol=null;renderTasks();
+  $('taskEyebrow').textContent=t.nr?'Aufgabe '+t.nr:'Labor';
+  $('taskTitle').textContent=t.title;$('taskText').textContent=t.text;
+  $('btnSol').hidden=!t.sol;$('btnSol').textContent='Lösung zeigen';
+  $('goalBox').hidden=!t.sol;
+  const txt=t.kind==='text';
+  $('goalCanvas').hidden=txt;$('goalText').hidden=!txt;
+  $('goalLabel').textContent=txt?(t.demo?'Beispiel-Ausgabe mit Eingabe '+t.demo.join(', '):'So sieht die Ausgabe aus'):'Ziel';
+  $('fileName').textContent=(t.id==='frei'?'programm':t.id)+'.py';
+  requestAnimationFrame(drawGoal);
+  setCode(code!=null?code:(store.get('k3-'+t.id)||t.start));
+  outEl.innerHTML='<div class="o note">Noch nichts ausgeführt. Ctrl+Enter oder «Ausführen».</div>';
+  inputs=[];drawnUpTo=0;labAnim.play([],true);
+}
+$('btnStart').addEventListener('click',()=>{setCode(task.start);store.set('k3-'+task.id,task.start)});
+$('btnSol').addEventListener('click',()=>{
+  if(beforeSol===null){beforeSol=ta.value;setCode(task.sol);$('btnSol').textContent='Zurück zu meinem Code';runLab(true)}
+  else{setCode(beforeSol);beforeSol=null;$('btnSol').textContent='Lösung zeigen'}
+});
+const goLab=()=>$('labor').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+document.querySelectorAll('[data-snip]').forEach(b=>b.addEventListener('click',()=>{
+  const k=b.dataset.snip;const needsTurtle=/turtle/.test(SNIP[k]);
+  selectTask(TASKS[0],SNIP[k]);goLab();setTimeout(()=>runLab(true),350);
+}));
+document.querySelectorAll('[data-task]').forEach(b=>b.addEventListener('click',()=>{
+  const t=TASKS.find(x=>x.id===b.dataset.task);selectTask(t,t.sol);goLab();setTimeout(()=>runLab(true),350);
+}));
+for(const k of ['kino','siebzehn','count','bye','skip','ifx','plz','indA','indB','nest']){const el=$('pre-'+k);if(el)el.innerHTML=hlInline(SNIP[k])}
+$('pre-nebel').innerHTML=hlInline(SNIP.nebelKurz);
+document.querySelectorAll('[data-out]').forEach(b=>b.addEventListener('click',()=>{
+  const k=b.dataset.out;const r=runProgram(SNIP[k],[]);const o=$('out-'+k);
+  o.textContent=r.w.out.join('\n');o.hidden=false;
+}));
+// EVA-Code
+$('ec1').innerHTML=hlInline('alter = int(input("Wie alt bist du? "))');
+$('ec2').innerHTML=hlInline('naechstes_jahr = alter + 1');
+$('ec3').innerHTML=hlInline('print("Naechstes Jahr bist du", naechstes_jahr, "Jahre alt.")');
+$('et0').innerHTML=hlInline('from turtle import *');
+$('et1').innerHTML=hlInline('ecken = int(numinput("Ecken", "Wie viele Ecken?"))');
+$('et2').innerHTML=hlInline('for i in range(ecken):');
+$('et3').innerHTML=hlInline('    forward(40)');
+$('et4').innerHTML=hlInline('    left(360 / ecken)');
+
+/* ============ EVA-Beispiele ============ */
+const EVA=[
+ {n:'Computer',e:'Tastatur, Maus, Mikrofon, Kamera, Touchscreen',v:'Der Prozessor führt das Programm aus: rechnen, vergleichen, entscheiden',a:'Bildschirm, Lautsprecher, Drucker',s:'Arbeitsspeicher (RAM) und Festplatte'},
+ {n:'Mensch',e:'Sinnesorgane: Augen, Ohren, Haut, Nase, Zunge',v:'Nervensystem und Gehirn werten die Reize aus und entscheiden',a:'Muskeln (Bewegung), Stimme, Mimik',s:'Gedächtnis'},
+ {n:'Heisse Herdplatte',e:'Die Haut meldet: sehr heiss!',v:'Nerven leiten das Signal weiter, das Rückenmark löst sofort einen Reflex aus',a:'Die Hand zuckt zurück',s:'Später merkst du dir: Herdplatte ist heiss'},
+ {n:'Taschenrechner',e:'Tasten 7 × 6 =',v:'Der Chip rechnet',a:'Das Display zeigt 42',s:'Zwischenspeicher für Zahlen'},
+ {n:'Turtle-Programm',e:'numinput() fragt nach der Anzahl Ecken',v:'Die for-Schleife berechnet jeden Schritt und jede Drehung',a:'Das Vieleck erscheint im Fenster',s:'Variablen ecken und i im RAM'}
+];
+let evaSel=0;
+function renderEva(){
+  const tabs=$('evaTabs');tabs.innerHTML='';
+  EVA.forEach((x,i)=>{const b=document.createElement('button');b.type='button';b.textContent=x.n;b.setAttribute('aria-pressed',i===evaSel?'true':'false');b.addEventListener('click',()=>{evaSel=i;renderEva()});tabs.appendChild(b)});
+  const x=EVA[evaSel];
+  $('evaBox').innerHTML=`<div class="box e"><span class="t">Eingabe<small>E</small></span><p>${esc(x.e)}</p></div><span class="ar" aria-hidden="true">→</span><div class="box v"><span class="t">Verarbeitung<small>V</small></span><p>${esc(x.v)}</p></div><span class="ar" aria-hidden="true">→</span><div class="box a"><span class="t">Ausgabe<small>A</small></span><p>${esc(x.a)}</p></div><div class="mem"><b>Speicher:</b> ${esc(x.s)}</div>`;
+}
+
+/* ============ Zuordnen-Übungen ============ */
+function renderChoice(boxId,items,choices){
+  const box=$(boxId);box.innerHTML='';
+  for(const s of items){
+    const it=document.createElement('div');it.className='it';
+    const sp=document.createElement('span');
+    if(s.code){const c=document.createElement('code');c.innerHTML=hlInline(s.t);sp.appendChild(c)}else sp.textContent=s.t;
+    it.appendChild(sp);
+    const bt=document.createElement('div');bt.className='bt';
+    const correct=s.a!==undefined?s.a:s.calc();
+    for(const [k,l] of choices){
+      const b=document.createElement('button');b.type='button';b.textContent=l;
+      b.addEventListener('click',()=>{
+        bt.querySelectorAll('button').forEach(x=>x.disabled=true);
+        const ok=k===correct;it.classList.add(ok?'right':'wrong');
+        const sm=document.createElement('small');
+        sm.textContent=(ok?'Richtig. ':'Nein, richtig ist '+choices.find(c=>c[0]===correct)[1]+'. ')+s.why;
+        it.appendChild(sm);
+      });
+      bt.appendChild(b);
+    }
+    it.appendChild(bt);box.appendChild(it);
+  }
+}
+const EVASORT=[
+ {t:'Tastatur',a:'E',why:'Über die Tastatur kommen Daten in den Computer.'},
+ {t:'Der Prozessor rechnet 7 × 6',a:'V',why:'Rechnen ist Verarbeitung.'},
+ {t:'Bildschirm',a:'A',why:'Er zeigt das Ergebnis an.'},
+ {t:'Auge',a:'E',why:'Ein Sinnesorgan nimmt Reize auf.'},
+ {t:'Das Gehirn entscheidet, auszuweichen',a:'V',why:'Auswerten und entscheiden ist Verarbeitung.'},
+ {t:'Der Muskel bewegt den Arm',a:'A',why:'Die Reaktion nach aussen ist die Ausgabe.'},
+ {t:'Temperatursensor der Heizung',a:'E',why:'Sensoren liefern Eingaben, ohne dass jemand tippt.'},
+ {t:'Lautsprecher',a:'A',why:'Er gibt Ton aus.'},
+ {t:'Mikrofon',a:'E',why:'Es nimmt Ton auf.'},
+ {t:'Das Navi berechnet die schnellste Route',a:'V',why:'Berechnen ist Verarbeitung.'}
+];
+const WF=[
+ {t:"'a' not in 'Sonne'",why:'In «Sonne» kommt kein a vor, «nicht enthalten» stimmt also.'},
+ {t:'(1 == 1) and (1 == 2)',why:'Bei and müssen beide stimmen. 1 == 2 ist falsch.'},
+ {t:'not(2 > 2)',why:'2 > 2 ist falsch, not dreht das um.'},
+ {t:'(True or False) and (True and False)',why:'Links True, rechts False. True and False ergibt False.'},
+ {t:'2 < 3 < 1',why:'Das heisst 2 < 3 and 3 < 1. Der zweite Teil ist falsch.'},
+ {t:'1 == 1.0',why:'Python vergleicht den Zahlenwert, 1 und 1.0 sind gleich.'},
+ {t:"'Mensch' == 'mensch'",why:'Gross- und Kleinschreibung zählt.'},
+ {t:'5 >= 5 or 1 > 2',why:'Bei or reicht eine wahre Aussage: 5 >= 5.'},
+ {t:"'I' not in 'Team'",why:'In «Team» gibt es kein grosses I.'},
+ {t:'"15" == 15',why:'Text und Zahl sind nie gleich. Darum braucht es int(input(...)).'}
+].map(x=>({t:x.t,code:true,why:x.why,calc:()=>evalCond(x.t)?'T':'F'}));
+function resetEx(id){if(id==='evaSort')renderChoice('evaSort',EVASORT,[['E','E'],['V','V'],['A','A']]);else renderChoice('wfList',WF,[['T','True'],['F','False']])}
+document.querySelectorAll('[data-reset]').forEach(b=>b.addEventListener('click',()=>resetEx(b.dataset.reset)));
+
+/* ============ Lernziele + Quiz ============ */
+const LZ=[
+{n:1,h:'lz1',t:'Du kannst das EVA-Prinzip erklären und eine Parallele zur Informationsverarbeitung lebender Organismen ziehen.'},
+{n:2,h:'lz2',t:'Du verstehst ein Programm als eine Beschreibung des Wegs, wie aus einer Eingabe die entsprechende Ausgabe ermittelt werden kann.'},
+{n:3,h:'lz3',t:'Du kannst beschreiben, was ein Computer während der Informationsverarbeitung macht.'},
+{n:4,h:'lz4',t:'Du erkennst das EVA-Prinzip auch bei weniger offensichtlichen Beispielen des Computereinsatzes und verstehst, weshalb die Ausgabe auch variieren kann.'},
+{n:5,h:'lz5',t:'Du kennst die unterschiedlichen Einsatzzwecke der for- und while-Schleife.'},
+{n:6,h:'lz6',t:'Mit Hilfe von Vergleichsoperatoren kannst du Bedingungen für Fallunterscheidungen oder while-Schleifen formulieren.'},
+{n:7,h:'lz7',t:'Du hast verstanden, wie Einrückungen in Python zur Strukturierung von Programmen eingesetzt werden.'}
+];
+let lzDone={};try{lzDone=JSON.parse(store.get('k3-lz')||'{}')||{}}catch(e){lzDone={}}
+function renderGoals(){
+  const box=$('goals');box.innerHTML='';
+  for(const z of LZ){
+    const li=document.createElement('li');li.className=lzDone[z.n]?'done':'';
+    li.innerHTML=`<input type="checkbox" id="lzc${z.n}" aria-label="LZ ${z.n}: kann ich"${lzDone[z.n]?' checked':''}><a href="#${z.h}"><span class="n">LZ ${z.n}</span><span>${esc(z.t)}</span></a><span class="res" id="lzr${z.n}"></span>`;
+    li.querySelector('input').addEventListener('change',e=>{lzDone[z.n]=e.target.checked;li.className=e.target.checked?'done':'';store.set('k3-lz',JSON.stringify(lzDone))});
+    box.appendChild(li);
+  }
+}
+const QUIZ=[
+{lz:1,q:'Wofür steht EVA?',o:['Eingabe – Verarbeitung – Ausgabe','Erfassen – Verwalten – Archivieren','Eingabe – Verteilung – Abschluss','Elektronische Verarbeitungs-Anlage'],a:0,ex:'Jede Informationsverarbeitung folgt diesen drei Schritten.'},
+{lz:1,q:'Was entspricht beim Menschen der Eingabe?',o:['Die Muskeln','Die Sinnesorgane wie Augen und Ohren','Das Gehirn','Die Stimme'],a:1,ex:'Sinnesorgane nehmen Reize auf, wie Tastatur oder Mikrofon beim Computer.'},
+{lz:1,q:'Du ziehst die Hand von der heissen Herdplatte weg. Was ist die Verarbeitung?',o:['Die Haut spürt die Hitze','Nerven und Rückenmark werten das Signal aus und lösen die Reaktion aus','Die Hand zieht sich zurück','Die Herdplatte'],a:1,ex:'Haut = Eingabe, Nervensystem = Verarbeitung, Muskel = Ausgabe.'},
+{lz:1,q:'Was entspricht beim Menschen dem Speicher?',o:['Das Gedächtnis','Die Haut','Die Muskeln','Die Ohren'],a:0,ex:'Wie der RAM merkt sich das Gedächtnis Informationen.'},
+{lz:2,q:'Was beschreibt ein Programm im Sinne von EVA?',o:['Wie der Computer aussieht','Den Weg, wie aus einer Eingabe die Ausgabe ermittelt wird','Nur die Ausgabe','Welche Tastatur man braucht'],a:1,ex:'Wie ein Rezept: aus Zutaten wird Schritt für Schritt ein Gericht.'},
+{lz:2,q:'Welche Zeile ist die Verarbeitung?',code:'zahl = int(input("Zahl: "))\nquadrat = zahl * zahl\nprint(quadrat)',o:['Zeile 1','Zeile 2','Zeile 3','Keine'],a:1,ex:'Zeile 1 ist die Eingabe, Zeile 2 rechnet, Zeile 3 gibt aus.'},
+{lz:2,q:'Was macht numinput() im EVA-Prinzip?',o:['Ausgabe einer Zeichnung','Eingabe: fragt während das Programm läuft nach einer Zahl','Verarbeitung: rechnet etwas aus','Es speichert die Datei'],a:1,ex:'Ein kleines Fenster fragt nach einer Zahl. Das ist die Eingabe.'},
+{lz:3,q:'Was macht der Prozessor während der Verarbeitung?',o:['Er führt die Anweisungen der Reihe nach aus: rechnen, vergleichen, speichern','Er zeigt nur Bilder an','Er wartet, bis der Computer ausgeschaltet wird','Er denkt sich selber aus, was zu tun ist'],a:0,ex:'Er holt eine Anweisung nach der anderen aus dem Speicher und führt sie aus.'},
+{lz:3,q:'Wo legt der Computer Zwischenresultate wie summe ab?',o:['In Variablen im Arbeitsspeicher (RAM)','Auf dem Bildschirm','In der Tastatur','Im Drucker'],a:0,ex:'Variablen sind benannte Speicherplätze im RAM.'},
+{lz:3,q:'Welche drei Kontrollstrukturen gibt es?',o:['Eingabe, Verarbeitung, Ausgabe','Lineare Folge, Verzweigung, Wiederholung','for, print, input','Compiler, Interpreter, Editor'],a:1,ex:'Sie bestimmen, welche Anweisung als Nächstes ausgeführt wird.'},
+{lz:3,q:'Was liefert input() immer zurück?',o:['Eine ganze Zahl','Eine Kommazahl','Text (str)','True oder False'],a:2,ex:'Auch wenn eine Zahl eingetippt wird. Zum Rechnen: int(input(...)).'},
+{lz:4,q:'Ein Navi zeigt heute eine andere Route als gestern, obwohl Start und Ziel gleich sind. Warum?',o:['Das Navi ist kaputt','Es gibt weitere Eingaben wie aktuelle Verkehrsdaten','Die Ausgabe ist immer zufällig','Weil das Programm keine Eingabe hat'],a:1,ex:'Versteckte Eingaben verändern die Ausgabe.'},
+{lz:4,q:'Welche Eingabe nutzt eine automatische Schiebetüre?',o:['Einen Bewegungssensor','Eine Tastatur','Einen Lautsprecher','Keine'],a:0,ex:'Sensoren sind Eingaben, ohne dass jemand tippt.'},
+{lz:4,q:'Zwei Personen öffnen dieselbe App und sehen einen anderen Feed. Warum?',o:['Die App ist für jede Person anders programmiert','Die Eingaben sind verschieden: Likes, Verlauf, gefolgte Konten','Der Feed ist reiner Zufall','Wegen der Bildschirmgrösse'],a:1,ex:'Gleiche Verarbeitung, andere gespeicherte Daten, andere Ausgabe.'},
+{lz:4,q:'Das Kino-Programm gibt einmal «14 CHF» und einmal «19 CHF» aus. Was hat sich geändert?',o:['Die Verarbeitung','Die Eingabe (das Alter)','Die Programmiersprache','Der Computer'],a:1,ex:'Das Programm ist gleich, nur die Eingabe ist anders.'},
+{lz:5,q:'Wann nimmst du eine for-Schleife?',o:['Wenn man vorher weiss, wie oft etwas passieren soll','Wenn man nicht weiss, wie oft','Nur für Text','Nie mit der Turtle'],a:0,ex:'Zum Beispiel 4 Seiten eines Quadrats.'},
+{lz:5,q:'Welche Werte nimmt i an bei for i in range(4):?',o:['1, 2, 3, 4','0, 1, 2, 3','0, 1, 2, 3, 4','4, 3, 2, 1'],a:1,ex:'range zählt ab 0, die obere Grenze ist nicht dabei.'},
+{lz:5,q:'Wann nimmst du eine while-Schleife?',o:['Wenn die Anzahl Wiederholungen vorher nicht bekannt ist','Immer genau 10 Mal','Nur für Turtle-Grafik','Wenn man nichts wiederholen will'],a:0,ex:'Eine Bedingung entscheidet, wann Schluss ist.'},
+{lz:5,q:'Was passiert hier?',code:'zahl = 1\nwhile zahl < 5:\n    print(zahl)',o:['Es gibt 1 2 3 4 aus','Endlosschleife: zahl wird nie grösser','Fehlermeldung','Nichts'],a:1,ex:'Es fehlt zahl = zahl + 1 in der Schleife.'},
+{lz:5,q:'Was macht break?',o:['Bricht die Schleife sofort ab','Überspringt nur den aktuellen Durchlauf','Startet das Programm neu','Macht eine Pause'],a:0,ex:'continue überspringt nur den aktuellen Durchlauf.'},
+{lz:6,q:'Welcher Operator prüft, ob zwei Werte gleich sind?',o:['=','==','!=','==='],a:1,ex:'Ein einzelnes = ist eine Zuweisung.'},
+{lz:6,q:'Was ergibt 2 < 3 < 1?',o:['True','False','Fehler','3'],a:1,ex:'Das heisst 2 < 3 and 3 < 1, und 3 < 1 ist falsch.'},
+{lz:6,q:'Wann ist a and b wahr?',o:['Wenn mindestens eins wahr ist','Nur wenn beide wahr sind','Wenn a falsch ist','Immer'],a:1,ex:'Bei or reicht eins.'},
+{lz:6,q:'Welche Bedingung prüft, ob die PLZ zwischen 1000 und 9999 liegt (Grenzen inklusive)?',o:['plz > 1000 and plz < 9999','plz >= 1000 or plz <= 9999','plz >= 1000 and plz <= 9999','plz == 1000 and 9999'],a:2,ex:'>= und <= schliessen die Grenzen ein. Mit or wäre fast jede Zahl gültig.'},
+{lz:6,q:'Was gibt das Programm aus?',code:'x = 7\nif x > 10:\n    print("A")\nelif x > 5:\n    print("B")\nelse:\n    print("C")',o:['A','B','C','B und C'],a:1,ex:'x > 10 ist falsch, x > 5 ist wahr. Danach wird nichts mehr geprüft.'},
+{lz:6,q:'Was ergibt \'a\' in \'Banane\'?',o:['True','False','1','Fehler'],a:0,ex:'in prüft, ob der Text vorkommt.'},
+{lz:7,q:'Woran erkennt Python, welche Anweisungen zur Schleife gehören?',o:['An geschweiften Klammern','An der Einrückung','An der Farbe','An der Zeilennummer'],a:1,ex:'Alles, was nach der for-Zeile eingerückt ist, gehört dazu.'},
+{lz:7,q:'Wie viele Leerzeichen nimmt man üblicherweise für eine Einrückung?',o:['1','2','4','8'],a:2,ex:'Thonny macht das automatisch nach dem Doppelpunkt.'},
+{lz:7,q:'Wie oft erscheint «Tschüss»?',code:'for i in range(3):\n    print("Hallo")\nprint("Tschüss")',o:['0','1','3','4'],a:1,ex:'print("Tschüss") ist nicht eingerückt und steht nach der Schleife.'},
+{lz:7,q:'Was bedeutet «IndentationError: expected an indented block»?',o:['Nach for, if oder while fehlt die eingerückte Zeile','Ein Tippfehler im Namen','Durch 0 geteilt','Zu viele Klammern'],a:0,ex:'Nach jeder Zeile mit Doppelpunkt muss ein eingerückter Block kommen.'}
+];
+let res={},filt=0;
+const qIdx=()=>QUIZ.map((q,i)=>i).filter(i=>!filt||QUIZ[i].lz===filt);
+function renderFilter(){
+  const box=$('qfilter');box.innerHTML='';
+  for(const n of [0,1,2,3,4,5,6,7]){
+    const b=document.createElement('button');b.type='button';b.textContent=n?'LZ '+n:'Alle';
+    b.setAttribute('aria-pressed',n===filt?'true':'false');
+    b.addEventListener('click',()=>{filt=n;renderFilter();renderQuiz()});
+    box.appendChild(b);
+  }
+}
+function renderQuiz(){
+  const box=$('quizList');box.innerHTML='';
+  qIdx().forEach((qi,k)=>{
+    const q=QUIZ[qi];
+    const card=document.createElement('div');card.className='q';
+    card.innerHTML=`<span class="qn">Frage ${k+1} · LZ ${q.lz}</span><p class="qq">${esc(q.q)}</p>`+(q.code?`<pre class="code">${hlInline(q.code)}</pre>`:'');
+    const opts=document.createElement('div');opts.className='opts';
+    const ex=document.createElement('p');ex.className='ex';ex.hidden=true;ex.textContent=q.ex;
+    const mark=pick=>{[...opts.children].forEach((c,ci)=>{c.disabled=true;if(ci===q.a)c.classList.add('right');if(ci===pick&&pick!==q.a)c.classList.add('wrong')});ex.hidden=false};
+    q.o.forEach((o,oi)=>{
+      const b=document.createElement('button');b.type='button';b.textContent=o;
+      b.addEventListener('click',()=>{res[qi]=oi;mark(oi);updateScore()});
+      opts.appendChild(b);
+    });
+    card.appendChild(opts);card.appendChild(ex);box.appendChild(card);
+    if(res[qi]!=null)mark(res[qi]);
+  });
+  updateScore();
+}
+function updateScore(){
+  const ids=qIdx();const ans=ids.filter(i=>res[i]!=null);const ok=ans.filter(i=>res[i]===QUIZ[i].a).length;
+  $('score').textContent=ok;$('qtotal').textContent=ids.length;
+  let msg;
+  if(ans.length<ids.length)msg=`${ids.length-ans.length} offen`;
+  else{const weak=[...new Set(ids.filter(i=>res[i]!==QUIZ[i].a).map(i=>QUIZ[i].lz))];msg=weak.length?'Nochmals anschauen: '+weak.map(n=>'LZ '+n).join(', '):'Alles richtig. Stark!'}
+  $('qprog').textContent=msg;
+  for(const z of LZ){
+    const el=$('lzr'+z.n);if(!el)continue;
+    const qs=QUIZ.map((q,i)=>i).filter(i=>QUIZ[i].lz===z.n);const a=qs.filter(i=>res[i]!=null);const r=a.filter(i=>res[i]===QUIZ[i].a).length;
+    el.textContent=a.length?`Quiz ${r}/${qs.length}`:`${qs.length} Fragen`;
+    el.className='res'+(a.length===qs.length?(r===qs.length?' good':' weak'):'');
+  }
+  const all=QUIZ.map((q,i)=>i);
+  if(all.every(i=>res[i]!=null)){
+    const pct=Math.round(all.filter(i=>res[i]===QUIZ[i].a).length/QUIZ.length*100);
+    try{window.Lernregal&&window.Lernregal.fortschritt(pct,'Quiz '+pct+' %')}catch(e){}
+  }
+}
+$('qreset').addEventListener('click',()=>{qIdx().forEach(i=>delete res[i]);renderQuiz()});
+
+/* ============ Start ============ */
+const heroCv=$('heroCanvas');const heroAnim=Animator(heroCv,()=>({grid:true}));
+function playHero(){
+  const r=runProgram('from turtle import *\nshape("turtle")\nturtlesize(1.6)\nwidth(2)\ncolor("darkorange")\nspeed(9)\nfor k in range(20):\n    for i in range(4):\n        forward(130)\n        left(90)\n    left(18)\n',[]);
+  heroAnim.play(r.w.ops,matchMedia('(prefers-reduced-motion: reduce)').matches);
+}
+$('heroAgain').addEventListener('click',playHero);
+let rz=0;window.addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{labAnim.redraw();heroAnim.redraw();drawGoal()},120)});
+renderTasks();selectTask(TASKS[0]);renderGoals();renderFilter();renderQuiz();renderEva();resetEx('evaSort');resetEx('wfList');
+requestAnimationFrame(()=>{playHero();labAnim.redraw()});
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>labAnim.redraw());
+window.__k3={runProgram,evalCond,TASKS,SNIP};
+})();
+</script>
+<script src="../regal.js" defer></script>
+</body>
+</html>

@@ -33,6 +33,7 @@
   color-scheme:dark}
 
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 body{background:var(--bg);color:var(--ink);font:17px/1.6 var(--f-body);margin:0}
 .wrap{max-width:1180px;margin:0 auto;padding-inline:20px}
 h1,h2,h3{font-family:var(--f-display);line-height:1.15;text-wrap:balance;margin:0}
@@ -1832,6 +1833,11 @@ function updateScore(){
     el.textContent=a.length?`Quiz ${r}/${qs.length}`:`${qs.length} Fragen`;
     el.className='res'+(a.length===qs.length?(r===qs.length?' good':' weak'):'');
   }
+  const all=QUIZ.map((q,i)=>i);
+  if(all.every(i=>res[i]!=null)){
+    const pct=Math.round(all.filter(i=>res[i]===QUIZ[i].a).length/QUIZ.length*100);
+    try{window.Lernregal&&window.Lernregal.fortschritt(pct,'Quiz '+pct+' %')}catch(e){}
+  }
 }
 $('qreset').addEventListener('click',()=>{qIdx().forEach(i=>delete res[i]);renderQuiz()});
 
@@ -1841,5 +1847,6 @@ requestAnimationFrame(()=>{playHero();labAnim.redraw()});
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{labAnim.redraw()});
 })();
 </script>
+<script src="../regal.js" defer></script>
 </body>
 </html>
