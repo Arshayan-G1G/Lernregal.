@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dauerbrenner-Trainer</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Caveat:wght@600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: schmale Arbeitsspalte, Modus-Chips oben, Wortkarten im Raster; Rotstift-Akzent wie im Korrekturheft */
+:root{
+  --paper:#f4f5f8; --card:#ffffff; --ink:#1c2230; --muted:#5e6678; --line:#dde1ea; --chip:#e9ecf3;
+  --red:#c2381f; --red-soft:#fbe8e4; --ok:#1e7a4a; --ok-soft:#e2f2e9; --hl:#fff0b3;
+  --f-display:"Young Serif", Georgia, serif;
+  --f-body:"Atkinson Hyperlegible", system-ui, sans-serif;
+  --f-hand:"Caveat", "Segoe Print", cursive;
+  --f-mono:"IBM Plex Mono", ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#13171f; --card:#1b202b; --ink:#e7eaf1; --muted:#9ba3b4; --line:#2d3443; --chip:#252b38;
+  --red:#ef7a62; --red-soft:#3a221e; --ok:#5fcf92; --ok-soft:#163224; --hl:#4a3e12; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#13171f; --card:#1b202b; --ink:#e7eaf1; --muted:#9ba3b4; --line:#2d3443; --chip:#252b38;
+  --red:#ef7a62; --red-soft:#3a221e; --ok:#5fcf92; --ok-soft:#163224; --hl:#4a3e12; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 64px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
+.wrap{max-width:820px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--red)}
+h1{font-family:var(--f-display);font-weight:400;font-size:clamp(28px,6vw,40px);line-height:1.15;margin:4px 0 0;text-wrap:balance}
+h1 s{color:var(--muted);text-decoration-color:var(--red);text-decoration-thickness:3px}
+h1 em{font-style:normal;color:var(--red)}
+.lead{color:var(--muted);margin:6px 0 0;max-width:62ch}
+nav{display:flex;flex-wrap:wrap;gap:8px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--paper);padding-block:10px;z-index:5;border-bottom:1px solid var(--line)}
+nav button{font:inherit;font-size:14px;border:0;background:var(--chip);color:var(--ink);padding:7px 14px;border-radius:999px;cursor:pointer}
+nav button[aria-current="true"]{background:var(--ink);color:var(--paper)}
+button:focus-visible,input:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+h2{font-family:var(--f-display);font-weight:400;font-size:26px;margin:0}
+.meta{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;color:var(--muted);font-size:14px}
+.score{font-family:var(--f-mono);font-variant-numeric:tabular-nums;color:var(--ink)}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn{font:inherit;font-size:14px;padding:8px 14px;border-radius:8px;border:1px solid var(--ink);background:var(--ink);color:var(--paper);cursor:pointer}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn:disabled{opacity:.45;cursor:default}
+.search{font:inherit;padding:8px 12px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);flex:1 1 200px;min-width:0}
+.result{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 16px;display:flex;flex-wrap:wrap;gap:6px 16px;align-items:baseline}
+.result .big{font-family:var(--f-hand);color:var(--red);font-size:32px;line-height:1}
+.muted{color:var(--muted);font-size:14px}
+/* Liste */
+.list{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
+.wc{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:9px 12px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.wc.miss{border-color:var(--red)}
+.wc .no{font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+.wc b{font-size:17px;overflow-wrap:anywhere}
+.wc .alt{font-size:13px;color:var(--muted)}
+.wc s{font-size:13px;color:var(--red);text-decoration-thickness:1px}
+.wc .tip{font-size:13px;color:var(--muted);font-style:italic}
+/* Diktat */
+.dk{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px 22px}
+.di{display:grid;grid-template-columns:26px 34px 34px minmax(0,1fr) 28px;gap:6px;align-items:center}
+.di .n{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.di input{font:inherit;font-size:17px;border:0;border-bottom:1px solid var(--ink);background:transparent;color:var(--ink);padding:3px 2px;min-width:0;width:100%}
+.di .lab{grid-column:2/6;font-size:13px;color:var(--muted);margin-top:-4px;min-height:1em}
+.round{width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:var(--chip);color:var(--ink);cursor:pointer;font-size:12px;padding:0}
+.flash{font-weight:700;color:var(--ink)}
+.mk{font-family:var(--f-hand);font-size:24px;line-height:1;text-align:center}
+.okc{color:var(--ok)} .noc{color:var(--red)}
+.sol{font-family:var(--f-hand);color:var(--red);font-size:21px;line-height:1.1}
+/* Fehlerjagd */
+.hunt{display:grid;grid-template-columns:30px repeat(4,minmax(0,1fr));gap:4px 10px;align-items:center}
+.hunt .n{font-family:var(--f-mono);font-size:12px;color:var(--muted);text-align:right}
+.hw{font:inherit;text-align:left;border:0;background:transparent;color:var(--ink);padding:5px 6px;border-radius:6px;cursor:pointer;overflow-wrap:anywhere;min-width:0}
+.hw:hover:not(:disabled){background:var(--chip)}
+.hw:disabled{cursor:default}
+.hedit{font:inherit;width:100%;min-width:0;padding:4px 6px;border:1px solid var(--red);border-radius:6px;background:var(--card);color:var(--red);font-weight:700}
+.hres{padding:5px 6px;min-width:0;overflow-wrap:anywhere;line-height:1.25}
+.hres.found{background:var(--ok-soft);border-radius:6px}
+.hres.missed{background:var(--hl);border-radius:6px}
+.hres.fp{background:var(--red-soft);border-radius:6px}
+@media (max-width:560px){.hunt{grid-template-columns:22px repeat(2,minmax(0,1fr))}.hunt .n.dup{display:block}}
+/* Quiz */
+.qs{display:flex;flex-direction:column;gap:10px}
+.q{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
+.q.right{border-color:var(--ok)} .q.wrong{border-color:var(--red)}
+.q .n{font-family:var(--f-mono);font-size:12px;color:var(--muted);width:24px}
+.q .lab{font-size:13px;color:var(--muted);flex-basis:100%;padding-left:36px;margin-top:-4px}
+.q .lab:empty{display:none}
+.opt{font:inherit;font-size:16px;padding:7px 14px;border-radius:8px;border:1px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--ink)}
+.opt:disabled{cursor:default}
+.opt.ok{background:var(--ok-soft);border-color:var(--ok);color:var(--ok);font-weight:700}
+.opt.no{background:var(--red-soft);border-color:var(--red);color:var(--red);text-decoration:line-through}
+.links{display:flex;flex-wrap:wrap;gap:8px 18px;border-top:1px solid var(--line);padding-top:14px;font-size:14px}
+.links a{color:var(--ink)}
+@media (prefers-reduced-motion:no-preference){.q{transition:border-color .2s}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Deutsch · BFK · Sprachtrainer S. 39</div>
+    <h1>Die 100 <s>Dauerbrener</s> <em>Dauerbrenner</em></h1>
+    <p class="lead">Alle Wörter aus Übung A28. Lerne sie in der Liste, dann teste dich im Diktat, in der Fehlerjagd (wie A29) und im Quiz. Jede Runde mischt neue Wörter.</p>
+  </header>
+  <nav id="nav" aria-label="Modus"></nav>
+  <main id="main"></main>
+  <div class="links">
+    <span class="muted">Mehr üben:</span>
+    <a href="deutsch-rechtschreibung-bfk.html">Rechtschreibung BFK</a>
+    <a href="deutsch-uebungspruefung-bfk.html">Übungsprüfung 1</a>
+    <a href="deutsch-uebungspruefung-bfk-2.html">Übungsprüfung 2</a>
+  </div>
+</div>
+
+<script>
+/* [richtig, falsch1, falsch2, Zusatz (optional)] – Nummern wie im Buch */
+const W=[
+["Adresse","Addresse","Adrese"],["aggressiv","agressiv","aggresiv"],["akustisch","akkustisch","akustich"],["Albtraum","Albdraum","Alpdraum","auch: Alptraum"],["Allee","Alee","Allée"],
+["annullieren","anullieren","annulieren"],["Aperitif","Aperitiv","Apperitif"],["Apparat","Aparat","Apparrat"],["Appell","Apell","Apel"],["Atmosphäre","Atmospähre","Athmosphäre"],
+["Attrappe","Atrappe","Attrape"],["Ballett","Balett","Ballet"],["Bataillon","Batallion","Bataillion"],["Billard","Billiard","Bilard"],["Billett","Billet","Bilett"],
+["Biskuit","Bisquit","Biskwit"],["bohren","boren","bohrren"],["brillant","brilliant","brilant"],["Cappuccino","Capuccino","Cappucino"],["deshalb","desshalb","deshalp"],
+["detailliert","detailiert","detalliert"],["diffizil","diffiziel","difizil"],["dilettantisch","dilletantisch","dilettanttisch"],["duzen","dutzen","duzzen"],["Ellipse","Elipse","Ellypse"],
+["E-Mail","e-Mail","E-mail"],["Etymologie","Ethymologie","Etimologie"],["explizit","explitzit","expliziet"],["Föhn","Fön","Föön","Fallwind"],["Föhn","Fön","Föön","Haartrockner"],
+["Galerie","Gallerie","Galerrie"],["galoppieren","gallopieren","galopieren"],["Gedächtnis","Gedächnis","Gedächtniss"],["grölen","gröhlen","gröllen"],["Hobbys","Hobbies","Hobby's"],
+["hören","höhren","hörren"],["idyllisch","idylisch","idüllisch"],["Joghurt","Joghurth","Jooghurt","auch: Jogurt"],["Kannibale","Kanibale","Kanniballe"],["Karosserie","Karoserie","Karrosserie"],
+["Karussell","Karussel","Karrusell"],["Kenntnis","Kentnis","Kenntniss"],["kolossal","kollosal","kolosal"],["Komitee","Kommitee","Komittee"],["Kommissar","Komissar","Kommisar"],
+["Kommission","Komission","Kommision"],["Konkurrenz","Konkurenz","Konkurrens"],["korrigieren","korigieren","korrigiren"],["Krawatte","Kravatte","Krawate"],["kumulieren","kummulieren","kumullieren"],
+["Lappalie","Lapalie","Lappallie"],["Loser","Looser","Luser","Verlierer"],["lynchen","linchen","lünchen"],["Medaille","Medallie","Medaile"],["Mobbing","Mobing","Mopping"],
+["morgendlich","morgentlich","morgenlich"],["nämlich","nähmlich","nemlich"],["nummerieren","numerieren","nummerrieren"],["paddeln","padeln","paddlen"],["Paket","Packet","Pakett"],
+["Papst","Pabst","Bapst"],["parallel","parallell","paralel"],["Phänomen","Phänomän","Phenomen"],["Pinnwand","Pinwand","Pinnwandt"],["projizieren","projezieren","projzieren"],
+["prophezeien","prophezeihen","profezeien"],["Renommee","Renomee","Rennommee"],["Reparatur","Reperatur","Reparatuhr"],["Rhabarber","Rabarber","Rhabarbar"],["Rhetorik","Retorik","Rhethorik"],
+["Rhythmus","Rythmus","Rhytmus"],["Satellit","Satelit","Sattelit"],["Schokolade","Schockolade","Schokkolade"],["seelisch","selisch","seehlisch"],["selig","seelig","sehlig"],
+["separat","seperat","separrat"],["Silhouette","Silouette","Silhouete"],["Silvester","Sylvester","Silwester"],["Skelett","Skelet","Skellett"],["skurril","skuril","skurill"],
+["Spaghetti","Spagghetti","Spaghettie","auch: Spagetti"],["spülen","spühlen","spüllen"],["spüren","spühren","spürren"],["Standard","Standart","Standahrt"],["stets","stehts","steets","immer"],
+["Stopp","Stop","Stoop"],["symmetrisch","symetrisch","simmetrisch"],["Temperatur","Themperatur","Temparatur"],["Terrasse","Terasse","Terrase"],["Thron","Tron","Throhn"],
+["Tipp","Tip","Tiep"],["triumphieren","triumfieren","triumpfieren"],["Turnier","Tournier","Turnir"],["übersät","übersäht","übersäät"],["verheerend","verhehrend","verherend"],
+["Verlies","Verliess","Verlis"],["verpönt","verpöhnt","verpönnt"],["Widerhall","Wiederhall","Wiederhal"],["widerspiegeln","wiederspiegeln","widerspigeln"],["ziemlich","zimlich","ziehmlich"]
+].map((a,i)=>({no:i+1,w:a[0],f:[a[1],a[2]],x:a[3]||"",alt:a[3]&&a[3].startsWith("auch: ")?a[3].slice(6):null}));
+const TIP={"selig":"nichts mit Seele zu tun","seelisch":"von Seele","nämlich":"von Name","nummerieren":"von Nummer","detailliert":"von Detail","Widerhall":"wider = gegen","widerspiegeln":"wider = gegen","Stopp":"wie stoppen","Tipp":"wie tippen","Papst":"mit p wie Papa","spüren":"Spur, ohne h","spülen":"Spülung, ohne h","grölen":"ohne h","Rhythmus":"Rh … th","morgendlich":"Morgen + d + lich","Hobbys":"y-Plural: -ys","Billard":"kein i vor a","Gedächtnis":"von gedacht"};
+TIP["Standard"]="am Ende d, nicht t";TIP["separat"]="se-pa-rat, nicht «seperat»";
+
+const valid=e=>[e.w].concat(e.alt?[e.alt]:[]);
+const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const $=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e};
+const POOL=W.filter(e=>e.no!==30); // Föhn nur einmal in Tests
+const pick=n=>shuf(POOL).slice(0,n);
+const label=e=>e.x&&!e.alt?e.x:"";
+
+/* Fehlerwörter merken (nur in diesem Browser) */
+const KEY="dauerbrenner-miss";
+let miss=new Set();try{miss=new Set(JSON.parse(localStorage.getItem(KEY)||"[]"))}catch(e){}
+function saveMiss(){try{localStorage.setItem(KEY,JSON.stringify([...miss]))}catch(e){}}
+function noteResult(e,ok){if(ok)miss.delete(e.no);else miss.add(e.no);saveMiss()}
+
+const MODES=[["liste","Lernliste"],["diktat","Diktat"],["jagd","Fehlerjagd"],["quiz","Quiz"]];
+let mode="liste";
+const nav=document.getElementById("nav"),main=document.getElementById("main");
+function navBuild(){nav.innerHTML="";MODES.forEach(([k,t])=>{const b=$("button");b.type="button";b.textContent=t;b.setAttribute("aria-current",k===mode);b.onclick=()=>{mode=k;navBuild();render();window.scrollTo({top:0})};nav.appendChild(b)})}
+function render(){main.innerHTML="";({liste,diktat,jagd,quiz})[mode]()}
+function note(p){return Math.round((p*5+1)*2)/2}
+function resultBox(right,total,extra){const r=$("div","result");const pc=right/total;r.innerHTML=`<span class="big">${right} / ${total}</span><span>Note ${String(note(pc)).replace(".",",")}</span><span class="muted">${extra||""}</span>`;try{window.Lernregal&&Lernregal.fortschritt(Math.round(pc*100),"Dauerbrenner "+right+"/"+total)}catch(e){}return r}
+
+/* ---------- Lernliste ---------- */
+function liste(){
+  const sec=$("section");sec.style.cssText="display:flex;flex-direction:column;gap:12px";
+  sec.appendChild($("h2","","Lernliste"));
+  const tools=$("div","tools");
+  const s=$("input","search");s.type="search";s.id="such";s.placeholder="Wort suchen …";s.setAttribute("aria-label","Wort suchen");
+  const onlyMiss=$("button","btn ghost");onlyMiss.type="button";let om=false;
+  const upd=()=>{onlyMiss.textContent=om?"Alle zeigen":`Nur meine Fehler (${miss.size})`;onlyMiss.disabled=!om&&miss.size===0};
+  tools.append(s,onlyMiss);sec.appendChild(tools);
+  sec.appendChild($("p","muted","Rot durchgestrichen ist die typische Falschschreibung. Wörter, die du in einem Test falsch hattest, haben einen roten Rand."));
+  const grid=$("div","list");sec.appendChild(grid);
+  const draw=()=>{grid.innerHTML="";const q=s.value.trim().toLowerCase();
+    W.filter(e=>(!q||e.w.toLowerCase().includes(q)||e.f.some(f=>f.toLowerCase().includes(q)))&&(!om||miss.has(e.no))).forEach(e=>{
+      const c=$("div","wc"+(miss.has(e.no)?" miss":""));
+      c.innerHTML=`<span class="no">${e.no}</span><b>${esc(e.w)}</b>${e.x?`<span class="alt">${esc(e.x)}</span>`:""}<s>${esc(e.f[0])}</s>${TIP[e.w]?`<span class="tip">${esc(TIP[e.w])}</span>`:""}`;
+      grid.appendChild(c)});
+    if(!grid.children.length)grid.appendChild($("p","muted","Keine Treffer."));};
+  s.oninput=draw;onlyMiss.onclick=()=>{om=!om;upd();draw()};upd();draw();
+  main.appendChild(sec);
+}
+
+/* ---------- Diktat ---------- */
+function diktat(){
+  const canSay="speechSynthesis" in window;
+  const items=pick(20);let done=false;
+  const sec=$("section");sec.style.cssText="display:flex;flex-direction:column;gap:14px";
+  sec.appendChild($("h2","","Diktat"));
+  sec.appendChild($("p","muted",(canSay?"▶ liest das Wort vor. ":"")+"👁 zeigt es eine Sekunde lang, falls kein Ton kommt. Schreib es danach auf die Linie. 20 Wörter."));
+  const grid=$("div","dk");
+  const rows=items.map((e,i)=>{
+    const d=$("div","di");const inp=$("input");inp.id="dk"+i;inp.autocomplete="off";inp.spellcheck=false;inp.setAttribute("autocapitalize","off");inp.setAttribute("autocorrect","off");inp.setAttribute("aria-label","Wort "+(i+1));
+    const say=$("button","round","▶");say.type="button";say.setAttribute("aria-label","Wort "+(i+1)+" anhören");
+    if(canSay)say.onclick=()=>{try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(e.w==="E-Mail"?"E-Mail":e.w);u.lang="de-DE";u.rate=.8;speechSynthesis.speak(u)}catch(err){}};else say.style.visibility="hidden";
+    const lab=$("span","lab",esc(label(e)));
+    const peek=$("button","round","👁");peek.type="button";peek.setAttribute("aria-label","Wort "+(i+1)+" kurz zeigen");
+    peek.onclick=()=>{if(done)return;lab.innerHTML=`<span class="flash">${esc(e.w)}</span>`;setTimeout(()=>{if(!done)lab.innerHTML=esc(label(e))},1000)};
+    const mk=$("span","mk");
+    d.append($("span","n",String(i+1).padStart(2,"0")),say,peek,inp,mk,lab);grid.appendChild(d);
+    return {e,inp,mk,lab};
+  });
+  sec.appendChild(grid);
+  const tools=$("div","tools");const chk=$("button","btn","Auswerten");chk.type="button";const nw=$("button","btn ghost","Neue Runde");nw.type="button";nw.onclick=render;tools.append(chk,nw);sec.appendChild(tools);
+  const resSlot=$("div");sec.appendChild(resSlot);
+  chk.onclick=()=>{if(done)return;done=true;chk.disabled=true;let r=0;
+    rows.forEach(x=>{x.inp.disabled=true;const v=x.inp.value.trim();const ok=valid(x.e).includes(v);if(ok)r++;noteResult(x.e,ok);
+      x.mk.innerHTML=ok?'<span class="okc">✓</span>':'<span class="noc">✗</span>';if(!ok)x.lab.innerHTML=`<span class="sol">${esc(x.e.w)}</span>`});
+    resSlot.appendChild(resultBox(r,20,"Falsche Wörter landen in «Nur meine Fehler» in der Lernliste."))};
+  main.appendChild(sec);
+}
+
+/* ---------- Fehlerjagd (A29) ---------- */
+function jagd(){
+  const items=pick(80);const wrongN=16;const wrongSet=new Set(shuf([...Array(80).keys()]).slice(0,wrongN));
+  let done=false;
+  const sec=$("section");sec.style.cssText="display:flex;flex-direction:column;gap:14px";
+  sec.appendChild($("h2","","Fehlerjagd"));
+  sec.appendChild($("p","muted",`Wie Übung A29: Korrigieren Sie die falsch geschriebenen Wörter. Tippe auf ein Wort und schreib es richtig. Es sind genau ${wrongN} Fehler versteckt.`));
+  const grid=$("div","hunt");
+  const cells=items.map((e,i)=>{
+    const shown=wrongSet.has(i)?e.f[Math.floor(Math.random()*2)]:(e.alt&&Math.random()<.5?e.alt:e.w);
+    return {e,shown,wrong:wrongSet.has(i),val:null,el:null};
+  });
+  const narrow=window.matchMedia("(max-width:560px)").matches;const cols=narrow?2:4;
+  for(let r=0;r<80/cols;r++){
+    grid.appendChild($("span","n",String(r+1)));
+    for(let c=0;c<cols;c++){const cell=cells[r*cols+c];
+      const b=$("button","hw");b.type="button";b.textContent=cell.shown;cell.el=b;
+      const edit=()=>{if(done)return;const inp=$("input","hedit");inp.value=cell.val??cell.shown;inp.spellcheck=false;inp.setAttribute("autocapitalize","off");inp.setAttribute("aria-label","Korrektur für "+cell.shown);
+        inp.onblur=()=>{const v=inp.value.trim();if(!v||v===cell.shown){cell.val=null;inp.replaceWith(b);cell.el=b}else cell.val=v};
+        inp.onkeydown=ev=>{if(ev.key==="Enter")inp.blur()};
+        b.replaceWith(inp);cell.el=inp;inp.focus();inp.select()};
+      b.onclick=edit;grid.appendChild(b)}
+  }
+  sec.appendChild(grid);
+  const tools=$("div","tools");const chk=$("button","btn","Auswerten");chk.type="button";const nw=$("button","btn ghost","Neue Wörter");nw.type="button";nw.onclick=render;tools.append(chk,nw);sec.appendChild(tools);
+  const resSlot=$("div");sec.appendChild(resSlot);
+  chk.onclick=()=>{if(done)return;done=true;chk.disabled=true;let found=0,fp=0;
+    if(document.activeElement&&document.activeElement.classList.contains("hedit"))document.activeElement.blur();
+    cells.forEach(c=>{
+      const cur=c.el.tagName==="INPUT"?(c.el.value.trim()||c.shown):(c.val??c.shown);
+      const out=$("span","hres");
+      if(c.wrong){const ok=valid(c.e).includes(cur);noteResult(c.e,ok);
+        if(ok){found++;out.classList.add("found");out.innerHTML=`<span class="okc"><b>${esc(cur)}</b></span>`}
+        else{out.classList.add("missed");out.innerHTML=`<s class="noc">${esc(cur)}</s> <span class="sol">${esc(c.e.w)}</span>`}}
+      else if(!valid(c.e).includes(cur)){fp++;out.classList.add("fp");out.innerHTML=`<s class="noc">${esc(cur)}</s> <span class="sol">${esc(c.shown)}</span>`}
+      else out.textContent=cur;
+      c.el.replaceWith(out);c.el=out});
+    resSlot.appendChild(resultBox(Math.max(0,found-fp),wrongN,`${found} von ${wrongN} Fehlern korrigiert`+(fp?`, ${fp} richtige Wörter falsch geändert (zählen als Abzug).`:".")+" Grün = gefunden, gelb = übersehen, rot = falsch geändert."))};
+  main.appendChild(sec);
+}
+
+/* ---------- Quiz ---------- */
+function quiz(){
+  const items=pick(20);let d=0,r=0;
+  const sec=$("section");sec.style.cssText="display:flex;flex-direction:column;gap:12px";
+  sec.appendChild($("h2","","Quiz"));
+  const meta=$("div","meta");const sc=$("span","score","0 / 0 richtig · 20 offen");meta.innerHTML="<span>Welche Schreibweise ist richtig?</span>";meta.appendChild(sc);sec.appendChild(meta);
+  const qs=$("div","qs");const resSlot=$("div");
+  items.forEach((e,i)=>{
+    const q=$("div","q");q.appendChild($("span","n",String(i+1).padStart(2,"0")));
+    const btns=shuf([e.w,...e.f]).map(o=>{const b=$("button","opt");b.type="button";b.textContent=o;
+      b.onclick=()=>{const ok=o===e.w;d++;if(ok)r++;noteResult(e,ok);q.classList.add(ok?"right":"wrong");
+        btns.forEach(x=>{x.disabled=true;if(x.textContent===e.w)x.classList.add("ok")});if(!ok)b.classList.add("no");
+        sc.textContent=`${r} / ${d} richtig · ${20-d} offen`;if(d===20)resSlot.appendChild(resultBox(r,20))};
+      q.appendChild(b);return b});
+    q.appendChild($("span","lab",esc(e.x)));qs.appendChild(q)});
+  sec.appendChild(qs);
+  const tools=$("div","tools");const nw=$("button","btn ghost","Neue Runde");nw.type="button";nw.onclick=render;tools.appendChild(nw);
+  sec.append(resSlot,tools);main.appendChild(sec);
+}
+
+navBuild();render();
+</script>
+
+<script src="../regal.js" defer></script>
+</body>
+</html>
