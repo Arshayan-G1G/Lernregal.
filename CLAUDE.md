@@ -17,6 +17,7 @@ Kein Build, kein Framework. Änderungen direkt auf `main` committen und pushen (
    {fach:"Chemie",titel:"Atombau",text:"Ein Satz, was drin ist.",tags:["Zusammenfassung","Übungsprüfung"],datum:"YYYY-MM-DD",datei:"module/chemie-atombau.html"},
    ```
    `fach` muss genau einem Namen aus `FAECHER` entsprechen: Biologie, Chemie, Geschichte, Französisch, Englisch, Deutsch, Mathematik, Informatik, Geografie.
+   Optional `gruppe:"Name"`: Module mit gleicher Gruppe stehen im Fach zusammen unter einer eigenen Überschrift (Unterkategorie), sortiert nach Titel. Beispiel: alle bfK-Prüfungen haben `gruppe:"bfK-Übungsprüfungen"`. Im Claude-Lernregal heisst das Feld `group`.
 3. Committen (z.B. `Modul: Atombau (Chemie)`) und auf `main` pushen.
 
 ## Modul aktualisieren
