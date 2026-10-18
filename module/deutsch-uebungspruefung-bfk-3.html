@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Übungsprüfung bfK 3</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Caveat:wght@600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: ein Prüfungsbogen auf dem Tisch, Abschnitte A–J wie das Original, Korrektur in Rotstift-Handschrift */
+:root{
+  --desk:#e7e9ef; --sheet:#ffffff; --ink:#1b1f2a; --muted:#5f6675; --rule:#d3d8e2; --box:#f3f4f8;
+  --pen:#c62f22; --ok:#1f7a45; --hl:#fff1b8;
+  --f-body:"Atkinson Hyperlegible", system-ui, sans-serif;
+  --f-hand:"Caveat", "Segoe Print", cursive;
+  --f-mono:"IBM Plex Mono", ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --desk:#10131a; --sheet:#1a1e27; --ink:#e6e9f0; --muted:#9ba2b1; --rule:#343b4a; --box:#232935;
+  --pen:#f0806f; --ok:#63d394; --hl:#4a3f12; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --desk:#10131a; --sheet:#1a1e27; --ink:#e6e9f0; --muted:#9ba2b1; --rule:#343b4a; --box:#232935;
+  --pen:#f0806f; --ok:#63d394; --hl:#4a3f12; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--desk);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 56px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--desk)}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--desk);max-width:860px;margin:0 auto;
+  display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;padding-block:12px}
+.timer{font-family:var(--f-mono);font-variant-numeric:tabular-nums;font-size:15px;display:flex;align-items:center;gap:8px}
+.timer.low{color:var(--pen)}
+.btn{font:inherit;font-size:15px;padding:8px 16px;border-radius:8px;border:1px solid var(--ink);background:var(--ink);color:var(--sheet);cursor:pointer}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--rule)}
+.btn:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--pen);outline-offset:2px}
+.sheet{max-width:860px;margin:0 auto;background:var(--sheet);border:1px solid var(--rule);border-radius:4px;
+  padding:clamp(18px,4vw,44px);display:flex;flex-direction:column;gap:34px;box-shadow:0 1px 0 var(--rule)}
+.head{display:flex;flex-direction:column;gap:12px;border-bottom:2px solid var(--ink);padding-bottom:14px}
+.head-top{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:baseline;justify-content:space-between}
+.head h1{font-size:clamp(20px,4vw,24px);margin:0;font-weight:700}
+.head h1 small{font-weight:400;color:var(--muted);font-size:15px;margin-left:8px}
+.namefield{display:flex;gap:8px;align-items:baseline}
+.namefield input{font:inherit;border:0;border-bottom:1px dotted var(--muted);background:transparent;color:var(--ink);width:150px;padding:2px 4px}
+.head-meta{display:flex;flex-wrap:wrap;gap:8px 28px;font-size:15px}
+.head-meta b{font-family:var(--f-hand);color:var(--pen);font-size:22px;font-weight:600;line-height:1}
+.summary{background:var(--box);border-radius:6px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.summary .big{font-family:var(--f-hand);color:var(--pen);font-size:34px;line-height:1}
+.summary ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:4px 16px;font-size:14px;font-variant-numeric:tabular-nums}
+.sec{display:flex;flex-direction:column;gap:14px}
+.sec-head{display:grid;grid-template-columns:28px 1fr;gap:6px}
+.sec-head .L{font-weight:700}
+.sec-head .ttl{min-width:0}
+.pts{align-self:flex-end;font-size:15px;font-weight:700}
+.pts .got{font-family:var(--f-hand);color:var(--pen);font-size:26px;font-weight:600;display:inline-block;min-width:1.4em;text-align:right}
+.n{color:var(--muted);font-variant-numeric:tabular-nums}
+u{text-decoration-thickness:1px;text-underline-offset:3px}
+.mark{font-family:var(--f-hand);font-size:24px;line-height:1;text-align:center}
+.mark .ok,.okc{color:var(--ok)} .mark .no,.noc{color:var(--pen)}
+.sol{font-family:var(--f-hand);color:var(--pen);font-size:21px;line-height:1.1;margin-left:6px;white-space:nowrap}
+.solline{font-family:var(--f-hand);color:var(--pen);font-size:21px;line-height:1.25;margin-top:4px}
+/* Tabellen mit Ankreuzspalten */
+.tbl{display:grid;border:1px solid var(--ink);border-radius:2px;overflow:hidden}
+.tbl>.row{display:grid;grid-template-columns:30px minmax(0,1fr) 62px 62px;border-top:1px solid var(--ink);align-items:stretch}
+.tbl>.row.h{border-top:0;background:var(--box);font-size:14px}
+.tbl>.row>*{padding:7px 8px;min-width:0}
+.tbl>.row>.c{border-left:1px solid var(--ink);display:flex;align-items:center;justify-content:center;gap:4px}
+.tbl.abc>.row{grid-template-columns:minmax(0,1fr) 62px 62px}
+.wrapm{display:grid;grid-template-columns:minmax(0,1fr) 30px;gap:6px;align-items:center}
+.wrapm>.mark{align-self:center}
+input[type=checkbox],input[type=radio]{width:20px;height:20px;accent-color:var(--ink);margin:0;cursor:pointer}
+input:disabled{cursor:default}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+/* A */
+.ga{display:grid;grid-template-columns:30px minmax(0,1fr) 54px 54px 30px;gap:10px 6px;align-items:center}
+.ga .colh{text-align:center;font-size:14px;color:var(--muted)}
+.ga label{display:flex;justify-content:center}
+/* D */
+.gd{display:grid;border:1px solid var(--ink)}
+.gd .row{display:grid;grid-template-columns:30px minmax(0,1.3fr) minmax(0,1fr) minmax(0,1fr) 30px;border-top:1px solid var(--ink);align-items:stretch}
+.gd .row:first-child{border-top:0}
+.gd .row>*{padding:7px 8px;min-width:0;display:flex;align-items:center}
+.gd .row>.o{border-left:1px solid var(--ink);gap:8px;cursor:pointer;overflow-wrap:anywhere}
+@media (max-width:600px){
+  .gd .row{grid-template-columns:30px minmax(0,1fr) 30px}
+  .gd .row>.t{grid-column:2/3}
+  .gd .row>.mark{grid-column:3;grid-row:1}
+  .gd .row>.o{grid-column:2/3;border-left:0;padding-top:2px;padding-bottom:4px}
+  .ga{grid-template-columns:24px minmax(0,1fr) 44px 44px 26px}
+  .tbl>.row{grid-template-columns:26px minmax(0,1fr) 50px 50px}
+  .tbl.abc>.row{grid-template-columns:minmax(0,1fr) 50px 50px}
+}
+/* Wort-Buttons (B, G, H) */
+.line{display:grid;grid-template-columns:30px minmax(0,1fr) 30px;gap:6px;align-items:start}
+.txt{line-height:2.1;min-width:0}
+.w{font:inherit;border:0;background:transparent;color:var(--ink);padding:1px 2px;margin:0 -1px;border-radius:4px;cursor:pointer;line-height:1.6}
+.w:hover:not(:disabled){background:var(--box)}
+.w.cap{color:var(--pen);font-weight:700}
+.w.comma::after{content:",";color:var(--pen);font-weight:700;font-size:1.15em}
+.w:disabled{cursor:default}
+.w.bad{background:var(--hl)}
+.edit{font:inherit;padding:1px 4px;border:1px solid var(--pen);border-radius:4px;background:var(--sheet);color:var(--pen);font-weight:700}
+/* E */
+.blank{font:inherit;min-width:4.2em;border:0;border-bottom:1.5px solid var(--ink);background:transparent;color:var(--ink);padding:0 6px;cursor:pointer;font-weight:700;line-height:1.5}
+.blank:hover:not(:disabled){background:var(--box)}
+.blank.wr{color:var(--pen);text-decoration:line-through}
+.blank.rt{color:var(--ok)}
+.fix{font-family:var(--f-hand);color:var(--pen);font-size:21px;margin:0 2px}
+/* F */
+.gf{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px 22px}
+.fi{display:grid;grid-template-columns:24px 36px minmax(0,1fr) 26px;gap:6px;align-items:center}
+.fi input{font:inherit;font-size:17px;border:0;border-bottom:1px solid var(--ink);background:transparent;color:var(--ink);padding:3px 2px;width:100%;min-width:0}
+.fi .hint{grid-column:2/5;font-size:13px;color:var(--muted);margin-top:-4px}
+.say{width:32px;height:32px;border-radius:50%;border:1px solid var(--rule);background:var(--box);color:var(--ink);cursor:pointer;font-size:13px}
+/* I */
+.groups{display:flex;flex-direction:column;gap:16px}
+.legend{font-size:14px;color:var(--muted)}
+.foot{display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--rule);padding-top:18px}
+.foot a{color:var(--ink)}
+@media (prefers-reduced-motion:no-preference){.w,.blank{transition:background .15s}}
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <div class="timer" id="timer"><span id="clock">40:00</span><button class="btn ghost" type="button" id="startBtn">Zeit starten</button></div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+    <button class="btn ghost" type="button" id="resetBtn">Neu beginnen</button>
+    <button class="btn" type="button" id="submitBtn">Abgeben</button>
+  </div>
+</div>
+
+<div class="sheet" id="sheet"></div>
+
+<script>
+/* ---------- Daten ---------- */
+const A=[
+ ["Das (s/S)chreiben fällt ihm schwer.","g"],
+ ["Wir gehen (s/S)amstags ins Hallenbad.","k"],
+ ["Sie erzählte uns nichts (n/N)eues.","g"],
+ ["Der Laden bleibt bis auf (w/W)eiteres geschlossen.","b"],
+ ["Vorgestern (n/N)acht gab es ein Gewitter.","g"],
+ ["Er spielte (t/T)rotz der Verletzung weiter.","k"],
+ ["Das (b/B)este wäre, wir gingen nach Hause.","g"],
+ ["Er hatte vergessen, die Tür zu (s/S)chliessen.","k"],
+ ["Im (f/F)reien ist es angenehm kühl.","g"],
+ ["Diese Aufgabe ist am (e/E)infachsten.","k"]];
+const B=[
+ "Die Luzerner Fasnacht ist bekannt: Arm und Reich feiern zusammen.",
+ "Der Genfer Koch erzählt allerlei Spannendes über das Kochen abends und am Wochenende.",
+ "Dir fiel nichts Klügeres ein, als die Hausaufgaben im Bus zu machen.",
+ "Ein Viertel der Gäste fand den ersten Gang den leckersten."];
+const BX=["","«abends» ist ein Adverb, darum klein.","","«den leckersten» bezieht sich auf «Gang», darum klein."];
+const C=[
+ ["Zahlwörter wie «die beiden» oder «die drei» werden kleingeschrieben.",true],
+ ["Paarformeln wie «Jung und Alt» werden immer kleingeschrieben.",false],
+ ["Ableitungen von Ortsnamen auf «-er» (z. B. Berner) schreibt man gross.",true],
+ ["Nach «zu» schreibt man Verben immer gross.",false]];
+const D=[
+ ["Wir zahlen den vollen ***.",["Tarif","Tarief"],0],
+ ["Die Reise war ein tolles ***.",["Erlebniss","Erlebnis"],1],
+ ["Er war ***, aber er überlebte.",["todkrank","totkrank"],0],
+ ["Wann *** ihr wieder zurück?",["seit","seid"],1],
+ ["Er räumte ***.",["widerwillig","wiederwillig"],0],
+ ["Sie hat sich fast ***.",["todgeärgert","totgeärgert"],1],
+ ["Im Spital liegen zwei ***.",["Babys","Babies"],0],
+ ["Wir besuchten zwei ***.",["Zirkuse","Zirkusse"],1],
+ ["Die *** singt am frühen Morgen.",["Lerche","Lärche"],0],
+ ["Die Arbeiter fuhren in die ***.",["Miene","Mine"],1],
+ ["Sie hat eine *** erlitten.",["Infektion","Infecktion"],0],
+ ["Wir *** die Kaffeebohnen.",["malen","mahlen"],1],
+ ["Wir haben die Kälte sofort ***.",["gespürt","gespührt"],0],
+ ["Die Polizei *** den Wagen.",["stopte","stoppte"],1],
+ ["Die *** sagte die Zukunft voraus.",["Wahrsagerin","Warsagerin"],0],
+ ["Der Lehrer hat es uns ***.",["eingebleut","eingebläut"],1]];
+const E=[
+ ["Ich weiss, _ _ Spiel, _ heute stattfindet, spannend wird.",["dass","das","das"]],
+ ["_ Haus, _ am See steht, _ gehört meinen Grosseltern.",["das","das","das"]],
+ ["Es ist wichtig, _ _ Wetter mitspielt, _ alle pünktlich sind und _ jeder _ Ziel kennt.",["dass","das","dass","dass","das"]],
+ ["Er hoffte, _ _ bald vorbei sei.",["dass","das"]]];
+const F=[["Attrappe","Nachbildung, nur zum Schein"],["Bataillon","militärische Einheit"],["Rhabarber","saures Gemüse für Kuchen"],["prophezeien","vorhersagen"],["Komitee","Ausschuss, Gremium"],["skurril","seltsam, verrückt"],["symmetrisch","auf beiden Seiten gleich"],["verheerend","katastrophal"]];
+const G=[
+ "Mein {4wöchiger|4-wöchiger} Kurs war voller {Erlebnise|Erlebnisse}: Kochen und Backen.",
+ "In den Ferien erlebten wir viel {schönes|Schönes}, nur die {Temparatur|Temperatur} war zu hoch.",
+ "Seid ihr bereit? Wir warten {seid|seit} einer Stunde und ihr {seit|seid} immer noch nicht da.",
+ "Im {Spanischen|spanischen} Restaurant bestellten wir zum Dessert zwei {Biskuit's|Biskuits}."];
+/* ",?" = Komma freigestellt */
+const H=[
+ "Ich schreibe dir, sobald ich Neuigkeiten habe, und freue mich schon darauf, von dir zu hören.",
+ "Der Arzt wollte wissen, seit wann ich Schmerzen habe und wo es genau wehtut.",
+ "Sie blieb zu Hause, weil sie Fieber hatte, und zwar ganze drei Tage.",
+ "Die Sitzung findet am Dienstag, 8. Mai,? um 14 Uhr im Raum B statt.",
+ "Wann der Film beginnt und wie lange er dauert, wusste keiner, aber die Kassiererin meinte, sie könne nachschauen.",
+ "Erstaunlich, dass sie gewonnen hat, obwohl sie müde, verletzt und unsicher war.",
+ "Nina, die zwei Jahre in Paris gewohnt hat, liest französische Romane, um, wie sie sagt, ihr Französisch nicht zu vergessen.",
+ "Wieso der Strom ausgefallen war, wusste niemand, nicht einmal der Elektriker als der zuständige Fachmann fand eine Erklärung.",
+ "Der Junge sass auf der Treppe, die Hände vor dem Gesicht, und weinte leise.",
+ "Die neue App wird von vielen, besonders von älteren Menschen, gern benutzt.",
+ "Beide, der Direktor, ein ehemaliger Lehrer, und seine Assistentin, begrüssten die Gäste.",
+ "Wir verkaufen unsere Produkte in mehreren Ländern, vor allem in Italien, Spanien und Portugal, sowie in Kanada.",
+ "Laut lachend, genau so, kam sie jeden Tag nach Hause.",
+ "Oh, das ist aber eine schöne Überraschung, Mama!",
+ "Das Mädchen, vom Gewitter erschreckt, rannte ins Haus, ohne die Tür zu schliessen.",
+ "Diese schon lange geplante Reise findet nun endlich statt, und zwar im kommenden Sommer."];
+const I=[
+ [["Sie spricht sowohl Deutsch, als auch Englisch.","Sie spricht sowohl Deutsch als auch Englisch.","Sie spricht, sowohl Deutsch als auch Englisch."],1],
+ [["Er schrieb den Aufsatz in einer Stunde und das ohne Fehler.","Er schrieb den Aufsatz, in einer Stunde, und das ohne Fehler.","Er schrieb den Aufsatz in einer Stunde, und das ohne Fehler."],2],
+ [["Die Trainerin fragte, wer Zeit habe und wer mitfahren wolle.","Die Trainerin fragte, wer Zeit habe, und wer mitfahren wolle.","Die Trainerin, fragte, wer Zeit habe und wer mitfahren wolle."],0],
+ [["Von Herrn Meier, unserem Hauswart haben wir den Schlüssel bekommen.","Von Herrn Meier, unserem Hauswart, haben wir den Schlüssel bekommen.","Von Herrn Meier unserem Hauswart, haben wir den Schlüssel bekommen."],1],
+ [["Basel ist eine alte, schweizerische Stadt und ein Kulturzentrum.","Basel ist eine alte schweizerische Stadt und ein Kulturzentrum.","Basel ist eine alte schweizerische Stadt, und ein Kulturzentrum."],1],
+ [["Der Test war schwierig, doch alle haben bestanden.","Der Test war schwierig doch alle haben bestanden.","Der Test war, schwierig, doch alle haben bestanden."],0]];
+const J=[
+ ["Vor «dass», «weil» und «obwohl» steht ein Komma.",true],
+ ["Bei «sowohl … als auch» setzt man ein Komma vor «als auch».",false],
+ ["Ein eingeschobener Nebensatz wird vorne und hinten mit Komma abgetrennt.",true],
+ ["Vor «und zwar» steht kein Komma.",false],
+ ["Ausrufe wie «Oh» oder «Ach» werden mit Komma abgetrennt.",true]];
+
+/* ---------- Helfer ---------- */
+const $=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmt=p=>String(Math.round(p*2)/2).replace(".",",");
+const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
+const WORD=/([A-Za-zÄÖÜäöüß0-9'’\-]+)/;
+let sheet=document.getElementById("sheet");
+let graders=[],graded=false,secScores=[];
+
+function mark(el,ok){el.innerHTML=ok?'<span class="ok">✓</span>':'<span class="no">✗</span>'}
+function addSol(el,text){const s=$("span","sol");s.textContent=text;el.appendChild(s)}
+
+function section(L,title,instr,max){
+  const s=$("section","sec");
+  s.appendChild($("div","sec-head",`<span class="L">${L}</span><div class="ttl"><b>${title}:</b> ${instr}</div>`));
+  const body=$("div","sec-body");
+  const pts=$("div","pts",`<span class="got">….</span>/${max} P.`);
+  s.append(body,pts);sheet.appendChild(s);
+  return {body,max,L,title,set:p=>{pts.querySelector(".got").textContent=fmt(p)}};
+}
+function choice(name,label){
+  const l=$("label");const i=$("input");i.type="radio";i.name=name;i.id=name+"-"+label;
+  l.append(i,$("span","sr",label));return {l,i};
+}
+function rfTable(items,prefix,numbered){
+  const t=$("div","tbl"+(numbered?"":" abc"));
+  t.appendChild($("div","row h",(numbered?"<span></span>":"")+'<span></span><span class="c">richtig</span><span class="c">falsch</span>'));
+  const rows=items.map((txt,i)=>{
+    const r=$("div","row");
+    if(numbered)r.appendChild($("span","n",(i+1)+"."));
+    const cell=$("div","wrapm");const tx=$("span","",esc(txt));const m=$("span","mark");cell.append(tx,m);r.appendChild(cell);
+    const a=choice(prefix+i,"richtig"),b=choice(prefix+i,"falsch");
+    const ca=$("span","c");ca.appendChild(a.l);const cb=$("span","c");cb.appendChild(b.l);
+    r.append(ca,cb);t.appendChild(r);
+    return {r:a.i,f:b.i,m,tx};
+  });
+  return {t,rows};
+}
+
+/* ---------- Aufbau ---------- */
+function build(){
+  sheet.innerHTML="";graders=[];graded=false;secScores=[];
+  const head=$("div","head");
+  head.innerHTML=`<div class="head-top"><h1>Übungsprüfung bfK<small>Rechtschreibung · Serie 3</small></h1>
+    <div class="namefield"><label for="name">Name:</label><input id="name" autocomplete="off"><span>Klasse: G1</span></div></div>
+    <div class="head-meta"><span>Zeit: 40 Minuten</span><span>Hilfsmittel: keine</span><span>Punkte: <b id="totalPts">….</b>/60</span><span>Note: <b id="note">….</b></span></div>`;
+  sheet.appendChild(head);
+  const summary=$("div","summary");summary.id="summary";summary.hidden=true;sheet.appendChild(summary);
+
+  /* A */
+  {const S=section("A","Gross-/Kleinschreibung","Wie werden die unterstrichenen Wörter geschrieben? Kreuzen Sie die korrekte Antwort an. Machen Sie zwei Kreuze, wenn beide Schreibweisen richtig sind.",5);
+   const g=$("div","ga");g.innerHTML='<span></span><span></span><span class="colh">klein</span><span class="colh">gross</span><span></span>';
+   const rows=A.map(([t,a],i)=>{
+     const tx=$("span","",esc(t).replace(/(\([^)]*\)[^\s,.!?]*)/,"<u>$1</u>"));
+     const mk=(s)=>{const l=$("label");const c=$("input");c.type="checkbox";c.id="a"+i+s;l.append(c,$("span","sr",s==="k"?"klein":"gross"));return {l,c}};
+     const k=mk("k"),gr=mk("g");const m=$("span","mark");
+     g.append($("span","n",(i+1)+"."),tx,k.l,gr.l,m);
+     return {a,k:k.c,g:gr.c,m,tx};
+   });
+   S.body.appendChild(g);
+   graders.push(()=>{let p=0;rows.forEach(r=>{const ok=r.k.checked===(r.a!=="g")&&r.g.checked===(r.a!=="k");if(ok)p+=.5;mark(r.m,ok);if(!ok)addSol(r.tx,r.a==="b"?"beide":r.a==="k"?"klein":"gross")});S.set(p);return [S,p]});
+  }
+  /* B */
+  {const S=section("B","Gross-/Kleinschreibung","Setzen Sie die fehlenden Grossbuchstaben ein. <span class='legend'>(Tippe auf ein Wort, um den Anfangsbuchstaben gross zu machen.)</span>",4);
+   const wrap=$("div","",null);wrap.style.cssText="display:flex;flex-direction:column;gap:10px";
+   const rows=B.map((sol,i)=>{
+     const line=$("div","line");const txt=$("div","txt");const m=$("span","mark");
+     const words=[];
+     sol.split(WORD).forEach((part,j)=>{
+       if(j%2===1){const low=part.toLowerCase();const b=$("button","w");b.type="button";b.textContent=low;
+         b.onclick=()=>{if(graded)return;const up=b.textContent===low;b.textContent=up?cap(low):low;b.classList.toggle("cap",up)};
+         txt.appendChild(b);words.push({b,sol:part});}
+       else if(part)txt.appendChild(document.createTextNode(part));
+     });
+     line.append($("span","n",(i+1)+"."),txt,m);wrap.appendChild(line);
+     return {words,m,txt,sol,i};
+   });
+   S.body.appendChild(wrap);
+   graders.push(()=>{let p=0;rows.forEach(r=>{let ok=true;r.words.forEach(w=>{w.b.disabled=true;if(w.b.textContent!==w.sol){ok=false;w.b.classList.add("bad")}});
+     if(ok)p++;mark(r.m,ok);if(!ok){const s=$("div","solline");s.textContent=r.sol+(BX[r.i]?"  ("+BX[r.i]+")":"");r.txt.appendChild(s)}});S.set(p);return [S,p]});
+  }
+  /* C */
+  {const S=section("C","Gross-/Kleinschreibung","Kreuzen Sie an, ob die Aussagen richtig oder falsch sind.",4);
+   const {t,rows}=rfTable(C.map(x=>x[0]),"c",true);S.body.appendChild(t);
+   graders.push(()=>{let p=0;rows.forEach((r,i)=>{const ok=(C[i][1]?r.r:r.f).checked;if(ok)p++;mark(r.m,ok);if(!ok)addSol(r.tx,C[i][1]?"richtig":"falsch")});S.set(p);return [S,p]});
+  }
+  /* D */
+  {const S=section("D","Schreibung der Laute","Kreuzen Sie an, was in den folgenden Sätzen anstelle von *** eingesetzt werden soll. Es gibt nur eine korrekte Lösung pro Satz.",8);
+   const g=$("div","gd");
+   const rows=D.map(([t,o,a],i)=>{
+     const r=$("div","row");const m=$("span","mark");
+     r.append($("span","n",(i+1)+"."),$("span","t",esc(t)));
+     const ins=o.map((opt,j)=>{const l=$("label","o");const inp=$("input");inp.type="radio";inp.name="d"+i;inp.id="d"+i+"-"+j;l.append(inp,document.createTextNode(opt));r.appendChild(l);return {inp,l}});
+     r.appendChild(m);g.appendChild(r);
+     return {ins,a,m};
+   });
+   S.body.appendChild(g);
+   graders.push(()=>{let p=0;rows.forEach(r=>{const ok=r.ins[r.a].inp.checked;if(ok)p+=.5;mark(r.m,ok);r.ins[r.a].l.classList.add("okc")});S.set(p);return [S,p]});
+  }
+  /* E */
+  {const S=section("E","Das oder dass?","Setzen Sie das richtige Wort ein. <span class='legend'>(Tippe auf eine Lücke: das → dass → leer.)</span>",4);
+   const wrap=$("div");wrap.style.cssText="display:flex;flex-direction:column;gap:14px";
+   const rows=E.map(([t,a],i)=>{
+     const line=$("div","line");const txt=$("div","txt");const m=$("span","mark");
+     const bits=t.split("_");const blanks=[];
+     bits.forEach((bit,j)=>{
+       if(bit)txt.appendChild(document.createTextNode(bit));
+       if(j<bits.length-1){const start=j===0&&bits[0]==="";const b=$("button","blank");b.type="button";b.dataset.v="";b.textContent=" ";
+         b.setAttribute("aria-label","Lücke "+(j+1));
+         b.onclick=()=>{if(graded)return;const cyc=["","das","dass"];const n=cyc[(cyc.indexOf(b.dataset.v)+1)%3];b.dataset.v=n;b.textContent=n?(start?cap(n):n):" "};
+         txt.appendChild(b);blanks.push({b,a:a[j],start});}
+     });
+     line.append($("span","n",(i+1)+"."),txt,m);wrap.appendChild(line);
+     return {blanks,m};
+   });
+   S.body.appendChild(wrap);
+   graders.push(()=>{let p=0;rows.forEach(r=>{let ok=true;r.blanks.forEach(x=>{x.b.disabled=true;if(x.b.dataset.v===x.a)x.b.classList.add("rt");else{ok=false;x.b.classList.add("wr");if(!x.b.dataset.v)x.b.textContent="—";const f=$("span","fix");f.textContent=x.start?cap(x.a):x.a;x.b.after(f)}});if(ok)p++;mark(r.m,ok)});S.set(p);return [S,p]});
+  }
+  /* F */
+  {const canSay="speechSynthesis" in window;
+   const S=section("F","Teufelswörter","Schreiben Sie die diktierten Wörter auf die Zeilen (½ Punkt pro Wort)."+(canSay?" <span class='legend'>(▶ spielt das Wort ab. Die Bedeutung darunter hilft, falls kein Ton kommt.)</span>":""),4);
+   const g=$("div","gf");
+   const rows=F.map(([w,h],i)=>{
+     const it=$("div","fi");const inp=$("input");inp.id="f"+i;inp.autocomplete="off";inp.spellcheck=false;inp.setAttribute("autocapitalize","off");inp.setAttribute("autocorrect","off");inp.setAttribute("aria-label","Wort "+(i+1));
+     const say=$("button","say","▶");say.type="button";say.setAttribute("aria-label","Wort "+(i+1)+" anhören");
+     if(canSay)say.onclick=()=>{try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(w);u.lang="de-DE";u.rate=.8;speechSynthesis.speak(u)}catch(e){}};else say.style.visibility="hidden";
+     const m=$("span","mark");
+     it.append($("span","n",(i+1)+"."),say,inp,m,$("span","hint",esc(h)));g.appendChild(it);
+     return {inp,w,m,it};
+   });
+   S.body.appendChild(g);
+   graders.push(()=>{let p=0;rows.forEach(r=>{r.inp.disabled=true;const ok=r.inp.value.trim()===r.w;if(ok)p+=.5;mark(r.m,ok);if(!ok){const h=r.it.querySelector(".hint");h.innerHTML=`<span class="sol" style="margin:0">${esc(r.w)}</span>`}});S.set(p);return [S,p]});
+  }
+  /* G */
+  {const S=section("G","Alle Rechtschreibregeln","Jeder Satz enthält <b>zwei</b> Rechtschreibfehler; korrigieren Sie! <span class='legend'>(Tippe auf ein falsches Wort und schreibe es richtig.)</span>",4);
+   const wrap=$("div");wrap.style.cssText="display:flex;flex-direction:column;gap:14px";
+   const rows=G.map((s,i)=>{
+     const line=$("div","line");const txt=$("div","txt");const m=$("span","mark");const toks=[];
+     const re=/\{([^|}]+)\|([^}]+)\}|([A-Za-zÄÖÜäöüß0-9'’\-]+)|([^A-Za-zÄÖÜäöüß0-9'’\-{]+)/g;let x;
+     while((x=re.exec(s))){
+       if(x[4]){txt.appendChild(document.createTextNode(x[4]));continue}
+       const tok={w:x[1]||x[3],fix:x[1]?x[2]:null,val:null};
+       const b=$("button","w");b.type="button";b.textContent=tok.w;tok.el=b;
+       const toEdit=()=>{if(graded)return;const inp=$("input","edit");inp.value=tok.val??tok.w;inp.size=Math.max(inp.value.length+1,4);inp.spellcheck=false;inp.setAttribute("autocapitalize","off");
+         inp.oninput=()=>inp.size=Math.max(inp.value.length+1,4);
+         inp.onblur=()=>{const v=inp.value.trim();if(!v||v===tok.w){tok.val=null;inp.replaceWith(b);tok.el=b}else tok.val=v};
+         inp.onkeydown=e=>{if(e.key==="Enter")inp.blur()};
+         b.replaceWith(inp);tok.el=inp;inp.focus();inp.select()};
+       b.onclick=toEdit;txt.appendChild(b);toks.push(tok);
+     }
+     line.append($("span","n",(i+1)+"."),txt,m);wrap.appendChild(line);
+     return {toks,m};
+   });
+   S.body.appendChild(wrap);
+   graders.push(()=>{let p=0;rows.forEach(r=>{let sp=0;
+     r.toks.forEach(t=>{const cur=t.el.tagName==="INPUT"?(t.el.value.trim()||t.w):t.w;const changed=cur!==t.w;
+       const show=$("span","");
+       if(t.fix){if(cur===t.fix){sp+=.5;show.className="okc";show.style.fontWeight="700";show.textContent=t.fix}
+         else{show.innerHTML=`<span class="w bad" style="cursor:default">${esc(cur)}</span><span class="fix">${esc(t.fix)}</span>`}}
+       else if(changed){sp-=.5;show.innerHTML=`<span class="noc" style="text-decoration:line-through">${esc(cur)}</span><span class="fix">${esc(t.w)}</span>`}
+       else show.textContent=t.w;
+       t.el.replaceWith(show);t.el=show});
+     sp=Math.max(0,sp);p+=sp;r.m.innerHTML=sp===1?'<span class="ok">✓</span>':`<span class="no">${fmt(sp)}</span>`});S.set(p);return [S,p]});
+  }
+  /* H */
+  {const S=section("H","Kommasetzung","Setzen Sie deutlich sichtbar die fehlenden Kommas. Jeder Satz braucht mindestens ein Komma (1 Punkt pro Satz mit korrekter Kommasetzung, keine Teilpunkte). <span class='legend'>(Tippe auf das Wort, nach dem ein Komma kommt.)</span>",16);
+   const wrap=$("div");wrap.style.cssText="display:flex;flex-direction:column;gap:12px";
+   const rows=H.map((src,i)=>{
+     const line=$("div","line");const txt=$("div","txt");const m=$("span","mark");
+     const chunks=src.split(" ");const gaps=[];
+     chunks.forEach((c,j)=>{
+       let need="no",w=c;
+       if(c.endsWith(",?")){need="opt";w=c.slice(0,-2)}else if(c.endsWith(",")){need="req";w=c.slice(0,-1)}
+       if(j<chunks.length-1){const b=$("button","w");b.type="button";b.textContent=w;b.onclick=()=>{if(graded)return;b.classList.toggle("comma")};txt.appendChild(b);gaps.push({b,need,w});txt.appendChild(document.createTextNode(" "))}
+       else txt.appendChild(document.createTextNode(w));
+     });
+     line.append($("span","n",(i+1)+"."),txt,m);wrap.appendChild(line);
+     return {gaps,m,txt,src};
+   });
+   S.body.appendChild(wrap);
+   graders.push(()=>{let p=0;rows.forEach(r=>{let ok=true;r.gaps.forEach(g=>{g.b.disabled=true;const on=g.b.classList.contains("comma");if((g.need==="req"&&!on)||(g.need==="no"&&on)){ok=false;g.b.classList.add("bad")}});
+     if(ok)p++;mark(r.m,ok);if(!ok){const s=$("div","solline");s.textContent=r.src.replace(/,\?/g,"(,)");r.txt.appendChild(s)}});S.set(p);return [S,p]});
+  }
+  /* I */
+  {const S=section("I","Kommasetzung überprüfen","Markieren Sie die Sätze mit der korrekten Kommasetzung als «richtig» und die übrigen als «falsch». Pro Aufgabe ist jeweils nur ein Satz richtig.",6);
+   const wrap=$("div","groups");
+   const groups=I.map(([sents,a],gi)=>{const {t,rows}=rfTable(sents,"i"+gi+"-",false);wrap.appendChild(t);return {rows,a}});
+   S.body.appendChild(wrap);
+   graders.push(()=>{let p=0;groups.forEach(g=>{let all=true;g.rows.forEach((r,k)=>{const want=k===g.a;const ok=(want?r.r:r.f).checked;if(!ok)all=false;mark(r.m,ok);if(!ok)addSol(r.tx,want?"richtig":"falsch")});if(all)p++});S.set(p);return [S,p]});
+  }
+  /* J */
+  {const S=section("J","Kommaregeln überprüfen","Markieren Sie die Regeln als «richtig» oder «falsch».",5);
+   const {t,rows}=rfTable(J.map(x=>x[0]),"j",true);S.body.appendChild(t);
+   graders.push(()=>{let p=0;rows.forEach((r,i)=>{const ok=(J[i][1]?r.r:r.f).checked;if(ok)p++;mark(r.m,ok);if(!ok)addSol(r.tx,J[i][1]?"richtig":"falsch")});S.set(p);return [S,p]});
+  }
+  const foot=$("div","foot",`<span class="legend">Zum Nachlernen:</span>
+    <a href="deutsch-rechtschreibung-bfk.html">Rechtschreibung BFK (Theorie und Übungen)</a>
+    <a href="deutsch-kommasetzung.html">Kommasetzung</a>
+    <a href="deutsch-uebungspruefung-bfk.html">Übungsprüfung bfK, Serie 1</a>
+    <a href="deutsch-uebungspruefung-bfk-2.html">Übungsprüfung bfK, Serie 2</a>
+    <a href="deutsch-dauerbrenner.html">Dauerbrenner-Trainer</a>`);
+  sheet.appendChild(foot);
+}
+
+/* ---------- Auswertung ---------- */
+function grade(){
+  if(graded)return;
+  const res=graders.map(g=>g());graded=true;
+  sheet.querySelectorAll("input").forEach(i=>{if(i.id!=="name")i.disabled=true});
+  sheet.querySelectorAll("button.w,button.blank").forEach(b=>b.disabled=true);
+  const tot=res.reduce((s,[,p])=>s+p,0);
+  const note=Math.round((tot/60*5+1)*10)/10, half=Math.round((tot/60*5+1)*2)/2;
+  document.getElementById("totalPts").textContent=fmt(tot);
+  document.getElementById("note").textContent=String(half).replace(".",",");
+  const sm=document.getElementById("summary");sm.hidden=false;
+  sm.innerHTML=`<div><span class="big">${fmt(tot)} / 60</span> &nbsp;Note ${String(half).replace(".",",")} <span class="legend">(genau ${String(note).replace(".",",")})</span></div>
+   <ul>${res.map(([S,p])=>`<li>${S.L} ${S.title.replace("Gross-/Kleinschreibung","Gross/Klein")}: <b>${fmt(p)}/${S.max}</b></li>`).join("")}</ul>
+   <span class="legend">Rote Handschrift = Lösung. Note = Punkte ÷ 60 × 5 + 1.</span>`;
+  stopTimer();
+  document.getElementById("submitBtn").hidden=true;
+  try{window.Lernregal&&Lernregal.fortschritt(Math.round(tot/60*100),"Serie 3: "+fmt(tot)+"/60, Note "+String(half).replace(".",","))}catch(e){}
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+/* ---------- Timer ---------- */
+let left=40*60,tick=null;
+const clock=document.getElementById("clock"),startBtn=document.getElementById("startBtn");
+function draw(){clock.textContent=String(Math.floor(left/60)).padStart(2,"0")+":"+String(left%60).padStart(2,"0");document.getElementById("timer").classList.toggle("low",left<=300)}
+function stopTimer(){clearInterval(tick);tick=null;startBtn.hidden=true}
+startBtn.onclick=()=>{if(tick)return;startBtn.hidden=true;tick=setInterval(()=>{left--;draw();if(left<=0){stopTimer();grade()}},1000)};
+document.getElementById("submitBtn").onclick=grade;
+document.getElementById("resetBtn").onclick=()=>{clearInterval(tick);tick=null;left=40*60;draw();startBtn.hidden=false;document.getElementById("submitBtn").hidden=false;build();window.scrollTo({top:0})};
+
+build();draw();
+</script>
+
+<script src="../regal.js" defer></script>
+</body>
+</html>
