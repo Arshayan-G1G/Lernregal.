@@ -33,7 +33,7 @@
     a.textContent = "← Lernregal";
     a.setAttribute("aria-label", "Zurück zum Lernregal");
     a.style.cssText = "position:fixed;left:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:2147483000;" +
-      "font:600 14px/1 system-ui,-apple-system,'Segoe UI',sans-serif;color:#fff;background:rgba(20,22,28,.9);" +
+      "font:650 14px/1 Archivo,system-ui,-apple-system,'Segoe UI',sans-serif;color:#F1F2EE;background:rgba(23,32,54,.92);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);" +
       "padding:10px 14px;border-radius:999px;text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.25)";
     document.body.appendChild(a);
   }

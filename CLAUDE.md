@@ -34,6 +34,10 @@ Zeile aus `MODULE` löschen und die Datei aus `module/` entfernen. Nur wenn der 
 Besucher können über das Formular «Modul anfragen» in `index.html` Themen wünschen. Die Anfragen gehen per Web3Forms als E-Mail an den Betreiber.
 Der Schlüssel steht in `const ANFRAGE_KEY` (kein Geheimnis, darf öffentlich sein). Ist er leer, ist das Formular ausgeblendet.
 
+## Aussehen
+
+Oben steht das Regal: Jedes Modul aus `MODULE` wird automatisch als Buchrücken gezeichnet (Farbe = Fach, dünne Hefte = Übungsprüfungen, gelbes Lesezeichen = neu, Füllstand = «Dein Stand»). Darunter der Katalog mit Filter, Suche (Taste `/`) und den ausklappbaren Übungsprüfungen. Hell/Dunkel lässt sich oben rechts umschalten. Für ein neues Modul muss am Design nichts angepasst werden.
+
 ## regal.js
 
 Gemeinsames Script für Regal und Module: Zurück-Button in Modulen, `Lernregal.fortschritt()`, Besucherzähler.
