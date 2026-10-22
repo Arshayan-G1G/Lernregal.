@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Urgeschichte & Ägypten</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:wght@500;700;800&family=Alegreya+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: schmale Lernspalte, sticky Kapitel-Leiste oben, Kapitel als Abschnitte mit Nil-blauer Kante */
+:root{
+  --bg:#f3f5f6; --surface:#ffffff; --fg:#1d2428; --muted:#5b6870; --line:#d7dee2;
+  --nile:#1f6f8b; --nile-soft:#e2eff4; --sand:#b5852a; --sand-soft:#f6eedb;
+  --ok:#2f7d4f; --ok-soft:#e3f2e8; --bad:#b23b3b; --bad-soft:#f7e3e3;
+  --display:"Alegreya", Georgia, serif; --body:"Alegreya Sans", "Segoe UI", system-ui, sans-serif; --mono:"JetBrains Mono", ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12181b; --surface:#1a2226; --fg:#e4eaed; --muted:#9aa8af; --line:#2d393f;
+  --nile:#5fb3d1; --nile-soft:#183039; --sand:#d9a94c; --sand-soft:#2c2618;
+  --ok:#6cc58f; --ok-soft:#173023; --bad:#e57b7b; --bad-soft:#371c1c; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12181b; --surface:#1a2226; --fg:#e4eaed; --muted:#9aa8af; --line:#2d393f;
+  --nile:#5fb3d1; --nile-soft:#183039; --sand:#d9a94c; --sand-soft:#2c2618;
+  --ok:#6cc58f; --ok-soft:#173023; --bad:#e57b7b; --bad-soft:#371c1c; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.6}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+.wrap{max-width:760px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:8px 64px}
+header.top{padding-block:28px 12px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--sand)}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(32px,7vw,46px);line-height:1.1;margin:6px 0 8px;text-wrap:balance}
+.lead{color:var(--muted);margin:0}
+nav.chap{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line);margin:0 calc(-1*max(16px,env(safe-area-inset-left,0px)));padding:8px max(16px,env(safe-area-inset-left,0px));display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+nav.chap a{flex:none;font-size:14px;font-weight:500;color:var(--fg);text-decoration:none;padding:5px 11px;border-radius:999px;border:1px solid var(--line)}
+nav.chap a:hover,nav.chap a:focus-visible{border-color:var(--nile);color:var(--nile);outline:none}
+section{margin-top:40px;scroll-margin-top:64px}
+h2{font-family:var(--display);font-weight:700;font-size:28px;line-height:1.2;margin:0 0 4px;text-wrap:balance;display:flex;gap:10px;align-items:baseline}
+h2 .n{font-family:var(--mono);font-size:13px;color:var(--nile);font-weight:600}
+h3{font-family:var(--display);font-size:20px;margin:22px 0 4px}
+p{margin:8px 0}
+ul{padding-left:20px;margin:8px 0}
+li{margin:3px 0}
+.check{font-size:14px;color:var(--muted);margin:0 0 10px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:12px 0}
+.tip{background:var(--sand-soft);border-left:3px solid var(--sand);border-radius:4px;padding:10px 14px;margin:14px 0}
+.tip b{color:var(--sand)}
+.tablewrap{overflow-x:auto;margin:12px 0;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:15px;min-width:520px}
+th,td{text-align:left;vertical-align:top;padding:9px 12px;border-bottom:1px solid var(--line)}
+th{font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);font-weight:700}
+tr:last-child td{border-bottom:0}
+td.t{font-family:var(--mono);font-size:13px;white-space:nowrap;color:var(--nile);font-variant-numeric:tabular-nums}
+/* Zeitstrahl */
+.tl{list-style:none;padding:0;margin:14px 0;border-left:2px solid var(--nile);}
+.tl li{position:relative;padding:0 0 12px 18px;margin:0}
+.tl li::before{content:"";position:absolute;left:-6px;top:8px;width:10px;height:10px;border-radius:50%;background:var(--surface);border:2px solid var(--nile)}
+.tl .d{font-family:var(--mono);font-size:13px;color:var(--nile);display:block;font-variant-numeric:tabular-nums}
+/* Diagramm */
+.diagram{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;margin:12px 0}
+.flow{display:grid;gap:8px;min-width:0}
+.node{border:1.5px solid var(--nile);background:var(--nile-soft);border-radius:8px;padding:7px 11px;font-weight:500;font-size:15px}
+.node.sand{border-color:var(--sand);background:var(--sand-soft)}
+.node small{display:block;color:var(--muted);font-weight:400;font-size:13px}
+.arrow{color:var(--muted);font-size:13px;padding-left:14px;font-family:var(--mono)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media (max-width:520px){.row2{grid-template-columns:1fr}}
+/* Pyramide */
+.pyr{display:grid;gap:4px;justify-items:center;margin:14px 0}
+.pyr div{text-align:center;padding:6px 8px;border-radius:4px;background:var(--sand-soft);border:1px solid var(--sand);font-size:15px;max-width:100%}
+/* Quiz */
+.q{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:12px 0}
+.q .qt{font-weight:700;margin:0 0 8px}
+.q .qn{font-family:var(--mono);font-size:12px;color:var(--nile);margin-right:6px}
+.opts{display:grid;gap:6px}
+.opts button{font:inherit;font-size:16px;text-align:left;padding:8px 12px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--fg);cursor:pointer}
+.opts button:hover:not(:disabled){border-color:var(--nile)}
+.opts button:focus-visible{outline:2px solid var(--nile);outline-offset:1px}
+.opts button.right{background:var(--ok-soft);border-color:var(--ok)}
+.opts button.wrong{background:var(--bad-soft);border-color:var(--bad)}
+.opts button:disabled{cursor:default}
+.expl{font-size:15px;color:var(--muted);margin-top:8px}
+.score{position:sticky;bottom:env(safe-area-inset-bottom,0px);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:16px}
+.score b{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.btn{font:inherit;font-size:15px;font-weight:700;padding:7px 14px;border-radius:8px;border:0;background:var(--nile);color:var(--surface);cursor:pointer}
+details.open-q{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:10px 0}
+details.open-q summary{cursor:pointer;font-weight:700}
+details.open-q[open] summary{margin-bottom:6px}
+.src{font-size:13px;color:var(--muted)}
+.src a{color:var(--nile)}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+html{scroll-behavior:smooth}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+<header class="top">
+  <div class="eyebrow">Geschichte · Prüfungsvorbereitung</div>
+  <h1>Urgeschichte &amp; Ägypten</h1>
+  <p class="lead">Alles zu den 15 Lernzielen deines Selbsteinschätzungsbogens: Epochen, Steinzeit, Archäologie, Neolithisierung, Ötzi, der Nil, die ägyptische Gesellschaft, Totenkult, Hochkulturen und Quellenkritik. Am Schluss ein Quiz.</p>
+</header>
+
+<nav class="chap" aria-label="Kapitel">
+  <a href="#epochen">Epochen</a><a href="#steinzeit">Steinzeit</a><a href="#archaeologie">Archäologie</a><a href="#neolithisierung">Neolithisierung</a><a href="#diagramm">Wirkungsdiagramm</a><a href="#oetzi">Ötzi</a><a href="#nil">Nil</a><a href="#gesellschaft">Gesellschaft</a><a href="#religion">Totenkult</a><a href="#hochkulturen">Hochkulturen</a><a href="#quellen">Quellen</a><a href="#quiz">Quiz</a>
+</nav>
+
+<section id="epochen">
+  <h2><span class="n">LZ 1–2</span>Epochen und Zeitstrahl</h2>
+  <ul class="tl">
+    <li><span class="d">ca. 2 Mio. J.</span>Erste Menschen in Afrika (u. a. Homo erectus) · Beginn Altsteinzeit (Paläolithikum)</li>
+    <li><span class="d">ca. 300 000 J.</span>Homo sapiens entsteht in Afrika</li>
+    <li><span class="d">ca. 400 000–40 000 J.</span>Neandertaler, nur in Europa (und Vorderasien)</li>
+    <li><span class="d">ca. 45 000 J.</span>Homo sapiens erreicht Europa · Höhlenmalereien, Schmuck</li>
+    <li><span class="d">ca. 17 000 v. Chr.</span>Schweizer Mittelland wird eisfrei</li>
+    <li><span class="d">ca. 11 000 J. (≈ 9500 v. Chr.)</span>Ende der Eiszeit · Mittelsteinzeit (Mesolithikum) · im Fruchtbaren Halbmond beginnt die Landwirtschaft</li>
+    <li><span class="d">ab ca. 5500 v. Chr.</span>Jungsteinzeit (Neolithikum) in Mitteleuropa: Bauern, Dörfer, Keramik</li>
+    <li><span class="d">ca. 3300 v. Chr.</span>Ötzi lebt (späte Jungsteinzeit / Kupferzeit)</li>
+    <li><span class="d">ca. 3200–3000 v. Chr.</span>Ägypten: Hieroglyphenschrift, Reichseinigung · Ende der Urgeschichte, Beginn der Hochkulturen</li>
+    <li><span class="d">ab 2200 v. Chr.</span>Bronzezeit in Europa</li>
+    <li><span class="d">ab ca. 800 v. Chr.</span>Eisenzeit · Kelten</li>
+  </ul>
+  <div class="tip"><b>Urgeschichte vs. Geschichte:</b> Urgeschichte ist die Zeit <i>ohne schriftliche Quellen</i>. Wir kennen sie nur über archäologische Funde. Mit der Schrift beginnt die «Geschichte» im engeren Sinn.</div>
+  <h3>Warum Epochen Konstrukte sind (LZ 2)</h3>
+  <ul>
+    <li>Epochen wurden <b>nachträglich</b> von Historikern festgelegt, die Menschen damals kannten diese Begriffe nicht.</li>
+    <li>Übergänge sind <b>fliessend</b>: Die Neolithisierung dauerte Jahrtausende.</li>
+    <li>Epochen gelten <b>nicht überall gleichzeitig</b>: Ackerbau im Nahen Osten ab ca. 9500 v. Chr., in der Schweiz erst ab ca. 5500 v. Chr.</li>
+    <li>Sie sind nach einem <b>Merkmal</b> benannt (z. B. Material: Stein, Bronze, Eisen) und blenden anderes aus. Sie sind oft europäisch gedacht.</li>
+    <li>Nutzen: Sie ordnen und vereinfachen, damit man über Zeiträume sprechen kann.</li>
+  </ul>
+</section>
+
+<section id="steinzeit">
+  <h2><span class="n">LZ 3, 5, 6</span>Die Epochen der Urgeschichte</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Epoche</th><th>Wirtschaft</th><th>Wohnen &amp; Leben</th><th>Typisch</th></tr></thead>
+    <tbody>
+      <tr><td><b>Altsteinzeit</b><br><span class="src">Paläolithikum</span></td><td>Aneignend: jagen, sammeln, fischen</td><td>Nomaden in kleinen Gruppen, Zelte, Höhlen; folgen den Rentierherden</td><td>Faustkeil, Feuer, Speerschleuder, Hund als erstes Haustier, Höhlenmalerei, Schmuck, Bestattungen</td></tr>
+      <tr><td><b>Mittelsteinzeit</b><br><span class="src">Mesolithikum</span></td><td>Weiterhin Jäger und Sammler</td><td>Dichte Wälder mit standorttreuen Tieren (Hirsch, Reh, Wildschwein) → kürzere Wege, erste Siedlungen</td><td>Pfeil und Bogen, kleine Steinklingen; Übergangsphase</td></tr>
+      <tr><td><b>Jungsteinzeit</b><br><span class="src">Neolithikum</span></td><td>Produzierend: Ackerbau, Viehzucht</td><td>Sesshaft, Holz- und Lehmhäuser, Dörfer an Seen und Flüssen (Pfahlbauten)</td><td>Keramik, geschliffene Steinbeile, Vorräte, Besitz</td></tr>
+      <tr><td><b>Bronze- &amp; Eisenzeit</b></td><td>Landwirtschaft + Handwerk + Handel</td><td>Grössere Siedlungen, Arbeitsteilung, Händler und Handwerker mit hohem Ansehen</td><td>Metallwerkzeuge und -waffen; Eisenzeit: keltische Stämme</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Menschenarten und Migration</h3>
+  <ul>
+    <li><b>Homo erectus</b>: verlässt als Erster Afrika, nutzt Feuer und Faustkeil.</li>
+    <li><b>Neandertaler</b>: entwickelt sich aus Urmenschen, die nach Europa wanderten; nur in Europa (und Vorderasien); stirbt vor ca. 40 000 Jahren aus.</li>
+    <li><b>Homo sapiens</b>: der heutige Mensch, entsteht in Afrika und verbreitet sich in Wellen über die ganze Welt.</li>
+  </ul>
+  <h3>Äussere Einflussfaktoren: das Klima</h3>
+  <p>Der Mensch war immer stark vom Klima und der Pflanzen- und Tierwelt abhängig. In der <b>Eiszeit</b> lebten die Menschen in der Tundra als mobile Jäger hinter Rentierherden und Wildpferden her. Als es <b>wärmer</b> wurde, wichen Tundra und Herden dichten Wäldern. Die Menschen mussten nicht mehr weit wandern. Das legte den Grundstein für die Sesshaftigkeit.</p>
+  <div class="diagram"><div class="flow">
+    <div class="node">Eiszeit: Tundra, Rentierherden <small>mobile Jäger, Zelte, Speerschleuder, Hund</small></div>
+    <div class="arrow">↓ Klima wird wärmer (Ende Eiszeit, ca. 11 000 J.)</div>
+    <div class="node">Dichte Wälder, standorttreue Waldtiere <small>Herden verschwinden</small></div>
+    <div class="arrow">↓ kürzere Wege für Jagd, Sammeln, Holz</div>
+    <div class="node sand">Erste feste Siedlungen (Mittelsteinzeit) <small>Grundstein für Sesshaftigkeit</small></div>
+  </div></div>
+</section>
+
+<section id="archaeologie">
+  <h2><span class="n">LZ 4</span>Arbeitsmethoden der Archäologie</h2>
+  <p><b>Archäologie</b> rekonstruiert vergangene Zeiten aus <b>materiellen Überresten</b> (Knochen, Werkzeuge, Mauern, Gräber). Historiker arbeiten vor allem mit <b>schriftlichen Quellen</b>. Für die Urgeschichte gibt es keine Schrift, darum ist die Archäologie dort die einzige Quelle.</p>
+  <ul>
+    <li><b>Prospektion</b>: gezielte Suche mit Luftbildern, Feldbegehungen, Stichproben, physikalischen Methoden.</li>
+    <li><b>Fundkontext</b>: Wo und wie etwas liegt, ist genauso wichtig wie der Fund selbst.</li>
+    <li><b>Dokumentation</b>: Ausgraben zerstört den Kontext unwiderruflich. Deshalb wird alles gezeichnet, fotografiert und beschrieben.</li>
+  </ul>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Datierung</th><th>Methode</th><th>Reichweite</th></tr></thead>
+    <tbody>
+      <tr><td><b>Relativ</b> (älter/jünger als)</td><td>Schichten (Stratigrafie): tiefere Schicht = älter · Stilvergleich von Objekten</td><td>nur im Verhältnis zu anderem</td></tr>
+      <tr><td><b>Absolut</b> (Jahreszahl)</td><td>Radiokohlenstoff / C14: Alter organischer Stoffe</td><td class="t">bis ca. 50 000 J.</td></tr>
+      <tr><td></td><td>Dendrochronologie: Jahrringe von Holz, jahrgenau</td><td class="t">bis ca. 15 000 J.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="tip"><b>Beispiel für die Wichtigkeit:</b> Ohne Archäologie wüssten wir nichts über Ötzi, Pfahlbauten oder die Domestikation von Getreide (verkohlte Körner im Fruchtbaren Halbmond).</div>
+</section>
+
+<section id="neolithisierung">
+  <h2><span class="n">LZ 8–9</span>Neolithisierung</h2>
+  <p>Der Wandel von der <b>aneignenden</b> Wirtschaftsform (jagen, sammeln: man nimmt, was die Natur bietet) zur <b>produzierenden</b> Wirtschaftsform (Ackerbau, Viehzucht: man stellt Nahrung selbst her). Er begann vor ca. 13 500–11 500 Jahren im <b>Fruchtbaren Halbmond</b> (Levante, Mesopotamien zwischen Euphrat und Tigris).</p>
+  <h3>Voraussetzungen (Ursachen)</h3>
+  <ul>
+    <li><b>Klima</b>: Ende der Eiszeit, wärmer, Nahrung im Überfluss</li>
+    <li><b>Fruchtbarer Boden</b> und grosse Artenvielfalt</li>
+    <li><b>Wildpflanzen</b>: Vorfahren von Gerste, Emmer, Einkorn, Linse, Erbse, Kichererbse, Flachs (einjährig, viele essbare Samen)</li>
+    <li><b>Wildtiere</b> zum Zähmen: Ziege, Schaf, Rind, Schwein</li>
+    <li>Ressourcenreichtum → Jäger und Sammler konnten länger an einem Ort bleiben</li>
+  </ul>
+  <h3>Folgen</h3>
+  <ul>
+    <li><b>Sesshaftigkeit</b>, feste Häuser, Dörfer</li>
+    <li><b>Mehr Nahrung pro Fläche</b>, Vorratshaltung (Keramik zum Lagern)</li>
+    <li><b>Bevölkerungswachstum</b>: Laut Jared Diamond liegen bei Bauern nur ca. 2 Jahre zwischen Geburten, bei Nomaden ca. 4 Jahre (Kinder müssen nicht getragen werden).</li>
+    <li><b>Besitz</b> und Ungleichheit, Arbeitsteilung, später Handel</li>
+    <li>Kehrseite: härtere Arbeit, einseitigere Ernährung, Abhängigkeit von Ernten, Krankheiten durch enges Zusammenleben mit Tieren</li>
+    <li>Ausbreitung ab ca. 8000 v. Chr. nach Europa, Ägypten, Asien durch <b>Expansion</b> (Menschen wandern) und <b>Akkulturation</b> (andere übernehmen die Lebensweise)</li>
+  </ul>
+  <h3>«Neolithische Revolution» kritisch beurteilt</h3>
+  <div class="row2">
+    <div class="box"><b>Dafür</b><ul><li>tiefgreifend: verändert Wirtschaft, Gesellschaft, Wohnen</li><li>irreversibel: keine Rückkehr zum Nomadentum für die meisten</li><li>Grundlage für Städte, Staaten, Hochkulturen</li></ul></div>
+    <div class="box"><b>Dagegen</b><ul><li>nicht schnell: dauerte Jahrtausende</li><li>kein bewusster Entscheid, sondern ein langsamer Prozess</li><li>ging nicht überall gleichzeitig; Jäger und Bauern lebten lange nebeneinander</li></ul></div>
+  </div>
+  <div class="tip"><b>Fazit-Satz für die Prüfung:</b> Von den Folgen her war es eine Revolution, vom Tempo her eher eine Evolution. Darum spricht man heute lieber von «Neolithisierung».</div>
+</section>
+
+<section id="diagramm">
+  <h2><span class="n">Auftrag 4</span>Wirkungsdiagramm Urgeschichte</h2>
+  <p class="check">So kannst du es auf Papier zeichnen. Pfeil = «führt zu».</p>
+  <div class="diagram"><div class="flow">
+    <div class="row2">
+      <div class="node">Homo erectus → Neandertaler → Homo sapiens <small>Altsteinzeit (Paläolithikum)</small></div>
+      <div class="node">Eiszeit <small>Tundra, Rentierherden</small></div>
+    </div>
+    <div class="arrow">↓ Menschen folgen den Herden</div>
+    <div class="node">Wildbeuter · Nomadentum · aneignende Wirtschaftsform <small>Jagen, Sammeln, Zelte · frühe Kunst (Höhlenmalerei, Schmuck)</small></div>
+    <div class="arrow">↓ Ende der Eiszeit: Klima wärmer, Wälder, standorttreue Tiere</div>
+    <div class="node">Mittelsteinzeit: kürzere Wege, erste Siedlungen</div>
+    <div class="arrow">↓ Fruchtbarer Halbmond: Wildgetreide + zähmbare Tiere</div>
+    <div class="node sand">Neolithische Revolution / Neolithisierung</div>
+    <div class="arrow">↓</div>
+    <div class="row2">
+      <div class="node sand">Ackerbau</div>
+      <div class="node sand">Viehzucht</div>
+    </div>
+    <div class="arrow">↓ produzierende Wirtschaftsform → Neolithikum</div>
+    <div class="node">Sesshaftigkeit → Dörfer, Vorräte, Keramik, Besitz</div>
+    <div class="arrow">↓ mehr Nahrung, kürzere Geburtenabstände</div>
+    <div class="node">Bevölkerungswachstum → Arbeitsteilung → Bronze-/Eisenzeit → Hochkulturen</div>
+    <div class="arrow">↺ mehr Menschen brauchen noch mehr Nahrung (Rückkopplung nach Diamond)</div>
+  </div></div>
+</section>
+
+<section id="oetzi">
+  <h2><span class="n">LZ 7</span>Ötzi, der Mann aus dem Eis</h2>
+  <ul>
+    <li><b>Fund</b>: 19. September 1991 von Wanderern am Tisenjoch (3210 m, Ötztaler Alpen, Grenze Österreich/Italien)</li>
+    <li><b>Alter</b>: lebte vor ca. 5300 Jahren (um 3300 v. Chr.), späte Jungsteinzeit / Kupferzeit</li>
+    <li><b>Person</b>: ca. 1,60 m, ca. 45 Jahre alt, braune Augen, Rechtshänder; stammte aus dem Südalpenraum; Vorfahren vor allem frühe Bauern aus Anatolien</li>
+    <li><b>Kleidung</b>: Mantel und Leggings aus Ziegenfell, Bärenfellmütze, Schuhe aus Hirsch- und Bärenleder mit Heu gefüttert</li>
+    <li><b>Ausrüstung</b>: Kupferbeil, Feuersteindolch, Bogen (unfertig), Köcher mit Pfeilen, Rückentrage, Birkenrindengefäss für Glut</li>
+    <li><b>Letzte Mahlzeit</b>: u. a. Einkorn (Getreide) → Hinweis auf eine bäuerliche Gesellschaft</li>
+    <li><b>Tod</b>: 2001 entdeckten Forscher im Röntgenbild eine Pfeilspitze in der linken Schulter. Er wurde von hinten erschossen und verblutete; dazu kamen Kopfverletzungen.</li>
+  </ul>
+  <div class="tip"><b>Beurteilen:</b> Ötzi ist ein Glücksfall, weil Körper, Kleidung und Ausrüstung zusammen erhalten blieben. Aber: Er ist <i>ein</i> Mensch. Vieles bleibt Interpretation (Hirte? Anführer? Flüchtling?). Neue Methoden (CT, DNA) haben frühere Annahmen korrigiert. Zuerst dachte man, er sei erfroren.</div>
+  <p class="src">Quellen: <a href="https://www.planet-wissen.de/geschichte/archaeologie/mumien/pwiegletschermumieoetzi100.html">Planet Wissen</a> · <a href="https://www.wissen.de/25-jahre-oetzi-der-mann-aus-dem-eis">wissen.de</a> · <a href="https://www.derstandard.at/story/2000129811347/die-zukunft-der-eismannforschung">Der Standard</a></p>
+</section>
+
+<section id="nil">
+  <h2><span class="n">LZ 10</span>Ägypten: Lebensader Nil</h2>
+  <p>Als Nordafrika vor ca. 12 000 Jahren austrocknete, zogen die Menschen an die Ufer des Nils. Ägypten ist ein schmaler, fruchtbarer Streifen in der Wüste. Der Nil fliesst von Süden nach Norden und mündet im Delta ins <b>Mittelmeer</b>; über Handelswege gibt es Zugang zum Roten Meer.</p>
+  <h3>Die Nilschwemme</h3>
+  <ul>
+    <li>Im Frühsommer regnet es im tropischen Afrika (Nilquellen) fast ununterbrochen → der Nil steigt um mehrere Meter.</li>
+    <li>Ende September zieht er sich zurück und hinterlässt <b>fruchtbaren Schlamm</b>.</li>
+    <li>Darauf wurde gesät (Getreide, Linsen, Bohnen, Trauben, Datteln, Feigen) und einige Monate später geerntet.</li>
+  </ul>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Herausforderung</th><th>Reaktion der Menschen</th></tr></thead>
+    <tbody>
+      <tr><td>Unregelmässiger Nil: zu hoch → Dörfer zerstört; zu niedrig → Dürre, Hungersnot</td><td>Zusammenarbeit: Bewässerungssysteme aus Deichen, Dämmen und Kanälen; Schöpfwerke für höhere Felder</td></tr>
+      <tr><td>Ernten schwanken von Jahr zu Jahr</td><td>Vorratshaltung: Getreideüberschüsse in Speichern für schlechte Jahre</td></tr>
+      <tr><td>Grosse Aufgaben (Bauten, Planung, Verwaltung)</td><td>Arbeitsteilung: Überschüsse ernähren Handwerker, Händler, Architekten, Landvermesser, Mathematiker</td></tr>
+    </tbody>
+  </table></div>
+  <div class="tip"><b>Der Lobgesang auf den Nil</b> zeigt: Alles Leben hängt vom Nil ab. Ist er «faul» (zu wenig Wasser), verarmt das Land. Ist er «habgierig» (zu viel Wasser), ist das ganze Land krank. Er liefert sogar Papyrus für die Schrift. Darum wurde ihm geopfert.</div>
+</section>
+
+<section id="gesellschaft">
+  <h2><span class="n">LZ 11</span>Aufbau der ägyptischen Gesellschaft</h2>
+  <div class="pyr" aria-label="Gesellschaftspyramide">
+    <div style="width:30%"><b>Pharao</b></div>
+    <div style="width:50%">Wesir · Hofbeamte</div>
+    <div style="width:68%">Priester · Beamte · Schreiber · Offiziere</div>
+    <div style="width:84%">Handwerker · Händler · Künstler · Soldaten</div>
+    <div style="width:100%"><b>Bauern</b> (grösste Gruppe) · Arbeiter · später Sklaven</div>
+  </div>
+  <ul>
+    <li><b>Pharao</b>: Gottkönig, Vermittler zwischen Göttern und Menschen; erhält die Weltordnung <b>Maat</b>, opfert den Göttern, baut Tempel, verteidigt das Land, spricht Recht. Ihm gehört theoretisch das ganze Land.</li>
+    <li><b>Wesir</b>: oberster Beamter, führt die Verwaltung.</li>
+    <li><b>Schreiber</b>: konnten lesen und schreiben, zählten Ernten, berechneten Steuern, führten Listen. Sehr angesehen.</li>
+    <li><b>Priester</b>: verwalteten Tempel und deren Reichtum, sehr einflussreich.</li>
+    <li><b>Bauern</b>: Mehrheit der Bevölkerung, ernähren alle, zahlen Abgaben, werden für Bauarbeiten (Pyramiden) eingezogen.</li>
+  </ul>
+  <p>Die Gesellschaft war <b>streng hierarchisch</b>: Je höher, desto weniger Menschen und desto mehr Macht. Die Pyramidenform zeigt das bildlich.</p>
+  <p class="src">Quellen: <a href="https://www.amm.hu-berlin.de/de/aegy_anoa_old/oeffentlichkeit/gesellschaft.pdf">HU Berlin, Ägyptologie</a> · <a href="https://www.studysmarter.de/schule/geschichte/altes-aegypten/aegyptische-gesellschaftspyramide/">StudySmarter</a></p>
+</section>
+
+<section id="religion">
+  <h2><span class="n">LZ 12</span>Religion, Totenkult und Mumifizierung</h2>
+  <p>Die Religion bestimmte das ganze Leben. Die Ägypter glaubten an viele Götter (z. B. Re, Osiris, Isis, Anubis) und an ein <b>Leben nach dem Tod</b>, das wie das irdische Leben weitergeht, nur ewig.</p>
+  <h3>Warum mumifizieren?</h3>
+  <p>Der Körper musste erhalten bleiben, damit die Seelenteile zu ihm zurückkehren konnten:</p>
+  <ul>
+    <li><b>Ka</b>: Lebenskraft, braucht Nahrung → Opfergaben im Grab</li>
+    <li><b>Ba</b>: Seele/Persönlichkeit, als Vogel mit Menschenkopf dargestellt, verlässt tagsüber das Grab und kehrt zur Mumie zurück</li>
+  </ul>
+  <h3>Ablauf (vereinfacht, ca. 70 Tage)</h3>
+  <ul>
+    <li>Gehirn entfernen, innere Organe herausnehmen und in Kanopenkrügen aufbewahren; das <b>Herz bleibt</b> im Körper</li>
+    <li>Körper mit Natronsalz austrocknen</li>
+    <li>Mit Harzen und Ölen behandeln, mit Leinenbinden umwickeln, Amulette einlegen</li>
+    <li>Bestattung im Sarg mit Grabbeigaben</li>
+  </ul>
+  <h3>Totengericht</h3>
+  <p>Vor <b>Osiris</b> wird das Herz gegen die Feder der Maat (Wahrheit) gewogen. Ist das Herz schwerer, frisst die «Fresserin» den Toten. Das <b>Totenbuch</b> mit Sprüchen half dem Toten durch das Gericht und die Gefahren des Jenseits.</p>
+  <div class="tip"><b>Beurteilen:</b> Religion legitimierte die Macht des Pharaos und bestimmte riesige Bauprojekte (Pyramiden, Tempel). Eine aufwendige Mumifizierung konnten sich nur Reiche leisten. Unser Wissen darüber stammt auch vom Griechen Herodot (ca. 450 v. Chr.), also aus fremder Sicht.</div>
+  <p class="src">Quellen: <a href="https://www.lernhelfer.de/schuelerlexikon/geschichte/artikel/mumifizierung-und-jenseitsvorsorge">Lernhelfer: Mumifizierung</a> · <a href="https://www.lernhelfer.de/schuelerlexikon/geschichte/artikel/totengericht-und-totenbuch">Lernhelfer: Totengericht</a> · <a href="https://www.uni-muenster.de/IAEK/institut/aegyptologie/jenseitsvorstellungen.html">Uni Münster</a></p>
+</section>
+
+<section id="hochkulturen">
+  <h2><span class="n">LZ 13–14</span>Frühe Hochkulturen</h2>
+  <p>Frühe Hochkulturen entstanden ab ca. 3000 v. Chr. an grossen <b>Flüssen</b> (darum «Flusskulturen»): Ägypten (Nil), Mesopotamien (Euphrat, Tigris), Indus, China (Huang He).</p>
+  <h3>Merkmale</h3>
+  <div class="row2">
+    <div class="box"><ul><li>Schrift</li><li>Staat mit Herrscher und Verwaltung (Beamte)</li><li>Hierarchische Gesellschaft</li><li>Arbeitsteilung, Berufe</li></ul></div>
+    <div class="box"><ul><li>Städte und Monumentalbauten</li><li>Organisierte Religion mit Priestern</li><li>Vorratswirtschaft, Steuern, Handel</li><li>Wissenschaft: Kalender, Mathematik, Astronomie</li></ul></div>
+  </div>
+  <h3>Errungenschaften Ägyptens (Beispiele)</h3>
+  <ul>
+    <li><b>Hieroglyphen</b> und Papyrus → Verwaltung, Überlieferung</li>
+    <li><b>365-Tage-Kalender</b> nach Nilschwemme und Sternen → Planung der Landwirtschaft</li>
+    <li><b>Mathematik und Landvermessung</b> → Felder nach jeder Flut neu verteilen</li>
+    <li><b>Pyramiden und Tempel</b> → Bautechnik, Organisation tausender Arbeiter</li>
+    <li><b>Bewässerung</b> mit Kanälen und Dämmen</li>
+  </ul>
+  <h3>Den Begriff kritisch beurteilen</h3>
+  <ul>
+    <li>«Hoch» wertet andere Kulturen als «tief» ab, obwohl auch Jäger und Bauern komplexe Kulturen hatten.</li>
+    <li>Die Merkmalsliste ist aus europäischer Sicht entstanden; nicht jede Kultur erfüllt alle Merkmale (die Inka hatten z. B. keine Schrift im üblichen Sinn).</li>
+    <li>Die Errungenschaften beruhten auf einer harten Hierarchie und Zwangsarbeit der Bauern.</li>
+    <li>Heute sagt man oft neutraler «frühe Zivilisationen» oder «frühe Staaten».</li>
+  </ul>
+  <p class="src">Quelle: <a href="https://studyflix.de/geschichte/hochkultur-7277">Studyflix: Hochkultur</a></p>
+</section>
+
+<section id="quellen">
+  <h2><span class="n">LZ 15</span>Quellengattungen und AquA-Modell</h2>
+  <h3>Quellengattungen</h3>
+  <ul>
+    <li><b>Schriftliche Quellen</b>: Texte, Briefe, Inschriften, Gesetze, Hymnen (z. B. Lobgesang auf den Nil)</li>
+    <li><b>Bildquellen</b>: Malereien, Fotos, Karten (z. B. Höhlenmalereien)</li>
+    <li><b>Gegenständliche Quellen</b> (Sachquellen): Werkzeuge, Bauten, Knochen, Mumien (z. B. Ötzi, Faustkeil)</li>
+    <li><b>Mündliche Quellen</b>: Erzählungen, Interviews, Lieder</li>
+  </ul>
+  <p>Ausserdem: <b>Primärquelle</b> = aus der Zeit selbst. <b>Sekundärliteratur / Darstellung</b> = später darüber geschrieben (z. B. Jared Diamond 1997 über die Neolithisierung).</p>
+  <h3>Das AquA-Modell</h3>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Teil</th><th>Leitfrage</th><th>Was du prüfst</th></tr></thead>
+    <tbody>
+      <tr><td><b>A</b> Autor</td><td>Wer?</td><td>Stellung, Amt, Herkunft, Sichtweise, Interessen, Parteilichkeit</td></tr>
+      <tr><td><b>Qu</b> Quelle</td><td>Was? Wann? Wo? Wie?</td><td>Quellenart, Zeit und Ort, Aufbau, Kernaussagen, Schlüsselbegriffe</td></tr>
+      <tr><td><b>A</b> Adressat</td><td>Für wen? Warum?</td><td>Zielgruppe (Privatperson, Öffentlichkeit, Herrscher, Nachwelt), Absicht: informieren, überzeugen, manipulieren</td></tr>
+    </tbody>
+  </table></div>
+  <details class="open-q"><summary>Übung: Lobgesang auf den Nil mit AquA</summary>
+    <p><b>Autor:</b> unbekannt, vermutlich Priester oder Schreiber (nur sie konnten schreiben) → religiöse Sicht.<br>
+    <b>Quelle:</b> Hymne aus dem 2. Jahrtausend v. Chr., Primärquelle, preist den Nil als Lebensspender; zitiert nach Assmann 1975 (also übersetzt).<br>
+    <b>Adressat:</b> der Nil bzw. die Götter, im Ritual auch die Gläubigen. Absicht: verehren, um gute Fluten bitten.<br>
+    <b>Beurteilung:</b> Zeigt die Abhängigkeit vom Nil gut, aber übertrieben-religiös und nicht neutral.</p>
+  </details>
+  <p class="src">Quelle: <a href="https://www.unterrichtsmaterial.ch/arbeitsblatt/161461-geschichte-gemischte-themen-aqua-modell">unterrichtsmaterial.ch: AQUA-Modell</a></p>
+</section>
+
+<section id="quiz">
+  <h2><span class="n">Test</span>Quiz</h2>
+  <p class="check">Tippe eine Antwort an. Die Erklärung erscheint direkt.</p>
+  <div id="quizbox"></div>
+  <div class="score"><span>Punkte: <b id="sc">0 / 0</b></span><button class="btn" id="reset" type="button">Neu starten</button></div>
+
+  <h3>Offene Prüfungsfragen</h3>
+  <details class="open-q"><summary>Erkläre, warum der Wechsel zur Sesshaftigkeit zu mehr Menschen führte.</summary>
+    <p>Bauern erzeugen pro Hektar mehr Nahrung. Weil sie nicht umherziehen, müssen Mütter Kleinkinder nicht tragen. Der Geburtenabstand sinkt von ca. 4 auf ca. 2 Jahre. Mehr Menschen brauchen mehr Nahrung, was die Landwirtschaft weiter antreibt (Diamond).</p></details>
+  <details class="open-q"><summary>Wie wirkte sich die Klimaerwärmung am Ende der Eiszeit auf die Menschen aus?</summary>
+    <p>Tundra und Rentierherden verschwanden, dichte Wälder mit standorttreuen Tieren entstanden. Die Menschen mussten den Herden nicht mehr folgen, fanden Nahrung in der Nähe und gründeten erste Siedlungen (Mittelsteinzeit). Das war der Grundstein für die Sesshaftigkeit.</p></details>
+  <details class="open-q"><summary>Welchen Einfluss hatte die Nilschwemme auf die Gesellschaft?</summary>
+    <p>Sie brachte fruchtbaren Schlamm, aber auch Gefahr (zu viel/zu wenig Wasser). Das verlangte Zusammenarbeit (Kanäle, Dämme), Planung (Kalender, Vermessung), Vorräte und Verwaltung (Schreiber). Überschüsse ermöglichten Arbeitsteilung. So entstand ein zentral organisierter Staat unter dem Pharao.</p></details>
+  <details class="open-q"><summary>Vergleiche Archäologe und Historiker.</summary>
+    <p>Beide rekonstruieren die Vergangenheit. Der Archäologe arbeitet mit materiellen Funden und deren Kontext und zerstört beim Graben den Fundort, darum dokumentiert er alles. Der Historiker arbeitet vor allem mit schriftlichen Quellen, die erhalten bleiben. Für die Urgeschichte gibt es nur archäologische Quellen.</p></details>
+</section>
+</div>
+
+<script>
+const Q=[
+ ["Was bedeutet «aneignende Wirtschaftsform»?",["Nahrung selbst anbauen","Nehmen, was die Natur bietet: jagen und sammeln","Handel mit Metallen","Vorräte in Speichern lagern"],1,"Wildbeuter eignen sich an, was sie finden. Ackerbau und Viehzucht sind die produzierende Form."],
+ ["Wo begann die Neolithisierung zuerst?",["Im Niltal","In der Schweiz","Im Fruchtbaren Halbmond","In China"],2,"Levante und Mesopotamien, ab ca. 9500 v. Chr. Von dort Ausbreitung ab ca. 8000 v. Chr."],
+ ["Welche Epoche liegt zwischen Alt- und Jungsteinzeit?",["Bronzezeit","Mittelsteinzeit (Mesolithikum)","Eisenzeit","Paläolithikum"],1,"Die Mittelsteinzeit beginnt mit dem Ende der Eiszeit vor ca. 11 000 Jahren."],
+ ["Welches Tier war das erste Haustier?",["Schaf","Rind","Hund","Pferd"],2,"Schon in der Altsteinzeit hielten Jäger den Hund."],
+ ["Wo lebte der Neandertaler?",["Nur in Afrika","In Europa (und Vorderasien)","In Amerika","In Australien"],1,"Er entwickelte sich aus Urmenschen, die nach Europa gewandert waren."],
+ ["Bis wie weit zurück reicht die C14-Methode etwa?",["5 000 Jahre","15 000 Jahre","50 000 Jahre","2 Millionen Jahre"],2,"C14 datiert organische Stoffe bis ca. 50 000 Jahre. Dendrochronologie reicht bis ca. 15 000 Jahre."],
+ ["Was ist eine relative Datierung?",["Jahrgenaue Datierung mit Baumringen","Einordnung älter/jünger, z. B. über Schichten","C14-Messung","Datierung über Inschriften"],1,"Tiefere Schichten sind älter. Man kennt nur die Reihenfolge, keine Jahreszahl."],
+ ["Warum ist Dokumentation beim Ausgraben so wichtig?",["Weil Funde sonst gestohlen werden","Weil das Graben den Fundkontext zerstört","Weil es gesetzlich vorgeschrieben ist","Weil Fotos schöner sind"],1,"Archäologische Zeugnisse werden durch die Erforschung unwiderruflich zerstört, anders als schriftliche Quellen."],
+ ["Wann lebte Ötzi ungefähr?",["Vor 50 000 Jahren","Vor 5300 Jahren","Vor 2000 Jahren","Um 1200 n. Chr."],1,"Um 3300 v. Chr., späte Jungsteinzeit / Kupferzeit."],
+ ["Woran starb Ötzi?",["Er erfror","Er stürzte in eine Gletscherspalte","Ein Pfeil traf ihn von hinten in die Schulter","Er verhungerte"],2,"Die Pfeilspitze wurde 2001 im Röntgenbild entdeckt. Er verblutete."],
+ ["Was brachte die Nilschwemme?",["Salz aus dem Meer","Fruchtbaren Schlamm","Sand aus der Wüste","Gold aus Nubien"],1,"Ende September blieb eine sehr fruchtbare Schlammschicht zurück."],
+ ["Wie reagierten die Ägypter auf schwankende Ernten?",["Sie zogen weiter","Sie legten Vorräte in Speichern an","Sie gaben den Ackerbau auf","Sie importierten alles"],1,"Getreideüberschüsse aus guten Jahren wurden für schlechte Jahre gelagert."],
+ ["Welche Gruppe war in Ägypten am grössten?",["Schreiber","Priester","Bauern","Beamte"],2,"Deshalb bilden sie die breite Basis der Gesellschaftspyramide."],
+ ["Was ist die Maat?",["Ein Gott des Nils","Die Weltordnung, die der Pharao erhalten muss","Ein Getreide","Eine Grabkammer"],1,"Beim Totengericht wird das Herz gegen die Feder der Maat gewogen."],
+ ["Welches Organ blieb bei der Mumifizierung im Körper?",["Gehirn","Herz","Leber","Lunge"],1,"Das Herz galt als Sitz des Verstandes und wurde beim Totengericht gewogen."],
+ ["Was ist KEIN typisches Merkmal einer frühen Hochkultur?",["Schrift","Staat mit Verwaltung","Nomadentum","Arbeitsteilung"],2,"Hochkulturen sind sesshaft und städtisch organisiert."],
+ ["Wofür steht das erste «A» im AquA-Modell?",["Adressat","Absicht","Autor","Archäologie"],2,"Autor – Quelle – Adressat."],
+ ["Warum wird «Neolithische Revolution» kritisiert?",["Weil sie gar nicht stattfand","Weil der Wandel Jahrtausende dauerte","Weil sie rückgängig gemacht wurde","Weil sie nur in Ägypten stattfand"],1,"Tiefgreifend und irreversibel ja, aber nicht schnell."]
+];
+const box=document.getElementById('quizbox'),sc=document.getElementById('sc');
+let right=0,done=0;
+function render(){
+  box.innerHTML='';right=0;done=0;upd();
+  Q.forEach((q,i)=>{
+    const d=document.createElement('div');d.className='q';
+    d.innerHTML=`<p class="qt"><span class="qn">${String(i+1).padStart(2,'0')}</span>${q[0]}</p><div class="opts"></div><p class="expl" hidden></p>`;
+    const o=d.querySelector('.opts'),ex=d.querySelector('.expl');
+    q[1].forEach((t,j)=>{
+      const b=document.createElement('button');b.type='button';b.id=`q${i}o${j}`;b.textContent=t;
+      b.onclick=()=>{
+        o.querySelectorAll('button').forEach((x,k)=>{x.disabled=true;if(k===q[2])x.classList.add('right')});
+        if(j===q[2])right++;else b.classList.add('wrong');
+        done++;upd();ex.textContent=(j===q[2]?'Richtig. ':'Falsch. ')+q[3];ex.hidden=false;
+      };
+      o.appendChild(b);
+    });
+    box.appendChild(d);
+  });
+}
+function upd(){sc.textContent=`${right} / ${done} (von ${Q.length})`;if(done===Q.length&&window.Lernregal)Lernregal.fortschritt(Math.round(right/Q.length*100),`Quiz ${Math.round(right/Q.length*100)} %`)}
+document.getElementById('reset').onclick=render;
+render();
+</script>
+
+<script src="../regal.js" defer></script>
+</body>
+</html>
