@@ -176,7 +176,7 @@ function faecher(){
 function chips(){
   const subs=faecher();
   if(active!=="Alle"&&!subs.some(s=>s.name===active))active="Alle";
-  const all=[{name:"Alle",c:"var(--fg)",n:MODULE.length}].concat(subs.map(s=>({...s,n:MODULE.filter(m=>m.fach===s.name).length})));
+  const all=[{name:"Alle",c:"var(--fg)",n:MODULE.filter(m=>!m.pruefung).length}].concat(subs.map(s=>({...s,n:MODULE.filter(m=>m.fach===s.name&&!m.pruefung).length})));
   $("chips").innerHTML=all.map(s=>`<button class="chip" type="button" data-n="${esc(s.name)}" aria-pressed="${s.name===active}" style="--c:${s.c}"><i></i>${esc(s.name)} <small>${s.n}</small></button>`).join("");
   $("chips").querySelectorAll(".chip").forEach(b=>b.onclick=()=>{active=b.dataset.n;try{localStorage.setItem("fach",active)}catch(e){};chips();render();});
 }
@@ -187,7 +187,7 @@ function render(){
     const mods=all.filter(m=>!q||[m.titel,m.text,m.tags.join(" "),m.gruppe||"",m.pruefung||"",s.name].join(" ").toLowerCase().includes(q)).sort((a,b)=>b.datum.localeCompare(a.datum));
     if(!mods.length&&(q||all.length))return;
     shown++;
-    html+=`<section style="--c:${s.c}"><h2>${esc(s.name)}<small>${mods.length} ${mods.length===1?"Modul":"Module"}</small></h2>`+
+    html+=`<section style="--c:${s.c}"><h2>${esc(s.name)}<small>${mods.filter(m=>!m.pruefung).length} ${mods.filter(m=>!m.pruefung).length===1?"Modul":"Module"}</small></h2>`+
       (mods.length?regal(mods,s.name,q):`<p class="empty">Noch keine Module.</p>`)+`</section>`;
   });
   $("shelves").innerHTML=shown?html:'<p class="state">Nichts gefunden. Probier ein anderes Wort.</p>';
