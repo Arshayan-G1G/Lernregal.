@@ -17,6 +17,7 @@ Kein Build, kein Framework. Änderungen direkt auf `main` committen und pushen (
    {fach:"Chemie",titel:"Atombau",text:"Ein Satz, was drin ist.",tags:["Zusammenfassung","Übungsprüfung"],datum:"YYYY-MM-DD",datei:"module/chemie-atombau.html"},
    ```
    `fach` muss genau einem Namen aus `FAECHER` entsprechen: Biologie, Chemie, Geschichte, Französisch, Englisch, Deutsch, Mathematik, Informatik, Geografie.
+   Übungsprüfungen bekommen `pruefung:"Name der echten Prüfung"` (z.B. `pruefung:"Test Envol 7–8"`). Sie erscheinen dann pro Fach im ausklappbaren Teil «Übungsprüfungen», nach Prüfung geordnet, und nicht im normalen Raster. Im Claude-Lernregal heisst das Feld `exam`. Lernmodule mit eingebauter Prüfungssimulation bekommen kein `pruefung`.
    Optional `gruppe:"Name"`: Module mit gleicher Gruppe stehen im Fach zusammen unter einer eigenen Überschrift (Unterkategorie), sortiert nach Titel. Beispiel: alle Module zur bfK-Prüfung haben `gruppe:"bfK-Prüfung"`. Im Claude-Lernregal heisst das Feld `group`.
 3. Committen (z.B. `Modul: Atombau (Chemie)`) und auf `main` pushen.
 

@@ -78,6 +78,19 @@ header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:fle
 .subgrp>h3{font:800 18px/1.2 var(--f-display);margin:0 0 10px;display:flex;align-items:baseline;gap:8px;color:var(--fg)}
 .subgrp>h3::before{content:"";width:10px;height:10px;border-radius:2px;background:var(--c);align-self:center}
 .subgrp>h3 small{font:500 12px var(--f-mono);color:var(--muted)}
+.exams{margin-top:18px;background:var(--card);border:1px solid var(--line);border-radius:8px}
+.exams>summary{cursor:pointer;list-style:none;padding:14px 16px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px}
+.exams>summary::-webkit-details-marker{display:none}
+.exams>summary .t{font:800 19px/1.2 var(--f-display);display:flex;align-items:center;gap:10px}
+.exams>summary .t::before{content:"";width:8px;height:8px;border-right:2.5px solid var(--c);border-bottom:2.5px solid var(--c);transform:rotate(-45deg);transition:transform .15s}
+.exams[open]>summary .t::before{transform:rotate(45deg)}
+.exams>summary small{font:500 12px var(--f-mono);color:var(--muted)}
+.exams>summary .which{flex-basis:100%;padding-left:20px;font-size:14px;color:var(--muted)}
+.exams[open]>summary .which{display:none}
+.exams>summary:hover .t{color:var(--c)}
+.exams .inner{padding:0 16px 16px}
+.exams .subgrp:first-child{margin-top:0}
+.exams .mod{background:var(--bg)}
 </style>
 </head>
 <body>
@@ -115,17 +128,21 @@ header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:fle
 /* ===== Neues Modul eintragen: HTML-Datei in den Ordner "module" legen
    und hier eine Zeile ergänzen. Fach muss genau so heissen wie unten in FAECHER. ===== */
 const MODULE=[
- {fach:"Geografie",titel:"Geo P1 Übungsprüfung",text:"Übungsprüfung im Stil der alten Prüfung: Orientierung Schweiz, Richtig/Falsch, Geosphäre, Wirtschaftsmodelle, Coltan, Arktis, Atlas. Mit der alten Prüfung von 2020.",tags:["Übungsprüfung","Alte Prüfung"],datum:"2026-10-20",datei:"module/geografie-p1-uebungspruefung.html"},
-{fach:"Deutsch",gruppe:"bfK-Prüfung",titel:"Übungsprüfung bfK 8",text:"Gleicher Aufbau, aber neue Satzmuster und Fehlertypen: Höflichkeitsform, feste Wendungen, Bindestrich, Vergleiche mit als/wie, je … desto, wörtliche Rede.",tags:["Übungsprüfung","Test"],datum:"2026-10-19",datei:"module/deutsch-uebungspruefung-bfk-8.html"},
-{fach:"Deutsch",gruppe:"bfK-Prüfung",titel:"Übungsprüfung bfK 7",text:"Siebte Prüfung im Aufbau der Nachprüfung 2025: Gross/Klein, Laute, das/dass, Teufelswörter, Fehlerkorrektur, Kommasetzung, 60 Punkte mit Note.",tags:["Übungsprüfung","Test"],datum:"2026-10-18",datei:"module/deutsch-uebungspruefung-bfk-7.html"},
-{fach:"Deutsch",gruppe:"bfK-Prüfung",titel:"Übungsprüfung bfK 6",text:"Sechste Prüfung im Aufbau der Nachprüfung 2025: Gross/Klein, Laute, das/dass, Teufelswörter, Fehlerkorrektur, Kommasetzung, 60 Punkte mit Note.",tags:["Übungsprüfung","Test"],datum:"2026-10-18",datei:"module/deutsch-uebungspruefung-bfk-6.html"},
-{fach:"Deutsch",gruppe:"bfK-Prüfung",titel:"Übungsprüfung bfK 5",text:"Fünfte Prüfung im Aufbau der Nachprüfung 2025: Gross/Klein, Laute, das/dass, Teufelswörter, Fehlerkorrektur, Kommasetzung, 60 Punkte mit Note.",tags:["Übungsprüfung","Test"],datum:"2026-10-18",datei:"module/deutsch-uebungspruefung-bfk-5.html"},
-{fach:"Deutsch",gruppe:"bfK-Prüfung",titel:"Übungsprüfung bfK 4",text:"Vierte Prüfung im Aufbau der Nachprüfung 2025: Gross/Klein, Laute, das/dass, Teufelswörter, Fehlerkorrektur, Kommasetzung, 60 Punkte mit Note.",tags:["Übungsprüfung","Test"],datum:"2026-10-18",datei:"module/deutsch-uebungspruefung-bfk-4.html"},
-{fach:"Deutsch",gruppe:"bfK-Prüfung",titel:"Übungsprüfung bfK 3",text:"Dritte Prüfung im Aufbau der Nachprüfung 2025 mit neuen Sätzen: Gross/Klein, Laute, das/dass, Teufelswörter, Fehlerkorrektur, Kommasetzung, 60 Punkte mit Note.",tags:["Übungsprüfung","Test"],datum:"2026-10-18",datei:"module/deutsch-uebungspruefung-bfk-3.html"},
+ {fach:"Französisch",pruefung:"Test Envol 7–8",titel:"Übungsprüfung Envol 1",text:"Thema «Le pique-nique»: Adjektive, Komparativ, Artikel, Pronomen, reflexive Verben, Verneinung, Possessiv/Demonstrativ, Fragen mit est-ce que. 49 Punkte mit Note.",tags:["Übungsprüfung","Test"],datum:"2026-10-22",datei:"module/franzoesisch-pruefung-envol-1.html"},
+ {fach:"Französisch",pruefung:"Test Envol 7–8",titel:"Übungsprüfung Envol 2",text:"Thema «À la montagne»: Adjektive, Komparativ, Artikel, Pronomen, reflexive Verben, Verneinung, Possessiv/Demonstrativ, Fragen mit est-ce que. 49 Punkte mit Note.",tags:["Übungsprüfung","Test"],datum:"2026-10-22",datei:"module/franzoesisch-pruefung-envol-2.html"},
+ {fach:"Französisch",pruefung:"Test Envol 7–8",titel:"Übungsprüfung Envol 3",text:"Thema «La fête»: Adjektive, Komparativ, Artikel, Pronomen, reflexive Verben, Verneinung, Possessiv/Demonstrativ, Fragen mit est-ce que. 49 Punkte mit Note.",tags:["Übungsprüfung","Test"],datum:"2026-10-22",datei:"module/franzoesisch-pruefung-envol-3.html"},
+ {fach:"Französisch",pruefung:"Test Envol 7–8",titel:"Übungsprüfung Envol 4",text:"Thema «À la mer»: Adjektive, Komparativ, Artikel, Pronomen, reflexive Verben, Verneinung, Possessiv/Demonstrativ, Fragen mit est-ce que. 49 Punkte mit Note.",tags:["Übungsprüfung","Test"],datum:"2026-10-22",datei:"module/franzoesisch-pruefung-envol-4.html"},
+ {fach:"Geografie",pruefung:"Geo P1 Nachhaltigkeit",titel:"Geo P1 Übungsprüfung",text:"Übungsprüfung im Stil der alten Prüfung: Orientierung Schweiz, Richtig/Falsch, Geosphäre, Wirtschaftsmodelle, Coltan, Arktis, Atlas. Mit der alten Prüfung von 2020.",tags:["Übungsprüfung","Alte Prüfung"],datum:"2026-10-20",datei:"module/geografie-p1-uebungspruefung.html"},
+{fach:"Deutsch",pruefung:"bfK-Prüfung",titel:"Übungsprüfung bfK 8",text:"Gleicher Aufbau, aber neue Satzmuster und Fehlertypen: Höflichkeitsform, feste Wendungen, Bindestrich, Vergleiche mit als/wie, je … desto, wörtliche Rede.",tags:["Übungsprüfung","Test"],datum:"2026-10-19",datei:"module/deutsch-uebungspruefung-bfk-8.html"},
+{fach:"Deutsch",pruefung:"bfK-Prüfung",titel:"Übungsprüfung bfK 7",text:"Siebte Prüfung im Aufbau der Nachprüfung 2025: Gross/Klein, Laute, das/dass, Teufelswörter, Fehlerkorrektur, Kommasetzung, 60 Punkte mit Note.",tags:["Übungsprüfung","Test"],datum:"2026-10-18",datei:"module/deutsch-uebungspruefung-bfk-7.html"},
+{fach:"Deutsch",pruefung:"bfK-Prüfung",titel:"Übungsprüfung bfK 6",text:"Sechste Prüfung im Aufbau der Nachprüfung 2025: Gross/Klein, Laute, das/dass, Teufelswörter, Fehlerkorrektur, Kommasetzung, 60 Punkte mit Note.",tags:["Übungsprüfung","Test"],datum:"2026-10-18",datei:"module/deutsch-uebungspruefung-bfk-6.html"},
+{fach:"Deutsch",pruefung:"bfK-Prüfung",titel:"Übungsprüfung bfK 5",text:"Fünfte Prüfung im Aufbau der Nachprüfung 2025: Gross/Klein, Laute, das/dass, Teufelswörter, Fehlerkorrektur, Kommasetzung, 60 Punkte mit Note.",tags:["Übungsprüfung","Test"],datum:"2026-10-18",datei:"module/deutsch-uebungspruefung-bfk-5.html"},
+{fach:"Deutsch",pruefung:"bfK-Prüfung",titel:"Übungsprüfung bfK 4",text:"Vierte Prüfung im Aufbau der Nachprüfung 2025: Gross/Klein, Laute, das/dass, Teufelswörter, Fehlerkorrektur, Kommasetzung, 60 Punkte mit Note.",tags:["Übungsprüfung","Test"],datum:"2026-10-18",datei:"module/deutsch-uebungspruefung-bfk-4.html"},
+{fach:"Deutsch",pruefung:"bfK-Prüfung",titel:"Übungsprüfung bfK 3",text:"Dritte Prüfung im Aufbau der Nachprüfung 2025 mit neuen Sätzen: Gross/Klein, Laute, das/dass, Teufelswörter, Fehlerkorrektur, Kommasetzung, 60 Punkte mit Note.",tags:["Übungsprüfung","Test"],datum:"2026-10-18",datei:"module/deutsch-uebungspruefung-bfk-3.html"},
 {fach:"Deutsch",gruppe:"bfK-Prüfung",titel:"Dauerbrenner-Trainer",text:"Die 100 Dauerbrenner aus dem Sprachtrainer: Lernliste mit typischen Fehlern, Diktat, Fehlerjagd wie A29 und Quiz.",tags:["Lernseite","Übungen","Test"],datum:"2026-10-18",datei:"module/deutsch-dauerbrenner.html"},
-{fach:"Deutsch",gruppe:"bfK-Prüfung",titel:"Übungsprüfung bfK 2",text:"Zweite Prüfung im Aufbau der Nachprüfung 2025 mit neuen Sätzen: Gross/Klein, Laute, das/dass, Teufelswörter, Fehlerkorrektur, Kommasetzung, 60 Punkte mit Note.",tags:["Übungsprüfung","Test"],datum:"2026-10-18",datei:"module/deutsch-uebungspruefung-bfk-2.html"},
+{fach:"Deutsch",pruefung:"bfK-Prüfung",titel:"Übungsprüfung bfK 2",text:"Zweite Prüfung im Aufbau der Nachprüfung 2025 mit neuen Sätzen: Gross/Klein, Laute, das/dass, Teufelswörter, Fehlerkorrektur, Kommasetzung, 60 Punkte mit Note.",tags:["Übungsprüfung","Test"],datum:"2026-10-18",datei:"module/deutsch-uebungspruefung-bfk-2.html"},
 {fach:"Informatik",titel:"EVA & Kontrollstrukturen",text:"EVA (2) und Kapitel 3: EVA-Prinzip, for- und while-Schleifen, if/elif/else, Vergleichsoperatoren und Einrückung. Mit Labor für alle Aufgaben 3.1 bis 3.15 und Quiz.",tags:["Lernseite","Übungen","Quiz"],datum:"2026-10-17",datei:"module/informatik-eva-kontrollstrukturen.html"},
-{fach:"Deutsch",gruppe:"bfK-Prüfung",titel:"Übungsprüfung bfK 1",text:"Prüfung im Aufbau der Nachprüfung 2025: Gross/Klein, Laute, das/dass, Teufelswörter, Fehlerkorrektur, Kommasetzung und Kommaregeln, 60 Punkte mit Note.",tags:["Übungsprüfung","Test"],datum:"2026-10-17",datei:"module/deutsch-uebungspruefung-bfk.html"},
+{fach:"Deutsch",pruefung:"bfK-Prüfung",titel:"Übungsprüfung bfK 1",text:"Prüfung im Aufbau der Nachprüfung 2025: Gross/Klein, Laute, das/dass, Teufelswörter, Fehlerkorrektur, Kommasetzung und Kommaregeln, 60 Punkte mit Note.",tags:["Übungsprüfung","Test"],datum:"2026-10-17",datei:"module/deutsch-uebungspruefung-bfk.html"},
 {fach:"Deutsch",gruppe:"bfK-Prüfung",titel:"Rechtschreibung BFK",text:"Lange/kurze Silben, Stammprinzip, gleich klingende Wörter, das/dass, Bindestrich und 100 Dauerbrenner mit über 250 Übungen, Fehlerjagd und Mix-Test.",tags:["Lernseite","Übungen","Test"],datum:"2026-10-17",datei:"module/deutsch-rechtschreibung-bfk.html"},
 {fach:"Deutsch",gruppe:"bfK-Prüfung",titel:"Kommasetzung",text:"Alle Kommaregeln inkl. Gefühlskommas, Adjektiv-Probe und Konjunktionen mit/ohne Komma, mit Tricks und 128 Übungen.",tags:["Lernseite","Übungen","Grammatik"],datum:"2026-10-16",datei:"module/deutsch-kommasetzung.html"},
  {fach:"Geografie",titel:"Topografie Schweiz",text:"Orientierungswissen auf der Karte: Seen, Flüsse, Gebirge mit Gipfeln, Gletscher, Pässe, Orte und Regionen.",tags:["Quiz","Karte","Lernkarten"],datum:"2026-10-14",datei:"module/geografie-topografie-schweiz.html"},
@@ -167,16 +184,32 @@ function render(){
   const q=$("q").value.trim().toLowerCase();let html="",shown=0;
   faecher().filter(s=>active==="Alle"||s.name===active).forEach(s=>{
     const all=MODULE.filter(m=>m.fach===s.name);
-    const mods=all.filter(m=>!q||[m.titel,m.text,m.tags.join(" "),m.gruppe||"",s.name].join(" ").toLowerCase().includes(q)).sort((a,b)=>b.datum.localeCompare(a.datum));
+    const mods=all.filter(m=>!q||[m.titel,m.text,m.tags.join(" "),m.gruppe||"",m.pruefung||"",s.name].join(" ").toLowerCase().includes(q)).sort((a,b)=>b.datum.localeCompare(a.datum));
     if(!mods.length&&(q||all.length))return;
     shown++;
     html+=`<section style="--c:${s.c}"><h2>${esc(s.name)}<small>${mods.length} ${mods.length===1?"Modul":"Module"}</small></h2>`+
-      (mods.length?regal(mods):`<p class="empty">Noch keine Module.</p>`)+`</section>`;
+      (mods.length?regal(mods,s.name,q):`<p class="empty">Noch keine Module.</p>`)+`</section>`;
   });
   $("shelves").innerHTML=shown?html:'<p class="state">Nichts gefunden. Probier ein anderes Wort.</p>';
 }
 /* ===== Unterkategorien: Module mit gleicher «gruppe» stehen zusammen unter einer eigenen Überschrift ===== */
-function regal(mods){
+/* Übungsprüfungen: Module mit «pruefung» kommen pro Fach in einen ausklappbaren Teil, nach Prüfung geordnet */
+let offen=[];try{offen=JSON.parse(localStorage.getItem("pruefungen-offen")||"[]")}catch(e){}
+function pruefungen(ex,fach,q){
+  const namen=[...new Set(ex.map(m=>m.pruefung))].sort((a,b)=>{
+    const da=ex.filter(m=>m.pruefung===a).map(m=>m.datum).sort().pop()||"",db_=ex.filter(m=>m.pruefung===b).map(m=>m.datum).sort().pop()||"";return db_.localeCompare(da);});
+  const auf=q||offen.includes(fach);
+  return `<details class="exams" data-fach="${esc(fach)}"${auf?" open":""}><summary><span class="t">Übungsprüfungen <small>${ex.length}</small></span><span class="which">${namen.map(esc).join(" · ")}</span></summary><div class="inner">`+
+    namen.map(n=>{const gm=ex.filter(m=>m.pruefung===n).sort((a,b)=>String(a.titel).localeCompare(String(b.titel),"de",{numeric:true}));
+      return `<div class="subgrp"><h3>${esc(n)}<small>${gm.length}</small></h3><div class="grid">${gm.map(karte).join("")}</div></div>`;}).join("")+`</div></details>`;
+}
+document.addEventListener("toggle",e=>{const d=e.target;if(!d.classList||!d.classList.contains("exams"))return;
+  const f=d.dataset.fach;offen=offen.filter(x=>x!==f);if(d.open)offen.push(f);try{localStorage.setItem("pruefungen-offen",JSON.stringify(offen))}catch(e){}},true);
+function regal(all,fach,q){
+  const ex=all.filter(m=>m.pruefung),mods=all.filter(m=>!m.pruefung);
+  return regalOhne(mods)+(ex.length?pruefungen(ex,fach,q):"");
+}
+function regalOhne(mods){
   const ohne=mods.filter(m=>!m.gruppe),gruppen=[...new Set(mods.filter(m=>m.gruppe).map(m=>m.gruppe))].sort((a,b)=>a.localeCompare(b,"de"));
   return (ohne.length?`<div class="grid">${ohne.map(karte).join("")}</div>`:"")+gruppen.map(g=>{
     const gm=mods.filter(m=>m.gruppe===g).sort((a,b)=>a.titel.localeCompare(b.titel,"de",{numeric:true}));
