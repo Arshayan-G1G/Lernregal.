@@ -22,9 +22,10 @@ body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-siz
 .wrap{max-width:860px;margin:0 auto;padding-inline:16px;padding-block:24px 80px}
 h1{font-family:var(--f-display);font-weight:700;font-size:clamp(28px,6vw,40px);line-height:1.1;margin:0;text-wrap:balance}
 .lead{margin:6px 0 0;color:var(--muted)}
-nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;gap:6px;margin:18px 0;padding:6px;background:var(--sheet);border:1px solid var(--line);border-radius:10px}
+nav.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:18px 0;padding:6px;background:var(--sheet);border:1px solid var(--line);border-radius:10px}
 nav.tabs button{flex:1;font:inherit;font-weight:700;padding:10px 6px;border:0;border-radius:7px;background:transparent;color:var(--muted);cursor:pointer;line-height:1.2}
-nav.tabs button small{display:block;font-weight:400;font-size:12px}
+nav.tabs button small{display:block;font-weight:400;font-size:12px;line-height:1.25;margin-top:2px}
+nav.tabs .bst{white-space:nowrap;font-weight:700}
 @media (max-width:560px){nav.tabs .lg{display:none}}
 textarea.b{resize:none;line-height:1.5;padding:4px 3px;font-family:inherit;display:block}
 nav.tabs button[aria-selected="true"]{background:var(--blue);color:var(--sheet)}
@@ -68,12 +69,22 @@ input.b:disabled{opacity:1}
 .result small{display:block;color:var(--muted);font-size:13px}
 .best{font-size:14px;color:var(--muted)}
 .tip{font-size:14px;color:var(--muted);margin:10px 0 0}
+.kind{display:inline-block;font-size:12.5px;color:var(--blue);background:var(--blue-soft);border-radius:99px;padding:1px 9px;margin-left:4px;vertical-align:1px}
+.opts{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.opt{font:inherit;font-size:15px;line-height:1.3;padding:6px 13px;border-radius:99px;border:1px solid var(--line);background:var(--sheet);color:var(--ink);cursor:pointer;text-align:left}
+.opt:hover{border-color:var(--blue)}
+.opt[aria-pressed="true"]{border-color:var(--blue);background:var(--blue-soft);color:var(--blue);font-weight:700}
+.opt.right{border-color:var(--green);background:var(--green-soft);color:var(--green);font-weight:700}
+.opt.wrong{border-color:var(--red);background:var(--red-soft);color:var(--red);text-decoration:line-through}
+.opt:disabled{cursor:default}
+.rule p{margin:2px 0}
+input.b::placeholder{color:var(--muted);font-weight:400;opacity:.8}
 </style>
 
 <div class="wrap">
 <header>
   <h1>Übungsprüfung Envol 2</h1>
-  <p class="lead">Test de grammaire · gleicher Aufbau wie die echte Prüfung (ohne Impératif) · 49 Punkte</p>
+  <p class="lead">Prüfungen 1–4 haben den gleichen Aufbau wie die echte Prüfung. Prüfungen 5–8 üben die gleichen Themen auf andere Art: Fehlerjagd, Geschichte, Übersetzen und Schnelltest. Alles ohne Impératif.</p>
 </header>
 <nav class="tabs" id="tabs" role="tablist"></nav>
 <main id="exam"></main>
@@ -254,10 +265,188 @@ const EXAMS=[
   {q:"[Les enfants] ont construit un château de sable.",a:["Qui est-ce qui a construit un château de sable ?"],h:"Nach qui est-ce qui steht das Verb im Singular."},
   {q:"Il prend [une glace].",a:["Qu'est-ce qu'il prend ?"]},
   {q:"[Le soleil] me fait mal aux yeux.",a:["Qu'est-ce qui te fait mal aux yeux ?","Qu'est-ce qui vous fait mal aux yeux ?"]}]}
+]},
+
+/* ===== Prüfung 5: Fehlerjagd. Jeder Satz hat genau einen Fehler. ===== */
+{name:"Prüfung 5",theme:"Fehlerjagd",kind:"Fehler finden und korrigieren",tasks:[
+ {t:"rewrite",topic:"adj",title:"L'adjectif",instr:"Chaque phrase contient une faute. Récrivez la phrase correcte.",items:[
+  {q:"C'est une fille gentil.",a:["C'est une fille gentille."],h:"gentil → gentille (Konsonant doppelt)."},
+  {q:"Il a acheté un nouveau ordinateur.",a:["Il a acheté un nouvel ordinateur."],h:"Vor Vokal: nouvel."},
+  {q:"Elle porte une jupe bleu.",a:["Elle porte une jupe bleue."],h:"la jupe ist feminin: bleue."},
+  {q:"Nous avons visité une ville belle.",a:["Nous avons visité une belle ville."],h:"beau / belle steht vor dem Nomen."},
+  {q:"Ce sont des chaussures blanches et chers.",a:["Ce sont des chaussures blanches et chères."],h:"cher → chère, Plural chères."}]},
+ {t:"rewrite",topic:"comp",title:"Le comparatif et le superlatif",instr:"Chaque phrase contient une faute. Récrivez la phrase correcte.",items:[
+  {q:"Ce gâteau est plus bon que l'autre.",a:["Ce gâteau est meilleur que l'autre."],h:"plus bon gibt es nicht: meilleur."},
+  {q:"Marie est aussi grande comme sa sœur.",a:["Marie est aussi grande que sa sœur."],h:"aussi … que."},
+  {q:"C'est le plus haut montagne de Suisse.",a:["C'est la plus haute montagne de Suisse."],h:"la montagne ist feminin: la plus haute."},
+  {q:"Mes sœurs sont plus sportif que moi.",a:["Mes sœurs sont plus sportives que moi."],h:"Adjektiv angleichen: sportives."},
+  {q:"Ce sont les élèves les plus intelligents dans l'école.",a:["Ce sont les élèves les plus intelligents de l'école."],h:"Superlativ + de (de l'école)."}]},
+ {t:"rewrite",topic:"art",title:"Les articles",instr:"Chaque phrase contient une faute. Récrivez la phrase correcte.",items:[
+  {q:"Je mange du pain sans du beurre.",a:["Je mange du pain sans beurre."],h:"Nach sans kein Artikel."},
+  {q:"Il a acheté un kilo des pommes.",a:["Il a acheté un kilo de pommes."],h:"Nach Mengenangabe nur de."},
+  {q:"J'aime du chocolat.",a:["J'aime le chocolat."],h:"Nach aimer: bestimmter Artikel."},
+  {q:"Elle ne mange pas de la viande.",a:["Elle ne mange pas de viande."],h:"Nach Verneinung nur de."},
+  {q:"Il fait de le sport.",a:["Il fait du sport."],h:"de + le = du."},
+  {q:"Je vais à le cinéma.",a:["Je vais au cinéma."],h:"à + le = au."}]},
+ {t:"rewrite",topic:"pron",title:"Les pronoms",instr:"Chaque phrase contient une faute. Récrivez la phrase correcte.",items:[
+  {q:"Je la donne un cadeau. (à ma mère)",a:["Je lui donne un cadeau."],h:"à + Person → lui."},
+  {q:"Je leurs téléphone souvent. (à mes amis)",a:["Je leur téléphone souvent."],h:"leur als Pronomen hat nie ein -s."},
+  {q:"Je l'ai pas vu. (le film)",a:["Je ne l'ai pas vu."],h:"ne steht vor dem Pronomen."},
+  {q:"Il trouve les. (les clés)",a:["Il les trouve."],h:"Das Pronomen steht vor dem Verb."},
+  {q:"Le prof vous explique la règle. (à toi et à moi)",a:["Le prof nous explique la règle."],h:"à toi et à moi → nous."}]},
+ {t:"rewrite",topic:"refl",title:"Les verbes pronominaux",instr:"Chaque phrase contient une faute. Récrivez la phrase correcte.",items:[
+  {q:"Hier, Paul s'a levé à sept heures.",a:["Hier, Paul s'est levé à sept heures."],h:"Reflexive Verben immer mit être."},
+  {q:"Marie s'est habillé vite.",a:["Marie s'est habillée vite."],h:"Marie ist weiblich: habillée."},
+  {q:"Nous nous avons dépêchés.",a:["Nous nous sommes dépêchés.","Nous nous sommes dépêchées."],h:"être, nicht avoir."},
+  {q:"Les filles se sont amusés.",a:["Les filles se sont amusées."],h:"Weiblich Plural: -ées."},
+  {q:"Tom et Léa s'est rencontrés au parc.",a:["Tom et Léa se sont rencontrés au parc."],h:"Zwei Personen: se sont."},
+  {q:"Elle ne s'est reposée pas.",a:["Elle ne s'est pas reposée."],h:"ne … pas umschliesst se + être."}]},
+ {t:"rewrite",topic:"neg",title:"La négation",instr:"Chaque phrase contient une faute. Récrivez la phrase correcte.",items:[
+  {q:"Je ne vois pas personne.",a:["Je ne vois personne."],h:"personne ersetzt pas."},
+  {q:"Personne ne m'a pas aidé.",a:["Personne ne m'a aidé."],h:"Personne ne … ohne pas."},
+  {q:"Je n'ai vu rien.",a:["Je n'ai rien vu."],h:"rien steht vor dem Partizip."},
+  {q:"Il n'a personne rencontré.",a:["Il n'a rencontré personne."],h:"personne steht nach dem Partizip."},
+  {q:"Elle n'a plus des amis ici.",a:["Elle n'a plus d'amis ici."],h:"Nach Verneinung: de / d'."},
+  {q:"Non, je n'ai encore pas fini.",a:["Non, je n'ai pas encore fini."],h:"ne … pas encore."}]},
+ {t:"rewrite",topic:"poss",title:"L'adjectif possessif et démonstratif",instr:"Chaque phrase contient une faute. Récrivez la phrase correcte.",items:[
+  {q:"Ma amie s'appelle Léa.",a:["Mon amie s'appelle Léa."],h:"Weiblich mit Vokal: mon."},
+  {q:"Ce arbre est très vieux.",a:["Cet arbre est très vieux."],h:"Maskulin vor Vokal: cet."},
+  {q:"Les enfants jouent avec leur jouets.",a:["Les enfants jouent avec leurs jouets."],h:"Mehrere Sachen: leurs."},
+  {q:"Paul parle avec sa père.",a:["Paul parle avec son père."],h:"le père → son."},
+  {q:"Cette livre est intéressant.",a:["Ce livre est intéressant."],h:"le livre ist maskulin: ce."},
+  {q:"Nous aimons nos maison.",a:["Nous aimons notre maison."],h:"Eine Sache: notre."}]},
+ {t:"rewrite",topic:"quest",title:"Les questions avec « est-ce qu(e/i) »",instr:"Chaque phrase contient une faute. Récrivez la phrase correcte.",items:[
+  {q:"Où est-ce que tu habite ?",a:["Où est-ce que tu habites ?"],h:"tu habites mit -s."},
+  {q:"Qu'est-ce qui tu fais ?",a:["Qu'est-ce que tu fais ?"],h:"Danach kommt ein Subjekt (tu): que."},
+  {q:"Qui est-ce que a téléphoné ?",a:["Qui est-ce qui a téléphoné ?"],h:"Person als Subjekt: qui est-ce qui."},
+  {q:"Pourquoi est-ce que il pleure ?",a:["Pourquoi est-ce qu'il pleure ?"],h:"Vor Vokal: qu'."},
+  {q:"Qu'est-ce que te fait peur ?",a:["Qu'est-ce qui te fait peur ?"],h:"Sache als Subjekt: qu'est-ce qui."}]}
+]},
+
+/* ===== Prüfung 6: Eine Geschichte, alle Themen gemischt. Lücke: {lösung^thema~hilfe} ===== */
+{name:"Prüfung 6",theme:"Une semaine à Paris",kind:"Eine Geschichte, alle Themen gemischt",tasks:[
+ {t:"text",each:1,topic:"mix",title:"Le départ",instr:"Complétez l'histoire. Le mot gris dans la case vous aide.",
+  x:"Lundi matin, Lina et sa sœur Zoé {se sont réveillées^refl~se réveiller} à six heures. Lina a pris {sa^poss~ihre} {nouvelle^adj~nouveau} valise et Zoé a pris {son^poss~ihren} sac à dos. À la gare, elles ont acheté {des^art} croissants et une bouteille {d'^art} eau. Le TGV est {plus rapide^comp~+ rapide} {que^comp} la voiture. Pendant le voyage, Zoé {s'est endormie^refl~s'endormir}. Lina, elle, n'a {rien^neg~nichts} mangé."},
+ {t:"text",each:1,topic:"mix",title:"À Paris",instr:"Complétez l'histoire. Le mot gris dans la case vous aide.",
+  x:"À Paris, les filles ont retrouvé {leur^poss~ihre} tante Claire. Claire a montré la ville {aux^art~à + les} filles. « {Qu'est-ce que^quest~was} vous voulez voir ? » demande Claire. Zoé répond : « La tour Eiffel ! C'est le monument {le plus célèbre^comp~!+ célèbre} {de^comp} Paris. » Elles {y^pron~dorthin} sont allées en métro. {Cette^poss~diese} tour est vraiment {belle^adj~beau}, mais il y avait beaucoup {de^art} touristes. Après la visite, Claire {leur^pron~ihnen} a acheté une glace."},
+ {t:"text",each:1,topic:"mix",title:"Un petit problème",instr:"Complétez l'histoire. Le mot gris dans la case vous aide.",
+  x:"Mercredi, Zoé ne trouvait plus {son^poss~ihr} portable. Elle l'a cherché partout, mais elle ne {l'^pron~es} a pas trouvé. « {Qui est-ce qui^quest~wer} a vu mon portable ? » {Personne^neg~niemand} ne l'avait vu. Finalement, Lina l'a trouvé sous {un^art} coussin. Les deux sœurs {se sont disputées^refl~se disputer}, puis elles {se sont réconciliées^refl~se réconcilier}. Le soir, elles ont mangé dans un {vieil^adj~vieux} hôtel transformé en restaurant."},
+ {t:"text",each:1,topic:"mix",title:"Le retour",instr:"Complétez l'histoire. Le mot gris dans la case vous aide.",
+  x:"Dimanche, Claire a demandé : « {Pourquoi est-ce que^quest~warum} vous partez déjà ? » – « Parce que l'école commence lundi ! » Les filles n'avaient {plus^neg~nicht mehr} {d'^art} argent, mais elles étaient {heureuses^adj~heureux}. Dans le train, Lina a dit : « La vie à Paris est {plus chère^comp~+ cher} {que^comp} la vie à Zurich. » À la maison, elles ont tout raconté à {leurs^poss~ihren} parents. Leur père a demandé : « {Est-ce que^quest~Frage ohne Fragewort} vous avez rencontré quelqu'un ? » – « Non, nous n'avons rencontré {personne^neg~niemand}. » Le soir, les filles {se sont couchées^refl~se coucher} tôt."}
+]},
+
+/* ===== Prüfung 7: Übersetzen Deutsch → Französisch ===== */
+{name:"Prüfung 7",theme:"Übersetzen",kind:"Deutsch → Französisch",tasks:[
+ {t:"rewrite",topic:"adj",title:"L'adjectif",instr:"Traduisez en français.",items:[
+  {q:"Meine kleine Schwester hat eine blaue Jacke. (la veste)",a:["Ma petite sœur a une veste bleue."]},
+  {q:"Wir haben ein schönes Hotel gefunden.",a:["Nous avons trouvé un bel hôtel.","On a trouvé un bel hôtel."]},
+  {q:"Das ist eine alte Tradition. (la tradition)",a:["C'est une vieille tradition."]},
+  {q:"Er hat neue Freunde.",a:["Il a de nouveaux amis."],h:"des → de vor einem Adjektiv im Plural."}]},
+ {t:"rewrite",topic:"comp",title:"Le comparatif et le superlatif",instr:"Traduisez en français.",items:[
+  {q:"Léa ist grösser als Tom.",a:["Léa est plus grande que Tom."]},
+  {q:"Dieser Film ist weniger interessant als das Buch.",a:["Ce film est moins intéressant que le livre."]},
+  {q:"Das ist die beste Pizza der Stadt.",a:["C'est la meilleure pizza de la ville."]},
+  {q:"Meine Brüder sind so sportlich wie ich.",a:["Mes frères sont aussi sportifs que moi."]}]},
+ {t:"rewrite",topic:"art",title:"Les articles",instr:"Traduisez en français.",items:[
+  {q:"Ich trinke Wasser.",a:["Je bois de l'eau."]},
+  {q:"Er isst keinen Käse.",a:["Il ne mange pas de fromage."]},
+  {q:"Sie mag Schokolade.",a:["Elle aime le chocolat."]},
+  {q:"Wir kaufen ein Kilo Äpfel.",a:["Nous achetons un kilo de pommes.","On achète un kilo de pommes."]},
+  {q:"Er hat Mut.",a:["Il a du courage."]}]},
+ {t:"rewrite",topic:"pron",title:"Les pronoms",instr:"Traduisez en français. Ersetze die Person oder Sache durch ein Pronomen.",items:[
+  {q:"Ich sehe ihn. (Paul)",a:["Je le vois."]},
+  {q:"Wir telefonieren ihr. (Marie)",a:["Nous lui téléphonons.","On lui téléphone."]},
+  {q:"Sie hat ihnen geschrieben. (ses amis)",a:["Elle leur a écrit."]},
+  {q:"Ich habe sie nicht gefunden. (les clés)",a:["Je ne les ai pas trouvées.","Je ne les ai pas trouvés.","Je ne les ai pas trouvé."]}]},
+ {t:"rewrite",topic:"refl",title:"Les verbes pronominaux",instr:"Traduisez en français, au passé composé.",items:[
+  {q:"Marie ist um 7 Uhr aufgestanden.",a:["Marie s'est levée à 7 heures.","Marie s'est levée à sept heures.","Marie s'est levée à 7 h."]},
+  {q:"Wir (Tom und ich) haben uns beeilt.",a:["Nous nous sommes dépêchés."]},
+  {q:"Die Mädchen haben sich amüsiert.",a:["Les filles se sont amusées."]},
+  {q:"Er hat sich nicht rasiert.",a:["Il ne s'est pas rasé."]},
+  {q:"Du (Léa) hast dich geschminkt.",a:["Tu t'es maquillée."]}]},
+ {t:"rewrite",topic:"neg",title:"La négation",instr:"Traduisez en français.",items:[
+  {q:"Ich habe nichts gesehen.",a:["Je n'ai rien vu."]},
+  {q:"Niemand ist gekommen.",a:["Personne n'est venu."]},
+  {q:"Er wohnt nicht mehr in Bern.",a:["Il n'habite plus à Berne.","Il n'habite plus à Bern."]},
+  {q:"Ich habe niemanden getroffen.",a:["Je n'ai rencontré personne."]},
+  {q:"Wir sind noch nie in Paris gewesen.",a:["Nous ne sommes jamais allés à Paris.","Nous n'avons jamais été à Paris."]}]},
+ {t:"rewrite",topic:"poss",title:"L'adjectif possessif et démonstratif",instr:"Traduisez en français.",items:[
+  {q:"Diese Frau ist meine Lehrerin. (la prof)",a:["Cette femme est ma prof."]},
+  {q:"Dieser Baum ist alt. (l'arbre)",a:["Cet arbre est vieux."]},
+  {q:"Sie (mehrere) suchen ihre Katze. (le chat)",a:["Ils cherchent leur chat.","Elles cherchent leur chat."]},
+  {q:"Er spielt mit seiner Freundin. (l'amie)",a:["Il joue avec son amie."]},
+  {q:"Diese Schuhe sind neu. (les chaussures)",a:["Ces chaussures sont neuves.","Ces chaussures sont nouvelles."]}]},
+ {t:"rewrite",topic:"quest",title:"Les questions avec « est-ce qu(e/i) »",instr:"Traduisez en français avec « est-ce que » ou « est-ce qui ».",items:[
+  {q:"Wo wohnst du?",a:["Où est-ce que tu habites ?"]},
+  {q:"Was machst du?",a:["Qu'est-ce que tu fais ?"]},
+  {q:"Wer hat angerufen?",a:["Qui est-ce qui a téléphoné ?","Qui est-ce qui a appelé ?"]},
+  {q:"Was macht dir Angst?",a:["Qu'est-ce qui te fait peur ?"]},
+  {q:"Warum weint sie? (pleurer)",a:["Pourquoi est-ce qu'elle pleure ?"]}]}
+]},
+
+/* ===== Prüfung 8: Schnelltest mit Auswahl und Umformen ===== */
+{name:"Prüfung 8",theme:"Schnelltest",kind:"Auswählen und Umformen",tasks:[
+ {t:"mc",each:1,topic:"adj",title:"L'adjectif",instr:"Choisissez la bonne forme.",items:[
+  {q:"un ___ ami (vieux)",o:["vieux","vieil","vieille"],c:1},
+  {q:"des filles ___ (heureux)",o:["heureux","heureuse","heureuses"],c:2},
+  {q:"Elle a les yeux ___ . (bleu)",o:["bleu","bleus","bleues"],c:1},
+  {q:"Quelle forme est correcte ?",o:["une maison grande","une grande maison"],c:1},
+  {q:"une voiture ___ (blanc)",o:["blanc","blanche","blanches"],c:1},
+  {q:"J'ai vu ___ films.",o:["des bons","de bons"],c:1}]},
+ {t:"lines",topic:"comp",title:"Le comparatif et le superlatif",instr:"Comparez avec les informations. Mettez la forme correcte et la particule.",items:[
+  {l:"Pizza 15 francs, pâtes 15 francs (cher)",x:"La pizza est {aussi chère} {que} les pâtes."},
+  {l:"Léa court 8 km, Tom 5 km (sportif)",x:"Tom est {moins sportif} {que} Léa."},
+  {l:"Cervin 4478 m, Mont Blanc 4808 m (haut)",x:"Le Mont Blanc est {plus haut} {que} le Cervin."},
+  {l:"Notes : Ana 5,5, Ben 4, Cléa 6 (bon)",x:"Cléa est {la meilleure} élève {de} la classe."}]},
+ {t:"mc",each:.5,topic:"art",title:"Les articles",instr:"Choisissez le bon article. « — » veut dire : pas d'article.",items:[
+  {q:"Je mange ___ pain.",o:["du","de","le"],c:0},
+  {q:"Il n'y a plus ___ lait.",o:["du","de","le"],c:1},
+  {q:"J'adore ___ glaces.",o:["des","les","de"],c:1},
+  {q:"un verre ___ eau",o:["de l'","d'","de la"],c:1},
+  {q:"Elle fait ___ musique.",o:["de la","la","de"],c:0},
+  {q:"J'ai ___ soif.",o:["de la","une","—"],c:2},
+  {q:"le café sans ___ sucre",o:["du","de","—"],c:2},
+  {q:"Il a ___ talent.",o:["de","du","le"],c:1}]},
+ {t:"rewrite",topic:"pron",title:"Les pronoms",instr:"Remplacez la partie soulignée par un pronom. Récrivez la phrase.",items:[
+  {q:"J'achète [le journal].",a:["Je l'achète."]},
+  {q:"Il écrit [à sa grand-mère].",a:["Il lui écrit."]},
+  {q:"Nous ne connaissons pas [ces filles].",a:["Nous ne les connaissons pas."]},
+  {q:"Tu as parlé [à tes parents] ?",a:["Tu leur as parlé ?"]}]},
+ {t:"rewrite",topic:"refl",title:"Les verbes pronominaux",instr:"Mettez les phrases au passé composé.",items:[
+  {q:"Elle se lève tôt.",a:["Elle s'est levée tôt."]},
+  {q:"Nous nous promenons au bord du lac. (nous = Tom et moi)",a:["Nous nous sommes promenés au bord du lac."]},
+  {q:"Ils se dépêchent.",a:["Ils se sont dépêchés."]},
+  {q:"Je me couche à dix heures. (je = Sara)",a:["Je me suis couchée à dix heures."]},
+  {q:"Les filles ne se reposent pas.",a:["Les filles ne se sont pas reposées."]}]},
+ {t:"rewrite",topic:"neg",title:"La négation",instr:"Mettez les phrases à la forme négative avec le mot entre parenthèses.",items:[
+  {q:"Il a mangé quelque chose. (rien)",a:["Il n'a rien mangé."]},
+  {q:"Quelqu'un est venu. (personne)",a:["Personne n'est venu."]},
+  {q:"Elle a vu quelqu'un. (personne)",a:["Elle n'a vu personne."]},
+  {q:"Nous buvons encore du café. (plus)",a:["Nous ne buvons plus de café."]},
+  {q:"Tu vas souvent au cinéma. (jamais)",a:["Tu ne vas jamais au cinéma."]}]},
+ {t:"mc",each:.5,topic:"poss",title:"L'adjectif possessif et démonstratif",instr:"Choisissez la bonne forme.",items:[
+  {q:"___ école est grande. (mein)",o:["Ma","Mon","Mes"],c:1},
+  {q:"___ hôtel est cher. (dieses)",o:["Ce","Cet","Cette"],c:1},
+  {q:"Les enfants promènent ___ chien. (ihren, einen Hund)",o:["son","leur","leurs"],c:1},
+  {q:"Tim et Léa adorent ___ grands-parents.",o:["leur","leurs","ses"],c:1},
+  {q:"___ chaussures sont neuves. (diese)",o:["Ce","Cette","Ces"],c:2},
+  {q:"Marie sort avec ___ frère.",o:["sa","son","ses"],c:1}]},
+ {t:"mc",each:1,topic:"quest",title:"Les questions avec « est-ce qu(e/i) »",instr:"La partie soulignée est la réponse. Choisissez la bonne question.",items:[
+  {q:"Je vais [à Genève].",o:["Où est-ce que tu vas ?","Qu'est-ce que tu vas ?","Quand est-ce que tu vas ?"],c:0},
+  {q:"[Paul] a cassé le vase.",o:["Qu'est-ce qui a cassé le vase ?","Qui est-ce qui a cassé le vase ?","Qui est-ce que a cassé le vase ?"],c:1},
+  {q:"Elle lit [un roman].",o:["Qu'est-ce qu'elle lit ?","Qu'est-ce qui elle lit ?","Qui est-ce qu'elle lit ?"],c:0},
+  {q:"[La musique] me fait plaisir.",o:["Qui est-ce qui te fait plaisir ?","Qu'est-ce que te fait plaisir ?","Qu'est-ce qui te fait plaisir ?"],c:2},
+  {q:"Il part [demain].",o:["Quand est-ce qu'il part ?","Où est-ce qu'il part ?","Pourquoi est-ce qu'il part ?"],c:0}]}
 ]}
+
 ];
-/* Regeln von Prüfung 1 für alle übernehmen */
-EXAMS.forEach(e=>e.tasks.forEach((t,i)=>{if(!t.rule)t.rule=EXAMS[0].tasks[i].rule;}));
+/* ---------- Themen und Regeln ---------- */
+const TOPICS={adj:"Adjektive",comp:"Komparativ und Superlativ",art:"Artikel",pron:"Pronomen",refl:"Reflexive Verben",neg:"Verneinung",poss:"Possessiv und Demonstrativ",quest:"Fragen mit est-ce que"};
+const ORDER=Object.keys(TOPICS);
+const RULES={};
+EXAMS[0].tasks.forEach((t,i)=>{RULES[ORDER[i]]=t.rule;});
+/* Prüfungen 1–4 haben die Themen in der Reihenfolge der echten Prüfung */
+EXAMS.forEach((e,ei)=>e.tasks.forEach((t,i)=>{if(!t.topic&&ei<4)t.topic=ORDER[i];}));
 
 /* ---------- Hilfen ---------- */
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -266,9 +455,12 @@ const noAcc=s=>s.normalize("NFD").replace(/[̀-ͯ]/g,"");
 const noHy=s=>s.replace(/-/g," ");
 const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
 const fmtPt=n=>(Math.round(n*2)/2).toString().replace(".",",");
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+/* Lücke: {antwort|andere^thema~hilfe} */
+function spec(raw){let s=raw,hint="",topic="";const ti=s.indexOf("~");if(ti>=0){hint=s.slice(ti+1);s=s.slice(0,ti);}const pi=s.indexOf("^");if(pi>=0){topic=s.slice(pi+1);s=s.slice(0,pi);}return {sols:s.split("|"),topic,hint};}
+function blanks(x){return [...x.matchAll(/\{([^}]+)\}/g)].map(m=>spec(m[1]));}
+function taskMax(t){if(t.t==="text")return blanks(t.x).length*t.each;if(t.t==="mc")return t.items.length*(t.each||1);return t.items.length;}
 const MAX=e=>e.tasks.reduce((s,t)=>s+taskMax(t),0);
-function taskMax(t){if(t.t==="text")return blanks(t.x).length*t.each;return t.items.length;}
-function blanks(x){return [...x.matchAll(/\{([^}]+)\}/g)].map(m=>m[1].split("|"));}
 function judge(val,sols){
   const v=norm(val),S=sols.map(norm);
   if(!v)return {ok:false,msg:""};
@@ -281,36 +473,41 @@ function judge(val,sols){
 /* ---------- Aufbau ---------- */
 const FIXED=window.FIXED_EXAM||0;
 let cur=FIXED?FIXED-1:0;
-const h=location.hash.match(/^#p([1-4])$/);if(h&&!FIXED)cur=+h[1]-1;
+const h=location.hash.match(/^#p([1-8])$/);if(h&&!FIXED)cur=+h[1]-1;
 const tabs=document.getElementById("tabs");
 if(FIXED)tabs.hidden=true;
 function drawTabs(){
   tabs.innerHTML=EXAMS.map((e,i)=>{const b=store.get("envol78_best_"+i);
-    return `<button role="tab" id="tab-p${i+1}" aria-selected="${i===cur}" data-i="${i}"><span class="lg">Prüfung </span>${i+1}<small>${esc(e.theme)}${b?" · "+b+" %":""}</small></button>`}).join("");
+    return `<button role="tab" id="tab-p${i+1}" aria-selected="${i===cur}" data-i="${i}"><span class="lg">Prüfung </span>${i+1}<small>${esc(e.theme)}${b?` <span class="bst">${b} %</span>`:""}</small></button>`}).join("");
   tabs.querySelectorAll("button").forEach(b=>b.onclick=()=>{cur=+b.dataset.i;drawTabs();draw();window.scrollTo({top:0});});
 }
 let uid=0;
-function inp(sols,cls=""){
-  const w=Math.max(...sols.map(s=>s.length))+2;
+function inp(sols,cls="",topic="",hint=""){
+  const w=Math.max(...sols.map(s=>s.length),hint.length)+2;
   const id="f"+(++uid);
-  if(cls==="full")return `<textarea class="b full" id="${id}" rows="2" data-sol="${esc(JSON.stringify(sols))}" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Antwort"></textarea>`;
-  return `<input class="b ${cls}" id="${id}" data-sol="${esc(JSON.stringify(sols))}" style="width:${Math.min(w,30)}ch" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Lücke">`;
+  if(cls==="full")return `<textarea class="b full" id="${id}" rows="2" data-sol="${esc(JSON.stringify(sols))}" data-topic="${topic}" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Antwort"></textarea>`;
+  return `<input class="b ${cls}" id="${id}" data-sol="${esc(JSON.stringify(sols))}" data-topic="${topic}"${hint?` placeholder="${esc(hint)}"`:""} style="width:${Math.min(w,30)}ch" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="${hint?esc("Lücke: "+hint):"Lücke"}">`;
 }
-function textWithBlanks(x){return esc(x).replace(/\{([^}]+)\}/g,(_,a)=>inp(a.replace(/&#39;|&quot;/g,"'").split("|").map(s=>s.replace(/&amp;/g,"&"))));}
+function textWithBlanks(x,topic){
+  let out="",last=0;
+  for(const m of x.matchAll(/\{([^}]+)\}/g)){out+=esc(x.slice(last,m.index));const b=spec(m[1]);out+=inp(b.sols,"",b.topic||topic,b.hint);last=m.index+m[0].length;}
+  return out+esc(x.slice(last));
+}
 function under(q){return esc(q).replace(/\[([^\]]+)\]/g,"<u>$1</u>");}
 
 function draw(){
-  const e=EXAMS[cur],max=MAX(e);uid=0;
+  const e=EXAMS[cur],max=MAX(e);uid=0;stat={};
   if(!FIXED)history.replaceState(null,"","#p"+(cur+1));
-  let html=`<div class="sheet"><div class="head"><span><b>Test de grammaire : Répétition Envol 7 et 8</b><br>${esc(e.name)} · ${esc(e.theme)}</span><span>Points : <b id="pts">…</b> / ${fmtPt(max)}<br>Note : <b id="note">…</b></span></div>`;
+  let html=`<div class="sheet"><div class="head"><span><b>Test de grammaire : Répétition Envol 7 et 8</b><br>${esc(e.name)}: ${esc(e.theme)}${e.kind?` <span class="kind">${esc(e.kind)}</span>`:""}</span><span>Points : <b id="pts">…</b> / ${fmtPt(max)}<br>Note : <b id="note">…</b></span></div>`;
   e.tasks.forEach((t,ti)=>{
     html+=`<section class="task" data-t="${ti}"><h2><span>${ti+1}. ${esc(t.title)}</span><span class="pt" id="tp${ti}">${fmtPt(taskMax(t))} points</span></h2><p class="instr">${esc(t.instr)}</p>`;
     if(t.ttl)html+=`<p class="ttl">${esc(t.ttl)}</p>`;
     if(t.sub)html+=`<p class="instr" style="margin-top:0">${esc(t.sub)}</p>`;
-    if(t.t==="text")html+=`<p class="txt">${textWithBlanks(t.x)}</p>`;
-    if(t.t==="lines")html+=`<ol class="lines">${t.items.map(it=>`<li><span class="lbl">${esc(it.l)}</span><br>${textWithBlanks(it.x)}</li>`).join("")}</ol>`;
-    if(t.t==="rewrite")html+=`<ol class="rw">${t.items.map((it,ii)=>`<li data-ii="${ii}"><span class="q">${under(it.q)}</span><div class="row">${t.pre?`<span>${esc(t.pre)}</span>`:""}${inp(it.a,"full")}</div><div class="fb"></div></li>`).join("")}</ol>`;
-    html+=`<div class="rule"><b>Regel:</b> ${esc(t.rule)}</div></section>`;
+    if(t.t==="text")html+=`<p class="txt">${textWithBlanks(t.x,t.topic)}</p>`;
+    if(t.t==="lines")html+=`<ol class="lines">${t.items.map(it=>`<li><span class="lbl">${esc(it.l)}</span><br>${textWithBlanks(it.x,t.topic)}</li>`).join("")}</ol>`;
+    if(t.t==="rewrite")html+=`<ol class="rw">${t.items.map((it,ii)=>`<li data-ii="${ii}"><span class="q">${under(it.q)}</span><div class="row">${t.pre?`<span>${esc(t.pre)}</span>`:""}${inp(it.a,"full",it.topic||t.topic)}</div><div class="fb"></div></li>`).join("")}</ol>`;
+    if(t.t==="mc")html+=`<ol class="rw mc">${t.items.map((it,ii)=>`<li data-ii="${ii}"><span class="q">${under(it.q).replace("___","<b>___</b>")}</span><div class="opts" role="group">${shuffle(it.o.map((_,j)=>j)).map(j=>`<button type="button" class="opt" data-j="${j}" aria-pressed="false">${esc(it.o[j])}</button>`).join("")}</div><div class="fb"></div></li>`).join("")}</ol>`;
+    html+=`<div class="rule"></div></section>`;
   });
   const best=store.get("envol78_best_"+cur);
   html+=`<div class="submit"><button class="btn" id="go">Abgeben und korrigieren</button><button class="btn alt" id="reset">Neu beginnen</button>${best?`<span class="best">Bestes Resultat: ${best} %</span>`:""}</div><div id="res"></div>`;
@@ -318,34 +515,49 @@ function draw(){
   document.getElementById("exam").innerHTML=html;
   const ins=[...document.querySelectorAll("#exam .b")];
   ins.forEach((el,k)=>el.addEventListener("keydown",ev=>{if(ev.key==="Enter"){ev.preventDefault();(ins[k+1]||document.getElementById("go")).focus();}}));
+  document.querySelectorAll("#exam .opts").forEach(g=>g.addEventListener("click",ev=>{const b=ev.target.closest(".opt");if(!b||b.disabled)return;
+    g.querySelectorAll(".opt").forEach(x=>x.setAttribute("aria-pressed","false"));b.setAttribute("aria-pressed","true");}));
   document.getElementById("go").onclick=correct;
   document.getElementById("reset").onclick=()=>{draw();window.scrollTo({top:0});};
 }
 
-let extra={};
+/* Punkte pro Thema, für «Nochmal anschauen» */
+let stat={};
+const add=(tp,g,m)=>{if(!tp)return;stat[tp]=stat[tp]||{g:0,m:0};stat[tp].g+=g;stat[tp].m+=m;};
 function correct(){
-  const e=EXAMS[cur];let total=0;extra={};
+  const e=EXAMS[cur];let total=0;stat={};
   document.querySelectorAll("#exam section.task").forEach(sec=>{
-    const t=e.tasks[+sec.dataset.t];let got=0;sec.classList.add("done");
+    const ti=+sec.dataset.t,t=e.tasks[ti];let got=0;const miss=new Set();sec.classList.add("done");
     if(t.t==="rewrite"){
       sec.querySelectorAll("li[data-ii]").forEach(li=>{
-        const it=t.items[+li.dataset.ii],el=li.querySelector(".b"),r=judge(el.value,it.a);el.disabled=true;
-        el.classList.add(r.ok?"ok":"bad");
+        const it=t.items[+li.dataset.ii],el=li.querySelector(".b"),tp=it.topic||t.topic,r=judge(el.value,it.a);el.disabled=true;
+        el.classList.add(r.ok?"ok":"bad");add(tp,r.ok?1:0,1);
         if(r.ok)got+=1;
-        else{li.querySelector(".fb").innerHTML=`${r.msg?`<span class="hint">${r.msg}</span> `:""}Lösung: <span class="s">${esc((t.pre||"")+it.a[0])}</span>${it.h?` <span class="hint">${esc(it.h)}</span>`:""}${el.value.trim()?`<button class="own" type="button">Doch richtig</button>`:""}`;
-          const ob=li.querySelector(".own");if(ob)ob.onclick=()=>{ob.remove();el.classList.remove("bad");el.classList.add("ok");addPoint(sec,+sec.dataset.t,1);};}
+        else{miss.add(tp);li.querySelector(".fb").innerHTML=`${r.msg?`<span class="hint">${r.msg}</span> `:""}Lösung: <span class="s">${esc((t.pre||"")+it.a[0])}</span>${it.h?` <span class="hint">${esc(it.h)}</span>`:""}${el.value.trim()?`<button class="own" type="button">Doch richtig</button>`:""}`;
+          const ob=li.querySelector(".own");if(ob)ob.onclick=()=>{ob.remove();el.classList.remove("bad");el.classList.add("ok");add(tp,1,0);addPoint(sec,ti,1);};}
+      });
+    }else if(t.t==="mc"){
+      const each=t.each||1;
+      sec.querySelectorAll("li[data-ii]").forEach(li=>{
+        const it=t.items[+li.dataset.ii],tp=it.topic||t.topic,sel=li.querySelector('.opt[aria-pressed="true"]'),ok=!!sel&&+sel.dataset.j===it.c;
+        li.querySelectorAll(".opt").forEach(b=>{b.disabled=true;if(+b.dataset.j===it.c)b.classList.add("right");else if(b===sel)b.classList.add("wrong");});
+        add(tp,ok?each:0,each);if(ok)got+=each;else{miss.add(tp);if(!sel)li.querySelector(".fb").innerHTML=`<span class="hint">Nichts gewählt.</span>`;}
       });
     }else{
       const lines=t.t==="lines"?[...sec.querySelectorAll("ol.lines>li")]:[sec];
       lines.forEach(ln=>{
         const els=[...ln.querySelectorAll("input")];const per=t.t==="lines"?1/els.length:t.each;
-        els.forEach(el=>{const sols=JSON.parse(el.dataset.sol),r=judge(el.value,sols);el.disabled=true;el.classList.add(r.ok?"ok":"bad");
-          if(r.ok)got+=per;else el.insertAdjacentHTML("afterend",`<span class="sol">${esc(sols[0])}</span>`);});
+        els.forEach(el=>{const sols=JSON.parse(el.dataset.sol),tp=el.dataset.topic||t.topic,r=judge(el.value,sols);el.disabled=true;el.classList.add(r.ok?"ok":"bad");
+          add(tp,r.ok?per:0,per);
+          if(r.ok)got+=per;else{miss.add(tp);el.insertAdjacentHTML("afterend",`<span class="sol">${esc(sols[0])}</span>`);}});
       });
     }
+    /* Regel: bei einem Thema immer, bei gemischten Teilen nur zu den Fehlern */
+    const box=sec.querySelector(".rule");
+    if(t.topic&&t.topic!=="mix")box.innerHTML=`<b>Regel:</b> ${esc(t.rule||RULES[t.topic]||"")}`;
+    else box.innerHTML=miss.size?[...miss].map(tp=>`<p><b>${esc(TOPICS[tp]||tp)}:</b> ${esc(RULES[tp]||"")}</p>`).join(""):"<b>Alles richtig in diesem Teil.</b>";
     sec.dataset.got=got;total+=got;
-    document.getElementById("tp"+sec.dataset.t).innerHTML=`${fmtPt(got)} / ${fmtPt(taskMax(t))} points`;
-    document.getElementById("tp"+sec.dataset.t).classList.add("got");
+    const tp=document.getElementById("tp"+ti);tp.innerHTML=`${fmtPt(got)} / ${fmtPt(taskMax(t))} points`;tp.classList.add("got");
   });
   document.getElementById("go").disabled=true;
   showResult(total);
@@ -361,8 +573,8 @@ function showResult(total){
   const note=Math.round((1+5*total/max)*10)/10,noteR=Math.round((1+5*total/max)*4)/4;
   document.getElementById("pts").textContent=fmtPt(total);
   document.getElementById("note").textContent=note.toFixed(1);
-  let weak=EXAMS[cur].tasks.map((t,i)=>({t,i,r:(+document.querySelector(`section[data-t="${i}"]`).dataset.got)/taskMax(t)})).filter(x=>x.r<0.7).map(x=>x.t.title);
-  document.getElementById("res").innerHTML=`<div class="result ${note<4?"low":""}" role="status"><div><span class="big">${fmtPt(total)} / ${fmtPt(max)}</span><small>Punkte (${pct} %)</small></div><div><span class="big">${note.toFixed(1)}</span><small>Note (gerundet auf Viertel: ${noteR.toFixed(2)})</small></div>${weak.length?`<div style="flex-basis:100%;font-size:14px">Nochmal anschauen: ${weak.map(esc).join(", ")}</div>`:`<div style="flex-basis:100%;font-size:14px">Stark! Alle Aufgaben über 70 %.</div>`}</div>`;
+  const weak=ORDER.filter(tp=>stat[tp]&&stat[tp].m&&stat[tp].g/stat[tp].m<0.7).map(tp=>TOPICS[tp]);
+  document.getElementById("res").innerHTML=`<div class="result ${note<4?"low":""}" role="status"><div><span class="big">${fmtPt(total)} / ${fmtPt(max)}</span><small>Punkte (${pct} %)</small></div><div><span class="big">${note.toFixed(1)}</span><small>Note (gerundet auf Viertel: ${noteR.toFixed(2)})</small></div>${weak.length?`<div style="flex-basis:100%;font-size:14px">Nochmal anschauen: ${weak.map(esc).join(", ")}</div>`:`<div style="flex-basis:100%;font-size:14px">Stark! In allen Themen über 70 %.</div>`}</div>`;
   const old=+(store.get("envol78_best_"+cur)||0);if(pct>old){store.set("envol78_best_"+cur,pct);if(!FIXED)drawTabs();}
   if(window.Lernregal)Lernregal.fortschritt(pct,`${EXAMS[cur].name}: Note ${note.toFixed(1)} (${pct} %)`);
 }

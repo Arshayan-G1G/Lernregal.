@@ -1,0 +1,585 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}[hidden]{display:none!important}</style></head><body>
+<title>Übungsprüfung Envol 8: Schnelltest</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Newsreader:opsz,wght@6..72,500;6..72,700&display=swap">
+<style>
+/* Layout: Prüfungsblatt auf Häuschenpapier, wie der echte Test. Oben Wahl der Prüfung, Aufgaben untereinander, unten Abgabe mit Punkten und Note. */
+:root{
+  --paper:#f6f7fa; --sheet:#ffffff; --grid:#dfe6f3; --ink:#1c2230; --muted:#5d6678;
+  --blue:#2c4aa0; --blue-soft:#e8edfb; --red:#c4302a; --red-soft:#fbe9e7; --green:#25764a; --green-soft:#e4f4ea; --line:#d6dbe6;
+  --f-display:"Newsreader", Georgia, "Times New Roman", serif;
+  --f-body:"Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#10131a; --sheet:#171b24; --grid:#1d2330; --ink:#e5e8ef; --muted:#9aa3b5;
+  --blue:#8ea8ff; --blue-soft:#1e2742; --red:#ff7d72; --red-soft:#3a1d1c; --green:#6fd59c; --green-soft:#16301f; --line:#2a3140; color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --paper:#10131a; --sheet:#171b24; --grid:#1d2330; --ink:#e5e8ef; --muted:#9aa3b5;
+  --blue:#8ea8ff; --blue-soft:#1e2742; --red:#ff7d72; --red-soft:#3a1d1c; --green:#6fd59c; --green-soft:#16301f; --line:#2a3140; color-scheme:dark;}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:22px 22px}
+.wrap{max-width:860px;margin:0 auto;padding-inline:16px;padding-block:24px 80px}
+h1{font-family:var(--f-display);font-weight:700;font-size:clamp(28px,6vw,40px);line-height:1.1;margin:0;text-wrap:balance}
+.lead{margin:6px 0 0;color:var(--muted)}
+nav.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:18px 0;padding:6px;background:var(--sheet);border:1px solid var(--line);border-radius:10px}
+nav.tabs button{flex:1;font:inherit;font-weight:700;padding:10px 6px;border:0;border-radius:7px;background:transparent;color:var(--muted);cursor:pointer;line-height:1.2}
+nav.tabs button small{display:block;font-weight:400;font-size:12px;line-height:1.25;margin-top:2px}
+nav.tabs .bst{white-space:nowrap;font-weight:700}
+@media (max-width:560px){nav.tabs .lg{display:none}}
+textarea.b{resize:none;line-height:1.5;padding:4px 3px;font-family:inherit;display:block}
+nav.tabs button[aria-selected="true"]{background:var(--blue);color:var(--sheet)}
+button:focus-visible,input:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.sheet{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:22px 20px}
+.head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 20px;border-bottom:2px solid var(--ink);padding-bottom:10px;margin-bottom:6px;font-size:14px}
+.head b{font-size:16px}
+.task{padding-top:22px}
+.task h2{display:flex;justify-content:space-between;gap:12px;align-items:baseline;font-size:16px;margin:0;padding-bottom:4px;border-bottom:1px solid var(--muted)}
+.task h2 .pt{font-style:italic;font-weight:400;font-size:14px;white-space:nowrap}
+.task h2 .pt.got{font-style:normal;font-weight:700}
+.instr{font-style:italic;margin:8px 0 10px;font-size:15px}
+.ttl{font-weight:700;margin:0 0 4px}
+.txt{line-height:2.2}
+ol.rw{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:12px}
+ol.rw li{padding-left:4px}
+.rw .q u{text-decoration-thickness:1.5px;text-underline-offset:3px}
+.rw .row{display:flex;gap:6px;align-items:flex-start;margin-top:4px}
+.rw .row span{padding-top:4px}
+.rw .row span{white-space:nowrap}
+input.b{font:inherit;font-weight:700;color:var(--blue);background:transparent;border:0;border-bottom:2px solid var(--muted);padding:0 3px;min-width:3ch;max-width:100%}
+input.full{flex:1;min-width:0;width:100%}
+input.b:disabled{opacity:1}
+.ok input.b,input.b.ok{border-color:var(--green);color:var(--green)}
+.bad input.b,input.b.bad{border-color:var(--red);color:var(--red);text-decoration:line-through}
+.sol{color:var(--red);font-weight:700;font-size:14px;margin-left:2px}
+.fb{font-size:14px;margin-top:2px}
+.fb .s{color:var(--red);font-weight:700}
+.fb .hint{color:var(--muted)}
+.own{font:inherit;font-size:13px;margin-left:8px;padding:2px 8px;border-radius:99px;border:1px solid var(--line);background:var(--sheet);color:var(--muted);cursor:pointer}
+.lines{display:flex;flex-direction:column;gap:12px;margin:0;padding-left:22px}
+.lines .lbl{color:var(--muted);font-size:14px}
+.rule{display:none;margin-top:10px;font-size:14px;background:var(--blue-soft);border-radius:8px;padding:8px 12px}
+.done .rule{display:block}
+.submit{margin-top:28px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.btn{font:inherit;font-weight:700;padding:11px 20px;border-radius:8px;border:0;background:var(--blue);color:var(--sheet);cursor:pointer}
+.btn.alt{background:transparent;color:var(--blue);border:1px solid var(--blue)}
+.result{margin-top:16px;padding:16px;border-radius:10px;background:var(--green-soft);display:flex;flex-wrap:wrap;gap:6px 28px;align-items:baseline}
+.result.low{background:var(--red-soft)}
+.result .big{font-family:var(--f-display);font-size:34px;font-weight:700;line-height:1}
+.result small{display:block;color:var(--muted);font-size:13px}
+.best{font-size:14px;color:var(--muted)}
+.tip{font-size:14px;color:var(--muted);margin:10px 0 0}
+.kind{display:inline-block;font-size:12.5px;color:var(--blue);background:var(--blue-soft);border-radius:99px;padding:1px 9px;margin-left:4px;vertical-align:1px}
+.opts{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.opt{font:inherit;font-size:15px;line-height:1.3;padding:6px 13px;border-radius:99px;border:1px solid var(--line);background:var(--sheet);color:var(--ink);cursor:pointer;text-align:left}
+.opt:hover{border-color:var(--blue)}
+.opt[aria-pressed="true"]{border-color:var(--blue);background:var(--blue-soft);color:var(--blue);font-weight:700}
+.opt.right{border-color:var(--green);background:var(--green-soft);color:var(--green);font-weight:700}
+.opt.wrong{border-color:var(--red);background:var(--red-soft);color:var(--red);text-decoration:line-through}
+.opt:disabled{cursor:default}
+.rule p{margin:2px 0}
+input.b::placeholder{color:var(--muted);font-weight:400;opacity:.8}
+</style>
+
+<div class="wrap">
+<header>
+  <h1>Übungsprüfung Envol 8: Schnelltest</h1>
+  <p class="lead">Prüfungen 1–4 haben den gleichen Aufbau wie die echte Prüfung. Prüfungen 5–8 üben die gleichen Themen auf andere Art: Fehlerjagd, Geschichte, Übersetzen und Schnelltest. Alles ohne Impératif.</p>
+</header>
+<nav class="tabs" id="tabs" role="tablist"></nav>
+<main id="exam"></main>
+</div>
+
+<script>window.FIXED_EXAM=8;</script>
+<script>
+/* Blanks im Text: {antwort|andere richtige Antwort}. Unterstrichen: [..]. */
+const EXAMS=[
+{name:"Prüfung 1",theme:"Le pique-nique",tasks:[
+ {t:"rewrite",title:"L'adjectif",instr:"Ajoutez les adjectifs à la bonne forme et à la bonne place. Récrivez les phrases.",
+  rule:"Vor dem Nomen: beau, joli, bon, meilleur, mauvais, grand, petit, gros, jeune, vieux, nouveau, premier, dernier (Reihenfolge), long. Sonst nach dem Nomen (Farben, Herkunft, die meisten anderen). Vor Plural-Adjektiv wird des → de. Vor Vokal: bel, nouvel, vieil.",
+  items:[
+  {q:"Cette femme porte une veste. (vieux, blanc)",a:["Cette vieille femme porte une veste blanche."]},
+  {q:"Mon voisin a acheté un appartement. (sportif, beau)",a:["Mon voisin sportif a acheté un bel appartement."]},
+  {q:"Les élèves ont écrit des examens. (meilleur, difficile)",a:["Les meilleurs élèves ont écrit des examens difficiles."]},
+  {q:"Nous avons visité une ville et un musée. (ancien, nouveau)",a:["Nous avons visité une ville ancienne et un nouveau musée.","Nous avons visité une ancienne ville et un nouveau musée."]},
+  {q:"Ma sœur cherche une jupe. (petit, long)",a:["Ma petite sœur cherche une jupe longue.","Ma petite sœur cherche une longue jupe."]}]},
+ {t:"lines",title:"Le comparatif et le superlatif",instr:"Mettez l'adjectif au comparatif (+) mehr, (=) gleich, (−) weniger ou au superlatif (!+) am meisten, (!−) am wenigsten. Ajoutez les particules nécessaires.",
+  rule:"plus / aussi / moins + Adjektiv + que. Superlativ: le / la / les plus + Adjektiv + de (la ville, la classe). bon → meilleur, le meilleur. Adjektiv immer angleichen.",
+  items:[
+  {l:"(+) (grand)",x:"Mon frère est {plus grand} {que} ma sœur."},
+  {l:"(!+) (bon)",x:"C'est {la meilleure} pizzeria {de} la ville."},
+  {l:"(=) (cher)",x:"Les chaussures sont {aussi chères} {que} le pull."},
+  {l:"(−) (intéressant)",x:"Ce livre est {moins intéressant} {que} le film."},
+  {l:"(!−) (sportif)",x:"Ce sont les élèves {les moins sportifs} {de} la classe."},
+  {l:"(+) (mauvais)",x:"Ce café est {plus mauvais|pire} {que} l'autre."}]},
+ {t:"text",each:.5,title:"Les articles définis, indéfinis, partitifs et le « de partitif »",instr:"Complétez par un article défini, indéfini, partitif ou le « de partitif ».",ttl:"Le pique-nique de Léa",
+  rule:"Teilungsartikel du / de la / de l' / des für Mengen ohne Angabe. Nach Mengenangabe (une bouteille, beaucoup, un kilo) und Verneinung nur de / d'. Nach aimer, adorer, détester: le / la / les.",
+  x:"Samedi, Léa a préparé {un} grand pique-nique. Dans son panier, elle a mis {du} pain, {du} fromage et {des} tomates. Elle a aussi pris une bouteille {d'} eau et un paquet {de} chips. Son frère n'aime pas {le} fromage, alors elle a acheté {du} jambon. Au parc, ils ont bu beaucoup {de} limonade et ils ont mangé {de la} salade. Il y avait aussi {des} fraises et un kilo {de} cerises. Malheureusement, Léa n'avait pas {de} serviettes. Après {le} repas, ils ont fait {du} sport. Ils ont passé {une} belle journée !"},
+ {t:"rewrite",title:"Les pronoms",instr:"Récrivez la phrase et remplacez l'objet souligné par son pronom.",
+  rule:"Wen/was (ohne à): le, la, l', les. Wem (à + Person): lui, leur. à toi et à moi → nous, à toi et à lui → vous. Pronomen vor dem konjugierten Verb, im Passé composé vor avoir.",
+  items:[
+  {q:"Je donne ce livre [à mon frère].",a:["Je lui donne ce livre."]},
+  {q:"Nous avons vu [le film] hier.",a:["Nous l'avons vu hier."]},
+  {q:"Elle téléphone souvent [à ses grands-parents].",a:["Elle leur téléphone souvent."]},
+  {q:"Le prof explique la règle [à toi et à moi].",a:["Le prof nous explique la règle."]}]},
+ {t:"text",each:1,title:"Les verbes pronominaux",instr:"Mettez les verbes entre parenthèses au passé composé.",ttl:"Un samedi matin",
+  rule:"Reflexive Verben immer mit être: se + être + Partizip. Partizip nach dem Subjekt: weiblich +e, Plural +s, gemischt = männlich.",
+  x:"Samedi, Julie et sa sœur Anne (se réveiller) {se sont réveillées} tard. Julie (se doucher) {s'est douchée} et Anne (se maquiller) {s'est maquillée}. Ensuite, leur père (se lever) {s'est levé}. Les filles (s'habiller) {se sont habillées} vite. Au marché, elles (s'arrêter) {se sont arrêtées} devant un stand de fleurs. Leur frère Tom (se perdre) {s'est perdu} dans la foule. Quand ils (se retrouver) {se sont retrouvés}, ils (se dépêcher) {se sont dépêchés} de rentrer."},
+ {t:"rewrite",pre:"Non, ",title:"La négation",instr:"Répondez aux questions.",
+  rule:"quelque chose / tout → rien. quelqu'un / tout le monde → personne (als Subjekt: Personne ne …). encore → ne … plus. déjà → ne … pas encore. souvent / toujours → ne … jamais. Nach Verneinung: de statt du/de la/des.",
+  items:[
+  {q:"Est-ce que tu as acheté du pain ?",a:["je n'ai pas acheté de pain.","je n'en ai pas acheté."]},
+  {q:"Est-ce que quelqu'un a appelé ?",a:["personne n'a appelé."]},
+  {q:"Est-ce que tu as vu quelque chose ?",a:["je n'ai rien vu."]},
+  {q:"Est-ce qu'elle habite encore à Zurich ?",a:["elle n'habite plus à Zurich.","elle n'y habite plus."]},
+  {q:"Est-ce que vous avez déjà mangé ?",a:["nous n'avons pas encore mangé.","je n'ai pas encore mangé."]},
+  {q:"Est-ce qu'il va souvent au cinéma ?",a:["il ne va jamais au cinéma.","il n'y va jamais."]}]},
+ {t:"text",each:.5,title:"L'adjectif possessif et l'adjectif démonstratif",instr:"Mettez l'adjectif possessif ou l'adjectif démonstratif correct.",ttl:"Au marché",sub:"Marc raconte :",
+  rule:"ce + m., cet + m. vor Vokal/h, cette + f., ces Plural. mon/ma/mes … Weibliches Wort mit Vokal: mon, ton, son (son amie). leur + 1 Sache, leurs + mehrere.",
+  x:"Samedi, je suis allé au marché avec {mes} parents. {Ma} mère voulait acheter des légumes et {mon} père cherchait du fromage. {Ce} marché est très grand. Près de l'entrée, il y avait {cet} homme qui vend toujours des pommes. {Ses} pommes sont délicieuses. Puis nous avons vu une vendeuse avec {son} amie. Elles vendaient des fleurs. {Ces} fleurs étaient magnifiques. Nous avons acheté {cette} orchidée pour {notre} maison. Mes cousins étaient aussi au marché avec {leur} chien et {leurs} vélos."},
+ {t:"rewrite",title:"Les questions avec « est-ce qu(e/i) »",instr:"Formulez les questions avec un mot interrogatif (si nécessaire) et « est-ce qu(e/i) ». La partie soulignée est la réponse.",
+  rule:"Ort → Où est-ce que … ? Zeit → Quand est-ce que … ? Grund → Pourquoi est-ce que … ? Person als Subjekt → Qui est-ce qui … ? Sache als Objekt → Qu'est-ce que … ? Sache als Subjekt → Qu'est-ce qui … ? Je/nous wird zu tu/vous.",
+  items:[
+  {q:"Je vais [au cinéma] ce soir.",a:["Où est-ce que tu vas ce soir ?","Où est-ce que vous allez ce soir ?","Où est-ce que tu vas ?","Où est-ce que vous allez ?"]},
+  {q:"Nous partons [à 8 heures].",a:["Quand est-ce que vous partez ?","À quelle heure est-ce que vous partez ?","A quelle heure est-ce que vous partez ?"]},
+  {q:"[Marie] a gagné le match.",a:["Qui est-ce qui a gagné le match ?"]},
+  {q:"Elle mange [une pomme].",a:["Qu'est-ce qu'elle mange ?"]},
+  {q:"[Le film] lui plaît.",a:["Qu'est-ce qui lui plaît ?"]}]}
+]},
+
+{name:"Prüfung 2",theme:"À la montagne",tasks:[
+ {t:"rewrite",title:"L'adjectif",instr:"Ajoutez les adjectifs à la bonne forme et à la bonne place. Récrivez les phrases.",items:[
+  {q:"Ce garçon a un vélo. (jeune, rouge)",a:["Ce jeune garçon a un vélo rouge."]},
+  {q:"Cet homme a acheté une voiture. (vieux, italien)",a:["Ce vieil homme a acheté une voiture italienne."],h:"Achtung: Cet + vieil?"},
+  {q:"C'est une histoire pour les enfants. (vrai, petit)",a:["C'est une histoire vraie pour les petits enfants.","C'est une vraie histoire pour les petits enfants."]},
+  {q:"Nous avons passé la semaine dans un hôtel. (dernier, beau)",a:["Nous avons passé la semaine dernière dans un bel hôtel."]},
+  {q:"Ma copine porte des chaussures. (meilleur, noir)",a:["Ma meilleure copine porte des chaussures noires."]}]},
+ {t:"lines",title:"Le comparatif et le superlatif",instr:"Mettez l'adjectif au comparatif (+) mehr, (=) gleich, (−) weniger ou au superlatif (!+) am meisten, (!−) am wenigsten. Ajoutez les particules nécessaires.",items:[
+  {l:"(−) (rapide)",x:"Le bus est {moins rapide} {que} le train."},
+  {l:"(!+) (bon)",x:"Ce sont {les meilleurs} skieurs {de} l'école."},
+  {l:"(=) (grand)",x:"Lisa est {aussi grande} {que} son frère."},
+  {l:"(+) (bon)",x:"Le chocolat suisse est {meilleur} {que} le chocolat belge."},
+  {l:"(!−) (cher)",x:"C'est l'hôtel {le moins cher} {de} la région."},
+  {l:"(+) (fatigué)",x:"Après la randonnée, les filles sont {plus fatiguées} {que} les garçons."}]},
+ {t:"text",each:.5,title:"Les articles définis, indéfinis, partitifs et le « de partitif »",instr:"Complétez par un article défini, indéfini, partitif ou le « de partitif ».",ttl:"Le petit-déjeuner à la cabane",
+  x:"À la cabane, nous avons mangé {un} petit-déjeuner énorme. Il y avait {du} pain, {du} beurre et {de la} confiture. Moi, j'ai pris un bol {de} céréales et un verre {de} lait. Ma sœur adore {le} miel, alors elle en a mis beaucoup. Mon père a bu trois tasses {de} café. Il n'y avait pas {d'} œufs, mais il y avait {des} fruits. Le guide nous a donné {des} conseils pour la randonnée : « Il faut {de l'} eau et {du} courage ! » Après {le} repas, nous sommes partis avec {un} sac plein {de} sandwichs."},
+ {t:"rewrite",title:"Les pronoms",instr:"Récrivez la phrase et remplacez l'objet souligné par son pronom.",items:[
+  {q:"J'ai écrit une lettre [à mes cousines].",a:["Je leur ai écrit une lettre."]},
+  {q:"Tu ne trouves pas [ton portable] ?",a:["Tu ne le trouves pas ?"]},
+  {q:"Elle a montré ses photos [à toi et à ton frère].",a:["Elle vous a montré ses photos."]},
+  {q:"Il attend [sa copine] devant l'école.",a:["Il l'attend devant l'école."]}]},
+ {t:"text",each:1,title:"Les verbes pronominaux",instr:"Mettez les verbes entre parenthèses au passé composé.",ttl:"Avant le concert",
+  x:"Hier, Sophie et Marc (se préparer) {se sont préparés} pour un concert. Sophie (se coiffer) {s'est coiffée} pendant une heure et Marc (se raser) {s'est rasé}. Dans le train, ils (s'amuser) {se sont amusés} avec leurs amis. Devant la salle, Lina (s'énerver) {s'est énervée} parce que le concert commençait en retard. Les filles (se dépêcher) {se sont dépêchées} d'entrer. Marc (se tromper) {s'est trompé} de place. Après le concert, tout le monde (se coucher) {s'est couché} tard. Le lendemain, Sophie et Lina (se reposer) {se sont reposées} toute la journée."},
+ {t:"rewrite",pre:"Non, ",title:"La négation",instr:"Répondez aux questions.",items:[
+  {q:"Est-ce que tu bois du café ?",a:["je ne bois pas de café.","je n'en bois pas."]},
+  {q:"Est-ce que tout le monde a compris ?",a:["personne n'a compris."]},
+  {q:"Est-ce que tu as déjà visité Paris ?",a:["je n'ai pas encore visité Paris.","je ne l'ai pas encore visité.","je n'ai jamais visité Paris."]},
+  {q:"Est-ce qu'il joue encore au foot ?",a:["il ne joue plus au foot."]},
+  {q:"Est-ce qu'elle a dit quelque chose ?",a:["elle n'a rien dit."]},
+  {q:"Est-ce que vous avez rencontré quelqu'un ?",a:["nous n'avons rencontré personne.","je n'ai rencontré personne."]}]},
+ {t:"text",each:.5,title:"L'adjectif possessif et l'adjectif démonstratif",instr:"Mettez l'adjectif possessif ou l'adjectif démonstratif correct.",ttl:"À la gare",sub:"Nina raconte :",
+  x:"Vendredi, j'ai pris le train avec {ma} famille. {Mon} frère portait {nos} billets. {Ce} train était très moderne. Dans {cette} voiture, il y avait un homme avec {son} chien. {Cet} animal était très calme. À côté de nous, deux filles parlaient avec {leurs} parents. {Leur} mère lisait un magazine. Nous avons mangé {nos} sandwichs. Puis j'ai écrit un message à {mon} amie Laura. {Ces} vacances vont être super !"},
+ {t:"rewrite",title:"Les questions avec « est-ce qu(e/i) »",instr:"Formulez les questions avec un mot interrogatif (si nécessaire) et « est-ce qu(e/i) ». La partie soulignée est la réponse.",items:[
+  {q:"J'habite [à Bremgarten].",a:["Où est-ce que tu habites ?","Où est-ce que vous habitez ?"]},
+  {q:"Il rentre tard [parce qu'il a beaucoup de travail].",a:["Pourquoi est-ce qu'il rentre tard ?"]},
+  {q:"[Mon frère] a mangé le gâteau.",a:["Qui est-ce qui a mangé le gâteau ?"]},
+  {q:"Elle cherche [ses clés].",a:["Qu'est-ce qu'elle cherche ?"]},
+  {q:"[Le chocolat] me fait plaisir.",a:["Qu'est-ce qui te fait plaisir ?","Qu'est-ce qui vous fait plaisir ?"]}]}
+]},
+
+{name:"Prüfung 3",theme:"La fête",tasks:[
+ {t:"rewrite",title:"L'adjectif",instr:"Ajoutez les adjectifs à la bonne forme et à la bonne place. Récrivez les phrases.",items:[
+  {q:"Cette chanteuse a une voix. (célèbre, doux)",a:["Cette chanteuse célèbre a une voix douce.","Cette chanteuse célèbre a une douce voix."]},
+  {q:"Mon oncle a acheté un ordinateur. (riche, nouveau)",a:["Mon oncle riche a acheté un nouvel ordinateur."]},
+  {q:"Les filles ont préparé des gâteaux. (petit, délicieux)",a:["Les petites filles ont préparé des gâteaux délicieux.","Les petites filles ont préparé de délicieux gâteaux."]},
+  {q:"C'est l'ami de mon frère. (meilleur, grand)",a:["C'est le meilleur ami de mon grand frère."]},
+  {q:"J'ai trouvé une écharpe pour l'hiver. (beau, dernier)",a:["J'ai trouvé une belle écharpe pour l'hiver dernier."]}]},
+ {t:"lines",title:"Le comparatif et le superlatif",instr:"Mettez l'adjectif au comparatif (+) mehr, (=) gleich, (−) weniger ou au superlatif (!+) am meisten, (!−) am wenigsten. Ajoutez les particules nécessaires.",items:[
+  {l:"(+) (âgé)",x:"Mon grand-père est {plus âgé} {que} ma grand-mère."},
+  {l:"(!+) (bon)",x:"Ce sont {les meilleurs} gâteaux {de} la boulangerie."},
+  {l:"(=) (drôle)",x:"Mes cousines sont {aussi drôles} {que} mes amis."},
+  {l:"(−) (cher)",x:"Les ballons sont {moins chers} {que} les bougies."},
+  {l:"(!+) (long)",x:"C'était la fête {la plus longue} {de} l'année."},
+  {l:"(+) (bon)",x:"Ta soupe est {meilleure} {que} la mienne."}]},
+ {t:"text",each:.5,title:"Les articles définis, indéfinis, partitifs et le « de partitif »",instr:"Complétez par un article défini, indéfini, partitif ou le « de partitif ».",ttl:"Les courses pour la fête",
+  x:"Pour la fête, maman a acheté {des} ballons et {un} gâteau au chocolat. Au supermarché, elle a pris deux litres {de} jus, {du} fromage, {de la} salade et {de l'} huile. Papa n'aime pas {les} olives, mais il adore {la} pizza. Il n'y avait plus {de} bougies, alors elle a pris un paquet {de} serviettes. Pendant la fête, les enfants ont bu trop {de} limonade. Ma tante a apporté {des} fleurs et {une} bouteille {de} vin. Le soir, nous avons fait {de la} musique et nous avons mangé {le} reste du gâteau."},
+ {t:"rewrite",title:"Les pronoms",instr:"Récrivez la phrase et remplacez l'objet souligné par son pronom.",items:[
+  {q:"Nous offrons un cadeau [à notre mère].",a:["Nous lui offrons un cadeau."]},
+  {q:"Je ne connais pas [ses amis].",a:["Je ne les connais pas."]},
+  {q:"Elle prépare [la salade].",a:["Elle la prépare."]},
+  {q:"Le serveur apporte les boissons [à toi et à moi].",a:["Le serveur nous apporte les boissons."]}]},
+ {t:"text",each:1,title:"Les verbes pronominaux",instr:"Mettez les verbes entre parenthèses au passé composé.",ttl:"Le jour de la fête",
+  x:"Le matin, Paul (se réveiller) {s'est réveillé} très tôt. Sa sœur Clara (se lever) {s'est levée} à huit heures. Les deux enfants (se laver) {se sont lavés} et ils (s'habiller) {se sont habillés}. L'après-midi, les invités (s'amuser) {se sont amusés} dans le jardin. Clara et sa copine (se cacher) {se sont cachées} derrière un arbre. Paul (se blesser) {s'est blessé} au genou et sa mère (s'inquiéter) {s'est inquiétée}. Le soir, toute la famille (se reposer) {s'est reposée}."},
+ {t:"rewrite",pre:"Non, ",title:"La négation",instr:"Répondez aux questions.",items:[
+  {q:"Est-ce qu'il y a des chips ?",a:["il n'y a pas de chips.","il n'y en a pas."]},
+  {q:"Est-ce que quelqu'un est venu ?",a:["personne n'est venu."]},
+  {q:"Est-ce que tu as tout mangé ?",a:["je n'ai rien mangé."]},
+  {q:"Est-ce qu'elle fume encore ?",a:["elle ne fume plus."]},
+  {q:"Est-ce que tu es déjà prêt ?",a:["je ne suis pas encore prêt.","je ne suis pas encore prête."]},
+  {q:"Est-ce que vous voyez quelqu'un ?",a:["nous ne voyons personne.","je ne vois personne."]}]},
+ {t:"text",each:.5,title:"L'adjectif possessif et l'adjectif démonstratif",instr:"Mettez l'adjectif possessif ou l'adjectif démonstratif correct.",ttl:"La chambre",sub:"Tim raconte :",
+  x:"Hier, j'ai rangé {ma} chambre. {Mes} livres étaient partout. {Cet} ordinateur est vieux, mais je l'aime. Ma sœur a pris {son} pull et {ses} chaussures. {Cette} armoire est trop petite pour {nos} vêtements. Mes parents ont trouvé {leur} vieille photo dans {ce} tiroir. Mes cousins m'ont appelé : ils cherchaient {leurs} jeux vidéo. {Ces} jeux étaient sous le lit ! Enfin, j'ai trouvé {mon} écharpe préférée."},
+ {t:"rewrite",title:"Les questions avec « est-ce qu(e/i) »",instr:"Formulez les questions avec un mot interrogatif (si nécessaire) et « est-ce qu(e/i) ». La partie soulignée est la réponse.",items:[
+  {q:"Le cours commence [à 9 heures].",a:["Quand est-ce que le cours commence ?","À quelle heure est-ce que le cours commence ?","A quelle heure est-ce que le cours commence ?"]},
+  {q:"Nous sommes tristes [parce que les vacances sont finies].",a:["Pourquoi est-ce que vous êtes tristes ?"]},
+  {q:"[Le professeur] corrige les tests.",a:["Qui est-ce qui corrige les tests ?"]},
+  {q:"Ils ont acheté [un cadeau].",a:["Qu'est-ce qu'ils ont acheté ?"]},
+  {q:"[L'orage] fait peur au chien.",a:["Qu'est-ce qui fait peur au chien ?"]}]}
+]},
+
+{name:"Prüfung 4",theme:"À la mer",tasks:[
+ {t:"rewrite",title:"L'adjectif",instr:"Ajoutez les adjectifs à la bonne forme et à la bonne place. Récrivez les phrases.",items:[
+  {q:"Cette fille porte un chapeau. (jeune, gris)",a:["Cette jeune fille porte un chapeau gris."]},
+  {q:"Nous avons loué un appartement près d'une plage. (vieux, joli)",a:["Nous avons loué un vieil appartement près d'une jolie plage."]},
+  {q:"Mon frère a mangé une glace. (petit, énorme)",a:["Mon petit frère a mangé une glace énorme.","Mon petit frère a mangé une énorme glace."]},
+  {q:"Le jour, nous avons fait une promenade. (dernier, long)",a:["Le dernier jour, nous avons fait une longue promenade.","Le dernier jour, nous avons fait une promenade longue."]},
+  {q:"Les touristes cherchent des restaurants. (allemand, bon)",a:["Les touristes allemands cherchent de bons restaurants."]}]},
+ {t:"lines",title:"Le comparatif et le superlatif",instr:"Mettez l'adjectif au comparatif (+) mehr, (=) gleich, (−) weniger ou au superlatif (!+) am meisten, (!−) am wenigsten. Ajoutez les particules nécessaires.",items:[
+  {l:"(!+) (beau)",x:"C'est {la plus belle} plage {de} la région."},
+  {l:"(=) (chaud)",x:"L'eau est {aussi chaude} {que} l'air."},
+  {l:"(−) (dangereux)",x:"La piscine est {moins dangereuse} {que} la mer."},
+  {l:"(+) (bon)",x:"Les glaces italiennes sont {meilleures} {que} les glaces suisses."},
+  {l:"(!−) (cher)",x:"Ce sont les souvenirs {les moins chers} {de} la boutique."},
+  {l:"(+) (bronzé)",x:"Ma sœur est {plus bronzée} {que} moi."}]},
+ {t:"text",each:.5,title:"Les articles définis, indéfinis, partitifs et le « de partitif »",instr:"Complétez par un article défini, indéfini, partitif ou le « de partitif ».",ttl:"Le marché du village",
+  x:"Avant de partir, j'ai mis un peu {de} crème solaire. Au marché, ma mère voulait acheter {du} poisson, {de la} viande et {des} légumes. Elle a pris un kilo {de} tomates et une bouteille {d'} huile d'olive. Mon père cherchait {un} chapeau. Moi, je n'ai pas acheté {de} souvenirs, parce que je n'avais pas {d'} argent. Ma sœur adore {les} melons, alors elle en a pris deux. À midi, nous avons mangé {des} crevettes et beaucoup {de} frites. Mon frère a bu {de l'} eau. L'après-midi, nous avons fait {de la} voile. C'était {une} journée parfaite et {le} soleil brillait."},
+ {t:"rewrite",title:"Les pronoms",instr:"Récrivez la phrase et remplacez l'objet souligné par son pronom.",items:[
+  {q:"Je raconte mes vacances [à ma grand-mère].",a:["Je lui raconte mes vacances."]},
+  {q:"Nous ne trouvons plus [la plage].",a:["Nous ne la trouvons plus."]},
+  {q:"Le guide montre le chemin [à mes amis et à moi].",a:["Le guide nous montre le chemin."]},
+  {q:"Tu achètes [les cartes postales] ?",a:["Tu les achètes ?"]}]},
+ {t:"text",each:1,title:"Les verbes pronominaux",instr:"Mettez les verbes entre parenthèses au passé composé.",ttl:"Une journée à la plage",
+  x:"Le premier jour, Emma et Léo (se lever) {se sont levés} à sept heures. Emma (se doucher) {s'est douchée} et Léo (se raser) {s'est rasé}. À la plage, les enfants (s'amuser) {se sont amusés} dans les vagues. Emma (se baigner) {s'est baignée} pendant une heure. Ses copines (se reposer) {se sont reposées} au soleil. Léo (s'endormir) {s'est endormi} sous le parasol. Le soir, les filles (se maquiller) {se sont maquillées} et tout le groupe (se promener) {s'est promené} au port."},
+ {t:"rewrite",pre:"Non, ",title:"La négation",instr:"Répondez aux questions.",items:[
+  {q:"Est-ce que tu as pris des photos ?",a:["je n'ai pas pris de photos.","je n'en ai pas pris."]},
+  {q:"Est-ce que quelqu'un t'a aidé ?",a:["personne ne m'a aidé."]},
+  {q:"Est-ce que vous voulez boire quelque chose ?",a:["nous ne voulons rien boire.","je ne veux rien boire."]},
+  {q:"Est-ce que tu as déjà nagé dans la mer ?",a:["je n'ai pas encore nagé dans la mer.","je n'ai jamais nagé dans la mer."]},
+  {q:"Est-ce qu'il pleut encore ?",a:["il ne pleut plus."]},
+  {q:"Est-ce qu'elle va toujours à la plage ?",a:["elle ne va jamais à la plage.","elle n'y va jamais."]}]},
+ {t:"text",each:.5,title:"L'adjectif possessif et l'adjectif démonstratif",instr:"Mettez l'adjectif possessif ou l'adjectif démonstratif correct.",ttl:"À l'hôtel",sub:"Lucas raconte :",
+  x:"Cet été, je suis parti avec {mes} parents et {ma} sœur. {Mon} amie Jade est venue aussi. {Notre} hôtel était au bord de la mer. {Cet} hôtel avait une grande piscine. Ma sœur a oublié {son} maillot de bain et {ses} lunettes de soleil. Le soir, nous avons parlé avec un couple et {leurs} enfants. {Leur} fille s'appelait Mia. {Cette} famille venait de Lyon. J'ai acheté {ces} cartes postales pour {mes} amis."},
+ {t:"rewrite",title:"Les questions avec « est-ce qu(e/i) »",instr:"Formulez les questions avec un mot interrogatif (si nécessaire) et « est-ce qu(e/i) ». La partie soulignée est la réponse.",items:[
+  {q:"Nous allons [en Italie] cet été.",a:["Où est-ce que vous allez cet été ?","Où est-ce que vous allez ?"]},
+  {q:"Elle part [demain].",a:["Quand est-ce qu'elle part ?"]},
+  {q:"[Les enfants] ont construit un château de sable.",a:["Qui est-ce qui a construit un château de sable ?"],h:"Nach qui est-ce qui steht das Verb im Singular."},
+  {q:"Il prend [une glace].",a:["Qu'est-ce qu'il prend ?"]},
+  {q:"[Le soleil] me fait mal aux yeux.",a:["Qu'est-ce qui te fait mal aux yeux ?","Qu'est-ce qui vous fait mal aux yeux ?"]}]}
+]},
+
+/* ===== Prüfung 5: Fehlerjagd. Jeder Satz hat genau einen Fehler. ===== */
+{name:"Prüfung 5",theme:"Fehlerjagd",kind:"Fehler finden und korrigieren",tasks:[
+ {t:"rewrite",topic:"adj",title:"L'adjectif",instr:"Chaque phrase contient une faute. Récrivez la phrase correcte.",items:[
+  {q:"C'est une fille gentil.",a:["C'est une fille gentille."],h:"gentil → gentille (Konsonant doppelt)."},
+  {q:"Il a acheté un nouveau ordinateur.",a:["Il a acheté un nouvel ordinateur."],h:"Vor Vokal: nouvel."},
+  {q:"Elle porte une jupe bleu.",a:["Elle porte une jupe bleue."],h:"la jupe ist feminin: bleue."},
+  {q:"Nous avons visité une ville belle.",a:["Nous avons visité une belle ville."],h:"beau / belle steht vor dem Nomen."},
+  {q:"Ce sont des chaussures blanches et chers.",a:["Ce sont des chaussures blanches et chères."],h:"cher → chère, Plural chères."}]},
+ {t:"rewrite",topic:"comp",title:"Le comparatif et le superlatif",instr:"Chaque phrase contient une faute. Récrivez la phrase correcte.",items:[
+  {q:"Ce gâteau est plus bon que l'autre.",a:["Ce gâteau est meilleur que l'autre."],h:"plus bon gibt es nicht: meilleur."},
+  {q:"Marie est aussi grande comme sa sœur.",a:["Marie est aussi grande que sa sœur."],h:"aussi … que."},
+  {q:"C'est le plus haut montagne de Suisse.",a:["C'est la plus haute montagne de Suisse."],h:"la montagne ist feminin: la plus haute."},
+  {q:"Mes sœurs sont plus sportif que moi.",a:["Mes sœurs sont plus sportives que moi."],h:"Adjektiv angleichen: sportives."},
+  {q:"Ce sont les élèves les plus intelligents dans l'école.",a:["Ce sont les élèves les plus intelligents de l'école."],h:"Superlativ + de (de l'école)."}]},
+ {t:"rewrite",topic:"art",title:"Les articles",instr:"Chaque phrase contient une faute. Récrivez la phrase correcte.",items:[
+  {q:"Je mange du pain sans du beurre.",a:["Je mange du pain sans beurre."],h:"Nach sans kein Artikel."},
+  {q:"Il a acheté un kilo des pommes.",a:["Il a acheté un kilo de pommes."],h:"Nach Mengenangabe nur de."},
+  {q:"J'aime du chocolat.",a:["J'aime le chocolat."],h:"Nach aimer: bestimmter Artikel."},
+  {q:"Elle ne mange pas de la viande.",a:["Elle ne mange pas de viande."],h:"Nach Verneinung nur de."},
+  {q:"Il fait de le sport.",a:["Il fait du sport."],h:"de + le = du."},
+  {q:"Je vais à le cinéma.",a:["Je vais au cinéma."],h:"à + le = au."}]},
+ {t:"rewrite",topic:"pron",title:"Les pronoms",instr:"Chaque phrase contient une faute. Récrivez la phrase correcte.",items:[
+  {q:"Je la donne un cadeau. (à ma mère)",a:["Je lui donne un cadeau."],h:"à + Person → lui."},
+  {q:"Je leurs téléphone souvent. (à mes amis)",a:["Je leur téléphone souvent."],h:"leur als Pronomen hat nie ein -s."},
+  {q:"Je l'ai pas vu. (le film)",a:["Je ne l'ai pas vu."],h:"ne steht vor dem Pronomen."},
+  {q:"Il trouve les. (les clés)",a:["Il les trouve."],h:"Das Pronomen steht vor dem Verb."},
+  {q:"Le prof vous explique la règle. (à toi et à moi)",a:["Le prof nous explique la règle."],h:"à toi et à moi → nous."}]},
+ {t:"rewrite",topic:"refl",title:"Les verbes pronominaux",instr:"Chaque phrase contient une faute. Récrivez la phrase correcte.",items:[
+  {q:"Hier, Paul s'a levé à sept heures.",a:["Hier, Paul s'est levé à sept heures."],h:"Reflexive Verben immer mit être."},
+  {q:"Marie s'est habillé vite.",a:["Marie s'est habillée vite."],h:"Marie ist weiblich: habillée."},
+  {q:"Nous nous avons dépêchés.",a:["Nous nous sommes dépêchés.","Nous nous sommes dépêchées."],h:"être, nicht avoir."},
+  {q:"Les filles se sont amusés.",a:["Les filles se sont amusées."],h:"Weiblich Plural: -ées."},
+  {q:"Tom et Léa s'est rencontrés au parc.",a:["Tom et Léa se sont rencontrés au parc."],h:"Zwei Personen: se sont."},
+  {q:"Elle ne s'est reposée pas.",a:["Elle ne s'est pas reposée."],h:"ne … pas umschliesst se + être."}]},
+ {t:"rewrite",topic:"neg",title:"La négation",instr:"Chaque phrase contient une faute. Récrivez la phrase correcte.",items:[
+  {q:"Je ne vois pas personne.",a:["Je ne vois personne."],h:"personne ersetzt pas."},
+  {q:"Personne ne m'a pas aidé.",a:["Personne ne m'a aidé."],h:"Personne ne … ohne pas."},
+  {q:"Je n'ai vu rien.",a:["Je n'ai rien vu."],h:"rien steht vor dem Partizip."},
+  {q:"Il n'a personne rencontré.",a:["Il n'a rencontré personne."],h:"personne steht nach dem Partizip."},
+  {q:"Elle n'a plus des amis ici.",a:["Elle n'a plus d'amis ici."],h:"Nach Verneinung: de / d'."},
+  {q:"Non, je n'ai encore pas fini.",a:["Non, je n'ai pas encore fini."],h:"ne … pas encore."}]},
+ {t:"rewrite",topic:"poss",title:"L'adjectif possessif et démonstratif",instr:"Chaque phrase contient une faute. Récrivez la phrase correcte.",items:[
+  {q:"Ma amie s'appelle Léa.",a:["Mon amie s'appelle Léa."],h:"Weiblich mit Vokal: mon."},
+  {q:"Ce arbre est très vieux.",a:["Cet arbre est très vieux."],h:"Maskulin vor Vokal: cet."},
+  {q:"Les enfants jouent avec leur jouets.",a:["Les enfants jouent avec leurs jouets."],h:"Mehrere Sachen: leurs."},
+  {q:"Paul parle avec sa père.",a:["Paul parle avec son père."],h:"le père → son."},
+  {q:"Cette livre est intéressant.",a:["Ce livre est intéressant."],h:"le livre ist maskulin: ce."},
+  {q:"Nous aimons nos maison.",a:["Nous aimons notre maison."],h:"Eine Sache: notre."}]},
+ {t:"rewrite",topic:"quest",title:"Les questions avec « est-ce qu(e/i) »",instr:"Chaque phrase contient une faute. Récrivez la phrase correcte.",items:[
+  {q:"Où est-ce que tu habite ?",a:["Où est-ce que tu habites ?"],h:"tu habites mit -s."},
+  {q:"Qu'est-ce qui tu fais ?",a:["Qu'est-ce que tu fais ?"],h:"Danach kommt ein Subjekt (tu): que."},
+  {q:"Qui est-ce que a téléphoné ?",a:["Qui est-ce qui a téléphoné ?"],h:"Person als Subjekt: qui est-ce qui."},
+  {q:"Pourquoi est-ce que il pleure ?",a:["Pourquoi est-ce qu'il pleure ?"],h:"Vor Vokal: qu'."},
+  {q:"Qu'est-ce que te fait peur ?",a:["Qu'est-ce qui te fait peur ?"],h:"Sache als Subjekt: qu'est-ce qui."}]}
+]},
+
+/* ===== Prüfung 6: Eine Geschichte, alle Themen gemischt. Lücke: {lösung^thema~hilfe} ===== */
+{name:"Prüfung 6",theme:"Une semaine à Paris",kind:"Eine Geschichte, alle Themen gemischt",tasks:[
+ {t:"text",each:1,topic:"mix",title:"Le départ",instr:"Complétez l'histoire. Le mot gris dans la case vous aide.",
+  x:"Lundi matin, Lina et sa sœur Zoé {se sont réveillées^refl~se réveiller} à six heures. Lina a pris {sa^poss~ihre} {nouvelle^adj~nouveau} valise et Zoé a pris {son^poss~ihren} sac à dos. À la gare, elles ont acheté {des^art} croissants et une bouteille {d'^art} eau. Le TGV est {plus rapide^comp~+ rapide} {que^comp} la voiture. Pendant le voyage, Zoé {s'est endormie^refl~s'endormir}. Lina, elle, n'a {rien^neg~nichts} mangé."},
+ {t:"text",each:1,topic:"mix",title:"À Paris",instr:"Complétez l'histoire. Le mot gris dans la case vous aide.",
+  x:"À Paris, les filles ont retrouvé {leur^poss~ihre} tante Claire. Claire a montré la ville {aux^art~à + les} filles. « {Qu'est-ce que^quest~was} vous voulez voir ? » demande Claire. Zoé répond : « La tour Eiffel ! C'est le monument {le plus célèbre^comp~!+ célèbre} {de^comp} Paris. » Elles {y^pron~dorthin} sont allées en métro. {Cette^poss~diese} tour est vraiment {belle^adj~beau}, mais il y avait beaucoup {de^art} touristes. Après la visite, Claire {leur^pron~ihnen} a acheté une glace."},
+ {t:"text",each:1,topic:"mix",title:"Un petit problème",instr:"Complétez l'histoire. Le mot gris dans la case vous aide.",
+  x:"Mercredi, Zoé ne trouvait plus {son^poss~ihr} portable. Elle l'a cherché partout, mais elle ne {l'^pron~es} a pas trouvé. « {Qui est-ce qui^quest~wer} a vu mon portable ? » {Personne^neg~niemand} ne l'avait vu. Finalement, Lina l'a trouvé sous {un^art} coussin. Les deux sœurs {se sont disputées^refl~se disputer}, puis elles {se sont réconciliées^refl~se réconcilier}. Le soir, elles ont mangé dans un {vieil^adj~vieux} hôtel transformé en restaurant."},
+ {t:"text",each:1,topic:"mix",title:"Le retour",instr:"Complétez l'histoire. Le mot gris dans la case vous aide.",
+  x:"Dimanche, Claire a demandé : « {Pourquoi est-ce que^quest~warum} vous partez déjà ? » – « Parce que l'école commence lundi ! » Les filles n'avaient {plus^neg~nicht mehr} {d'^art} argent, mais elles étaient {heureuses^adj~heureux}. Dans le train, Lina a dit : « La vie à Paris est {plus chère^comp~+ cher} {que^comp} la vie à Zurich. » À la maison, elles ont tout raconté à {leurs^poss~ihren} parents. Leur père a demandé : « {Est-ce que^quest~Frage ohne Fragewort} vous avez rencontré quelqu'un ? » – « Non, nous n'avons rencontré {personne^neg~niemand}. » Le soir, les filles {se sont couchées^refl~se coucher} tôt."}
+]},
+
+/* ===== Prüfung 7: Übersetzen Deutsch → Französisch ===== */
+{name:"Prüfung 7",theme:"Übersetzen",kind:"Deutsch → Französisch",tasks:[
+ {t:"rewrite",topic:"adj",title:"L'adjectif",instr:"Traduisez en français.",items:[
+  {q:"Meine kleine Schwester hat eine blaue Jacke. (la veste)",a:["Ma petite sœur a une veste bleue."]},
+  {q:"Wir haben ein schönes Hotel gefunden.",a:["Nous avons trouvé un bel hôtel.","On a trouvé un bel hôtel."]},
+  {q:"Das ist eine alte Tradition. (la tradition)",a:["C'est une vieille tradition."]},
+  {q:"Er hat neue Freunde.",a:["Il a de nouveaux amis."],h:"des → de vor einem Adjektiv im Plural."}]},
+ {t:"rewrite",topic:"comp",title:"Le comparatif et le superlatif",instr:"Traduisez en français.",items:[
+  {q:"Léa ist grösser als Tom.",a:["Léa est plus grande que Tom."]},
+  {q:"Dieser Film ist weniger interessant als das Buch.",a:["Ce film est moins intéressant que le livre."]},
+  {q:"Das ist die beste Pizza der Stadt.",a:["C'est la meilleure pizza de la ville."]},
+  {q:"Meine Brüder sind so sportlich wie ich.",a:["Mes frères sont aussi sportifs que moi."]}]},
+ {t:"rewrite",topic:"art",title:"Les articles",instr:"Traduisez en français.",items:[
+  {q:"Ich trinke Wasser.",a:["Je bois de l'eau."]},
+  {q:"Er isst keinen Käse.",a:["Il ne mange pas de fromage."]},
+  {q:"Sie mag Schokolade.",a:["Elle aime le chocolat."]},
+  {q:"Wir kaufen ein Kilo Äpfel.",a:["Nous achetons un kilo de pommes.","On achète un kilo de pommes."]},
+  {q:"Er hat Mut.",a:["Il a du courage."]}]},
+ {t:"rewrite",topic:"pron",title:"Les pronoms",instr:"Traduisez en français. Ersetze die Person oder Sache durch ein Pronomen.",items:[
+  {q:"Ich sehe ihn. (Paul)",a:["Je le vois."]},
+  {q:"Wir telefonieren ihr. (Marie)",a:["Nous lui téléphonons.","On lui téléphone."]},
+  {q:"Sie hat ihnen geschrieben. (ses amis)",a:["Elle leur a écrit."]},
+  {q:"Ich habe sie nicht gefunden. (les clés)",a:["Je ne les ai pas trouvées.","Je ne les ai pas trouvés.","Je ne les ai pas trouvé."]}]},
+ {t:"rewrite",topic:"refl",title:"Les verbes pronominaux",instr:"Traduisez en français, au passé composé.",items:[
+  {q:"Marie ist um 7 Uhr aufgestanden.",a:["Marie s'est levée à 7 heures.","Marie s'est levée à sept heures.","Marie s'est levée à 7 h."]},
+  {q:"Wir (Tom und ich) haben uns beeilt.",a:["Nous nous sommes dépêchés."]},
+  {q:"Die Mädchen haben sich amüsiert.",a:["Les filles se sont amusées."]},
+  {q:"Er hat sich nicht rasiert.",a:["Il ne s'est pas rasé."]},
+  {q:"Du (Léa) hast dich geschminkt.",a:["Tu t'es maquillée."]}]},
+ {t:"rewrite",topic:"neg",title:"La négation",instr:"Traduisez en français.",items:[
+  {q:"Ich habe nichts gesehen.",a:["Je n'ai rien vu."]},
+  {q:"Niemand ist gekommen.",a:["Personne n'est venu."]},
+  {q:"Er wohnt nicht mehr in Bern.",a:["Il n'habite plus à Berne.","Il n'habite plus à Bern."]},
+  {q:"Ich habe niemanden getroffen.",a:["Je n'ai rencontré personne."]},
+  {q:"Wir sind noch nie in Paris gewesen.",a:["Nous ne sommes jamais allés à Paris.","Nous n'avons jamais été à Paris."]}]},
+ {t:"rewrite",topic:"poss",title:"L'adjectif possessif et démonstratif",instr:"Traduisez en français.",items:[
+  {q:"Diese Frau ist meine Lehrerin. (la prof)",a:["Cette femme est ma prof."]},
+  {q:"Dieser Baum ist alt. (l'arbre)",a:["Cet arbre est vieux."]},
+  {q:"Sie (mehrere) suchen ihre Katze. (le chat)",a:["Ils cherchent leur chat.","Elles cherchent leur chat."]},
+  {q:"Er spielt mit seiner Freundin. (l'amie)",a:["Il joue avec son amie."]},
+  {q:"Diese Schuhe sind neu. (les chaussures)",a:["Ces chaussures sont neuves.","Ces chaussures sont nouvelles."]}]},
+ {t:"rewrite",topic:"quest",title:"Les questions avec « est-ce qu(e/i) »",instr:"Traduisez en français avec « est-ce que » ou « est-ce qui ».",items:[
+  {q:"Wo wohnst du?",a:["Où est-ce que tu habites ?"]},
+  {q:"Was machst du?",a:["Qu'est-ce que tu fais ?"]},
+  {q:"Wer hat angerufen?",a:["Qui est-ce qui a téléphoné ?","Qui est-ce qui a appelé ?"]},
+  {q:"Was macht dir Angst?",a:["Qu'est-ce qui te fait peur ?"]},
+  {q:"Warum weint sie? (pleurer)",a:["Pourquoi est-ce qu'elle pleure ?"]}]}
+]},
+
+/* ===== Prüfung 8: Schnelltest mit Auswahl und Umformen ===== */
+{name:"Prüfung 8",theme:"Schnelltest",kind:"Auswählen und Umformen",tasks:[
+ {t:"mc",each:1,topic:"adj",title:"L'adjectif",instr:"Choisissez la bonne forme.",items:[
+  {q:"un ___ ami (vieux)",o:["vieux","vieil","vieille"],c:1},
+  {q:"des filles ___ (heureux)",o:["heureux","heureuse","heureuses"],c:2},
+  {q:"Elle a les yeux ___ . (bleu)",o:["bleu","bleus","bleues"],c:1},
+  {q:"Quelle forme est correcte ?",o:["une maison grande","une grande maison"],c:1},
+  {q:"une voiture ___ (blanc)",o:["blanc","blanche","blanches"],c:1},
+  {q:"J'ai vu ___ films.",o:["des bons","de bons"],c:1}]},
+ {t:"lines",topic:"comp",title:"Le comparatif et le superlatif",instr:"Comparez avec les informations. Mettez la forme correcte et la particule.",items:[
+  {l:"Pizza 15 francs, pâtes 15 francs (cher)",x:"La pizza est {aussi chère} {que} les pâtes."},
+  {l:"Léa court 8 km, Tom 5 km (sportif)",x:"Tom est {moins sportif} {que} Léa."},
+  {l:"Cervin 4478 m, Mont Blanc 4808 m (haut)",x:"Le Mont Blanc est {plus haut} {que} le Cervin."},
+  {l:"Notes : Ana 5,5, Ben 4, Cléa 6 (bon)",x:"Cléa est {la meilleure} élève {de} la classe."}]},
+ {t:"mc",each:.5,topic:"art",title:"Les articles",instr:"Choisissez le bon article. « — » veut dire : pas d'article.",items:[
+  {q:"Je mange ___ pain.",o:["du","de","le"],c:0},
+  {q:"Il n'y a plus ___ lait.",o:["du","de","le"],c:1},
+  {q:"J'adore ___ glaces.",o:["des","les","de"],c:1},
+  {q:"un verre ___ eau",o:["de l'","d'","de la"],c:1},
+  {q:"Elle fait ___ musique.",o:["de la","la","de"],c:0},
+  {q:"J'ai ___ soif.",o:["de la","une","—"],c:2},
+  {q:"le café sans ___ sucre",o:["du","de","—"],c:2},
+  {q:"Il a ___ talent.",o:["de","du","le"],c:1}]},
+ {t:"rewrite",topic:"pron",title:"Les pronoms",instr:"Remplacez la partie soulignée par un pronom. Récrivez la phrase.",items:[
+  {q:"J'achète [le journal].",a:["Je l'achète."]},
+  {q:"Il écrit [à sa grand-mère].",a:["Il lui écrit."]},
+  {q:"Nous ne connaissons pas [ces filles].",a:["Nous ne les connaissons pas."]},
+  {q:"Tu as parlé [à tes parents] ?",a:["Tu leur as parlé ?"]}]},
+ {t:"rewrite",topic:"refl",title:"Les verbes pronominaux",instr:"Mettez les phrases au passé composé.",items:[
+  {q:"Elle se lève tôt.",a:["Elle s'est levée tôt."]},
+  {q:"Nous nous promenons au bord du lac. (nous = Tom et moi)",a:["Nous nous sommes promenés au bord du lac."]},
+  {q:"Ils se dépêchent.",a:["Ils se sont dépêchés."]},
+  {q:"Je me couche à dix heures. (je = Sara)",a:["Je me suis couchée à dix heures."]},
+  {q:"Les filles ne se reposent pas.",a:["Les filles ne se sont pas reposées."]}]},
+ {t:"rewrite",topic:"neg",title:"La négation",instr:"Mettez les phrases à la forme négative avec le mot entre parenthèses.",items:[
+  {q:"Il a mangé quelque chose. (rien)",a:["Il n'a rien mangé."]},
+  {q:"Quelqu'un est venu. (personne)",a:["Personne n'est venu."]},
+  {q:"Elle a vu quelqu'un. (personne)",a:["Elle n'a vu personne."]},
+  {q:"Nous buvons encore du café. (plus)",a:["Nous ne buvons plus de café."]},
+  {q:"Tu vas souvent au cinéma. (jamais)",a:["Tu ne vas jamais au cinéma."]}]},
+ {t:"mc",each:.5,topic:"poss",title:"L'adjectif possessif et démonstratif",instr:"Choisissez la bonne forme.",items:[
+  {q:"___ école est grande. (mein)",o:["Ma","Mon","Mes"],c:1},
+  {q:"___ hôtel est cher. (dieses)",o:["Ce","Cet","Cette"],c:1},
+  {q:"Les enfants promènent ___ chien. (ihren, einen Hund)",o:["son","leur","leurs"],c:1},
+  {q:"Tim et Léa adorent ___ grands-parents.",o:["leur","leurs","ses"],c:1},
+  {q:"___ chaussures sont neuves. (diese)",o:["Ce","Cette","Ces"],c:2},
+  {q:"Marie sort avec ___ frère.",o:["sa","son","ses"],c:1}]},
+ {t:"mc",each:1,topic:"quest",title:"Les questions avec « est-ce qu(e/i) »",instr:"La partie soulignée est la réponse. Choisissez la bonne question.",items:[
+  {q:"Je vais [à Genève].",o:["Où est-ce que tu vas ?","Qu'est-ce que tu vas ?","Quand est-ce que tu vas ?"],c:0},
+  {q:"[Paul] a cassé le vase.",o:["Qu'est-ce qui a cassé le vase ?","Qui est-ce qui a cassé le vase ?","Qui est-ce que a cassé le vase ?"],c:1},
+  {q:"Elle lit [un roman].",o:["Qu'est-ce qu'elle lit ?","Qu'est-ce qui elle lit ?","Qui est-ce qu'elle lit ?"],c:0},
+  {q:"[La musique] me fait plaisir.",o:["Qui est-ce qui te fait plaisir ?","Qu'est-ce que te fait plaisir ?","Qu'est-ce qui te fait plaisir ?"],c:2},
+  {q:"Il part [demain].",o:["Quand est-ce qu'il part ?","Où est-ce qu'il part ?","Pourquoi est-ce qu'il part ?"],c:0}]}
+]}
+
+];
+/* ---------- Themen und Regeln ---------- */
+const TOPICS={adj:"Adjektive",comp:"Komparativ und Superlativ",art:"Artikel",pron:"Pronomen",refl:"Reflexive Verben",neg:"Verneinung",poss:"Possessiv und Demonstrativ",quest:"Fragen mit est-ce que"};
+const ORDER=Object.keys(TOPICS);
+const RULES={};
+EXAMS[0].tasks.forEach((t,i)=>{RULES[ORDER[i]]=t.rule;});
+/* Prüfungen 1–4 haben die Themen in der Reihenfolge der echten Prüfung */
+EXAMS.forEach((e,ei)=>e.tasks.forEach((t,i)=>{if(!t.topic&&ei<4)t.topic=ORDER[i];}));
+
+/* ---------- Hilfen ---------- */
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const norm=s=>s.normalize("NFC").toLowerCase().replace(/[’`´‘]/g,"'").replace(/œ/g,"oe").replace(/\s*'\s*/g,"'").replace(/[–—]/g,"-").replace(/\s*-\s*/g,"-").replace(/[«»"]/g,"").replace(/[.!?,;:]/g," ").replace(/\s+/g," ").trim().replace(/^non /,"");
+const noAcc=s=>s.normalize("NFD").replace(/[̀-ͯ]/g,"");
+const noHy=s=>s.replace(/-/g," ");
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+const fmtPt=n=>(Math.round(n*2)/2).toString().replace(".",",");
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+/* Lücke: {antwort|andere^thema~hilfe} */
+function spec(raw){let s=raw,hint="",topic="";const ti=s.indexOf("~");if(ti>=0){hint=s.slice(ti+1);s=s.slice(0,ti);}const pi=s.indexOf("^");if(pi>=0){topic=s.slice(pi+1);s=s.slice(0,pi);}return {sols:s.split("|"),topic,hint};}
+function blanks(x){return [...x.matchAll(/\{([^}]+)\}/g)].map(m=>spec(m[1]));}
+function taskMax(t){if(t.t==="text")return blanks(t.x).length*t.each;if(t.t==="mc")return t.items.length*(t.each||1);return t.items.length;}
+const MAX=e=>e.tasks.reduce((s,t)=>s+taskMax(t),0);
+function judge(val,sols){
+  const v=norm(val),S=sols.map(norm);
+  if(!v)return {ok:false,msg:""};
+  if(S.includes(v))return {ok:true};
+  if(S.map(noAcc).includes(noAcc(v)))return {ok:false,msg:"Fast! Akzent prüfen."};
+  if(S.map(noHy).includes(noHy(v)))return {ok:false,msg:"Fast! Bindestrich prüfen."};
+  return {ok:false,msg:""};
+}
+
+/* ---------- Aufbau ---------- */
+const FIXED=window.FIXED_EXAM||0;
+let cur=FIXED?FIXED-1:0;
+const h=location.hash.match(/^#p([1-8])$/);if(h&&!FIXED)cur=+h[1]-1;
+const tabs=document.getElementById("tabs");
+if(FIXED)tabs.hidden=true;
+function drawTabs(){
+  tabs.innerHTML=EXAMS.map((e,i)=>{const b=store.get("envol78_best_"+i);
+    return `<button role="tab" id="tab-p${i+1}" aria-selected="${i===cur}" data-i="${i}"><span class="lg">Prüfung </span>${i+1}<small>${esc(e.theme)}${b?` <span class="bst">${b} %</span>`:""}</small></button>`}).join("");
+  tabs.querySelectorAll("button").forEach(b=>b.onclick=()=>{cur=+b.dataset.i;drawTabs();draw();window.scrollTo({top:0});});
+}
+let uid=0;
+function inp(sols,cls="",topic="",hint=""){
+  const w=Math.max(...sols.map(s=>s.length),hint.length)+2;
+  const id="f"+(++uid);
+  if(cls==="full")return `<textarea class="b full" id="${id}" rows="2" data-sol="${esc(JSON.stringify(sols))}" data-topic="${topic}" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Antwort"></textarea>`;
+  return `<input class="b ${cls}" id="${id}" data-sol="${esc(JSON.stringify(sols))}" data-topic="${topic}"${hint?` placeholder="${esc(hint)}"`:""} style="width:${Math.min(w,30)}ch" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="${hint?esc("Lücke: "+hint):"Lücke"}">`;
+}
+function textWithBlanks(x,topic){
+  let out="",last=0;
+  for(const m of x.matchAll(/\{([^}]+)\}/g)){out+=esc(x.slice(last,m.index));const b=spec(m[1]);out+=inp(b.sols,"",b.topic||topic,b.hint);last=m.index+m[0].length;}
+  return out+esc(x.slice(last));
+}
+function under(q){return esc(q).replace(/\[([^\]]+)\]/g,"<u>$1</u>");}
+
+function draw(){
+  const e=EXAMS[cur],max=MAX(e);uid=0;stat={};
+  if(!FIXED)history.replaceState(null,"","#p"+(cur+1));
+  let html=`<div class="sheet"><div class="head"><span><b>Test de grammaire : Répétition Envol 7 et 8</b><br>${esc(e.name)}: ${esc(e.theme)}${e.kind?` <span class="kind">${esc(e.kind)}</span>`:""}</span><span>Points : <b id="pts">…</b> / ${fmtPt(max)}<br>Note : <b id="note">…</b></span></div>`;
+  e.tasks.forEach((t,ti)=>{
+    html+=`<section class="task" data-t="${ti}"><h2><span>${ti+1}. ${esc(t.title)}</span><span class="pt" id="tp${ti}">${fmtPt(taskMax(t))} points</span></h2><p class="instr">${esc(t.instr)}</p>`;
+    if(t.ttl)html+=`<p class="ttl">${esc(t.ttl)}</p>`;
+    if(t.sub)html+=`<p class="instr" style="margin-top:0">${esc(t.sub)}</p>`;
+    if(t.t==="text")html+=`<p class="txt">${textWithBlanks(t.x,t.topic)}</p>`;
+    if(t.t==="lines")html+=`<ol class="lines">${t.items.map(it=>`<li><span class="lbl">${esc(it.l)}</span><br>${textWithBlanks(it.x,t.topic)}</li>`).join("")}</ol>`;
+    if(t.t==="rewrite")html+=`<ol class="rw">${t.items.map((it,ii)=>`<li data-ii="${ii}"><span class="q">${under(it.q)}</span><div class="row">${t.pre?`<span>${esc(t.pre)}</span>`:""}${inp(it.a,"full",it.topic||t.topic)}</div><div class="fb"></div></li>`).join("")}</ol>`;
+    if(t.t==="mc")html+=`<ol class="rw mc">${t.items.map((it,ii)=>`<li data-ii="${ii}"><span class="q">${under(it.q).replace("___","<b>___</b>")}</span><div class="opts" role="group">${shuffle(it.o.map((_,j)=>j)).map(j=>`<button type="button" class="opt" data-j="${j}" aria-pressed="false">${esc(it.o[j])}</button>`).join("")}</div><div class="fb"></div></li>`).join("")}</ol>`;
+    html+=`<div class="rule"></div></section>`;
+  });
+  const best=store.get("envol78_best_"+cur);
+  html+=`<div class="submit"><button class="btn" id="go">Abgeben und korrigieren</button><button class="btn alt" id="reset">Neu beginnen</button>${best?`<span class="best">Bestes Resultat: ${best} %</span>`:""}</div><div id="res"></div>`;
+  html+=`<p class="tip">Tipp: Enter springt zur nächsten Lücke. Bei ganzen Sätzen kannst du nach der Korrektur «Doch richtig» drücken, wenn deine Lösung auch stimmt.</p></div>`;
+  document.getElementById("exam").innerHTML=html;
+  const ins=[...document.querySelectorAll("#exam .b")];
+  ins.forEach((el,k)=>el.addEventListener("keydown",ev=>{if(ev.key==="Enter"){ev.preventDefault();(ins[k+1]||document.getElementById("go")).focus();}}));
+  document.querySelectorAll("#exam .opts").forEach(g=>g.addEventListener("click",ev=>{const b=ev.target.closest(".opt");if(!b||b.disabled)return;
+    g.querySelectorAll(".opt").forEach(x=>x.setAttribute("aria-pressed","false"));b.setAttribute("aria-pressed","true");}));
+  document.getElementById("go").onclick=correct;
+  document.getElementById("reset").onclick=()=>{draw();window.scrollTo({top:0});};
+}
+
+/* Punkte pro Thema, für «Nochmal anschauen» */
+let stat={};
+const add=(tp,g,m)=>{if(!tp)return;stat[tp]=stat[tp]||{g:0,m:0};stat[tp].g+=g;stat[tp].m+=m;};
+function correct(){
+  const e=EXAMS[cur];let total=0;stat={};
+  document.querySelectorAll("#exam section.task").forEach(sec=>{
+    const ti=+sec.dataset.t,t=e.tasks[ti];let got=0;const miss=new Set();sec.classList.add("done");
+    if(t.t==="rewrite"){
+      sec.querySelectorAll("li[data-ii]").forEach(li=>{
+        const it=t.items[+li.dataset.ii],el=li.querySelector(".b"),tp=it.topic||t.topic,r=judge(el.value,it.a);el.disabled=true;
+        el.classList.add(r.ok?"ok":"bad");add(tp,r.ok?1:0,1);
+        if(r.ok)got+=1;
+        else{miss.add(tp);li.querySelector(".fb").innerHTML=`${r.msg?`<span class="hint">${r.msg}</span> `:""}Lösung: <span class="s">${esc((t.pre||"")+it.a[0])}</span>${it.h?` <span class="hint">${esc(it.h)}</span>`:""}${el.value.trim()?`<button class="own" type="button">Doch richtig</button>`:""}`;
+          const ob=li.querySelector(".own");if(ob)ob.onclick=()=>{ob.remove();el.classList.remove("bad");el.classList.add("ok");add(tp,1,0);addPoint(sec,ti,1);};}
+      });
+    }else if(t.t==="mc"){
+      const each=t.each||1;
+      sec.querySelectorAll("li[data-ii]").forEach(li=>{
+        const it=t.items[+li.dataset.ii],tp=it.topic||t.topic,sel=li.querySelector('.opt[aria-pressed="true"]'),ok=!!sel&&+sel.dataset.j===it.c;
+        li.querySelectorAll(".opt").forEach(b=>{b.disabled=true;if(+b.dataset.j===it.c)b.classList.add("right");else if(b===sel)b.classList.add("wrong");});
+        add(tp,ok?each:0,each);if(ok)got+=each;else{miss.add(tp);if(!sel)li.querySelector(".fb").innerHTML=`<span class="hint">Nichts gewählt.</span>`;}
+      });
+    }else{
+      const lines=t.t==="lines"?[...sec.querySelectorAll("ol.lines>li")]:[sec];
+      lines.forEach(ln=>{
+        const els=[...ln.querySelectorAll("input")];const per=t.t==="lines"?1/els.length:t.each;
+        els.forEach(el=>{const sols=JSON.parse(el.dataset.sol),tp=el.dataset.topic||t.topic,r=judge(el.value,sols);el.disabled=true;el.classList.add(r.ok?"ok":"bad");
+          add(tp,r.ok?per:0,per);
+          if(r.ok)got+=per;else{miss.add(tp);el.insertAdjacentHTML("afterend",`<span class="sol">${esc(sols[0])}</span>`);}});
+      });
+    }
+    /* Regel: bei einem Thema immer, bei gemischten Teilen nur zu den Fehlern */
+    const box=sec.querySelector(".rule");
+    if(t.topic&&t.topic!=="mix")box.innerHTML=`<b>Regel:</b> ${esc(t.rule||RULES[t.topic]||"")}`;
+    else box.innerHTML=miss.size?[...miss].map(tp=>`<p><b>${esc(TOPICS[tp]||tp)}:</b> ${esc(RULES[tp]||"")}</p>`).join(""):"<b>Alles richtig in diesem Teil.</b>";
+    sec.dataset.got=got;total+=got;
+    const tp=document.getElementById("tp"+ti);tp.innerHTML=`${fmtPt(got)} / ${fmtPt(taskMax(t))} points`;tp.classList.add("got");
+  });
+  document.getElementById("go").disabled=true;
+  showResult(total);
+  document.getElementById("res").scrollIntoView({behavior:"smooth",block:"center"});
+}
+function addPoint(sec,ti,n){
+  const t=EXAMS[cur].tasks[ti];sec.dataset.got=+sec.dataset.got+n;
+  document.getElementById("tp"+ti).innerHTML=`${fmtPt(+sec.dataset.got)} / ${fmtPt(taskMax(t))} points`;
+  let total=0;document.querySelectorAll("#exam section.task").forEach(s=>total+=+s.dataset.got);showResult(total);
+}
+function showResult(total){
+  const max=MAX(EXAMS[cur]),pct=Math.round(total/max*100);
+  const note=Math.round((1+5*total/max)*10)/10,noteR=Math.round((1+5*total/max)*4)/4;
+  document.getElementById("pts").textContent=fmtPt(total);
+  document.getElementById("note").textContent=note.toFixed(1);
+  const weak=ORDER.filter(tp=>stat[tp]&&stat[tp].m&&stat[tp].g/stat[tp].m<0.7).map(tp=>TOPICS[tp]);
+  document.getElementById("res").innerHTML=`<div class="result ${note<4?"low":""}" role="status"><div><span class="big">${fmtPt(total)} / ${fmtPt(max)}</span><small>Punkte (${pct} %)</small></div><div><span class="big">${note.toFixed(1)}</span><small>Note (gerundet auf Viertel: ${noteR.toFixed(2)})</small></div>${weak.length?`<div style="flex-basis:100%;font-size:14px">Nochmal anschauen: ${weak.map(esc).join(", ")}</div>`:`<div style="flex-basis:100%;font-size:14px">Stark! In allen Themen über 70 %.</div>`}</div>`;
+  const old=+(store.get("envol78_best_"+cur)||0);if(pct>old){store.set("envol78_best_"+cur,pct);if(!FIXED)drawTabs();}
+  if(window.Lernregal)Lernregal.fortschritt(pct,`${EXAMS[cur].name}: Note ${note.toFixed(1)} (${pct} %)`);
+}
+drawTabs();draw();
+</script>
+
+<script src="../regal.js" defer></script>
+</body></html>
